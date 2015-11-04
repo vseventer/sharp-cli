@@ -1,0 +1,5 @@
+--check-leaks
+--no-exit
+--reporter spec
+--timeout  100
+--ui       bdd

@@ -1,0 +1,4 @@
+node_modules/
+test/fixtures/output.jpg
+.DS_Store
+npm_debug.log

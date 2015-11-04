@@ -1,0 +1,33 @@
+{
+  "name"        : "sharp-cli",
+  "version"     : "0.1.0",
+  "description" : "CLI for sharp.",
+  "keywords"    : [ "cli", "jpeg", "libvips", "png", "sharp", "vips", "webp" ],
+  "homepage"    : "https://github.com/vseventer/sharp-cli",
+  "bugs"        : "https://github.com/vseventer/sharp-cli/issues",
+  "license"     : "MIT",
+  "author"      : "Mark van Seventer <mark@vseventer.com>",
+  "repository"  : "vseventer/sharp-cli",
+  "bin"         : { "sharp": "cli.js" },
+  "scripts"     : {
+    "pretest" : "jshint --reporter=./node_modules/jshint-stylish lib/ test/ cli.js",
+    "test"    : "mocha"
+  },
+  "dependencies": {
+    "bluebird"  : "3.0.x",
+    "glob"      : "5.0.x",
+    "is-file"   : "1.0.x",
+    "meow"      : "3.5.x",
+    "mkdir-p"   : "0.0.x",
+    "sharp"     : "0.11.x"
+  },
+  "devDependencies": {
+    "chai"       : "3.4.x",
+    "jshint"     : "2.8.x",
+    "jshint-stylish": "2.0.x",
+    "mocha"      : "2.3.x",
+    "sinon"      : "1.17.x",
+    "sinon-chai" : "2.8.x"
+  },
+  "engines": { "node": "4.x" }
+}
