@@ -1,7 +1,7 @@
 # sharp-cli
 > CLI for [sharp](https://www.npmjs.com/package/sharp).
 
-* Issues with the output should be reported on the `imagemin` [issue tracker](https://github.com/lovell/sharp/issues).*
+*Issues with the output should be reported on the `sharp` [issue tracker](https://github.com/lovell/sharp/issues).*
 
 ## Install
 `$ npm install sharp-cli`
