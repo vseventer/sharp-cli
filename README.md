@@ -34,7 +34,7 @@ $ sharp --help
     --extractLeft <number>       Left offset of the region to be extracted.
     --extractTop <number>        Top offset of the region to be extracted.
     --extractWidth <number>      Width of the region to be extracted.
-    -f, --format <string>        Output format (jpg, png, webp, raw). Defaults to input format.
+    -f, --format <string>        Output format (jpeg, png, webp, raw). Defaults to input format.
     --flatten                    Merge alpha transparency channel, if any, with --background.
     --flip                       Flip the image about the vertical Y axis.
     --flop                       Flip the image about the horizontal X axis.
