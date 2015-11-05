@@ -25,7 +25,8 @@
 'use strict';
 
 // Standard lib.
-var path = require('path');
+var fs   = require('fs'),
+    path = require('path');
 
 // Package modules.
 var chai      = require('chai'),
@@ -43,30 +44,46 @@ var expect = chai.expect;
 // Fixtures.
 var fixturePath = path.join(__dirname, './fixtures'),
     input       = path.join(fixturePath, 'input.jpg'),
-    output      = path.join(fixturePath, 'output.jpg');
+    inputPixel  = path.join(fixturePath, 'input.png'),
+    output      = path.join(fixturePath, 'output.jpg'),
+    outputTest  = path.join(fixturePath, 'output.test.jpg');
 
 // Test suite.
 describe('runner', function() {
+  // Prepopulate flags.
+  beforeEach('flags', function() {
+    this.flags = { output: output };
+  });
+  afterEach('flags', function() {
+    delete this.flags; // Cleanup.
+  });
+
   // Tests.
-  it('should run.', function() {
-    expect(runner.run).to.exist;
+  it('should accept a filename.', function() {
+    return runner.run(input, this.flags);
+  });
+  it('should accept a buffer.', function() {
+    var buffer = fs.readFileSync(input);
+    return runner.run(buffer, this.flags);
+  });
+  it('should accept a stream.', function() {
+    var stream = fs.createReadStream(input);
+    return runner.run(stream, this.flags);
+  });
+  it('should return output metadata.', function() {
+    return runner.run(input, this.flags).then(function(metadata) {
+      expect(metadata).to.have.keys([ 'format', 'height', 'width', 'size', 'src' ]);
+      expect(metadata).to.have.property('src', output);
+    });
   });
 
   // Options.
   describe('options', function() {
-    // Prepopulate flags.
-    beforeEach('flags', function() {
-      this.flags = { output: output };
-    });
-    afterEach('flags', function() {
-      delete this.flags; // Cleanup.
-    });
-
     // Manage spies.
     before('spy', function() {
       this.spies = [ ];
       this.spyOn = function(method) {
-        // Re-use existing spy.
+        // Re-use existing spies.
         if(sharp.prototype[method].isSinonProxy) {
           return sharp.prototype[method];
         }
@@ -89,7 +106,7 @@ describe('runner', function() {
       delete this.spies; // Cleanup.
     });
 
-    // Helper method to test simple boolean flags.
+    // Helper to test boolean options.
     var testBoolean = function(name) {
       return /* mocha:it */ function() {
         var spy = this.spyOn(name);
@@ -102,24 +119,198 @@ describe('runner', function() {
     };
 
     // Tests.
-    it('--background <string>');
-    it('--background <string> (invalid value)');
+    it('--background <string>', function() {
+      var spy = this.spyOn('background');
+      this.flags.background = '#FFFFFF';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ '#FFFFFF' ]);
+      });
+    });
+    it('--background <string> (invalid value)', function() {
+      var spy = this.spyOn('background');
+      this.flags.background = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('unable to parse color');
+      });
+    });
+
     it('--blur', testBoolean('blur'));
-    it('--blur [number] (invalid value)');
-    it('--compressionLevel <number>');
-    it('--compressionLevel <number> (invalid value)');
-    it('--crop', testBoolean('crop'));
-    it('--crop [string]');
-    it('--crop [string] (invalid value)');
+    it('--blur [number]', function() {
+      var spy = this.spyOn('blur');
+      this.flags.blur = '1.5';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1.5 ]);
+      });
+    });
+    it('--blur [number] (invalid value)', function() {
+      var spy = this.spyOn('blur');
+      this.flags.blur = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid blur sigma');
+      });
+    });
+
+    it('--compressionLevel <number>', function() {
+      var spy = this.spyOn('compressionLevel');
+      this.flags.compressionLevel = '7';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 7 ]);
+      });
+    });
+    it('--compressionLevel <number> (invalid value)', function() {
+      var spy = this.spyOn('compressionLevel');
+      this.flags.compressionLevel = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid compressionlevel');
+      });
+    });
+
+    it('--crop <string>', function() {
+      var spy = this.spyOn('crop');
+      this.flags.crop = 'north';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'north' ]);
+      });
+    });
+    it('--crop <string> (invalid value)', function() {
+      var spy = this.spyOn('crop');
+      this.flags.crop = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('unsupported crop gravity');
+      });
+    });
+
     it('--embed', testBoolean('embed'));
-    it('--extractHeight <number>');
-    it('--extractHeight <number> (invalid value)');
-    it('--extractLeft <number>');
-    it('--extractLeft <number> (invalid value)');
-    it('--extractTop <number>');
-    it('--extractTop <number> (invalid value)');
-    it('--extractWidth <number>');
-    it('--extractWidth <number> (invalid value)');
+
+    it('--extractTop <number>', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = '10';
+      this.flags.extractLeft   = '1';
+      this.flags.extractWidth  = '1';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 10, 1, 1, 1 ]);
+      });
+    });
+    it('--extractTop <number> (invalid value)', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = 'foo';
+      this.flags.extractLeft   = '1';
+      this.flags.extractWidth  = '1';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN, 1, 1, 1 ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('non-integer value for top');
+      });
+    });
+    it('--extractLeft <number>', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = '1';
+      this.flags.extractLeft   = '10';
+      this.flags.extractWidth  = '1';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 10, 1, 1 ]);
+      });
+    });
+    it('--extractLeft <number> (invalid value)', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = '1';
+      this.flags.extractLeft   = 'foo';
+      this.flags.extractWidth  = '1';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, NaN, 1, 1 ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('non-integer value for left');
+      });
+    });
+    it('--extractWidth <number>', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = '1';
+      this.flags.extractLeft   = '1';
+      this.flags.extractWidth  = '10';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 1, 10, 1 ]);
+      });
+    });
+    it('--extractWidth <number> (invalid value)', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractTop    = '1';
+      this.flags.extractLeft   = '1';
+      this.flags.extractWidth  = 'foo';
+      this.flags.extractHeight = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 1, NaN, 1 ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('non-integer value for width');
+      });
+    });
+    it('--extractHeight <number>', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractHeight = '10';
+      this.flags.extractLeft  = '1';
+      this.flags.extractTop   = '1';
+      this.flags.extractWidth = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 1, 1, 10 ]);
+      });
+    });
+    it('--extractHeight <number> (invalid value)', function() {
+      var spy = this.spyOn('extract');
+      this.flags.extractHeight = 'foo';
+      this.flags.extractLeft  = '1';
+      this.flags.extractTop   = '1';
+      this.flags.extractWidth = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 1, 1, NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('non-integer value for height');
+      });
+    });
+
     it('--format <string>', function() {
       var spy = this.spyOn('toFormat');
       this.flags.format = 'jpeg';
@@ -136,16 +327,39 @@ describe('runner', function() {
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
         expect(spy.args[0]).to.eql([ 'foo' ]);
-        expect(err).to.have.property('message', 'Unsupported format foo');
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('unsupported format');
       });
     });
+
     it('--flatten', testBoolean('flatten'));
     it('--flip',    testBoolean('flip'));
     it('--flop',    testBoolean('flop'));
-    it('--gamma',   testBoolean('gamma'));
-    it('--gamma <number>');
-    it('--gamma <number> (invalid value)');
+
+    it('--gamma', testBoolean('gamma'));
+    it('--gamma <number>', function() {
+      var spy = this.spyOn('gamma');
+      this.flags.gamma = '2.1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 2.1 ]);
+      });
+    });
+    it('--gamma <number> (invalid value)', function() {
+      var spy = this.spyOn('gamma');
+      this.flags.gamma = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid gamma correction');
+      });
+    });
+
     it('--grayscale', testBoolean('grayscale'));
+
     it('--height <number>', function() {
       var spy = this.spyOn('resize');
       this.flags.height = 100;
@@ -162,39 +376,271 @@ describe('runner', function() {
         expect(spy.args[0]).to.eql([ NaN, NaN ]);
       });
     });
+
     it('--ignoreAspectRatio', testBoolean('ignoreAspectRatio'));
-    it('--interpolateWith <string>');
-    it('--interpolateWith <string> (invalid value)');
-    it('--limitInputPixels <number>');
-    it('--limitInputPixels <number> (invalid value)');
+
+    it('--interpolateWith <string>', function() {
+      var spy = this.spyOn('interpolateWith');
+      this.flags.interpolateWith = 'bilinear';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'bilinear' ]);
+      });
+    });
+    it('--interpolateWith <string> (invalid value)', function() {
+      var spy = this.spyOn('interpolateWith');
+      this.flags.interpolateWith = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid interpolator');
+      });
+    });
+
+    it('--limitInputPixels <number>', function() {
+      var spy = this.spyOn('limitInputPixels');
+      this.flags.limitInputPixels = '100000';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 100000 ]);
+      });
+    });
+    it('--limitInputPixels <number> (invalid value)', function() {
+      var spy = this.spyOn('limitInputPixels');
+      this.flags.limitInputPixels = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid pixel limit');
+      });
+    });
+
     it('--max', testBoolean('max'));
     it('--max', testBoolean('min'));
     it('--max', testBoolean('normalize'));
-    it('--output <string>');
-    it('--output <string> (invalid value).');
+
+    it('--output <string>', function() {
+      var spy = this.spyOn('toFile');
+      this.flags.output = outputTest;
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ outputTest ]);
+      });
+    });
+    it('--output <string> (invalid value).', function() {
+      var spy = this.spyOn('toFile');
+      this.flags.output = true;
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).not.to.be.called; // Error occurs in mkdir.
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('path must be a string');
+      });
+    });
+
     it('--optimizeScans', testBoolean('optimizeScans'));
-    it('--overlay <string>');
-    it('--overlay <string> (invalid value)');
+
+    it('--overlay <string>', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel ]);
+      });
+    });
+    it('--overlay <string> (invalid value)', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = true;
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ true ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('overlay path must be a string');
+      });
+    });
+
     it('--overshootDeringing', testBoolean('overshootDeringing'));
     it('--progressive',        testBoolean('progressive'));
-    it('--quality <number>');
-    it('--quality <number> (invalid value)');
-    it('--rotate <number>');
-    it('--rotate <number> (invalid value)');
+
+    it('--quality <number>', function() {
+      var spy = this.spyOn('quality');
+      this.flags.quality = '70';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 70 ]);
+      });
+    });
+    it('--quality <number> (invalid value)', function() {
+      var spy = this.spyOn('quality');
+      this.flags.quality = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid quality');
+      });
+    });
+
+    it('--rotate <number>', function() {
+      var spy = this.spyOn('rotate');
+      this.flags.rotate = '180';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 180 ]);
+      });
+    });
+    it('--rotate <number> (invalid value)', function() {
+      var spy = this.spyOn('rotate');
+      this.flags.rotate = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('unsupported angle');
+      });
+    });
+
     it('--sequentialRead', testBoolean('sequentialRead'));
-    it('--sharpen',        testBoolean('sharpen'));
-    it('--sharpen [number]');
-    it('--sharpen [number] (invalid value)');
-    it('--sharpenFlat <number>');
-    it('--sharpenFlat <number> (invalid value)');
-    it('--sharpenJagged <number>');
-    it('--sharpenJagged <number> (invalud value)');
-    it('--tile', testBoolean('tile'));
-    it('--tile [number]');
-    it('--tile [number] (invalid value)');
-    it('--tileOverlap <number>');
-    it('--tileOverlap <number> (invalid value)');
+
+    it('--sharpen', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen = true;
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ undefined, undefined, undefined ]);
+      });
+    });
+    it('--sharpen [number]', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen = '10';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 10, undefined, undefined ]);
+      });
+    });
+    it('--sharpen [number] (invalid value)', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN, undefined, undefined ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid sharpen radius');
+      });
+    });
+    it('--sharpenFlat <number>', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen     = '1';
+      this.flags.sharpenFlat = '2.5';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, 2.5, undefined ]);
+      });
+    });
+    it('--sharpenFlat <number> (invalid value)', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen     = '1';
+      this.flags.sharpenFlat = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, NaN, undefined ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid sharpen level for flat areas');
+      });
+    });
+    it('--sharpenJagged <number>', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen       = '1';
+      this.flags.sharpenJagged = '2.5';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, undefined, 2.5 ]);
+      });
+    });
+    it('--sharpenJagged <number> (invalid value)', function() {
+      var spy = this.spyOn('sharpen');
+      this.flags.sharpen       = '1';
+      this.flags.sharpenJagged = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1, undefined, NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid sharpen level for jagged areas');
+      });
+    });
+
+    it('--tile', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile = true;
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ undefined, undefined ]);
+      });
+    });
+    it('--tile [number]', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile = '128';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 128, undefined ]);
+      });
+    });
+    it('--tile [number] (invalid value)', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN, undefined ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid tile size');
+      });
+    });
+    it('--tileOverlap <number>', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile        = true;
+      this.flags.tileOverlap = '32';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ undefined, 32 ]);
+      });
+    });
+    it('--tileOverlap <number> (invalid value)', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile        = true;
+      this.flags.tileOverlap = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ undefined, NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid tile overlap');
+      });
+    });
+
     it('--trellisQuantization', testBoolean('trellisQuantization'));
+
     it('--width <number>', function() {
       var spy = this.spyOn('resize');
       this.flags.width = 100;
@@ -211,9 +657,17 @@ describe('runner', function() {
         expect(spy.args[0]).to.eql([ NaN, NaN ]);
       });
     });
+
     it('--withoutAdaptiveFiltering', testBoolean('withoutAdaptiveFiltering'));
     it('--withoutChromaSubsampling', testBoolean('withoutChromaSubsampling'));
     it('--withoutEnlargement',       testBoolean('withoutEnlargement'));
-    it('--withoutMetadata');
+
+    it('--withoutMetadata', function() {
+      var spy = this.spyOn('withMetadata');
+      this.flags.withoutMetadata = true;
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).not.to.be.called;
+      });
+    });
   });
 });

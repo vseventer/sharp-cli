@@ -26,7 +26,8 @@
 'use strict';
 
 // Standard lib.
-var fs = require('fs');
+var fs   = require('fs'),
+    path = require('path');
 
 // Package modules.
 var glob     = require('glob'),
@@ -38,9 +39,11 @@ var glob     = require('glob'),
 var runner = require('./lib/runner');
 
 // Configure.
-var cli = meow({
-  help: fs.readFileSync('./help.txt', 'utf8')
-}, {
+var helpFile = path.join(__dirname, './help.txt'),
+    help     = fs.readFileSync(helpFile, 'utf8');
+
+// Run.
+var cli = meow(help, {
   boolean: [
     'embed',
     'flatten',
@@ -94,6 +97,7 @@ var cli = meow({
     h : 'height',
     o : 'output',
     q : 'quality',
+    v : 'verbose',
     w : 'width',
 
     // American vs. UK English.
@@ -128,14 +132,20 @@ else {
   }, [ ]);
 
   // Ensure output flag is set.
-  if(1 < src.length && !cli.flags.output) {
-    console.error('No output.');
+  if(1 < src.length && false === cli.flags.output) {
+    console.error('Batch operation requires the use of --output.');
     process.exit(1); // Exit with failure.
   }
 
   // Invoke runner for each src.
   var promises = src.map(function(file) {
-    return runner.run(file, cli.flags);
+    return runner.run(file, cli.flags).then(function(m) {
+      if(cli.flags.verbose) {
+        var size = Math.round(m.size / 1024);
+        console.log('  %s -> %s (%d×%d, %dkb)', file, m.src, m.width, m.height, size);
+      }
+      return m; // Continue.
+    });
   });
 
   // Run.

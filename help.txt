@@ -13,13 +13,17 @@ Options
   --blur [number]              Blur the output image, optionally specifying the blur radius.
   --compressionLevel <number>  zlib compression level, between 0 and 9, of the lossless PNG output
                                format. Defaults to 6.
-  --crop [string]              Crop the resized image, optionally specifying the gravity
-                               (north, east, south, west, center). Defaults to center.
+  --crop <string>              Crop the resized image based on the specified gravity (north, east,
+                               south, west, center).
   --embed                      Resize the image, then embed on a background.
-  --extractHeight <number>     Height of the region to be extracted.
-  --extractLeft <number>       Left offset of the region to be extracted.
-  --extractTop <number>        Top offset of the region to be extracted.
-  --extractWidth <number>      Width of the region to be extracted.
+  --extractHeight <number>     Height of the region to be extracted. Use in conjunction with
+                               --extractLeft, --extractTop, and --extractWidth.
+  --extractLeft <number>       Left offset of the region to be extracted. Use in conjunction with
+                               --extractHeight, --extractTop, and --extractWidth.
+  --extractTop <number>        Top offset of the region to be extracted. Use in conjunction with
+                               --extractHeight, --extractLeft, and --extractWidth.
+  --extractWidth <number>      Width of the region to be extracted. Use in conjunction with
+                               --extractHeight, --extractLeft, and --extractTop.
   -f, --format <string>        Output format (jpeg, png, webp, raw). Defaults to input format.
   --flatten                    Merge alpha transparency channel, if any, with --background.
   --flip                       Flip the image about the vertical Y axis.
@@ -55,14 +59,16 @@ Options
   --sequentialRead             Switches the libvips access method to VIPS_ACCESS_SEQUENTIAL.
   --sharpen [number]           Sharpen the output image, optionally specifying the sharpen radius.
   --sharpenFlat <number>       Specify the level of sharpeness to apply to "flat" areas. Defaults to
-                               1.0.
+                               1.0. Use in conjunction with --sharpen.
   --sharpenJagged <number>     Specify the level of sharpeness to apply to "jagged" areas. Defaults
-                               to 2.0.
+                               to 2.0. Use in conjunction with --sharpen.
   --tile [number]              Applies square image pyramid tiles over the image, optionally
                                specifying a tile size between 1 and 8192. Defaults to 256 pixels.
   --tileOverlap <number>       Specifies the tile overlap, between 0 and 8192. Defaults to 0 pixels.
+                               Use in conjunction with --tile.
   --trellisQuantization, --trellesQuantisation
                                Apply the use of trellis quantization with JPEG output.
+  -v, --verbose                Output image processing information.
   -w, --width <number>         Scale output to width.
   --withoutAdaptiveFiltering   Disable adaptive row filtering for the lossless PNG output format.
   --withoutChromaSubsampling   Disable the use of chroma subsampling with JPEG output (4:4:4).
