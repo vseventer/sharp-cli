@@ -70,11 +70,26 @@ describe('runner', function() {
     var stream = fs.createReadStream(input);
     return runner.run(stream, this.flags);
   });
-  it('should return output metadata.', function() {
-    return runner.run(input, this.flags).then(function(metadata) {
-      expect(metadata).to.have.keys([ 'format', 'height', 'width', 'size', 'src' ]);
-      expect(metadata).to.have.property('src', output);
+  it('should return the output filename.', function() {
+    return runner.run(input, this.flags).then(function(outfile) {
+      expect(outfile).to.equal(output);
     });
+  });
+  it('should return nothing when streaming to stdout.', function() {
+    var stub = sinon.stub(process.stdout, 'write', function() { });
+    return runner.run(input, { }).catch(function(err) {
+      // Ensure stub is restored even if an error occurred.
+      stub.restore();
+      throw err; // Continue with error.
+    }).then(function(res) {
+      stub.restore();
+      expect(stub).to.be.called;
+      expect(res).not.to.exist;
+    });
+  });
+  it('should support the same file for input and output.', function() {
+    this.flags.output = input;
+    return runner.run(input, this.flags);
   });
 
   // Options.
@@ -426,11 +441,10 @@ describe('runner', function() {
     it('--max', testBoolean('normalize'));
 
     it('--output <string>', function() {
-      var spy = this.spyOn('toFile');
       this.flags.output = outputTest;
-      return runner.run(input, this.flags).then(function() {
-        expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ outputTest ]);
+      return runner.run(input, this.flags).then(function(dest) {
+        var exists = fs.existsSync(dest);
+        expect(exists).to.be.true;
       });
     });
     it('--output <string> (invalid value).', function() {

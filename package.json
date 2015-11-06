@@ -1,6 +1,6 @@
 {
   "name"        : "sharp-cli",
-  "version"     : "0.1.0",
+  "version"     : "0.2.0",
   "description" : "CLI for sharp.",
   "keywords"    : [ "cli", "jpeg", "libvips", "png", "sharp", "vips", "webp" ],
   "homepage"    : "https://github.com/vseventer/sharp-cli",
@@ -14,12 +14,13 @@
     "test"    : "mocha"
   },
   "dependencies": {
-    "bluebird"  : "3.0.x",
-    "glob"      : "5.0.x",
-    "is-file"   : "1.0.x",
-    "meow"      : "3.5.x",
-    "mkdir-p"   : "0.0.x",
-    "sharp"     : "0.11.x"
+    "bluebird" : "3.0.x",
+    "glob"     : "5.0.x",
+    "is-file"  : "1.0.x",
+    "meow"     : "3.5.x",
+    "mkdir-p"  : "0.0.x",
+    "sharp"    : "0.11.x",
+    "sponge"   : "0.1.x"
   },
   "devDependencies": {
     "chai"       : "3.4.x",

@@ -139,12 +139,12 @@ else {
 
   // Invoke runner for each src.
   var promises = src.map(function(file) {
-    return runner.run(file, cli.flags).then(function(m) {
-      if(cli.flags.verbose) {
-        var size = Math.round(m.size / 1024);
-        console.log('  %s -> %s (%d×%d, %dkb)', file, m.src, m.width, m.height, size);
+    return runner.run(file, cli.flags).then(function(outfile) {
+      // Only do verbose logging when not streaming to stdout.
+      if(null !== outfile && cli.flags.verbose) {
+        console.log('  %s -> %s', file, outfile);
       }
-      return m; // Continue.
+      return outfile; //Continue.
     });
   });
 
