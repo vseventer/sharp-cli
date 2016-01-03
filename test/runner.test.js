@@ -1,7 +1,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 Mark van Seventer
+ * Copyright (c) 2016 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -506,6 +506,14 @@ describe('runner', function() {
       });
     });
 
+    it('--rotate', function() {
+      var spy = this.spyOn('rotate');
+      this.flags.rotate = '';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ undefined ]);
+      });
+    });
     it('--rotate <number>', function() {
       var spy = this.spyOn('rotate');
       this.flags.rotate = '180';
