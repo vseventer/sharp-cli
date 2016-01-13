@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.2 (January 13, 2016)
+* Enhancement: process multiple files in batches of `25`.
+
 ## 0.2.1 (January 3, 2016)
 * Enhancement: allow `rotate` without angle.
 

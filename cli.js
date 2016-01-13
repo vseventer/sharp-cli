@@ -146,7 +146,7 @@ else {
       }
       return outfile; //Continue.
     });
-  });
+  }, { concurrency: 25 });
 
   // Run.
   Promise.all(promises).catch(function(err) {

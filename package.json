@@ -1,6 +1,6 @@
 {
   "name"        : "sharp-cli",
-  "version"     : "0.2.1",
+  "version"     : "0.2.2",
   "description" : "CLI for sharp.",
   "keywords"    : [ "cli", "jpeg", "libvips", "png", "sharp", "vips", "webp" ],
   "homepage"    : "https://github.com/vseventer/sharp-cli",
