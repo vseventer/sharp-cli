@@ -229,7 +229,12 @@ describe('runner', function() {
       this.flags.extractHeight = '1';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 10, 1, 1, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 10,
+          left   : 1,
+          width  : 1,
+          height : 1
+        }]);
       });
     });
     it('--extractTop <number> (invalid value)', function() {
@@ -242,7 +247,12 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ NaN, 1, 1, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : NaN,
+          left   : 1,
+          width  : 1,
+          height : 1
+        }]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('non-integer value for top');
       });
@@ -255,7 +265,12 @@ describe('runner', function() {
       this.flags.extractHeight = '1';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, 10, 1, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 10,
+          width  : 1,
+          height : 1
+        }]);
       });
     });
     it('--extractLeft <number> (invalid value)', function() {
@@ -268,7 +283,12 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, NaN, 1, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : NaN,
+          width  : 1,
+          height : 1
+        }]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('non-integer value for left');
       });
@@ -281,7 +301,12 @@ describe('runner', function() {
       this.flags.extractHeight = '1';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, 1, 10, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          width  : 10,
+          height : 1
+        }]);
       });
     });
     it('--extractWidth <number> (invalid value)', function() {
@@ -294,7 +319,12 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, 1, NaN, 1 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          width  : NaN,
+          height : 1
+        }]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('non-integer value for width');
       });
@@ -307,7 +337,12 @@ describe('runner', function() {
       this.flags.extractWidth = '1';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, 1, 1, 10 ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          width  : 1,
+          height : 10
+        }]);
       });
     });
     it('--extractHeight <number> (invalid value)', function() {
@@ -320,7 +355,12 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 1, 1, 1, NaN ]);
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          width  : 1,
+          height : NaN
+        }]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('non-integer value for height');
       });
@@ -436,9 +476,10 @@ describe('runner', function() {
       });
     });
 
-    it('--max', testBoolean('max'));
-    it('--max', testBoolean('min'));
-    it('--max', testBoolean('normalize'));
+    it('--max',       testBoolean('max'));
+    it('--min',       testBoolean('min'));
+    it('--normalize', testBoolean('normalize'));
+    it('--negate',    testBoolean('negate'));
 
     it('--output <string>', function() {
       this.flags.output = outputTest;
@@ -607,6 +648,27 @@ describe('runner', function() {
         expect(spy.args[0]).to.eql([ 1, undefined, NaN ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid sharpen level for jagged areas');
+      });
+    });
+
+    it('--threshold', function() {
+      var spy = this.spyOn('threshold');
+      this.flags.threshold = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 1 ]);
+      });
+    });
+    it('--threshold <number> (invalid value).', function() {
+      var spy = this.spyOn('threshold');
+      this.flags.threshold = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ NaN ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid threshold');
       });
     });
 

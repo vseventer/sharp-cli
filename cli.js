@@ -53,6 +53,7 @@ var cli = meow(help, {
     'ignoreAspectRatio',
     'max',
     'min',
+    'negate',
     'normalize',
     'optimizeScans',
     'overshootDeringing',
@@ -87,6 +88,7 @@ var cli = meow(help, {
     'sharpen',
     'sharpenFlat',
     'sharpenJagged',
+    'threshold',
     'tile',
     'tileOverlap',
     'width'
