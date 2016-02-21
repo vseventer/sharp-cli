@@ -383,7 +383,7 @@ describe('runner', function() {
         expect(spy).to.be.calledOnce;
         expect(spy.args[0]).to.eql([ 'foo' ]);
         expect(err).to.have.property('message');
-        expect(err.message.toLowerCase()).to.contain('unsupported format');
+        expect(err.message.toLowerCase()).to.contain('unsupported output format');
       });
     });
 

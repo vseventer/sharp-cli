@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1 (February 21, 2016)
+* Enhancement: update dependencies, including `sharp` (`0.13.x`).
+
 ## 0.3.0 (January 26, 2016)
 * Enhancement: add [`--negate`](http://sharp.dimens.io/en/stable/api/#negate) support.
 * Enhancement: add [`--threshold`](http://sharp.dimens.io/en/stable/api/#thresholdthreshold) support.
