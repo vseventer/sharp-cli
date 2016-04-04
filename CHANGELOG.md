@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (April 4, 2016)
+* Enhancement: add [`--extend`](http://sharp.dimens.io/en/stable/api/#extendextension) support.
+* Enhancement: add [`--overlayGravity`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options) support.
+* Enhancement: add [`--tileLayout`](http://sharp.dimens.io/en/stable/api/#tileoptions) support.
+* Enhancement: update dependencies, including `sharp` (`0.14.x`).
+
 ## 0.3.1 (February 21, 2016)
 * Enhancement: update dependencies, including `sharp` (`0.13.x`).
 

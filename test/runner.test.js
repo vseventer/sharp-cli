@@ -215,11 +215,156 @@ describe('runner', function() {
         expect(spy).to.be.calledOnce;
         expect(spy.args[0]).to.eql([ 'foo' ]);
         expect(err).to.have.property('message');
-        expect(err.message.toLowerCase()).to.contain('unsupported crop gravity');
+        expect(err.message.toLowerCase()).to.contain('unsupported crop foo');
       });
     });
 
     it('--embed', testBoolean('embed'));
+
+    it('--extendTop <number>', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '10';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = '1';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 10,
+          left   : 1,
+          bottom : 1,
+          right  : 1
+        }]);
+      });
+    });
+    it('--extendTop <number> (invalid value)', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = 'foo';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = '1';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : NaN,
+          left   : 1,
+          bottom : 1,
+          right  : 1
+        }]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid edge extension');
+      });
+    });
+    it('--extendLeft <number>', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = '10';
+      this.flags.extendBottom = '1';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 10,
+          bottom : 1,
+          right  : 1
+        }]);
+      });
+    });
+    it('--extendLeft <number> (invalid value)', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = 'foo';
+      this.flags.extendBottom = '1';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : NaN,
+          bottom : 1,
+          right  : 1
+        }]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid edge extension');
+      });
+    });
+    it('--extendBottom <number>', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = '10';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          bottom : 10,
+          right  : 1
+        }]);
+      });
+    });
+    it('--extendBottom <number> (invalid value)', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = 'foo';
+      this.flags.extendRight  = '1';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          bottom : NaN,
+          right  : 1
+        }]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid edge extension');
+      });
+    });
+    it('--extendRight <number>', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = '1';
+      this.flags.extendRight  = '10';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          bottom : 1,
+          right  : 10
+        }]);
+      });
+    });
+    it('--extendRight <number> (invalid value)', function() {
+      var spy = this.spyOn('extend');
+      this.flags.extendTop    = '1';
+      this.flags.extendLeft   = '1';
+      this.flags.extendBottom = '1';
+      this.flags.extendRigth  = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([{
+          top    : 1,
+          left   : 1,
+          bottom : 1,
+          right  : NaN
+        }]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid edge extension');
+      });
+    });
 
     it('--extractTop <number>', function() {
       var spy = this.spyOn('extract');
@@ -507,7 +652,7 @@ describe('runner', function() {
       this.flags.overlay = inputPixel;
       return runner.run(inputPixel, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ inputPixel ]);
+        expect(spy.args[0]).to.eql([ inputPixel, { gravity: undefined } ]);
       });
     });
     it('--overlay <string> (invalid value)', function() {
@@ -517,9 +662,31 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ true ]);
+        expect(spy.args[0]).to.eql([ true, { gravity: undefined } ]);
         expect(err).to.have.property('message');
-        expect(err.message.toLowerCase()).to.contain('overlay path must be a string');
+        expect(err.message.toLowerCase()).to.contain('unsupported overlay boolean');
+      });
+    });
+    it('--overlayGravity <string>', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayGravity = 'north';
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, { gravity: 'north' } ]);
+      });
+    });
+    it('--overlayGravity <string> (invalid value)', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayGravity = 'foo';
+      return runner.run(inputPixel, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, { gravity: 'foo' } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('unsupported overlay gravity foo');
       });
     });
 
@@ -677,7 +844,7 @@ describe('runner', function() {
       this.flags.tile = true;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ undefined, undefined ]);
+        expect(spy.args[0]).to.eql([ { layout: undefined } ]);
       });
     });
     it('--tile [number]', function() {
@@ -685,7 +852,7 @@ describe('runner', function() {
       this.flags.tile = '128';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 128, undefined ]);
+        expect(spy.args[0]).to.eql([ { size: 128, layout: undefined } ]);
       });
     });
     it('--tile [number] (invalid value)', function() {
@@ -695,9 +862,31 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ NaN, undefined ]);
+        expect(spy.args[0]).to.eql([ { size: NaN, layout: undefined } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile size');
+      });
+    });
+    it('--tileLayout <string>', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile       = true;
+      this.flags.tileLayout = 'google';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ { layout: 'google' } ]);
+      });
+    });
+    it('--tileLayout <string> (invalid value)', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile       = true;
+      this.flags.tileLayout = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ { layout: 'foo' } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid tile layout');
       });
     });
     it('--tileOverlap <number>', function() {
@@ -706,7 +895,7 @@ describe('runner', function() {
       this.flags.tileOverlap = '32';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ undefined, 32 ]);
+        expect(spy.args[0]).to.eql([ { overlap: 32, layout: undefined } ]);
       });
     });
     it('--tileOverlap <number> (invalid value)', function() {
@@ -717,7 +906,7 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ undefined, NaN ]);
+        expect(spy.args[0]).to.eql([ { overlap: NaN, layout: undefined } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile overlap');
       });
