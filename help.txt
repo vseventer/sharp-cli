@@ -76,6 +76,7 @@ Options
   --threshold <number>         Specify the level above which pixels will be forced to white.
   --tile [number]              Applies square image pyramid tiles over the image, optionally
                                specifying a tile size between 1 and 8192. Defaults to 256 pixels.
+  --tileContainer <string>     Specifies the tile container (fs, zip). Defaults to fs.
   --tileLayout <string>        Specifies the layout to use when generating square Deep Zoom image
                                pyramid tyles (dz, zoomify, google). Defaults to dz.
                                Use in conjunction with --tile.

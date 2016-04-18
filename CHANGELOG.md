@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.1 (April 18, 2016)
+* Enhancement: add [`--tileContainer`](http://sharp.dimens.io/en/stable/api/#tileoptions).
+
 ## 0.4.0 (April 4, 2016)
 * Enhancement: add [`--extend`](http://sharp.dimens.io/en/stable/api/#extendextension) support.
 * Enhancement: add [`--overlayGravity`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options) support.

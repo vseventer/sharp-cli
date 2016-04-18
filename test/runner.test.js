@@ -844,7 +844,7 @@ describe('runner', function() {
       this.flags.tile = true;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { layout: undefined } ]);
+        expect(spy.args[0]).to.eql([ { container: undefined, layout: undefined } ]);
       });
     });
     it('--tile [number]', function() {
@@ -852,7 +852,7 @@ describe('runner', function() {
       this.flags.tile = '128';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { size: 128, layout: undefined } ]);
+        expect(spy.args[0]).to.eql([ { size: 128, container: undefined, layout: undefined } ]);
       });
     });
     it('--tile [number] (invalid value)', function() {
@@ -862,9 +862,31 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { size: NaN, layout: undefined } ]);
+        expect(spy.args[0]).to.eql([ { size: NaN, container: undefined, layout: undefined } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile size');
+      });
+    });
+    it('--tileContainer <string>', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile          = true;
+      this.flags.tileContainer = 'fs';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ { container: 'fs', layout: undefined } ]);
+      });
+    });
+    it('--tileContainer <string> (invalid value)', function() {
+      var spy = this.spyOn('tile');
+      this.flags.tile          = true;
+      this.flags.tileContainer = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ { container: 'foo', layout: undefined } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid tile container');
       });
     });
     it('--tileLayout <string>', function() {
@@ -873,7 +895,7 @@ describe('runner', function() {
       this.flags.tileLayout = 'google';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { layout: 'google' } ]);
+        expect(spy.args[0]).to.eql([ { container: undefined, layout: 'google' } ]);
       });
     });
     it('--tileLayout <string> (invalid value)', function() {
@@ -884,7 +906,7 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { layout: 'foo' } ]);
+        expect(spy.args[0]).to.eql([ { container: undefined, layout: 'foo' } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile layout');
       });
@@ -895,7 +917,7 @@ describe('runner', function() {
       this.flags.tileOverlap = '32';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { overlap: 32, layout: undefined } ]);
+        expect(spy.args[0]).to.eql([ { overlap: 32, container: undefined, layout: undefined } ]);
       });
     });
     it('--tileOverlap <number> (invalid value)', function() {
@@ -906,7 +928,7 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ { overlap: NaN, layout: undefined } ]);
+        expect(spy.args[0]).to.eql([ { overlap: NaN, container: undefined, layout: undefined } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile overlap');
       });
