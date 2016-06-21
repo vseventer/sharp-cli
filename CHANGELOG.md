@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 (June 21, 2016)
+* Enhancement: add [`--kernel`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).
+* Enhancement: rename `--interpolateWith` to [`--interpolator`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).
+
 ## 0.4.2 (June 21, 2016)
 * Bugfix: mark `--grayscale` as boolean option.
 * Enhancement: update dependencies, including `sharp` (`0.15.x`).

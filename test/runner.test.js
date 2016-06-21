@@ -565,7 +565,7 @@ describe('runner', function() {
       this.flags.height = 100;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ null, 100 ]);
+        expect(spy.args[0]).to.eql([ null, 100, { interpolator: undefined, kernel: undefined } ]);
       });
     });
     it('--height <number> (invalid value)', function() {
@@ -573,30 +573,67 @@ describe('runner', function() {
       this.flags.height = 'foo';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ null, null ]);
+        expect(spy.args[0]).to.eql([ null, null, { interpolator: undefined, kernel: undefined } ]);
       });
     });
 
     it('--ignoreAspectRatio', testBoolean('ignoreAspectRatio'));
 
-    it('--interpolateWith <string>', function() {
-      var spy = this.spyOn('interpolateWith');
-      this.flags.interpolateWith = 'bilinear';
+    it('--interpolator <string>', function() {
+      var spy = this.spyOn('resize');
+      this.flags.width = 100;
+      this.flags.interpolator = 'bilinear';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 'bilinear' ]);
+        expect(spy.args[0]).to.eql([ 100, null, {
+          interpolator: 'bilinear',
+          kernel: undefined
+        } ]);
       });
     });
-    it('--interpolateWith <string> (invalid value)', function() {
-      var spy = this.spyOn('interpolateWith');
-      this.flags.interpolateWith = 'foo';
+    it('--interpolator <string> (invalid value)', function() {
+      var spy = this.spyOn('resize');
+      this.flags.width = 100;
+      this.flags.interpolator = 'foo';
       return runner.run(input, this.flags).then(function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(spy.args[0]).to.eql([ 100, null, {
+          interpolator: 'foo',
+          kernel: undefined
+        } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid interpolator');
+      });
+    });
+
+    it('--kernel <string>', function() {
+      var spy = this.spyOn('resize');
+      this.flags.width = 100;
+      this.flags.kernel = 'cubic';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 100, null, {
+          interpolator: undefined,
+          kernel: 'cubic'
+        } ]);
+      });
+    });
+    it('--kernel <string> (invalid value)', function() {
+      var spy = this.spyOn('resize');
+      this.flags.width = 100;
+      this.flags.kernel = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 100, null, {
+          interpolator: undefined,
+          kernel: 'foo'
+        } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid kernel');
       });
     });
 
@@ -941,7 +978,7 @@ describe('runner', function() {
       this.flags.width = 100;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 100, null ]);
+        expect(spy.args[0]).to.eql([ 100, null, { interpolator: undefined, kernel: undefined } ]);
       });
     });
     it('--width <number> (invalid value)', function() {
@@ -949,7 +986,7 @@ describe('runner', function() {
       this.flags.width = 'foo';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ null, null ]);
+        expect(spy.args[0]).to.eql([ null, null, { interpolator: undefined, kernel: undefined } ]);
       });
     });
 

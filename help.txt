@@ -41,10 +41,13 @@ Options
   --grayscale, --greyscale     Convert to grayscale.
   -h, --height <number>        Scale output to height.
   --help                       Output usage information.
+  --kernel <string>            Kernel to use for image reduction (cubic, lanczo2, lanczo3). Defaults
+                               to lanczo3. Use in conjunction with --width or --height.
   --ignoreAspectRatio          Stretch the image to the exact width and/or height specified.
-  --interpolateWith <string>   Use the specified interpolator (nearest, bilinear, bicubic,
+  --interpolator <string>      Use the specified interpolator (nearest, bilinear, bicubic,
                                vertexSplitQuadraticBasisSpline (vsqbs), locallyBoundedBicubic (lbb),
-                               nohalo) for image resizing.
+                               nohalo) for image resizing. Use in conjunction with --width or
+                              --height.
   --limitInputPixels <number>  Do not process input images where the number of pixels
                                (width × height) exceeds the specified amount.
   --max                        Resize the image to be as large as possible while ensuring its
