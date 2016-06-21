@@ -30,6 +30,14 @@ $ sharp --help
     --crop <string>              Crop the resized image based on the specified gravity (north, east,
                                  south, west, center).
     --embed                      Resize the image, then embed on a background.
+    --extendTop <number>         Pixels to add to the top edge. Use in conjunction with --extendLeft,
+                                 --extendBottom, and --extendRight.
+    --extendLeft <number>        Pixels to add to the left edge. Use in conjunction with --extendTop,
+                                 --extendBottom, and --extendRight.
+    --extendBottom <number>      Pixels to add to the bottom edge. Use in conjunction with
+                                 --extendTop, --extendLeft, and --extendRight.
+    --extendRight <number>       Pixels to add to the right edge. Use in conjunction with --extendTop,
+                                 --extendLeft, and --extendBottom.
     --extractHeight <number>     Height of the region to be extracted. Use in conjunction with
                                  --extractLeft, --extractTop, and --extractWidth.
     --extractLeft <number>       Left offset of the region to be extracted. Use in conjunction with
@@ -65,6 +73,8 @@ $ sharp --help
                                  Calculate which spectrum of DCT coefficients uses the fewest bits.
                                  Used for progressive (interlace) JPEG output.
     --overlay <string>           Alpha composite the specified file over the processed image.
+    --overlayGravity <string>    Place the overlay baed on the specified gravity (north, east, south,
+                                 west, center). Use in conjunction with --overlay.
     --overshootDeringing         Reduce the effects of ringing in JPEG output.
     --progressive                Use progressive (interlace) scan for JPEG and PNG output.
     -q, --quality <number>       The output quality, between 1 and 100, to use for lossy JPEG, WebP,
@@ -72,7 +82,7 @@ $ sharp --help
     --rotate [number]            Rotate the output image by the specified angle (0, 90, 180, 270), or
                                  auto-orient based on the EXIF Orientation tag.
     --sequentialRead             Switches the libvips access method to VIPS_ACCESS_SEQUENTIAL.
-    --sharpen <number>           Sharpen the output image, optionally specifying the sharpen radius.
+    --sharpen <number>           Sharpen the output image, optionally specifying the sharpen sigma.
     --sharpenFlat <number>       Specify the level of sharpeness to apply to "flat" areas. Defaults to
                                  1.0. Use in conjunction with --sharpen.
     --sharpenJagged <number>     Specify the level of sharpeness to apply to "jagged" areas. Defaults
@@ -80,6 +90,10 @@ $ sharp --help
     --threshold <number>         Specify the level above which pixels will be forced to white.
     --tile [number]              Applies square image pyramid tiles over the image, optionally
                                  specifying a tile size between 1 and 8192. Defaults to 256 pixels.
+    --tileContainer <string>     Specifies the tile container (fs, zip). Defaults to fs.
+    --tileLayout <string>        Specifies the layout to use when generating square Deep Zoom image
+                                 pyramid tyles (dz, zoomify, google). Defaults to dz.
+                                 Use in conjunction with --tile.
     --tileOverlap <number>       Specifies the tile overlap, between 0 and 8192. Defaults to 0 pixels.
                                  Use in conjunction with --tile.
     --trellisQuantization, --trellesQuantisation

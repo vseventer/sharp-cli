@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 (June 21, 2016)
+* Bugfix: mark `--grayscale` as boolean option.
+* Enhancement: update dependencies, including `sharp` (`0.15.x`).
+
 ## 0.4.1 (April 18, 2016)
 * Enhancement: add [`--tileContainer`](http://sharp.dimens.io/en/stable/api/#tileoptions).
 
