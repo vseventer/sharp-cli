@@ -49,6 +49,7 @@ var cli = meow(help, {
     'flatten',
     'flip',
     'flop',
+    'greyscale',
     'help',
     'ignoreAspectRatio',
     'max',

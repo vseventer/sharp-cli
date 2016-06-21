@@ -565,7 +565,7 @@ describe('runner', function() {
       this.flags.height = 100;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ NaN, 100 ]);
+        expect(spy.args[0]).to.eql([ null, 100 ]);
       });
     });
     it('--height <number> (invalid value)', function() {
@@ -573,7 +573,7 @@ describe('runner', function() {
       this.flags.height = 'foo';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ NaN, NaN ]);
+        expect(spy.args[0]).to.eql([ null, null ]);
       });
     });
 
@@ -770,7 +770,7 @@ describe('runner', function() {
         expect(spy).to.be.calledOnce;
         expect(spy.args[0]).to.eql([ NaN, undefined, undefined ]);
         expect(err).to.have.property('message');
-        expect(err.message.toLowerCase()).to.contain('invalid sharpen radius');
+        expect(err.message.toLowerCase()).to.contain('invalid sharpen sigma');
       });
     });
     it('--sharpenFlat <number>', function() {
@@ -941,7 +941,7 @@ describe('runner', function() {
       this.flags.width = 100;
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ 100, NaN ]);
+        expect(spy.args[0]).to.eql([ 100, null ]);
       });
     });
     it('--width <number> (invalid value)', function() {
@@ -949,7 +949,7 @@ describe('runner', function() {
       this.flags.width = 'foo';
       return runner.run(input, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ NaN, NaN ]);
+        expect(spy.args[0]).to.eql([ null, null ]);
       });
     });
 

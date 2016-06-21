@@ -68,7 +68,7 @@ Options
   --rotate [number]            Rotate the output image by the specified angle (0, 90, 180, 270), or
                                auto-orient based on the EXIF Orientation tag.
   --sequentialRead             Switches the libvips access method to VIPS_ACCESS_SEQUENTIAL.
-  --sharpen <number>           Sharpen the output image, optionally specifying the sharpen radius.
+  --sharpen <number>           Sharpen the output image, optionally specifying the sharpen sigma.
   --sharpenFlat <number>       Specify the level of sharpeness to apply to "flat" areas. Defaults to
                                1.0. Use in conjunction with --sharpen.
   --sharpenJagged <number>     Specify the level of sharpeness to apply to "jagged" areas. Defaults
