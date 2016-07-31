@@ -155,6 +155,27 @@ describe('runner', function() {
       });
     });
 
+    it('--bandbool <string>', function() {
+      var spy = this.spyOn('bandbool');
+      this.flags.bandbool = 'and';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'and' ]);
+      });
+    });
+    it('--bandbool <string> (invalid value)', function() {
+      var spy = this.spyOn('bandbool');
+      this.flags.bandbool = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid bandbool operation foo');
+      });
+    });
+
     it('--blur', testBoolean('blur'));
     it('--blur [number]', function() {
       var spy = this.spyOn('blur');
@@ -363,6 +384,27 @@ describe('runner', function() {
         }]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid edge extension');
+      });
+    });
+
+    it('--extractChannel <string>', function() {
+      var spy = this.spyOn('extractChannel');
+      this.flags.extractChannel = 'green';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'green' ]);
+      });
+    });
+    it('--extractChannel <string> (invalid value)', function() {
+      var spy = this.spyOn('extractChannel');
+      this.flags.extractChannel = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid channel foo');
       });
     });
 
@@ -689,7 +731,13 @@ describe('runner', function() {
       this.flags.overlay = inputPixel;
       return runner.run(inputPixel, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ inputPixel, { gravity: undefined } ]);
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : undefined,
+          tile    : undefined,
+          top     : undefined
+        } ]);
       });
     });
     it('--overlay <string> (invalid value)', function() {
@@ -699,7 +747,13 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ true, { gravity: undefined } ]);
+        expect(spy.args[0]).to.eql([ true, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : undefined,
+          tile    : undefined,
+          top     : undefined
+        } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('unsupported overlay boolean');
       });
@@ -710,7 +764,13 @@ describe('runner', function() {
       this.flags.overlayGravity = 'north';
       return runner.run(inputPixel, this.flags).then(function() {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ inputPixel, { gravity: 'north' } ]);
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : 'north',
+          left    : undefined,
+          tile    : undefined,
+          top     : undefined
+        } ]);
       });
     });
     it('--overlayGravity <string> (invalid value)', function() {
@@ -721,9 +781,119 @@ describe('runner', function() {
         throw new Error('TRIGGER REJECTION');
       }).catch(function(err) {
         expect(spy).to.be.calledOnce;
-        expect(spy.args[0]).to.eql([ inputPixel, { gravity: 'foo' } ]);
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : 'foo',
+          left    : undefined,
+          tile    : undefined,
+          top     : undefined
+        } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('unsupported overlay gravity foo');
+      });
+    });
+    it('--overlayLeft <string>', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayLeft = 100;
+      this.flags.overlayTop  = 50;
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : 100,
+          tile    : undefined,
+          top     : 50
+        } ]);
+      });
+    });
+    it('--overlayLeft <string> (invalid value)', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayLeft = 'foo';
+      this.flags.overlayTop  = 50;
+      return runner.run(inputPixel, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : 'foo',
+          tile    : undefined,
+          top     : 50
+        } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid overlay left foo');
+      });
+    });
+    it('--overlayTop <string>', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayLeft = 50;
+      this.flags.overlayTop  = 100;
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : 50,
+          tile    : undefined,
+          top     : 100
+        } ]);
+      });
+    });
+    it('--overlayTop <string> (invalid value)', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayLeft = 50;
+      this.flags.overlayTop  = 'foo';
+      return runner.run(inputPixel, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : 50,
+          tile    : undefined,
+          top     : 'foo'
+        } ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid overlay');
+        expect(err.message.toLowerCase()).to.contain('top foo');
+      });
+    });
+
+    it('--overlayCutout', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayCutout = true;
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : true,
+          gravity : undefined,
+          left    : undefined,
+          tile    : undefined,
+          top     : undefined
+        } ]);
+      });
+    });
+    it('--overlayCutout', function() {
+      var spy = this.spyOn('overlayWith');
+      this.flags.overlay = inputPixel;
+      this.flags.overlayTile = true;
+      return runner.run(inputPixel, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ inputPixel, {
+          cutout  : undefined,
+          gravity : undefined,
+          left    : undefined,
+          tile    : true,
+          top     : undefined
+        } ]);
       });
     });
 
@@ -972,6 +1142,27 @@ describe('runner', function() {
     });
 
     it('--trellisQuantization', testBoolean('trellisQuantization'));
+
+    it('--trim <number>', function() {
+      var spy = this.spyOn('trim');
+      this.flags.trim = 50;
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 50 ]);
+      });
+    });
+    it('--trim <number> (invalid value)', function() {
+      var spy = this.spyOn('trim');
+      this.flags.trim = 'foo';
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'foo' ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid trim tolerance');
+      });
+    });
 
     it('--width <number>', function() {
       var spy = this.spyOn('resize');

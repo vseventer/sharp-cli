@@ -10,6 +10,8 @@ Examples
 
 Options
   --background                 Set the background color for --embed and --flatten operations.
+  --bandbool <string>          Perform a bitwise boolean operation on all input image channels to
+                               produce a single channel output image.
   --blur [number]              Blur the output image, optionally specifying the blur radius.
   --compressionLevel <number>  zlib compression level, between 0 and 9, of the lossless PNG output
                                format. Defaults to 6.
@@ -24,6 +26,7 @@ Options
                                --extendTop, --extendLeft, and --extendRight.
   --extendRight <number>       Pixels to add to the right edge. Use in conjunction with --extendTop,
                                --extendLeft, and --extendBottom.
+  --extractChannel <string>    Extract a single channel from a multi-channel image.
   --extractHeight <number>     Height of the region to be extracted. Use in conjunction with
                                --extractLeft, --extractTop, and --extractWidth.
   --extractLeft <number>       Left offset of the region to be extracted. Use in conjunction with
@@ -62,8 +65,16 @@ Options
                                Calculate which spectrum of DCT coefficients uses the fewest bits.
                                Used for progressive (interlace) JPEG output.
   --overlay <string>           Alpha composite the specified file over the processed image.
-  --overlayGravity <string>    Place the overlay baed on the specified gravity (north, east, south,
+  --overlayCutout              Apply only the alpha channel of the overlay to the image to be
+                               overlaid. Use in conjunction with --overlay.
+  --overlayGravity <string>    Place the overlay based on the specified gravity (north, east, south,
                                west, center). Use in conjunction with --overlay.
+  --overlayTile                Repeat the overlay image across the entire image. Use in conjunction
+                               with --overlay.
+  --overlayLeft <number>       The number representing the pixel offset from the left edge. Use in
+                               conjunction with --overlay.
+  --overlayTop <number>        The number representing the pixel offset from the top edge. Use in
+                               conjunction with --overlay.
   --overshootDeringing         Reduce the effects of ringing in JPEG output.
   --progressive                Use progressive (interlace) scan for JPEG and PNG output.
   -q, --quality <number>       The output quality, between 1 and 100, to use for lossy JPEG, WebP,
@@ -87,6 +98,8 @@ Options
                                Use in conjunction with --tile.
   --trellisQuantization, --trellesQuantisation
                                Apply the use of trellis quantization with JPEG output.
+  --trim <number>              Trims "boring" pixels from all edges that contain values within a
+                               percentage similarity of the top-left pixel.
   -v, --verbose                Output image processing information.
   -w, --width <number>         Scale output to width.
   --withoutAdaptiveFiltering   Disable adaptive row filtering for the lossless PNG output format.

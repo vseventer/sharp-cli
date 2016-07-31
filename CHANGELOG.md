@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.1-dev
+* Enhancement: add [`--bandbool`](http://sharp.dimens.io/en/stable/api/#bandbooloperation).
+* Enhancement: add [`--extractChannel`](http://sharp.dimens.io/en/stable/api/#extractchannelchannel).
+* Enhancement: add [`--overlayCutout`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayLeft`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayTile`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayTop`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--trim`](http://sharp.dimens.io/en/stable/api/#trimtolerance).
+
 ## 0.5.0 (June 21, 2016)
 * Enhancement: add [`--kernel`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).
 * Enhancement: rename `--interpolateWith` to [`--interpolator`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).

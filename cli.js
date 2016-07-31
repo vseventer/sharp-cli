@@ -57,6 +57,8 @@ var cli = meow(help, {
     'negate',
     'normalize',
     'optimizeScans',
+    'overlayCutout',
+    'overlayTile',
     'overshootDeringing',
     'sequentialRead',
     'trellisQuantisation',
@@ -69,6 +71,7 @@ var cli = meow(help, {
   string: [
     'background',
     'backgroundAlpha',
+    'bandbool',
     'blur',
     'compressionLevel',
     'crop',
@@ -76,6 +79,7 @@ var cli = meow(help, {
     'extendLeft',
     'extendRight',
     'extendTop',
+    'extractChannel',
     'extractHeight',
     'extractLeft',
     'extractTop',
@@ -88,6 +92,8 @@ var cli = meow(help, {
     'output',
     'overlay',
     'overlayGravity',
+    'overlayLeft',
+    'overlayTop',
     'progressive',
     'quality',
     'rotate',
@@ -99,6 +105,7 @@ var cli = meow(help, {
     'tileContainer',
     'tileLayout',
     'tileOverlap',
+    'trim',
     'width'
   ],
   alias: {
