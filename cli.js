@@ -159,7 +159,7 @@ else {
     return runner.run(file, cli.flags).then(function(outfile) {
       // Only do verbose logging when not streaming to stdout.
       if(null !== outfile && cli.flags.verbose) {
-        console.log('  %s -> %s', file, outfile);
+        console.log(outfile);
       }
       return outfile; //Continue.
     });
