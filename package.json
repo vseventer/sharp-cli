@@ -1,6 +1,6 @@
 {
   "name"        : "sharp-cli",
-  "version"     : "0.6.0",
+  "version"     : "0.7.0",
   "description" : "CLI for sharp.",
   "keywords"    : [ "cli", "jpeg", "libvips", "png", "sharp", "vips", "webp" ],
   "homepage"    : "https://github.com/vseventer/sharp-cli",
@@ -19,7 +19,7 @@
     "is-file"  : "1.0.x",
     "meow"     : "3.7.x",
     "mkdir-p"  : "0.0.x",
-    "sharp"    : "0.15.x",
+    "sharp"    : "0.16.x",
     "sponge"   : "0.1.x"
   },
   "devDependencies": {

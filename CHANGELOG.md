@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+* Enhancement: add [`--toColorspace`](http://sharp.readthedocs.io/en/stable/api/#tocolourspacecolourspace-tocolorspacecolorspace).
+* Enhancement: update `sharp` (`0.16.x`).
+
 ## 0.6.0 (August 18, 2016)
 * Enhancement: add [`--bandbool`](http://sharp.dimens.io/en/stable/api/#bandbooloperation).
 * Enhancement: add [`--extractChannel`](http://sharp.dimens.io/en/stable/api/#extractchannelchannel).

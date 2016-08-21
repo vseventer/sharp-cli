@@ -105,6 +105,7 @@ var cli = meow(help, {
     'tileContainer',
     'tileLayout',
     'tileOverlap',
+    'toColorspace',
     'trim',
     'width'
   ],
@@ -121,6 +122,7 @@ var cli = meow(help, {
     greyscale     : 'grayscale',
     normalise     : 'normalize',
     optimiseScans : 'optimizeScans',
+    toColourspace : 'toColorspace',
     trellisQuantization: 'trellisQuantisation'
   }
 });

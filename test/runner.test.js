@@ -755,7 +755,7 @@ describe('runner', function() {
           top     : undefined
         } ]);
         expect(err).to.have.property('message');
-        expect(err.message.toLowerCase()).to.contain('unsupported overlay boolean');
+        expect(err.message.toLowerCase()).to.contain('unsupported input boolean');
       });
     });
     it('--overlayGravity <string>', function() {
@@ -1138,6 +1138,27 @@ describe('runner', function() {
         expect(spy.args[0]).to.eql([ { overlap: NaN, container: undefined, layout: undefined } ]);
         expect(err).to.have.property('message');
         expect(err.message.toLowerCase()).to.contain('invalid tile overlap');
+      });
+    });
+
+    it('--toColorspace <string>', function() {
+      var spy = this.spyOn('toColorspace');
+      this.flags.toColorspace = 'srgb';
+      return runner.run(input, this.flags).then(function() {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 'srgb' ]);
+      });
+    });
+    it('--toColorspace <string> (invalid value)', function() {
+      var spy = this.spyOn('toColorspace');
+      this.flags.toColorspace = 123;
+      return runner.run(input, this.flags).then(function() {
+        throw new Error('TRIGGER REJECTION');
+      }).catch(function(err) {
+        expect(spy).to.be.calledOnce;
+        expect(spy.args[0]).to.eql([ 123 ]);
+        expect(err).to.have.property('message');
+        expect(err.message.toLowerCase()).to.contain('invalid output colourspace 123');
       });
     });
 
