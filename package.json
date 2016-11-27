@@ -30,5 +30,5 @@
     "sinon"      : "1.17.x",
     "sinon-chai" : "2.8.x"
   },
-  "engines": { "node": "4.x" }
+  "engines": { "node": "7.x" }
 }
