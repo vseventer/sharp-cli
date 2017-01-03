@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+* Enhancement: replace `meow` with `yargs`.
+* Enhancement: update dependencies, including `sharp` (`0.17.x`).
+
 ## 0.7.0 (August 21, 2016)
 * Enhancement: add [`--toColorspace`](http://sharp.readthedocs.io/en/stable/api/#tocolourspacecolourspace-tocolorspacecolorspace).
 * Enhancement: update `sharp` (`0.16.x`).
