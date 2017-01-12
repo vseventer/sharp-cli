@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,35 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-colour/#tocolourspace
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  colourspace: { // Hidden option.
+    choices: constants.COLOURSPACE,
+    // desc: 'The output colourspace',
+    type: 'string'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'toColourSpace', (sharp) => sharp.toColourspace(args.colourspace) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'toColourspace <colourspace>',
+  aliases: 'toColorspace',
+  describe: 'Set the output colourspace',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

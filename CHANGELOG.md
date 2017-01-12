@@ -3,6 +3,7 @@
 ## 1.0.0
 * Enhancement: replace `meow` with `yargs`.
 * Enhancement: update dependencies, including `sharp` (`0.17.x`).
+* Enhancement: update required Node.js version to `>=6.x`.
 
 ## 0.7.0 (August 21, 2016)
 * Enhancement: add [`--toColorspace`](http://sharp.readthedocs.io/en/stable/api/#tocolourspacecolourspace-tocolorspacecolorspace).

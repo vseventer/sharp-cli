@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,33 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#trim
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  tolerance: {
+    desc: 'The percentage similarity',
+    defaultDescription: '10',
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'trim', (sharp) => sharp.trim(args.tolerance) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'trim [tolerance]',
+  describe: 'Trim "boring" pixels from all edges that contain values within a percentage similarity of the top-left pixel',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

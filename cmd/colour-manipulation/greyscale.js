@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,23 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-colour/#greyscale
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Command handler.
+const handler = (args) => queue.push([ 'greyscale', (sharp) => sharp.greyscale() ])
+
+// Exports.
+module.exports = {
+  command: 'greyscale',
+  aliases: 'grayscale',
+  describe: 'Convert to 8-bit greyscale; 256 shades of grey',
+  builder: (yargs) => yargs.strict(),
+  handler: baseHandler(handler)
+}

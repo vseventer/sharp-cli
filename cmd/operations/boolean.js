@@ -21,21 +21,39 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#boolean
+
+// Strict mode.
+'use strict'
+
 // Local modules.
-const input         = require('./input');
-const output        = require('./output');
-const resizing      = require('./resizing');
-const compositing   = require('./compositing');
-const operations    = require('./operations');
-const manipulations = require('./manipulations');
+const baseHandler = require('../../lib/handler')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  operand: { // Hidden option.
+    // desc: 'Path to an image file',
+    normalize: true,
+    type: 'string'
+  },
+  operator: { // Hidden option.
+    choices: constants.BOOL,
+    // desc: 'Operator to perform that bitwise operation',
+    type: 'string'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'boolean', (sharp) => sharp.boolean(args.operand, args.operator) ])
+}
 
 // Exports.
-module.exports = Object.assign(
-  { },
-  input,
-  output,
-  resizing,
-  compositing,
-  operations,
-  manipulations
-);
+module.exports = {
+  command: 'boolean <operand> <operator>',
+  describe: 'Perform a bitwise boolean operation with operand image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

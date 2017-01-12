@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,43 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#sharpen
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  flat: {
+    desc: 'The level of sharpening to apply to "flat" areas',
+    defaultDescription: '1.0',
+    type: 'number'
+  },
+  jagged: {
+    desc: 'The level of sharpening to apply to "jagged" areas',
+    defaultDescription: '2.0',
+    type: 'number'
+  },
+  sigma: {
+    desc: 'The sigma of the Gaussian mask',
+    defaultDescription: '1 + radius / 2',
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'sharpen', (sharp) => sharp.sharpen(args.sigma, args.flat, args.jagged) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'sharpen [sigma]',
+  describe: 'Sharpen the image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

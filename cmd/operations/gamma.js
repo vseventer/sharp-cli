@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,33 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#gamma
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  factor: {
+    desc: 'The gamma factor',
+    defaultDescription: '2.2',
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'gamma', (sharp) => sharp.gamma(args.factor) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'gamma [factor]',
+  describe: 'Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

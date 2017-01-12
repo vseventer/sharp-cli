@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#negate
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'negate', (sharp) => sharp.negate() ])
+}
+
+// Exports.
+module.exports = {
+  command: 'negate',
+  describe: 'Produce the "negative" of the image',
+  builder: (yargs) => yargs.strict(),
+  handler: baseHandler(handler)
+}

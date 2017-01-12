@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,40 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#threshold
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  greyscale: {
+    alias: 'grayscale',
+    desc: 'Convert to single channel greyscale',
+    type: 'boolean'
+  },
+  value: {
+    desc: 'A value in the range 0-255 representing the level at which the threshold will be applied',
+    defaultDescription: 128,
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'threshold', (sharp) => {
+    return sharp.threshold(args.threshold, { greyscale: args.greyscale })
+  }])
+}
+
+// Exports.
+module.exports = {
+  command: 'threshold [value]',
+  describe: 'Any pixel value greather than or equal to the threshold value will be set to 255, otherwise it will be set to 0',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

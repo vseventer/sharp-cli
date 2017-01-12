@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,34 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#rotate
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  angle: {
+    choices: [ 0, 90, 180, 270 ],
+    defaultDescription: 'auto',
+    desc: 'Explicit angle',
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'rotate', (sharp) => sharp.rotate(args.angle) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'rotate [angle]',
+  describe: 'Rotate the output image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

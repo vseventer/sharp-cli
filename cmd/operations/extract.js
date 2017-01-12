@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,46 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-operation/#extract
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  left: { // Hidden option.
+    // desc: 'Zero-indexed offset from left edge',
+    type: 'number'
+  },
+  top: { // Hidden option.
+    // desc: 'Zero-indexed offset from top edge',
+    type: 'number'
+  },
+  width: { // Hidden option.
+    // desc: 'Dimension of extracted image',
+    type: 'number'
+  },
+  height: { // Hidden option.
+    // desc: 'Dimension of extracted image',
+    type: 'number'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'extract', (sharp) => {
+    return sharp.extract(args.left, args.top, args.width, args.height)
+  }])
+}
+
+// Exports.
+module.exports = {
+  command: 'extract <left> <top> <width> <height>',
+  describe: 'Extract a region of the image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

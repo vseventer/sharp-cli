@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,34 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-channel/#bandbool
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  operator: { // Hidden option.
+    choices: constants.BOOL,
+    // desc: 'Operator to perform that bitwise operation',
+    type: 'string'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'bandbool', (sharp) => sharp.bandbool(args.operator) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'bandbool <operator>',
+  describe: 'Perform a bitwise boolean operation on all input image channels (bands) to produce a single channel output image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*!
  * The MIT License (MIT)
  *
@@ -22,8 +21,34 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.dimens.io/en/stable/api-channel/#extractchannel
+
 // Strict mode.
 'use strict'
 
-// Run.
-require('../lib')(process.argv.slice(2))
+// Local modules.
+const baseHandler = require('../../lib/handler')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  band: { // Hidden option.
+    choices: constants.BAND,
+    // desc: 'The band number to extract',
+    type: 'string'
+  }
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'extractChannel', (sharp) => sharp.extractChannel(args.band) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'extractChannel <band>',
+  describe: 'Extract a single channel from a multi-channel image',
+  builder: (yargs) => yargs.strict().options(options),
+  handler: baseHandler(handler)
+}
