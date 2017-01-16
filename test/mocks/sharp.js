@@ -21,44 +21,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#joinchannel
-
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
-// Local modules.
-const baseHandler = require('../../lib/handler')
-const queue = require('../../lib/queue')
+// Package modules.
+const sharp = require('sharp')
+const sinon = require('sinon')
 
 // Configure.
-const options = {
-  imageDensity: {
-    desc: 'Integral number representing the DPI for vector images',
-    defaultDescription: 72,
-    type: 'number'
-  },
-  images: { // Hidden option.
-    coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    // desc: 'One or more images',
-    normalize: true,
-    type: 'array'
-  }
-}
+const methods = Object.getOwnPropertyNames(sharp.prototype)
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.imageDensity })
-  }])
+// Patch methods, add reset and restore handlers.
+methods.forEach((name) => sinon.spy(sharp.prototype, name))
+sharp.prototype.reset = () => {
+  methods.forEach((name) => sharp.prototype[name].reset())
+}
+sharp.prototype.restore = () => {
+  methods.forEach((name) => sharp.prototype[name].restore())
 }
 
 // Exports.
-module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
-}
+module.exports = sharp

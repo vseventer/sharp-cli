@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -21,44 +22,45 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#joinchannel
+// @see http://sharp.dimens.io/en/stable/api-channel/#greyscale
 
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
+// Package modules.
+const chai = require('chai')
+const sinonChai = require('sinon-chai')
+const yargs = require('yargs')
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
-const queue = require('../../lib/queue')
+const greyscale = require('../../../cmd/colour-manipulation/greyscale')
+const queue = require('../../../lib/queue')
+const sharp = require('../../mocks/sharp')
 
 // Configure.
-const options = {
-  imageDensity: {
-    desc: 'Integral number representing the DPI for vector images',
-    defaultDescription: 72,
-    type: 'number'
-  },
-  images: { // Hidden option.
-    coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    // desc: 'One or more images',
-    normalize: true,
-    type: 'array'
-  }
-}
+chai.use(sinonChai)
+const expect = chai.expect
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.imageDensity })
-  }])
-}
+// Test suite.
+void [ 'grayscale', 'greyscale' ].forEach((alias) => {
+  describe(`${alias} <operator>`, () => {
+    const cli = yargs.command(greyscale)
 
-// Exports.
-module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
-}
+    // Reset.
+    afterEach('queue', () => queue.splice(0))
+    afterEach('sharp', sharp.prototype.reset)
+
+    // Run.
+    beforeEach((done) => cli.parse([ alias ], done))
+
+    // Tests.
+    it('should update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('greyscale')
+    })
+    it('should execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      expect(pipeline.greyscale).to.have.been.called
+    })
+  })
+})

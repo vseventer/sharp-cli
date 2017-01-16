@@ -1,3 +1,4 @@
+/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -21,44 +22,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#joinchannel
-
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
-// Local modules.
-const baseHandler = require('../../lib/handler')
-const queue = require('../../lib/queue')
-
-// Configure.
-const options = {
-  imageDensity: {
-    desc: 'Integral number representing the DPI for vector images',
-    defaultDescription: 72,
-    type: 'number'
-  },
-  images: { // Hidden option.
-    coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    // desc: 'One or more images',
-    normalize: true,
-    type: 'array'
-  }
-}
-
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.imageDensity })
-  }])
-}
-
-// Exports.
-module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
-}
+// Test suite.
+describe('Operations', () => {
+  require('./operations/blur')
+  require('./operations/flip')
+  require('./operations/flop')
+  require('./operations/negate')
+  require('./operations/normalise')
+})

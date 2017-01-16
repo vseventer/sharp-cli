@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -21,44 +22,43 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#joinchannel
+// @see http://sharp.dimens.io/en/stable/api-operation/#negate
 
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
+// Package modules.
+const chai = require('chai')
+const sinonChai = require('sinon-chai')
+const yargs = require('yargs')
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
-const queue = require('../../lib/queue')
+const negate = require('../../../cmd/operations/negate')
+const queue = require('../../../lib/queue')
+const sharp = require('../../mocks/sharp')
 
 // Configure.
-const options = {
-  imageDensity: {
-    desc: 'Integral number representing the DPI for vector images',
-    defaultDescription: 72,
-    type: 'number'
-  },
-  images: { // Hidden option.
-    coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    // desc: 'One or more images',
-    normalize: true,
-    type: 'array'
-  }
-}
+chai.use(sinonChai)
+const expect = chai.expect
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.imageDensity })
-  }])
-}
+// Test suite.
+describe('negate', () => {
+  const cli = yargs.command(negate)
 
-// Exports.
-module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
-}
+  // Reset.
+  afterEach('queue', () => queue.splice(0))
+  afterEach('sharp', sharp.prototype.reset)
+
+  // Run.
+  beforeEach((done) => cli.parse([ 'negate' ], done))
+
+  // Tests.
+  it('should update the pipeline', () => {
+    expect(queue.pipeline).to.have.length(1)
+    expect(queue.pipeline).to.include('negate')
+  })
+  it('should execute the pipeline', () => {
+    const pipeline = queue.drain(sharp())
+    expect(pipeline.negate).to.have.been.called
+  })
+})

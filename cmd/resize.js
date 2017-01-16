@@ -86,7 +86,7 @@ const options = {
 // Command handler.
 const handler = (args) => {
   const width = args.width === 0 ? null : args.width  // Auto-scale.
-  const height = args.height === 0 ? null : args.height // Auto-scale.
+  const height = args.height === 0 ? null : (args.height || width) // Auto-scale or square.
 
   // @see http://sharp.dimens.io/en/stable/api-resize/#resize
   queue.push([ 'resize', (sharp) => {
@@ -128,8 +128,8 @@ const handler = (args) => {
 
 // Exports.
 module.exports = {
-  command: 'resize <width> <height>',
-  describe: 'Resize image to width x height',
+  command: 'resize <width> [height]',
+  describe: 'Resize image to width × height',
   builder: (yargs) => yargs.strict().options(options),
   handler: baseHandler(handler)
 }

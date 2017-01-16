@@ -26,6 +26,9 @@
 // Strict mode.
 'use strict'
 
+// Standard lib.
+const path = require('path')
+
 // Local modules.
 const baseHandler = require('../lib/handler')
 const constants = require('../lib/constants')
@@ -43,11 +46,13 @@ const options = {
     defaultDescription: 'centre',
     type: 'string'
   },
-  left: {
-    desc: 'The pixel offset from the left edge',
-    type: 'number'
+  offset: {
+    desc: 'The pixel offset from the top and left edges',
+    nargs: 2,
+    type: 'array'
   },
   overlay: { // Hidden option.
+    coerce: path.normalize, // Positional arguments need manual normalization.
     // desc: 'Path to an image file',
     normalize: true,
     type: 'string'
@@ -55,21 +60,19 @@ const options = {
   tile: {
     desc: 'Repeat the overlay image across the entire image with the given gravity',
     type: 'boolean'
-  },
-  top: {
-    desc: 'The pixel offset from the top edge',
-    type: 'number'
   }
 }
 
 // Command handler.
 const handler = (args) => {
+  const [ top, left ] = args.offset || [ ]
+
   // @see http://sharp.dimens.io/en/stable/api-composite/#overlaywith
   return queue.push([ 'overlayWith', (sharp) => {
     return sharp.overlayWith(args.overlay, {
       gravity: args.gravity,
-      top: args.top,
-      left: args.left,
+      top,
+      left,
       tile: args.tile,
       cutout: args.cutout
     })
