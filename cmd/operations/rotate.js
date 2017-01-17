@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -40,6 +39,15 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#rotate')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'rotate', (sharp) => sharp.rotate(args.angle) ])
@@ -49,6 +57,6 @@ const handler = (args) => {
 module.exports = {
   command: 'rotate [angle]',
   describe: 'Rotate the output image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

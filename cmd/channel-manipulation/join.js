@@ -30,12 +30,11 @@
 const path = require('path')
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  imageDensity: {
+  density: {
     desc: 'Integral number representing the DPI for vector images',
     defaultDescription: 72,
     type: 'number'
@@ -48,10 +47,18 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#joinchannel')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.imageDensity })
+    return sharp.joinChannel(args.images, { density: args.density })
   }])
 }
 
@@ -59,6 +66,6 @@ const handler = (args) => {
 module.exports = {
   command: 'joinChannel <images..>',
   describe: 'Join one or more channels to the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

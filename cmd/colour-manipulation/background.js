@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -50,6 +49,17 @@ const options = {
     // desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
     type: 'string'
   }
+}
+
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 background rgba(0,0,0,0) --embed', 'The output will be embedded on a transparent canvas')
+    .example('$0 background rgba(0,0,0,0) --extend 10 20 10 10', 'The output will have 10 transparent pixels to the top, left, and right edges and 20 to the bottom edge')
+    .example('$0 background rgba(0,0,0,0) --flatten')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#background')
+    .options(options)
 }
 
 // Command handler.
@@ -83,6 +93,6 @@ const handler = (args) => {
 module.exports = {
   command: 'background <rgba>',
   describe: 'Set the background to embed, extend, or flatten the image with',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

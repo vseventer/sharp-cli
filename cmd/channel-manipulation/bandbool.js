@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
@@ -40,6 +39,15 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#bandbool')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'bandbool', (sharp) => sharp.bandbool(args.operator) ])
@@ -49,6 +57,6 @@ const handler = (args) => {
 module.exports = {
   command: 'bandbool <operator>',
   describe: 'Perform a bitwise boolean operation on all input image channels (bands) to produce a single channel output image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

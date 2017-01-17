@@ -27,18 +27,22 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'negate', (sharp) => sharp.negate() ])
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#negate')
 }
+
+// Command handler.
+const handler = (args) => queue.push([ 'negate', (sharp) => sharp.negate() ])
 
 // Exports.
 module.exports = {
   command: 'negate',
   describe: 'Produce the "negative" of the image',
-  builder: (yargs) => yargs.strict(),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -39,6 +38,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#trim')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'trim', (sharp) => sharp.trim(args.tolerance) ])
@@ -48,6 +55,6 @@ const handler = (args) => {
 module.exports = {
   command: 'trim [tolerance]',
   describe: 'Trim "boring" pixels from all edges that contain values within a percentage similarity of the top-left pixel',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

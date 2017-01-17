@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -39,15 +38,21 @@ const options = {
   }
 }
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'gamma', (sharp) => sharp.gamma(args.factor) ])
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#gamma')
+    .options(options)
 }
+
+// Command handler.
+const handler = (args) => queue.push([ 'gamma', (sharp) => sharp.gamma(args.factor) ])
 
 // Exports.
 module.exports = {
   command: 'gamma [factor]',
   describe: 'Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

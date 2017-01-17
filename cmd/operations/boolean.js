@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
@@ -45,6 +44,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#boolean')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'boolean', (sharp) => sharp.boolean(args.operand, args.operator) ])
@@ -54,6 +61,6 @@ const handler = (args) => {
 module.exports = {
   command: 'boolean <operand> <operator>',
   describe: 'Perform a bitwise boolean operation with operand image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

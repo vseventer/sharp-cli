@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -44,6 +43,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#threshold')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'threshold', (sharp) => {
@@ -55,6 +62,6 @@ const handler = (args) => {
 module.exports = {
   command: 'threshold [value]',
   describe: 'Any pixel value greather than or equal to the threshold value will be set to 255, otherwise it will be set to 0',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

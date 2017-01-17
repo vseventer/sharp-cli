@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -49,6 +48,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#sharpen')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'sharpen', (sharp) => sharp.sharpen(args.sigma, args.flat, args.jagged) ])
@@ -58,6 +65,6 @@ const handler = (args) => {
 module.exports = {
   command: 'sharpen [sigma]',
   describe: 'Sharpen the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

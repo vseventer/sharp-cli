@@ -80,14 +80,14 @@ describe('join <images..>', () => {
   })
 
   describe('[options]', () => {
-    describe('--imageDensity', () => {
+    describe('--density', () => {
       // Default density.
       const density = '72'
 
-      beforeEach((done) => cli.parse([ 'joinChannel', input, '--imageDensity', density ], done))
+      beforeEach((done) => cli.parse([ 'joinChannel', input, '--density', density ], done))
 
       it('should set the imageDensity flags', () => {
-        expect(cli.parsed.argv).to.have.property('imageDensity', parseInt(density, 10))
+        expect(cli.parsed.argv).to.have.property('density', parseInt(density, 10))
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)

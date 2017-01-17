@@ -1,6 +1,6 @@
 --check-leaks
 --no-exit
 --reporter spec
---slow      10
---timeout  100
+--slow      25
+--timeout  250
 --ui       bdd

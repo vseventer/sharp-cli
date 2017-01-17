@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -50,6 +49,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#extract')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'extract', (sharp) => {
@@ -61,6 +68,6 @@ const handler = (args) => {
 module.exports = {
   command: 'extract <left> <top> <width> <height>',
   describe: 'Extract a region of the image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

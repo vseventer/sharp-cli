@@ -27,19 +27,23 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'normalise', (sharp) => sharp.normalise() ])
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#normalise')
 }
+
+// Command handler.
+const handler = (args) => queue.push([ 'normalise', (sharp) => sharp.normalise() ])
 
 // Exports.
 module.exports = {
   command: 'normalise',
   aliases: 'normalize',
   describe: 'Enhance output image contrast by stretching its luminance to cover the full dynamic range',
-  builder: (yargs) => yargs.strict(),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

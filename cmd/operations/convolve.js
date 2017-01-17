@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -37,8 +36,8 @@ const options = {
     type: 'number'
   },
   kernel: { // Hidden option.
-    // desc: 'Array of length width*height containing the kernel values',
-    defaultDescription: '-1,0,-1,-2,0,-2,-1,0,1',
+    // desc: 'Array of length width × height containing the kernel values',
+    defaultDescription: '"-1 0 -1 -2 0 -2 -1 0 1"',
     type: 'string'
   },
   scale: {
@@ -56,9 +55,18 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"', 'The output will be the convolution of the input image with the horizontal Sobel operator')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#convolve')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
-  const kernel = args.kernel.split(',')
+  const kernel = args.kernel.split(' ')
 
   return queue.push([ 'convolve', (sharp) => {
     return sharp.convolve(args.width, args.height, kernel, {
@@ -72,6 +80,6 @@ const handler = (args) => {
 module.exports = {
   command: 'convolve <width> <height> <kernel>',
   describe: 'Convolve the image with the specified kernel',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
@@ -40,6 +39,15 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#extractchannel')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'extractChannel', (sharp) => sharp.extractChannel(args.band) ])
@@ -49,6 +57,6 @@ const handler = (args) => {
 module.exports = {
   command: 'extractChannel <band>',
   describe: 'Extract a single channel from a multi-channel image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

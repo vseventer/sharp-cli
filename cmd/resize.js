@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../lib/handler')
 const constants = require('../lib/constants')
 const queue = require('../lib/queue')
 
@@ -83,6 +82,17 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 resize 200 300 --kernel lanczos2 --interpolator nohalo', 'The output will be 200 pixels wide and 300 pixels high containing a lanczos2/nohalo scaled version of the input')
+    .example('$0 resize 200 200 --crop entropy', 'The output will be a 200px square auto-cropped image')
+    .example('$0 resize 200 200 --max', 'The output will be no wider than 200 pixels and no higher than 200 pixels regardless of the input image dimensions')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-resize/')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   const width = args.width === 0 ? null : args.width  // Auto-scale.
@@ -130,6 +140,6 @@ const handler = (args) => {
 module.exports = {
   command: 'resize <width> [height]',
   describe: 'Resize image to width × height',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

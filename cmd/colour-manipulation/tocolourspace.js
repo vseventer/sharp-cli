@@ -27,7 +27,6 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
@@ -40,6 +39,14 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#tocolourspace')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'toColourspace', (sharp) => sharp.toColourspace(args.colourspace) ])
@@ -50,6 +57,6 @@ module.exports = {
   command: 'toColourspace <colourspace>',
   aliases: 'toColorspace',
   describe: 'Set the output colourspace',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

@@ -27,18 +27,22 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'flip', (sharp) => sharp.flip() ])
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#flip')
 }
+
+// Command handler.
+const handler = (args) => queue.push([ 'flip', (sharp) => sharp.flip() ])
 
 // Exports.
 module.exports = {
   command: 'flip',
   describe: 'Flip the image about the vertical Y axis',
-  builder: (yargs) => yargs.strict(),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

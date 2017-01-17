@@ -30,7 +30,6 @@
 const path = require('path')
 
 // Local modules.
-const baseHandler = require('../lib/handler')
 const constants = require('../lib/constants')
 const queue = require('../lib/queue')
 
@@ -63,6 +62,15 @@ const options = {
   }
 }
 
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 overlayWith ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-composite/')
+    .options(options)
+}
+
 // Command handler.
 const handler = (args) => {
   const [ top, left ] = args.offset || [ ]
@@ -83,6 +91,6 @@ const handler = (args) => {
 module.exports = {
   command: 'overlayWith <overlay>',
   describe: 'Overlay (composite) an image over the processed (resized, extracted etc.) image',
-  builder: (yargs) => yargs.strict().options(options),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

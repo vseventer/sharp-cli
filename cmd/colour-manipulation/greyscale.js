@@ -27,8 +27,14 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
+
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#greyscale')
+}
 
 // Command handler.
 const handler = (args) => queue.push([ 'greyscale', (sharp) => sharp.greyscale() ])
@@ -38,6 +44,6 @@ module.exports = {
   command: 'greyscale',
   aliases: 'grayscale',
   describe: 'Convert to 8-bit greyscale; 256 shades of grey',
-  builder: (yargs) => yargs.strict(),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }

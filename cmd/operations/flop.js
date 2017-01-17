@@ -27,18 +27,22 @@
 'use strict'
 
 // Local modules.
-const baseHandler = require('../../lib/handler')
 const queue = require('../../lib/queue')
 
-// Command handler.
-const handler = (args) => {
-  return queue.push([ 'flop', (sharp) => sharp.flop() ])
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#flop')
 }
+
+// Command handler.
+const handler = (args) => queue.push([ 'flop', (sharp) => sharp.flop() ])
 
 // Exports.
 module.exports = {
   command: 'flop',
   describe: 'Flop the image about the horizontal X axis',
-  builder: (yargs) => yargs.strict(),
-  handler: baseHandler(handler)
+  builder,
+  handler
 }
