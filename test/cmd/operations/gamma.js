@@ -22,13 +22,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#boolean
+// @see http://sharp.dimens.io/en/stable/api-operation/#gamma
 
 // Strict mode.
 'use strict'
-
-// Standard lib.
-const path = require('path')
 
 // Package modules.
 const chai = require('chai')
@@ -36,7 +33,7 @@ const sinonChai = require('sinon-chai')
 const yargs = require('yargs')
 
 // Local modules.
-const boolean = require('../../../cmd/operations/boolean')
+const gamma = require('../../../cmd/operations/gamma')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
@@ -45,33 +42,46 @@ chai.use(sinonChai)
 const expect = chai.expect
 
 // Test suite.
-describe('boolean', () => {
-  const cli = yargs.command(boolean)
-
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`
+describe('gamma', () => {
+  const cli = yargs.command(gamma)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<operand> <operator>', () => {
+  describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
+    beforeEach((done) => cli.parse([ 'gamma' ], done))
 
     // Tests.
-    it('should set the operand and operator flags', () => {
-      const args = cli.parsed.argv
-      expect(args).to.have.property('operand', path.normalize(input))
-      expect(args).to.have.property('operator', 'and')
-    })
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('boolean')
+      expect(queue.pipeline).to.include('gamma')
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.boolean).to.have.been.calledWith(path.normalize(input), 'and')
+      expect(pipeline.gamma).to.have.been.called
+    })
+  })
+
+  describe('[factor]', () => {
+    // Default factor.
+    const factor = '1.1'
+
+    // Run.
+    beforeEach((done) => cli.parse([ 'gamma', factor ], done))
+
+    // Tests.
+    it('should set the factor flag', () => {
+      expect(cli.parsed.argv).to.have.property('factor', parseFloat(factor))
+    })
+    it('should update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('gamma')
+    })
+    it('should execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      expect(pipeline.gamma).to.have.been.calledWith(parseFloat(factor))
     })
   })
 })

@@ -28,8 +28,16 @@
 // Test suite.
 describe('Operations', () => {
   require('./operations/blur')
+  require('./operations/boolean')
+  require('./operations/convolve')
+  require('./operations/extract')
   require('./operations/flip')
   require('./operations/flop')
+  require('./operations/gamma')
   require('./operations/negate')
   require('./operations/normalise')
+  require('./operations/rotate')
+  require('./operations/sharpen')
+  require('./operations/threshold')
+  require('./operations/trim')
 })

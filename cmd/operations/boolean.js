@@ -26,6 +26,9 @@
 // Strict mode.
 'use strict'
 
+// Standard lib.
+const path = require('path')
+
 // Local modules.
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
@@ -33,6 +36,7 @@ const queue = require('../../lib/queue')
 // Configure.
 const options = {
   operand: { // Hidden option.
+    coerce: path.normalize, // Positional arguments need manual normalization.
     // desc: 'Path to an image file',
     normalize: true,
     type: 'string'

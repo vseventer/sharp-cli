@@ -60,13 +60,18 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   return queue.push([ 'extract', (sharp) => {
-    return sharp.extract(args.left, args.top, args.width, args.height)
+    return sharp.extract({
+      left: args.left,
+      top: args.top,
+      width: args.width,
+      height: args.height
+    })
   }])
 }
 
 // Exports.
 module.exports = {
-  command: 'extract <left> <top> <width> <height>',
+  command: 'extract <top> <left> <width> <height>',
   describe: 'Extract a region of the image',
   builder,
   handler

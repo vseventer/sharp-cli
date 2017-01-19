@@ -22,56 +22,87 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#boolean
+// @see http://sharp.dimens.io/en/stable/api-operation/#threshold
 
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
 // Package modules.
 const chai = require('chai')
+const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const yargs = require('yargs')
 
 // Local modules.
-const boolean = require('../../../cmd/operations/boolean')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
+const threshold = require('../../../cmd/operations/threshold')
 
 // Configure.
 chai.use(sinonChai)
 const expect = chai.expect
 
 // Test suite.
-describe('boolean', () => {
-  const cli = yargs.command(boolean)
-
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`
+describe('threshold', () => {
+  const cli = yargs.command(threshold)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<operand> <operator>', () => {
+  describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
+    beforeEach((done) => cli.parse([ 'threshold' ], done))
 
     // Tests.
-    it('should set the operand and operator flags', () => {
-      const args = cli.parsed.argv
-      expect(args).to.have.property('operand', path.normalize(input))
-      expect(args).to.have.property('operator', 'and')
-    })
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('boolean')
+      expect(queue.pipeline).to.include('threshold')
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.boolean).to.have.been.calledWith(path.normalize(input), 'and')
+      expect(pipeline.threshold).to.have.been.called
+    })
+  })
+
+  describe('[value]', () => {
+    // Default value.
+    const value = '128'
+
+    // Run.
+    beforeEach((done) => cli.parse([ 'threshold', value ], done))
+
+    // Tests.
+    it('should set the factor flag', () => {
+      expect(cli.parsed.argv).to.have.property('value', parseInt(value, 10))
+    })
+    it('should update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('threshold')
+    })
+    it('should execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      expect(pipeline.threshold).to.have.been.calledWith(parseInt(value, 10))
+    })
+  })
+
+  describe('[options]', () => {
+    void [ 'grayscale', 'greyscale' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        beforeEach((done) => cli.parse([ 'threshold', `--${alias}` ], done))
+
+        it('should set the greyscale flag', () => {
+          expect(cli.parsed.argv).to.have.property('greyscale', true)
+        })
+        it('should update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('threshold')
+        })
+        it('should execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          expect(pipeline.threshold).to.have.been.calledWith(sinon.match.any, { greyscale: true })
+        })
+      })
     })
   })
 })

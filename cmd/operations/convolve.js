@@ -37,7 +37,7 @@ const options = {
   },
   kernel: { // Hidden option.
     // desc: 'Array of length width × height containing the kernel values',
-    defaultDescription: '"-1 0 -1 -2 0 -2 -1 0 1"',
+    defaultDescription: '"-1 0 1 -2 0 2 -1 0 1"',
     type: 'string'
   },
   scale: {
@@ -66,10 +66,13 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  const kernel = args.kernel.split(' ')
+  const kernel = args.kernel.split(' ').map((el) => parseInt(el, 10))
 
   return queue.push([ 'convolve', (sharp) => {
-    return sharp.convolve(args.width, args.height, kernel, {
+    return sharp.convolve({
+      width: args.width,
+      height: args.height,
+      kernel,
       scale: args.scale,
       offset: args.offset
     })

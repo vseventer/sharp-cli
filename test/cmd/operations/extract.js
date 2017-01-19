@@ -22,13 +22,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#boolean
+// @see http://sharp.dimens.io/en/stable/api-operation/#extract
 
 // Strict mode.
 'use strict'
-
-// Standard lib.
-const path = require('path')
 
 // Package modules.
 const chai = require('chai')
@@ -36,7 +33,7 @@ const sinonChai = require('sinon-chai')
 const yargs = require('yargs')
 
 // Local modules.
-const boolean = require('../../../cmd/operations/boolean')
+const extract = require('../../../cmd/operations/extract')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
@@ -45,33 +42,43 @@ chai.use(sinonChai)
 const expect = chai.expect
 
 // Test suite.
-describe('boolean', () => {
-  const cli = yargs.command(boolean)
-
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`
+describe('extract', () => {
+  const cli = yargs.command(extract)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<operand> <operator>', () => {
+  describe('<top> <left> <width> <height>', () => {
+    // Default offset and dimensions.
+    const top = '10'
+    const left = '20'
+    const width = '30'
+    const height = '40'
+
     // Run.
-    beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
+    beforeEach((done) => cli.parse([ 'extract', top, left, width, height ], done))
 
     // Tests.
-    it('should set the operand and operator flags', () => {
+    it('should set the top, left, width, and height flags', () => {
       const args = cli.parsed.argv
-      expect(args).to.have.property('operand', path.normalize(input))
-      expect(args).to.have.property('operator', 'and')
+      expect(args).to.have.property('top', parseInt(args.top, 10))
+      expect(args).to.have.property('left', parseInt(args.left, 10))
+      expect(args).to.have.property('width', parseInt(args.width, 10))
+      expect(args).to.have.property('height', parseInt(args.height, 10))
     })
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('boolean')
+      expect(queue.pipeline).to.include('extract')
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.boolean).to.have.been.calledWith(path.normalize(input), 'and')
+      expect(pipeline.extract).to.have.been.calledWith({
+        top: parseInt(top, 10),
+        left: parseInt(left, 10),
+        width: parseInt(width, 10),
+        height: parseInt(height, 10)
+      })
     })
   })
 })

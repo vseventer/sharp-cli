@@ -22,13 +22,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#boolean
+// @see http://sharp.dimens.io/en/stable/api-operation/#trim
 
 // Strict mode.
 'use strict'
-
-// Standard lib.
-const path = require('path')
 
 // Package modules.
 const chai = require('chai')
@@ -36,42 +33,55 @@ const sinonChai = require('sinon-chai')
 const yargs = require('yargs')
 
 // Local modules.
-const boolean = require('../../../cmd/operations/boolean')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
+const trim = require('../../../cmd/operations/trim')
 
 // Configure.
 chai.use(sinonChai)
 const expect = chai.expect
 
 // Test suite.
-describe('boolean', () => {
-  const cli = yargs.command(boolean)
-
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`
+describe('trim', () => {
+  const cli = yargs.command(trim)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<operand> <operator>', () => {
+  describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
+    beforeEach((done) => cli.parse([ 'trim' ], done))
 
     // Tests.
-    it('should set the operand and operator flags', () => {
-      const args = cli.parsed.argv
-      expect(args).to.have.property('operand', path.normalize(input))
-      expect(args).to.have.property('operator', 'and')
-    })
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('boolean')
+      expect(queue.pipeline).to.include('trim')
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.boolean).to.have.been.calledWith(path.normalize(input), 'and')
+      expect(pipeline.trim).to.have.been.called
+    })
+  })
+
+  describe('[tolerance]', () => {
+    // Default tolerance.
+    const tolerance = '10'
+
+    // Run.
+    beforeEach((done) => cli.parse([ 'trim', tolerance ], done))
+
+    // Tests.
+    it('should set the tolerance flag', () => {
+      expect(cli.parsed.argv).to.have.property('tolerance', parseInt(tolerance, 10))
+    })
+    it('should update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('trim')
+    })
+    it('should execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      expect(pipeline.trim).to.have.been.calledWith(parseInt(tolerance, 10))
     })
   })
 })
