@@ -34,11 +34,13 @@ const options = {
   flat: {
     desc: 'The level of sharpening to apply to "flat" areas',
     defaultDescription: '1.0',
+    nargs: 1,
     type: 'number'
   },
   jagged: {
     desc: 'The level of sharpening to apply to "jagged" areas',
     defaultDescription: '2.0',
+    nargs: 1,
     type: 'number'
   },
   sigma: {

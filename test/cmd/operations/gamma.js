@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const gamma = require('../../../cmd/operations/gamma')
@@ -43,7 +43,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('gamma', () => {
-  const cli = yargs.command(gamma)
+  const cli = (new Yargs()).command(gamma)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))

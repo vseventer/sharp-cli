@@ -29,9 +29,8 @@
 
 // Package modules.
 const chai = require('chai')
-// const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const background = require('../../../cmd/colour-manipulation/background')
@@ -44,7 +43,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('background', () => {
-  const cli = yargs.command(background)
+  const cli = (new Yargs()).command(background)
 
   // Default rgba.
   const rgba = 'rgba(0,0,0,.5)'

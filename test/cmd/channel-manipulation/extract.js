@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const extractChannel = require('../../../cmd/channel-manipulation/extract')
@@ -43,7 +43,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('extract <band>', () => {
-  const cli = yargs.command(extractChannel)
+  const cli = (new Yargs()).command(extractChannel)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))

@@ -43,6 +43,7 @@ const options = {
     choices: constants.GRAVITY,
     desc: 'Gravity at which to place the overlay',
     defaultDescription: 'centre',
+    nargs: 1,
     type: 'string'
   },
   offset: {

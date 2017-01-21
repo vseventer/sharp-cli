@@ -33,7 +33,7 @@ const path = require('path')
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const boolean = require('../../../cmd/operations/boolean')
@@ -46,7 +46,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('boolean', () => {
-  const cli = yargs.command(boolean)
+  const cli = (new Yargs()).command(boolean)
 
   // Default input (avoid `path.join` to test for input normalizing).
   const input = `${__dirname}/../../fixtures/input.jpg`

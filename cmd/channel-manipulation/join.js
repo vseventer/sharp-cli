@@ -37,6 +37,7 @@ const options = {
   density: {
     desc: 'Integral number representing the DPI for vector images',
     defaultDescription: 72,
+    nargs: 1,
     type: 'number'
   },
   images: { // Hidden option.

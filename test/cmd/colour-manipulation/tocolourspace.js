@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const queue = require('../../../lib/queue')
@@ -44,7 +44,7 @@ const expect = chai.expect
 // Test suite.
 void [ 'toColorspace', 'toColourspace' ].forEach((alias) => {
   describe(`${alias} <colourspace>`, () => {
-    const cli = yargs.command(toColourspace)
+    const cli = (new Yargs()).command(toColourspace)
 
     // Reset.
     afterEach('queue', () => queue.splice(0))

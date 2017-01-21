@@ -18,6 +18,8 @@
   "dependencies": {
     "multipipe"  : "1.0.x",
     "multiyargs" : "0.1.x",
+    "pipe"       : "1.1.x",
+    "promise-do-whilst": "1.0.x",
     "sharp"      : "0.17.x",
     "yargs"      : "6.6.x"
   },

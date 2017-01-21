@@ -41,6 +41,7 @@ const options = {
     choices: [ ...constants.GRAVITY, ...constants.STRATEGY ],
     defaultDescription: 'centre',
     desc: 'Crop to an edge/corner, or crop dynamically',
+    nargs: 1,
     type: 'string'
   },
   height: { // Hidden option.
@@ -55,12 +56,14 @@ const options = {
     choices: constants.INTERPOLATOR,
     defaultDescription: 'bicubic',
     desc: 'The interpolator to use for image enlargement',
+    nargs: 1,
     type: 'string'
   },
   kernel: {
     choices: constants.KERNEL,
     defaultDescription: 'lanczos3',
     desc: 'The kernel to use for image reduction',
+    nargs: 1,
     type: 'string'
   },
   max: {

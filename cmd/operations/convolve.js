@@ -43,10 +43,12 @@ const options = {
   scale: {
     desc: 'The scale of the kernel',
     defaultDescription: 'sum',
+    nargs: 1,
     type: 'number'
   },
   offset: {
     desc: 'The offset of the kernel',
+    nargs: 1,
     type: 'number'
   },
   width: { // Hidden option.

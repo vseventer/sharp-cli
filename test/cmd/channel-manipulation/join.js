@@ -34,7 +34,7 @@ const path = require('path')
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const joinChannel = require('../../../cmd/channel-manipulation/join')
@@ -47,7 +47,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('join <images..>', () => {
-  const cli = yargs.command(joinChannel)
+  const cli = (new Yargs()).command(joinChannel)
 
   // Default input (avoid `path.join` to test for input normalizing).
   const input = `${__dirname}/../../fixtures/input.jpg`

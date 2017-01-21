@@ -25,12 +25,15 @@
 // Strict mode.
 'use strict'
 
+// Standard lib.
+const path = require('path')
+
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
 
 // Local modules.
-const cli = require('../lib')
+const cli = require('../lib/cli')
 const pkg = require('../package.json')
 const queue = require('../lib/queue')
 const sharp = require('./mocks/sharp')
@@ -40,61 +43,151 @@ chai.use(sinonChai)
 const expect = chai.expect
 
 // Test suite.
-describe(`${pkg.name} [command..] [options]`, () => {
+describe(`${pkg.name} <options> [command..]`, () => {
+  // Defaults (avoid `path.join` to test for input normalizing).
+  const input = `${__dirname}/../test/fixtures/input.jpg`
+  const output = `${__dirname}/../test/`
+  const ioFlags = [ '-i', input, '-o', output ]
+
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('..', () => {
-    it('should display cli errors')
-    it('should display i/o errors')
-    it('should display sharp errors')
-    it('should read from stdin')
-    it('should write to stdout')
-  })
-
-  describe('[command..]', () => {
-    it('should update the pipeline')
-    it('should execute the pipeline')
-  })
-
-  describe('[command] -- [command..]', () => {
-    it('should update the pipeline')
-    it('should execute the pipeline')
-  })
-
-  describe('[options]', () => {
-    describe('--help', () => {
-      it('should display help')
-    })
-    describe('--input', () => {
-      it('should read from file(s)')
-    })
-    describe('--limitInputPixels', () => {
-      it('should update the pipeline')
-      it('should execute the pipeline')
-    })
-    describe('--output', () => {
-      it('should write to file(s)')
-    })
-    describe('--sequentialRead', () => {
-      it('should update the pipeline')
-      it('should execute the pipeline')
-    })
-
-    describe('--version', () => {
-      // Run.
-      beforeEach(() => cli([ '-v' ]))
-
-      // Tests.
-      it.skip('should display the version number', () => {
-        expect('').to.equal(pkg.version)
+  describe('<options>', () => {
+    void [ 'h', 'help' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        it('should set the help flag', (done) => {
+          cli.parse([ `--${alias}` ], (err, args, output) => {
+            expect(args).to.have.property('help', true)
+            done(err)
+          })
+        })
+        it('should display help', (done) => {
+          cli.parse([ `--${alias}` ], (err, args, output) => {
+            expect(output).to.exist
+            expect(output).to.contain('Commands')
+            expect(output).to.contain('Options')
+            expect(output).to.contain('Example')
+            done(err)
+          })
+        })
       })
     })
 
-    describe('--withMetadata', () => {
-      it('should execute the pipeline')
-      it('should execute the pipeline')
+    void [ 'i', 'input' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, input, input, '-o', output ], done))
+
+        // Tests.
+        it('should set the input flag', () => {
+          const args = cli.parsed.argv
+          expect(args).to.have.property('input')
+          expect(args.input).to.deep.equal([ path.normalize(input), path.normalize(input) ])
+        })
+      })
+    })
+
+    void [ 'l', 'limitInputPixels' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, '10', ...ioFlags ], done))
+
+        // Tests.
+        it('should set the limitInputPixels flag', () => {
+          expect(cli.parsed.argv).to.have.property('limitInputPixels', 10)
+        })
+        it('should update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('limitInputPixels')
+        })
+        it('should execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          expect(pipeline.limitInputPixels).to.have.been.called
+        })
+      })
+    })
+
+    void [ 'o', 'output' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, output, '-i', input ], done))
+
+        // Tests.
+        it('should set the input flag', () => {
+          expect(cli.parsed.argv).to.have.property('output', path.normalize(output))
+        })
+      })
+    })
+
+    describe('--sequentialRead', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--sequentialRead', ...ioFlags ], done))
+
+      // Tests.
+      it('should set the sequentialRead flag', () => {
+        expect(cli.parsed.argv).to.have.property('sequentialRead', true)
+      })
+      it('should update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('sequentialRead')
+      })
+      it('should execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        expect(pipeline.sequentialRead).to.have.been.called
+      })
+    })
+
+    void [ 'v', 'version' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        it('should set the version flag', (done) => {
+          cli.parse([ `--${alias}` ], (err, args, output) => {
+            expect(args).to.have.property('version', true)
+            done(err)
+          })
+        })
+        it('should display the version number', (done) => {
+          cli.parse([ `--${alias}` ], (err, args, output) => {
+            expect(output).to.equal(pkg.version)
+            done(err)
+          })
+        })
+      })
+    })
+
+    void [ 'm', 'withMetadata' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
+
+        // Tests.
+        it('should set the withMetadata flag', () => {
+          expect(cli.parsed.argv).to.have.property('withMetadata', true)
+        })
+        it('should update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('withMetadata')
+        })
+        it('should execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          expect(pipeline.withMetadata).to.have.been.called
+        })
+      })
+    })
+  })
+
+  describe('[command]', () => {
+    // Run.
+    beforeEach((done) => cli.parse([ 'flip', ...ioFlags ], done))
+
+    // Tests.
+    it('should update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include.members([ 'flip' ])
+    })
+    it('should execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      expect(pipeline.flip).to.have.been.called
     })
   })
 })

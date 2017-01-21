@@ -34,6 +34,7 @@ const options = {
   sigma: {
     desc: 'The sigma of the Gaussian mask',
     defaultDescription: '1 + radius / 2',
+    nargs: 1,
     type: 'number'
   }
 }

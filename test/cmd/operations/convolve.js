@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const convolve = require('../../../cmd/operations/convolve')
@@ -43,7 +43,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('convolve', () => {
-  const cli = yargs.command(convolve)
+  const cli = (new Yargs()).command(convolve)
 
   // Default width, height, and kernel.
   const width = '3'

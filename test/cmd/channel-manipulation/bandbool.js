@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const bandbool = require('../../../cmd/channel-manipulation/bandbool')
@@ -43,7 +43,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('bandbool <operator>', () => {
-  const cli = yargs.command(bandbool)
+  const cli = (new Yargs()).command(bandbool)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))

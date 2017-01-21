@@ -30,7 +30,7 @@
 // Package modules.
 const chai = require('chai')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const greyscale = require('../../../cmd/colour-manipulation/greyscale')
@@ -44,7 +44,7 @@ const expect = chai.expect
 // Test suite.
 void [ 'grayscale', 'greyscale' ].forEach((alias) => {
   describe(`${alias} <operator>`, () => {
-    const cli = yargs.command(greyscale)
+    const cli = (new Yargs()).command(greyscale)
 
     // Reset.
     afterEach('queue', () => queue.splice(0))

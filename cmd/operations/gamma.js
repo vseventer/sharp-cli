@@ -34,6 +34,7 @@ const options = {
   factor: {
     desc: 'The gamma factor',
     defaultDescription: '2.2',
+    nargs: 1,
     type: 'number'
   }
 }

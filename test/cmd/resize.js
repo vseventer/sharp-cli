@@ -31,7 +31,7 @@
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const resize = require('../../cmd/resize')
@@ -44,7 +44,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('resize', () => {
-  const cli = yargs.command(resize)
+  const cli = (new Yargs()).command(resize)
 
   // Default width × height.
   const x = '100'

@@ -31,7 +31,7 @@
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const yargs = require('yargs')
+const Yargs = require('yargs')
 
 // Local modules.
 const queue = require('../../../lib/queue')
@@ -44,7 +44,7 @@ const expect = chai.expect
 
 // Test suite.
 describe('threshold', () => {
-  const cli = yargs.command(threshold)
+  const cli = (new Yargs()).command(threshold)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
