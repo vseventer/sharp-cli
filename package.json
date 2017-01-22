@@ -16,7 +16,7 @@
     "posttest" : "nyc report --reporter=lcov"
   },
   "dependencies": {
-    "pipe"  : "1.1.x",
+    "multipipe": "1.0.x",
     "promise-do-whilst": "1.0.x",
     "sharp" : "0.17.x",
     "yargs" : "6.6.x"
