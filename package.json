@@ -16,18 +16,20 @@
     "posttest" : "nyc report --reporter=lcov"
   },
   "dependencies": {
-    "multipipe": "1.0.x",
+    "bubble-stream-error": "1.0.x",
     "promise-do-whilst": "1.0.x",
     "sharp" : "0.17.x",
     "yargs" : "6.6.x"
   },
   "devDependencies": {
     "chai"       : "3.5.x",
+    "fs-extra"   : "2.0.x",
     "mocha"      : "3.2.x",
     "nyc"        : "10.0.x",
     "sinon"      : "1.17.x",
     "sinon-chai" : "2.8.x",
-    "standard"   : "8.6.x"
+    "standard"   : "8.6.x",
+    "tempfile"   : "1.1.x"
   },
   "engines": { "node": ">=6.x" }
 }

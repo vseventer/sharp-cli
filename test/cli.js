@@ -85,6 +85,15 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(args).to.have.property('input')
           expect(args.input).to.deep.equal([ path.normalize(input), path.normalize(input) ])
         })
+
+        it('should fail when no input is given', (done) => {
+          cli.parse([ `--${alias}`, '-o', output ], (err) => {
+            expect(err).to.exist
+            expect(err).to.have.property('message')
+            expect(err.message).to.contain('Not enough arguments')
+            done()
+          })
+        })
       })
     })
 

@@ -31,5 +31,6 @@ describe('Commands', () => {
   require('./cmd/colour-manipulation')
   require('./cmd/operations')
   require('./cmd/composite')
+  require('./cmd/output')
   require('./cmd/resize')
 })

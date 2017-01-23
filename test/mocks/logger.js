@@ -25,18 +25,10 @@
 'use strict'
 
 // Package modules.
-const sharp = require('sharp')
+const sinon = require('sinon')
 
 // Exports.
 module.exports = {
-  BAND: [ 'red', 'green', 'blue' ],
-  BOOL: Object.keys(sharp.bool),
-  COLOURSPACE: Object.keys(sharp.colourspace),
-  CONTAINER: [ 'fs', 'zip' ],
-  FORMAT: [ 'jpeg', 'png', 'tiff', 'raw', 'webp' ],
-  GRAVITY: Object.keys(sharp.gravity),
-  INTERPOLATOR: Object.keys(sharp.interpolator),
-  KERNEL: Object.keys(sharp.kernel),
-  LAYOUT: [ 'dz', 'google', 'zoomify' ],
-  STRATEGY: Object.keys(sharp.strategy)
+  error: sinon.spy(),
+  log: sinon.spy()
 }
