@@ -35,15 +35,15 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  operand: { // Hidden option.
+  operand: {
     coerce: path.normalize, // Positional arguments need manual normalization.
-    // desc: 'Path to an image file',
+    desc: 'Path to an image file',
     normalize: true,
     type: 'string'
   },
-  operator: { // Hidden option.
+  operator: {
     choices: constants.BOOL,
-    // desc: 'Operator to perform that bitwise operation',
+    desc: 'Operator to perform that bitwise operation',
     type: 'string'
   }
 }
@@ -54,6 +54,7 @@ const builder = (yargs) => {
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#boolean')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

@@ -53,15 +53,6 @@ describe('convert', () => {
     after((done) => fs.remove(dest, done))
 
     // Tests.
-    it('should fail when using the same file for input and output', () => {
-      return convert
-        .files([ input ], path.dirname(input))
-        .then(() => { throw new Error('Trigger rejection') })
-        .catch((err) => {
-          expect(err).to.have.property('message')
-          expect(err.message).to.contain('same file for input and output')
-        })
-    })
     it('should convert a file', () => {
       return convert
         .files([ input ], dest)
@@ -71,6 +62,9 @@ describe('convert', () => {
       return convert
         .files([ input, input ], dest)
         .then((info) => expect(info).to.have.length(2))
+    })
+    it('should allow the same file as input and output', () => {
+      return convert.files([ input ], path.dirname(input))
     })
   })
   describe('stream', () => {

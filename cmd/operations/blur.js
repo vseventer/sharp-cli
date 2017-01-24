@@ -45,6 +45,7 @@ const builder = (yargs) => {
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#blur')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

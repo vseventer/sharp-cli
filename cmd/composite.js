@@ -51,9 +51,9 @@ const options = {
     nargs: 2,
     type: 'array'
   },
-  overlay: { // Hidden option.
+  overlay: {
     coerce: path.normalize, // Positional arguments need manual normalization.
-    // desc: 'Path to an image file',
+    desc: 'Path to an image file',
     normalize: true,
     type: 'string'
   },
@@ -70,6 +70,7 @@ const builder = (yargs) => {
     .example('$0 overlayWith ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-composite/')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

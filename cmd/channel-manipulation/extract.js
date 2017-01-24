@@ -32,9 +32,9 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  band: { // Hidden option.
+  band: {
     choices: constants.BAND,
-    // desc: 'The band number to extract',
+    desc: 'The band number to extract',
     type: 'string'
   }
 }
@@ -46,6 +46,7 @@ const builder = (yargs) => {
     .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#extractchannel')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

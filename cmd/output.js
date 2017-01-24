@@ -46,7 +46,7 @@ const options = {
   },
   overlap: {
     desc: 'Tile overlap in pixels',
-    defaultDescription: 0,
+    defaultDescription: '0',
     nargs: 1,
     type: 'number'
   },
@@ -65,6 +65,7 @@ const builder = (yargs) => {
     .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-output/#tile')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

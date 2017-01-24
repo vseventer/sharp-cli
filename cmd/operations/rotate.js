@@ -46,6 +46,7 @@ const builder = (yargs) => {
     .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#rotate')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

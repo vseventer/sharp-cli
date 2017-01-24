@@ -40,9 +40,9 @@ const options = {
     nargs: 1,
     type: 'number'
   },
-  images: { // Hidden option.
+  images: {
     coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    // desc: 'One or more images',
+    desc: 'One or more images',
     normalize: true,
     type: 'array'
   }
@@ -54,6 +54,7 @@ const builder = (yargs) => {
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#joinchannel')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

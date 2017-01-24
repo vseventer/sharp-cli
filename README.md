@@ -8,122 +8,83 @@
 
 ## Usage
 ```
-$ sharp --help
-  CLI for sharp.
+sharp <options> [command..]
 
-  Usage
-    $ sharp [options] [files...]
-    $ cat <file> | sharp [options] > <output>
+Commands:
+  background <rgba>                      Set the background to embed, extend, or flatten the image
+                                         with
+  bandbool <operator>                    Perform a bitwise boolean operation on all input image
+                                         channels (bands) to produce a single channel output image
+  blur [sigma]                           Blur the image
+  boolean <operand> <operator>           Perform a bitwise boolean operation with operand image
+  convolve <width> <height> <kernel>     Convolve the image with the specified kernel
+  extract <top> <left> <width> <height>  Extract a region of the image
+  extractChannel <band>                  Extract a single channel from a multi-channel image
+  flip                                   Flip the image about the vertical Y axis
+  flop                                   Flop the image about the horizontal X axis
+  gamma [factor]                         Apply a gamma correction by reducing the encoding (darken)
+                                         pre-resize then increasing the encoding (brighten)
+                                         post-resize
+  greyscale                              Convert to 8-bit greyscale; 256 shades of grey
+                                                                                [aliases: grayscale]
+  joinChannel <images..>                 Join one or more channels to the image
+  negate                                 Produce the "negative" of the image
+  normalise                              Enhance output image contrast by stretching its luminance
+                                         to cover the full dynamic range        [aliases: normalize]
+  overlayWith <overlay>                  Overlay (composite) an image over the processed (resized,
+                                         extracted etc.) image
+  resize <width> [height]                Resize image to width × height
+  rotate [angle]                         Rotate the output image
+  sharpen [sigma]                        Sharpen the image
+  threshold [value]                      Any pixel value greather than or equal to the threshold
+                                         value will be set to 255, otherwise it will be set to 0
+  tile [size]                            Use tile-based deep zoom (image pyramid) output
+  toColourspace <colourspace>            Set the output colourspace          [aliases: toColorspace]
+  trim [tolerance]                       Trim "boring" pixels from all edges that contain values
+                                         within a percentage similarity of the top-left pixel
 
-  Examples
-    $ sharp --quality 50 -o dest.jpg src.jpg
-    $ sharp --width 250 -o dest/ src/*
-    $ sharp --grayscale src.jpg > dest.jpg
-    $ cat src.jpg | sharp --rotate 90 > dest.jpg
+Global Options
+  --compressionLevel, -c  zlib compression level                               [number] [default: 6]
+  --format, -f            Force output to a given format
+                                    [choices: "jpeg", "png", "raw", "tiff", "webp"] [default: input]
+  --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
+  --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
+                          exceeds this limit                           [number] [default: 268402689]
+  --output, -o            Directory to write the image files to[string] [required] [default: stdout]
+  --progressive, -p       Use progressive (interlace) scan                                 [boolean]
+  --quality, -q           Quality                                             [number] [default: 80]
+  --withMetadata, -m      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
+                          image                                                            [boolean]
 
-  Options
-    --background                 Set the background color for --embed and --flatten operations.
-    --bandbool <string>          Perform a bitwise boolean operation on all input image channels to
-                                 produce a single channel output image.
-    --blur [number]              Blur the output image, optionally specifying the blur radius.
-    --compressionLevel <number>  zlib compression level, between 0 and 9, of the lossless PNG output
-                                 format. Defaults to 6.
-    --crop <string>              Crop the resized image based on the specified gravity (north, east,
-                                 south, west, center).
-    --embed                      Resize the image, then embed on a background.
-    --extendTop <number>         Pixels to add to the top edge. Use in conjunction with --extendLeft,
-                                 --extendBottom, and --extendRight.
-    --extendLeft <number>        Pixels to add to the left edge. Use in conjunction with --extendTop,
-                                 --extendBottom, and --extendRight.
-    --extendBottom <number>      Pixels to add to the bottom edge. Use in conjunction with
-                                 --extendTop, --extendLeft, and --extendRight.
-    --extendRight <number>       Pixels to add to the right edge. Use in conjunction with --extendTop,
-                                 --extendLeft, and --extendBottom.
-    --extractChannel <string>    Extract a single channel from a multi-channel image.
-    --extractHeight <number>     Height of the region to be extracted. Use in conjunction with
-                                 --extractLeft, --extractTop, and --extractWidth.
-    --extractLeft <number>       Left offset of the region to be extracted. Use in conjunction with
-                                 --extractHeight, --extractTop, and --extractWidth.
-    --extractTop <number>        Top offset of the region to be extracted. Use in conjunction with
-                                 --extractHeight, --extractLeft, and --extractWidth.
-    --extractWidth <number>      Width of the region to be extracted. Use in conjunction with
-                                 --extractHeight, --extractLeft, and --extractTop.
-    -f, --format <string>        Output format (jpeg, png, webp, raw). Defaults to input format.
-    --flatten                    Merge alpha transparency channel, if any, with --background.
-    --flip                       Flip the image about the vertical Y axis.
-    --flop                       Flip the image about the horizontal X axis.
-    --gamma [number]             Apply a gamma correction, optionally specifying a factor between 1
-                                 and 3. Defaults to 2.2.
-    --grayscale, --greyscale     Convert to grayscale.
-    -h, --height <number>        Scale output to height.
-    --help                       Output usage information.
-    --kernel <string>            Kernel to use for image reduction (cubic, lanczo2, lanczo3). Defaults
-                                 to lanczo3. Use in conjunction with --width or --height.
-    --ignoreAspectRatio          Stretch the image to the exact width and/or height specified.
-    --interpolator <string>      Use the specified interpolator (nearest, bilinear, bicubic,
-                                 vertexSplitQuadraticBasisSpline (vsqbs), locallyBoundedBicubic (lbb),
-                                 nohalo) for image resizing. Use in conjunction with --width or
-                                --height.
-    --limitInputPixels <number>  Do not process input images where the number of pixels
-                                 (width × height) exceeds the specified amount.
-    --max                        Resize the image to be as large as possible while ensuring its
-                                 dimensions are less than or equal to the specified width and height.
-    --min                        Resize the image to be as small as possible while ensuring its
-                                 dimensions are greater than or equal to the specified width and
-                                 height.
-    --negate                     Produces the negative of the image.
-    --normalize, --normalise     Enhance output image contrast.
-    -o, --output <string>        The output filename, or directory when performing batch operations.
-    --optimizeScans, --optimiseScans
-                                 Calculate which spectrum of DCT coefficients uses the fewest bits.
-                                 Used for progressive (interlace) JPEG output.
-    --overlay <string>           Alpha composite the specified file over the processed image.
-    --overlayCutout              Apply only the alpha channel of the overlay to the image to be
-                                 overlaid. Use in conjunction with --overlay.
-    --overlayGravity <string>    Place the overlay based on the specified gravity (north, east, south,
-                                 west, center). Use in conjunction with --overlay.
-    --overlayTile                Repeat the overlay image across the entire image. Use in conjunction
-                                 with --overlay.
-    --overlayLeft <number>       The number representing the pixel offset from the left edge. Use in
-                                 conjunction with --overlay.
-    --overlayTop <number>        The number representing the pixel offset from the top edge. Use in
-                                 conjunction with --overlay.
-    --overshootDeringing         Reduce the effects of ringing in JPEG output.
-    --progressive                Use progressive (interlace) scan for JPEG and PNG output.
-    -q, --quality <number>       The output quality, between 1 and 100, to use for lossy JPEG, WebP,
-                                 and TIFF output formats. Defaults to 80.
-    --rotate [number]            Rotate the output image by the specified angle (0, 90, 180, 270), or
-                                 auto-orient based on the EXIF Orientation tag.
-    --sequentialRead             Switches the libvips access method to VIPS_ACCESS_SEQUENTIAL.
-    --sharpen <number>           Sharpen the output image, optionally specifying the sharpen sigma.
-    --sharpenFlat <number>       Specify the level of sharpeness to apply to "flat" areas. Defaults to
-                                 1.0. Use in conjunction with --sharpen.
-    --sharpenJagged <number>     Specify the level of sharpeness to apply to "jagged" areas. Defaults
-                                 to 2.0. Use in conjunction with --sharpen.
-    --threshold <number>         Specify the level above which pixels will be forced to white.
-    --tile [number]              Applies square image pyramid tiles over the image, optionally
-                                 specifying a tile size between 1 and 8192. Defaults to 256 pixels.
-    --tileContainer <string>     Specifies the tile container (fs, zip). Defaults to fs.
-    --tileLayout <string>        Specifies the layout to use when generating square Deep Zoom image
-                                 pyramid tyles (dz, zoomify, google). Defaults to dz.
-                                 Use in conjunction with --tile.
-    --tileOverlap <number>       Specifies the tile overlap, between 0 and 8192. Defaults to 0 pixels.
-                                 Use in conjunction with --tile.
-    --trellisQuantization, --trellesQuantisation
-                                 Apply the use of trellis quantization with JPEG output.
-    --trim <number>              Trims "boring" pixels from all edges that contain values within a
-                                 percentage similarity of the top-left pixel.
-    -v, --verbose                Output image processing information.
-    -w, --width <number>         Scale output to width.
-    --withoutAdaptiveFiltering   Disable adaptive row filtering for the lossless PNG output format.
-    --withoutChromaSubsampling   Disable the use of chroma subsampling with JPEG output (4:4:4).
-    --withoutEnlargement         Do not enlarge the output image if the input image width or height
-                                 are already less than the required dimensions.
-    --withoutMetadata            Exclude any metadata (EXIF, XMP, IPTC) from the output image.
+Optimization Options
+  --adaptiveFiltering               Use adaptive row filtering                             [boolean]
+  --chromaSubsampling               Set to "4:4:4" to prevent chroma subsampling when quality <= 90
+                                                                           [string] [default: 4:2:0]
+  --optimiseScans, --optimizeScans  Optimise progressive scans                             [boolean]
+  --overshootDeringing              Apply overshoot deringing                              [boolean]
+  --sequentialRead                  An advanced setting that switches the libvips access method to
+                                    VIPS_ACCESS_SEQUENTIAL                                 [boolean]
+  --trellisQuantisation             Apply trellis quantisation                             [boolean]
+
+Misc. Options
+  --help, -h     Show help                                                                 [boolean]
+  --version, -v  Show version number                                                       [boolean]
+
+Examples:
+  bin/cli.js -i ./input.jpg -o ./ resize 300 200      output.jpg will be a 300 pixels wide and 200
+                                                      pixels high image containing a scaled and
+                                                      cropped version of input.jpg
+  bin/cli.js -i ./input.jpg -o ./ -mq90 rotate 180    output.jpg will be an upside down, 300px wide,
+  -- resize 300 -- background "#ff6600" --flatten --  alpha channel flattened onto orange
+  overlayWith ./overlay.png --gravity southeast --    background, composited with overlay.png with
+  sharpen                                             SE gravity, sharpened, with metadata, 90%
+                                                      quality version of input.jpg
+
+For more information on available options, please visit http://sharp.dimens.io/
 ```
 
 ## Related
-In-depth documentation regarding the available options is available on the [Sharp website](http://sharp.dimens.io/).
+* [sharp](http://sharp.dimens.io/) - API for this module
 
 ## Changelog
 See the [Changelog](./CHANGELOG.md) for a list of changes.
@@ -131,7 +92,7 @@ See the [Changelog](./CHANGELOG.md) for a list of changes.
 ## License
     The MIT License (MIT)
 
-    Copyright (c) 2016 Mark van Seventer
+    Copyright (c) 2017 Mark van Seventer
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of
     this software and associated documentation files (the "Software"), to deal in

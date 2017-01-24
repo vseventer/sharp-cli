@@ -31,20 +31,20 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  left: { // Hidden option.
-    // desc: 'Zero-indexed offset from left edge',
+  left: {
+    desc: 'Zero-indexed offset from left edge',
     type: 'number'
   },
-  top: { // Hidden option.
-    // desc: 'Zero-indexed offset from top edge',
+  top: {
+    desc: 'Zero-indexed offset from top edge',
     type: 'number'
   },
-  width: { // Hidden option.
-    // desc: 'Dimension of extracted image',
+  width: {
+    desc: 'Dimension of extracted image',
     type: 'number'
   },
-  height: { // Hidden option.
-    // desc: 'Dimension of extracted image',
+  height: {
+    desc: 'Dimension of extracted image',
     type: 'number'
   }
 }
@@ -55,6 +55,7 @@ const builder = (yargs) => {
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#extract')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

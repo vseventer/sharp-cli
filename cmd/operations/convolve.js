@@ -31,12 +31,12 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  height: { // Hidden option.
-    // desc: 'Height of the kernel',
+  height: {
+    desc: 'Height of the kernel',
     type: 'number'
   },
-  kernel: { // Hidden option.
-    // desc: 'Array of length width × height containing the kernel values',
+  kernel: {
+    desc: 'Array of length width × height containing the kernel values',
     defaultDescription: '"-1 0 1 -2 0 2 -1 0 1"',
     type: 'string'
   },
@@ -51,8 +51,8 @@ const options = {
     nargs: 1,
     type: 'number'
   },
-  width: { // Hidden option.
-    // desc: 'Width of the kernel',
+  width: {
+    desc: 'Width of the kernel',
     type: 'number'
   }
 }
@@ -64,6 +64,7 @@ const builder = (yargs) => {
     .example('$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"', 'The output will be the convolution of the input image with the horizontal Sobel operator')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#convolve')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

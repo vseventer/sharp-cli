@@ -44,8 +44,8 @@ const options = {
     nargs: 1,
     type: 'string'
   },
-  height: { // Hidden option.
-    // desc: 'Number of pixels wide the resultant image should be',
+  height: {
+    desc: 'Number of pixels wide the resultant image should be',
     type: 'number'
   },
   ignoreAspectRatio: {
@@ -74,8 +74,8 @@ const options = {
     desc: 'Preserving aspect ratio, resize the image to be as small as possible while ensuring its dimensions are greater than or equal to the width and height specified',
     type: 'boolean'
   },
-  width: { // Hidden option.
-    // desc: 'Number of pixels high the resultant image should be',
+  width: {
+    desc: 'Number of pixels high the resultant image should be',
     type: 'number'
   },
   withoutEnlargement: {
@@ -94,6 +94,7 @@ const builder = (yargs) => {
     .example('$0 resize 200 200 --max', 'The output will be no wider than 200 pixels and no higher than 200 pixels regardless of the input image dimensions')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-resize/')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

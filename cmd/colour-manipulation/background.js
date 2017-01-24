@@ -45,8 +45,8 @@ const options = {
     desc: 'Merge alpha transparency channel with the background',
     type: 'boolean'
   },
-  rgba: { // Hidden option.
-    // desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
+  rgba: {
+    desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
     type: 'string'
   }
 }
@@ -60,6 +60,7 @@ const builder = (yargs) => {
     .example('$0 background rgba(0,0,0,0) --flatten')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#background')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.

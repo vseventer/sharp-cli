@@ -32,9 +32,9 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  operator: { // Hidden option.
+  operator: {
     choices: constants.BOOL,
-    // desc: 'Operator to perform that bitwise operation',
+    desc: 'Operator to perform that bitwise operation',
     type: 'string'
   }
 }
@@ -46,6 +46,7 @@ const builder = (yargs) => {
     .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#bandbool')
     .options(options)
+    .group(Object.keys(options), 'Command Options')
 }
 
 // Command handler.
