@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1-dev
+* Abstracted multiple command parsing algorithm to `multiyargs`.
+
 ## 1.0.0 (January 24, 2017)
 * Full rewrite.
 
