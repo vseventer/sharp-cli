@@ -206,18 +206,43 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'optimiseScans', 'optimizeScans' ].forEach((alias) => {
+    void [ 'optimise', 'optimize' ].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
         beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
+
+        // Tests.
+        it('should set the optimise flag', () => {
+          expect(cli.parsed.argv).to.have.property('optimise', true)
+        })
+        it('should update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('jpeg')
+        })
+        it('should execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          expect(pipeline.jpeg).to.have.been.calledWithMatch({
+            optimiseScans: true,
+            overshootDeringing: true,
+            trellisQuantisation: true
+          })
+        })
+      })
+    })
+
+    void [ 'optimiseScans', 'optimizeScans' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run (implies --progressive).
+        beforeEach((done) => cli.parse([ `--${alias}`, '-p', ...ioFlags ], done))
 
         // Tests.
         it('should set the optimiseScans flag', () => {
           expect(cli.parsed.argv).to.have.property('optimiseScans', true)
         })
         it('should update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.have.length(2)
           expect(queue.pipeline).to.include('jpeg')
+          expect(queue.pipeline).to.include('png') // Because: -p.
         })
         it('should execute the pipeline', () => {
           const pipeline = queue.drain(sharp())

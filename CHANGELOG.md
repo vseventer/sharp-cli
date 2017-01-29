@@ -1,6 +1,10 @@
 # Changelog
 
 ## 1.0.1-dev
+* Allow and prioritize `--input`, even if there is an input stream
+  (i.e. `process.stdin`).
+* Added `--optimise` shorthand for `--optimiseScans`, `overshootDeringing`, and
+  `trellisQuantisation`.
 * Abstracted multiple command parsing algorithm to `multiyargs`.
 
 ## 1.0.0 (January 24, 2017)
