@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1-dev
+## 1.0.1 (January 29, 2017)
 * Allow and prioritize `--input`, even if there is an input stream
   (i.e. `process.stdin`).
 * Added `--optimise` shorthand for `--optimiseScans`, `overshootDeringing`, and
