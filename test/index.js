@@ -68,7 +68,7 @@ describe('CLI', () => {
       'sharpen'
     ], { logger }).then(() => {
       expect(fs.existsSync(dest)).to.be.true
-      expect(logger.log).not.to.be.called
+      expect(logger.log).to.be.calledWithMatch(dest)
       expect(logger.error).not.to.be.called
     })
   })
