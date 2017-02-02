@@ -1,10 +1,14 @@
 # Changelog
 
+## 1.1.0-dev
+* Removed `stream-to-buffer` as it caused errors when working with large files.
+  Unfortunately, this means input and output cannot use the same file.
+
 ## 1.0.1 (January 29, 2017)
 * Allow and prioritize `--input`, even if there is an input stream
   (i.e. `process.stdin`).
-* Added `--optimise` shorthand for `--optimiseScans`, `overshootDeringing`, and
-  `trellisQuantisation`.
+* Added `--optimise` shorthand for `--optimiseScans`, `--overshootDeringing`,
+  and `--trellisQuantisation`.
 * Abstracted multiple command parsing algorithm to `multiyargs`.
 
 ## 1.0.0 (January 24, 2017)

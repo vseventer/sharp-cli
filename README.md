@@ -60,6 +60,8 @@ Optimization Options
   --adaptiveFiltering               Use adaptive row filtering                             [boolean]
   --chromaSubsampling               Set to "4:4:4" to prevent chroma subsampling when quality <= 90
                                                                            [string] [default: 4:2:0]
+  --optimise, --optimize            Apply optimiseScans, overshootDeringing, and trellisQuantisation
+                                                                                           [boolean]
   --optimiseScans, --optimizeScans  Optimise progressive scans                             [boolean]
   --overshootDeringing              Apply overshoot deringing                              [boolean]
   --sequentialRead                  An advanced setting that switches the libvips access method to

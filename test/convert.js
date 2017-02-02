@@ -63,8 +63,14 @@ describe('convert', () => {
         .files([ input, input ], dest)
         .then((info) => expect(info).to.have.length(2))
     })
-    it('should allow the same file as input and output', () => {
-      return convert.files([ input ], path.dirname(input))
+    it('should not allow the same file as input and output', () => {
+      return convert
+        .files([ input ], path.dirname(input))
+        .then(() => { throw new Error('STOP') })
+        .catch((err) => {
+          expect(err).to.exist
+          expect(err).to.have.property('message', 'Cannot use same file for input and output')
+        })
     })
   })
   describe('stream', () => {
