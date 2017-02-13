@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.1.0 (Febuary 13, 2017)
+> https://github.com/vseventer/sharp-cli/compare/v1.0.1...v1.1.0
+
 * Added [`--alphaQuality`](http://sharp.dimens.io/en/stable/api-output/#webp),
   [`--lossless`](http://sharp.dimens.io/en/stable/api-output/#webp), and
   [`nearLossless`](http://sharp.dimens.io/en/stable/api-output/#webp)

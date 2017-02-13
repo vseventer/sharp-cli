@@ -58,8 +58,11 @@ Global Options
 
 Optimization Options
   --adaptiveFiltering               Use adaptive row filtering                             [boolean]
+  --alphaQuality                    Quality of alpha layer                    [number] [default: 80]
   --chromaSubsampling               Set to "4:4:4" to prevent chroma subsampling when quality <= 90
                                                                            [string] [default: 4:2:0]
+  --lossless                        Use lossless compression mode                          [boolean]
+  --nearLossless                    use near_lossless compression mode                     [boolean]
   --optimise, --optimize            Apply optimiseScans, overshootDeringing, and trellisQuantisation
                                                                                            [boolean]
   --optimiseScans, --optimizeScans  Optimise progressive scans                             [boolean]
