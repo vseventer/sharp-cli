@@ -72,6 +72,29 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--alphaQuality', () => {
+      // Default quality.
+      const alphaQuality = '80'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--alphaQuality', alphaQuality, ...ioFlags ], done))
+
+      // Tests.
+      it('should set the alphaQuality flag', () => {
+        expect(cli.parsed.argv).to.have.property('alphaQuality', parseInt(alphaQuality, 10))
+      })
+      it('should update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('should execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        expect(pipeline.webp).to.have.been.calledWithMatch({
+          alphaQuality: parseInt(alphaQuality, 10)
+        })
+      })
+    })
+
     describe('--chromaSubsampling', () => {
       // Default chromaSubsampling.
       const chromaSubsampling = '4:4:4'
@@ -203,6 +226,42 @@ describe(`${pkg.name} <options> [command..]`, () => {
           const pipeline = queue.drain(sharp())
           expect(pipeline.limitInputPixels).to.have.been.called
         })
+      })
+    })
+
+    describe('--lossless', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--lossless', ...ioFlags ], done))
+
+      // Tests.
+      it('should set the lossless flag', () => {
+        expect(cli.parsed.argv).to.have.property('lossless', true)
+      })
+      it('should update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('should execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        expect(pipeline.webp).to.have.been.calledWithMatch({ lossless: true })
+      })
+    })
+
+    describe('--nearLossless', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--nearLossless', ...ioFlags ], done))
+
+      // Tests.
+      it('should set the nearLossless flag', () => {
+        expect(cli.parsed.argv).to.have.property('nearLossless', true)
+      })
+      it('should update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('should execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        expect(pipeline.webp).to.have.been.calledWithMatch({ nearLossless: true })
       })
     })
 

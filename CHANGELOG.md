@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.1.0-dev
+## 1.1.0 (Febuary 13, 2017)
+* Added [`--alphaQuality`](http://sharp.dimens.io/en/stable/api-output/#webp),
+  [`--lossless`](http://sharp.dimens.io/en/stable/api-output/#webp), and
+  [`nearLossless`](http://sharp.dimens.io/en/stable/api-output/#webp)
+  (`sharp` 0.17.2).
 * Removed `stream-to-buffer` as it caused errors when working with large files.
   Unfortunately, this means input and output cannot use the same file.
 
