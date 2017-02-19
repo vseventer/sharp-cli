@@ -316,7 +316,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, output, '-i', input ], done))
 
         // Tests.
-        it('should set the input flag', () => {
+        it('should set the output flag', () => {
           expect(cli.parsed.argv).to.have.property('output', path.normalize(output))
         })
       })

@@ -1,6 +1,6 @@
 {
   "name"        : "sharp-cli",
-  "version"     : "1.1.0",
+  "version"     : "1.1.1-dev",
   "description" : "CLI for sharp.",
   "keywords"    : [ "cli", "jpeg", "libvips", "png", "sharp", "vips", "webp" ],
   "homepage"    : "https://github.com/vseventer/sharp-cli",
@@ -11,15 +11,16 @@
   "bin"         : { "sharp": "bin/cli.js" },
   "main"        : "lib/",
   "scripts"     : {
-    "pretest"  : "standard",
+    "pretest"  : "standard | snazzy",
     "test"     : "nyc mocha",
     "posttest" : "nyc report --reporter=lcov"
   },
   "dependencies": {
     "bubble-stream-error": "1.0.x",
-    "multiyargs" : "0.2.x",
-    "sharp"      : "0.17.x",
-    "yargs"      : "6.6.x"
+    "multiyargs"   : "0.2.x",
+    "sharp"        : "0.17.x",
+    "url-template" : "2.0.x",
+    "yargs"        : "6.6.x"
   },
   "devDependencies": {
     "chai"       : "3.5.x",
@@ -28,6 +29,7 @@
     "nyc"        : "10.1.x",
     "sinon"      : "1.17.x",
     "sinon-chai" : "2.8.x",
+    "snazzy"     : "6.0.x",
     "standard"   : "8.6.x",
     "tempfile"   : "1.1.x"
   },

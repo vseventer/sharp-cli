@@ -63,6 +63,12 @@ describe('convert', () => {
         .files([ input, input ], dest)
         .then((info) => expect(info).to.have.length(2))
     })
+    it('should support URI templates', () => {
+      const rand = Math.random()
+      return convert
+        .files([ input ], path.join(dest, `{name}-${rand}{ext}`))
+        .then(([ info ]) => expect(info.path).to.contain(rand))
+    })
     it('should not allow the same file as input and output', () => {
       return convert
         .files([ input ], path.dirname(input))
