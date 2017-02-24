@@ -50,7 +50,8 @@ Global Options
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
-  --output, -o            Directory to write the image files to[string] [required] [default: stdout]
+  --output, -o            Directory or URI template to write the image files to
+                                                               [string] [required] [default: stdout]
   --progressive, -p       Use progressive (interlace) scan                                 [boolean]
   --quality, -q           Quality                                             [number] [default: 80]
   --withMetadata, -m      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
@@ -76,11 +77,11 @@ Misc. Options
   --version, -v  Show version number                                                       [boolean]
 
 Examples:
-  bin/cli.js -i ./input.jpg -o ./ resize 300 200      output.jpg will be a 300 pixels wide and 200
-                                                      pixels high image containing a scaled and
+  sharp -i ./input.jpg -o ./out resize 300 200        out/input.jpg will be a 300 pixels wide and
+                                                      200 pixels high image containing a scaled and
                                                       cropped version of input.jpg
-  bin/cli.js -i ./input.jpg -o ./ -mq90 rotate 180    output.jpg will be an upside down, 300px wide,
-  -- resize 300 -- background "#ff6600" --flatten --  alpha channel flattened onto orange
+  sharp -i ./input.jpg -o ./out -mq90 rotate 180 --   out/input.jpg will be an upside down, 300px
+  resize 300 -- background "#ff6600" --flatten --     wide, alpha channel flattened onto orange
   overlayWith ./overlay.png --gravity southeast --    background, composited with overlay.png with
   sharpen                                             SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
