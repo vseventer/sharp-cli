@@ -29,15 +29,12 @@
 const path = require('path')
 
 // Package modules.
-const chai = require('chai')
+const expect = require('must')
 const fs = require('fs-extra')
 const tempfile = require('tempfile')
 
 // Local modules.
 const convert = require('../lib/convert')
-
-// Configure.
-const expect = chai.expect
 
 // Test suite.
 describe('convert', () => {
@@ -74,7 +71,7 @@ describe('convert', () => {
         .files([ input ], path.dirname(input))
         .then(() => { throw new Error('STOP') })
         .catch((err) => {
-          expect(err).to.exist
+          expect(err).to.exist()
           expect(err).to.have.property('message', 'Cannot use same file for input and output')
         })
     })
@@ -90,8 +87,8 @@ describe('convert', () => {
       return convert
         .stream(fs.createReadStream(input), fs.createWriteStream(dest))
         .then((info) => {
-          expect(info).to.be.empty
-          expect(fs.existsSync(dest)).to.be.true
+          expect(info).not.to.exist()
+          expect(fs.existsSync(dest)).to.be.true()
         })
     })
   })

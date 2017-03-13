@@ -29,8 +29,8 @@
 const path = require('path')
 
 // Package modules.
-const chai = require('chai')
-const sinonChai = require('sinon-chai')
+const expect = require('must')
+const mustSinon = require('must-sinon')
 
 // Local modules.
 const cli = require('../lib/cli')
@@ -39,8 +39,7 @@ const queue = require('../lib/queue')
 const sharp = require('./mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
@@ -176,7 +175,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
         it('should display help', (done) => {
           cli.parse([ `--${alias}` ], (err, args, output) => {
-            expect(output).to.exist
+            expect(output).to.exist()
             expect(output).to.contain('Commands')
             expect(output).to.contain('Options')
             expect(output).to.contain('Example')
@@ -195,12 +194,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
         it('should set the input flag', () => {
           const args = cli.parsed.argv
           expect(args).to.have.property('input')
-          expect(args.input).to.deep.equal([ path.normalize(input), path.normalize(input) ])
+          expect(args.input).to.eql([ path.normalize(input), path.normalize(input) ])
         })
 
         it('should fail when no input is given', (done) => {
           cli.parse([ `--${alias}`, '-o', output ], (err) => {
-            expect(err).to.exist
+            expect(err).to.exist()
             expect(err).to.have.property('message')
             expect(err.message).to.contain('Not enough arguments')
             done()
@@ -224,7 +223,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
         it('should execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.limitInputPixels).to.have.been.called
+          expect(pipeline.limitInputPixels).to.have.been.called()
         })
       })
     })
@@ -411,7 +410,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.sequentialRead).to.have.been.called
+        expect(pipeline.sequentialRead).to.have.been.called()
       })
     })
 
@@ -465,7 +464,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
         it('should execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.withMetadata).to.have.been.called
+          expect(pipeline.withMetadata).to.have.been.called()
         })
       })
     })
@@ -478,11 +477,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
     // Tests.
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include.members([ 'flip' ])
+      expect(queue.pipeline).to.include('flip')
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.flip).to.have.been.called
+      expect(pipeline.flip).to.have.been.called()
     })
   })
 })

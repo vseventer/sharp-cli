@@ -29,9 +29,9 @@
 const path = require('path')
 
 // Package modules.
-const chai = require('chai')
+const expect = require('must')
 const fs = require('fs-extra')
-const sinonChai = require('sinon-chai')
+const mustSinon = require('must-sinon')
 const tempfile = require('tempfile')
 
 // Local modules.
@@ -40,8 +40,7 @@ const logger = require('./mocks/logger')
 const pkg = require('../package.json')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('CLI', () => {
@@ -67,22 +66,22 @@ describe('CLI', () => {
       'greyscale', '--',
       'sharpen'
     ], { logger }).then(() => {
-      expect(fs.existsSync(dest)).to.be.true
+      expect(fs.existsSync(dest)).to.be.true()
       expect(logger.log).to.be.calledWithMatch(dest)
-      expect(logger.error).not.to.be.called
+      expect(logger.error).not.to.be.called()
     })
   })
   it('should display output', () => {
     return cli([ '-v' ], { logger })
       .then(() => {
         expect(logger.log).to.have.been.calledWith(pkg.version)
-        expect(logger.error).not.to.be.called
+        expect(logger.error).not.to.be.called()
       })
   })
   it('should display errors', () => {
     return cli([ ], { logger })
       .then(() => {
-        expect(logger.log).not.to.be.called
+        expect(logger.log).not.to.be.called()
         expect(logger.error).to.have.been.calledWithMatch('Missing required arguments')
         expect(logger.error).to.have.been.calledWithMatch('Specify --help for available options')
       })

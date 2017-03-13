@@ -31,9 +31,9 @@
 const path = require('path')
 
 // Package modules.
-const chai = require('chai')
+const expect = require('must')
 const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -42,8 +42,7 @@ const queue = require('../../lib/queue')
 const sharp = require('../mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('overlayWith', () => {
@@ -123,7 +122,7 @@ describe('overlayWith', () => {
       it('should set the offset flag', () => {
         const args = cli.parsed.argv
         expect(args).to.have.property('offset')
-        expect(args.offset).to.deep.equal([
+        expect(args.offset).to.eql([
           parseInt(top, 10),
           parseInt(left, 10)
         ])

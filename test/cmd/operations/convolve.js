@@ -28,8 +28,8 @@
 'use strict'
 
 // Package modules.
-const chai = require('chai')
-const sinonChai = require('sinon-chai')
+const expect = require('must')
+const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -38,8 +38,7 @@ const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('convolve', () => {

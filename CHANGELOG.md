@@ -4,6 +4,8 @@
 > https://github.com/vseventer/sharp-cli/compare/v1.1.0...v1.1.1
 
 * Added support for [URI templates](https://www.npmjs.com/package/url-template).
+* Replaced `chai` with `must`.
+* Updated `standard` dependency.
 
 ## 1.1.0 (Febuary 13, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.0.1...v1.1.0

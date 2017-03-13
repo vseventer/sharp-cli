@@ -28,8 +28,8 @@
 'use strict'
 
 // Package modules.
-const chai = require('chai')
-const sinonChai = require('sinon-chai')
+const expect = require('must')
+const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -38,8 +38,7 @@ const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('background', () => {
@@ -80,11 +79,12 @@ describe('background', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'background', 'embed' ])
+        expect(queue.pipeline).to.include('background')
+        expect(queue.pipeline).to.include('embed')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.embed).to.have.been.called
+        expect(pipeline.embed).to.have.been.called()
       })
     })
 
@@ -101,7 +101,7 @@ describe('background', () => {
       it('should set the extend flag', () => {
         const args = cli.parsed.argv
         expect(args).to.have.property('extend')
-        expect(args.extend).to.deep.equal([
+        expect(args.extend).to.eql([
           parseInt(top, 10),
           parseInt(right, 10),
           parseInt(bottom, 10),
@@ -110,7 +110,8 @@ describe('background', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'background', 'extend' ])
+        expect(queue.pipeline).to.include('background')
+        expect(queue.pipeline).to.include('extend')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
@@ -132,11 +133,12 @@ describe('background', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'background', 'flatten' ])
+        expect(queue.pipeline).to.include('background')
+        expect(queue.pipeline).to.include('flatten')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.flatten).to.have.been.called
+        expect(pipeline.flatten).to.have.been.called()
       })
     })
   })

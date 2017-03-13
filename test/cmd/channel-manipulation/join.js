@@ -31,9 +31,9 @@
 const path = require('path')
 
 // Package modules.
-const chai = require('chai')
+const expect = require('must')
+const mustSinon = require('must-sinon')
 const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -42,8 +42,7 @@ const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('join <images..>', () => {
@@ -64,7 +63,7 @@ describe('join <images..>', () => {
     it('should set the operator flag', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('images')
-      expect(args.images).to.deep.equal([ path.normalize(input), path.normalize(input) ])
+      expect(args.images).to.eql([ path.normalize(input), path.normalize(input) ])
     })
     it('should update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)

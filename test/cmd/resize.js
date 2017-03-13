@@ -28,9 +28,9 @@
 'use strict'
 
 // Package modules.
-const chai = require('chai')
+const expect = require('must')
 const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -39,8 +39,7 @@ const queue = require('../../lib/queue')
 const sharp = require('../mocks/sharp')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('resize', () => {
@@ -139,7 +138,8 @@ describe('resize', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'resize', 'crop' ])
+        expect(queue.pipeline).to.include('resize')
+        expect(queue.pipeline).to.include('crop')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
@@ -156,11 +156,12 @@ describe('resize', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'resize', 'ignoreAspectRatio' ])
+        expect(queue.pipeline).to.include('resize')
+        expect(queue.pipeline).to.include('ignoreAspectRatio')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.ignoreAspectRatio).to.have.been.called
+        expect(pipeline.ignoreAspectRatio).to.have.been.called()
       })
     })
 
@@ -215,11 +216,12 @@ describe('resize', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'resize', 'max' ])
+        expect(queue.pipeline).to.include('resize')
+        expect(queue.pipeline).to.include('max')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.max).to.have.been.called
+        expect(pipeline.max).to.have.been.called()
       })
     })
 
@@ -232,11 +234,12 @@ describe('resize', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'resize', 'min' ])
+        expect(queue.pipeline).to.include('resize')
+        expect(queue.pipeline).to.include('min')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.min).to.have.been.called
+        expect(pipeline.min).to.have.been.called()
       })
     })
 
@@ -249,7 +252,8 @@ describe('resize', () => {
       })
       it('should update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include.members([ 'resize', 'withoutEnlargement' ])
+        expect(queue.pipeline).to.include('resize')
+        expect(queue.pipeline).to.include('withoutEnlargement')
       })
       it('should execute the pipeline', () => {
         const pipeline = queue.drain(sharp())

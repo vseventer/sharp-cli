@@ -28,8 +28,8 @@
 'use strict'
 
 // Package modules.
-const chai = require('chai')
-const sinonChai = require('sinon-chai')
+const expect = require('must')
+const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
@@ -38,8 +38,7 @@ const sharp = require('../mocks/sharp')
 const tile = require('../../cmd/output')
 
 // Configure.
-chai.use(sinonChai)
-const expect = chai.expect
+mustSinon(expect)
 
 // Test suite.
 describe('tile', () => {
@@ -60,7 +59,7 @@ describe('tile', () => {
     })
     it('should execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.tile).to.have.been.called
+      expect(pipeline.tile).to.have.been.called()
     })
   })
 
