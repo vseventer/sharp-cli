@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const flip = require('../../../cmd/operations/flip')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('flip', () => {
@@ -52,12 +49,12 @@ describe('flip', () => {
   beforeEach((done) => cli.parse([ 'flip' ], done))
 
   // Tests.
-  it('should update the pipeline', () => {
+  it('must update the pipeline', () => {
     expect(queue.pipeline).to.have.length(1)
     expect(queue.pipeline).to.include('flip')
   })
-  it('should execute the pipeline', () => {
+  it('must execute the pipeline', () => {
     const pipeline = queue.drain(sharp())
-    expect(pipeline.flip).to.have.been.called()
+    sinon.assert.called(pipeline.flip)
   })
 })

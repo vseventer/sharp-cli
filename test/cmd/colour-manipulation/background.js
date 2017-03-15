@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const background = require('../../../cmd/colour-manipulation/background')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('background', () => {
@@ -56,16 +53,16 @@ describe('background', () => {
     beforeEach((done) => cli.parse([ 'background', rgba ], done))
 
     // Tests.
-    it('should set the rgba flag', () => {
+    it('must set the rgba flag', () => {
       expect(cli.parsed.argv).to.have.property('rgba', rgba)
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('background')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.background).to.have.been.calledWith(rgba)
+      sinon.assert.calledWith(pipeline.background, rgba)
     })
   })
 
@@ -74,17 +71,17 @@ describe('background', () => {
     describe('--embed', () => {
       beforeEach((done) => cli.parse([ 'background', rgba, '--embed' ], done))
 
-      it('should set the embed flag', () => {
+      it('must set the embed flag', () => {
         expect(cli.parsed.argv).to.have.property('embed', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('background')
         expect(queue.pipeline).to.include('embed')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.embed).to.have.been.called()
+        sinon.assert.called(pipeline.embed)
       })
     })
 
@@ -98,7 +95,7 @@ describe('background', () => {
 
       beforeEach((done) => cli.parse([ 'background', rgba, '--extend', top, right, bottom, left ], done))
 
-      it('should set the extend flag', () => {
+      it('must set the extend flag', () => {
         const args = cli.parsed.argv
         expect(args).to.have.property('extend')
         expect(args.extend).to.eql([
@@ -108,14 +105,14 @@ describe('background', () => {
           parseInt(left, 10)
         ])
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('background')
         expect(queue.pipeline).to.include('extend')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.extend).to.have.been.calledWithMatch({
+        sinon.assert.calledWithMatch(pipeline.extend, {
           top: parseInt(top, 10),
           right: parseInt(right, 10),
           bottom: parseInt(bottom, 10),
@@ -128,17 +125,17 @@ describe('background', () => {
     describe('--flatten', () => {
       beforeEach((done) => cli.parse([ 'background', rgba, '--flatten' ], done))
 
-      it('should set the flatten flag', () => {
+      it('must set the flatten flag', () => {
         expect(cli.parsed.argv).to.have.property('flatten', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('background')
         expect(queue.pipeline).to.include('flatten')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.flatten).to.have.been.called()
+        sinon.assert.called(pipeline.flatten)
       })
     })
   })

@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const extractChannel = require('../../../cmd/channel-manipulation/extract')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('extract <band>', () => {
@@ -52,15 +49,15 @@ describe('extract <band>', () => {
   beforeEach((done) => cli.parse([ 'extractChannel', 'red' ], done))
 
   // Tests.
-  it('should set the operator flag', () => {
+  it('must set the operator flag', () => {
     expect(cli.parsed.argv).to.have.property('band', 'red')
   })
-  it('should update the pipeline', () => {
+  it('must update the pipeline', () => {
     expect(queue.pipeline).to.have.length(1)
     expect(queue.pipeline).to.include('extractChannel')
   })
-  it('should execute the pipeline', () => {
+  it('must execute the pipeline', () => {
     const pipeline = queue.drain(sharp())
-    expect(pipeline.extractChannel).to.have.been.calledWith('red')
+    sinon.assert.calledWith(pipeline.extractChannel, 'red')
   })
 })

@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const normalise = require('../../../cmd/operations/normalise')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 void [ 'normalise', 'normalize' ].forEach((alias) => {
@@ -53,13 +50,13 @@ void [ 'normalise', 'normalize' ].forEach((alias) => {
     beforeEach((done) => cli.parse([ alias ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('normalise')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.normalise).to.have.been.called()
+      sinon.assert.called(pipeline.normalise)
     })
   })
 })

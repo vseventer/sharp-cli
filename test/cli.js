@@ -30,16 +30,13 @@ const path = require('path')
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 
 // Local modules.
 const cli = require('../lib/cli')
 const pkg = require('../package.json')
 const queue = require('../lib/queue')
 const sharp = require('./mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
@@ -58,16 +55,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--adaptiveFiltering', ...ioFlags ], done))
 
       // Tests.
-      it('should set the adaptiveFiltering flag', () => {
+      it('must set the adaptiveFiltering flag', () => {
         expect(cli.parsed.argv).to.have.property('adaptiveFiltering', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('png')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.png).to.have.been.calledWithMatch({ adaptiveFiltering: true })
+        sinon.assert.calledWithMatch(pipeline.png, { adaptiveFiltering: true })
       })
     })
 
@@ -79,18 +76,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--alphaQuality', alphaQuality, ...ioFlags ], done))
 
       // Tests.
-      it('should set the alphaQuality flag', () => {
+      it('must set the alphaQuality flag', () => {
         expect(cli.parsed.argv).to.have.property('alphaQuality', parseInt(alphaQuality, 10))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('webp')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.webp).to.have.been.calledWithMatch({
-          alphaQuality: parseInt(alphaQuality, 10)
-        })
+        sinon.assert.calledWithMatch(pipeline.webp, { alphaQuality: parseInt(alphaQuality, 10) })
       })
     })
 
@@ -102,16 +97,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--chromaSubsampling', chromaSubsampling, ...ioFlags ], done))
 
       // Tests.
-      it('should set the chromaSubsampling flag', () => {
+      it('must set the chromaSubsampling flag', () => {
         expect(cli.parsed.argv).to.have.property('chromaSubsampling', chromaSubsampling)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('jpeg')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.jpeg).to.have.been.calledWithMatch({ chromaSubsampling: chromaSubsampling })
+        sinon.assert.calledWithMatch(pipeline.jpeg, { chromaSubsampling: chromaSubsampling })
       })
     })
 
@@ -125,18 +120,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, level, ...ioFlags ], done))
 
         // Tests.
-        it('should set the format flag', () => {
+        it('must set the format flag', () => {
           expect(cli.parsed.argv).to.have.property('compressionLevel', parseInt(level, 10))
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('png')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.png).to.have.been.calledWithMatch({
-            compressionLevel: parseInt(level, 10)
-          })
+          sinon.assert.calledWithMatch(pipeline.png, { compressionLevel: parseInt(level, 10) })
         })
       })
     })
@@ -151,29 +144,29 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, format, ...ioFlags ], done))
 
         // Tests.
-        it('should set the format flag', () => {
+        it('must set the format flag', () => {
           expect(cli.parsed.argv).to.have.property('format', format)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('format')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.toFormat).to.have.been.calledWith(format)
+          sinon.assert.calledWith(pipeline.toFormat, format)
         })
       })
     })
 
     void [ 'h', 'help' ].forEach((alias) => {
       describe(`--${alias}`, () => {
-        it('should set the help flag', (done) => {
+        it('must set the help flag', (done) => {
           cli.parse([ `--${alias}` ], (err, args, output) => {
             expect(args).to.have.property('help', true)
             done(err)
           })
         })
-        it('should display help', (done) => {
+        it('must display help', (done) => {
           cli.parse([ `--${alias}` ], (err, args, output) => {
             expect(output).to.exist()
             expect(output).to.contain('Commands')
@@ -191,13 +184,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, input, input, '-o', output ], done))
 
         // Tests.
-        it('should set the input flag', () => {
+        it('must set the input flag', () => {
           const args = cli.parsed.argv
           expect(args).to.have.property('input')
           expect(args.input).to.eql([ path.normalize(input), path.normalize(input) ])
         })
 
-        it('should fail when no input is given', (done) => {
+        it('must fail when no input is given', (done) => {
           cli.parse([ `--${alias}`, '-o', output ], (err) => {
             expect(err).to.exist()
             expect(err).to.have.property('message')
@@ -214,16 +207,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, '10', ...ioFlags ], done))
 
         // Tests.
-        it('should set the limitInputPixels flag', () => {
+        it('must set the limitInputPixels flag', () => {
           expect(cli.parsed.argv).to.have.property('limitInputPixels', 10)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('limitInputPixels')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.limitInputPixels).to.have.been.called()
+          sinon.assert.called(pipeline.limitInputPixels)
         })
       })
     })
@@ -233,16 +226,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--lossless', ...ioFlags ], done))
 
       // Tests.
-      it('should set the lossless flag', () => {
+      it('must set the lossless flag', () => {
         expect(cli.parsed.argv).to.have.property('lossless', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('webp')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.webp).to.have.been.calledWithMatch({ lossless: true })
+        sinon.assert.calledWithMatch(pipeline.webp, { lossless: true })
       })
     })
 
@@ -251,16 +244,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--nearLossless', ...ioFlags ], done))
 
       // Tests.
-      it('should set the nearLossless flag', () => {
+      it('must set the nearLossless flag', () => {
         expect(cli.parsed.argv).to.have.property('nearLossless', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('webp')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.webp).to.have.been.calledWithMatch({ nearLossless: true })
+        sinon.assert.calledWithMatch(pipeline.webp, { nearLossless: true })
       })
     })
 
@@ -270,16 +263,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
 
         // Tests.
-        it('should set the optimise flag', () => {
+        it('must set the optimise flag', () => {
           expect(cli.parsed.argv).to.have.property('optimise', true)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('jpeg')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.jpeg).to.have.been.calledWithMatch({
+          sinon.assert.calledWithMatch(pipeline.jpeg, {
             optimiseScans: true,
             overshootDeringing: true,
             trellisQuantisation: true
@@ -294,17 +287,17 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, '-p', ...ioFlags ], done))
 
         // Tests.
-        it('should set the optimiseScans flag', () => {
+        it('must set the optimiseScans flag', () => {
           expect(cli.parsed.argv).to.have.property('optimiseScans', true)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(2)
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('png') // Because: -p.
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.jpeg).to.have.been.calledWithMatch({ optimiseScans: true })
+          sinon.assert.calledWithMatch(pipeline.jpeg, { optimiseScans: true })
         })
       })
     })
@@ -315,7 +308,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, output, '-i', input ], done))
 
         // Tests.
-        it('should set the output flag', () => {
+        it('must set the output flag', () => {
           expect(cli.parsed.argv).to.have.property('output', path.normalize(output))
         })
       })
@@ -326,16 +319,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--overshootDeringing', ...ioFlags ], done))
 
       // Tests.
-      it('should set the overshootDeringing flag', () => {
+      it('must set the overshootDeringing flag', () => {
         expect(cli.parsed.argv).to.have.property('overshootDeringing', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('jpeg')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.jpeg).to.have.been.calledWithMatch({ overshootDeringing: true })
+        sinon.assert.calledWithMatch(pipeline.jpeg, { overshootDeringing: true })
       })
     })
 
@@ -346,18 +339,18 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
 
         // Tests.
-        it('should set the format flag', () => {
+        it('must set the format flag', () => {
           expect(cli.parsed.argv).to.have.property('progressive', true)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(2)
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('png')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.jpeg).to.have.been.calledWithMatch({ progressive: true })
-          expect(pipeline.png).to.have.been.calledWithMatch({ progressive: true })
+          sinon.assert.calledWithMatch(pipeline.jpeg, { progressive: true })
+          sinon.assert.calledWithMatch(pipeline.png, { progressive: true })
         })
       })
     })
@@ -372,26 +365,20 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, quality, ...ioFlags ], done))
 
         // Tests.
-        it('should set the format flag', () => {
+        it('must set the format flag', () => {
           expect(cli.parsed.argv).to.have.property('quality', parseInt(quality, 10))
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(3)
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('tiff')
           expect(queue.pipeline).to.include('webp')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.jpeg).to.have.been.calledWithMatch({
-            quality: parseInt(quality, 10)
-          })
-          expect(pipeline.tiff).to.have.been.calledWithMatch({
-            quality: parseInt(quality, 10)
-          })
-          expect(pipeline.webp).to.have.been.calledWithMatch({
-            quality: parseInt(quality, 10)
-          })
+          sinon.assert.calledWithMatch(pipeline.jpeg, { quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.tiff, { quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.webp, { quality: parseInt(quality, 10) })
         })
       })
     })
@@ -401,16 +388,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--sequentialRead', ...ioFlags ], done))
 
       // Tests.
-      it('should set the sequentialRead flag', () => {
+      it('must set the sequentialRead flag', () => {
         expect(cli.parsed.argv).to.have.property('sequentialRead', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('sequentialRead')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.sequentialRead).to.have.been.called()
+        sinon.assert.called(pipeline.sequentialRead)
       })
     })
 
@@ -419,28 +406,28 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach((done) => cli.parse([ '--trellisQuantisation', ...ioFlags ], done))
 
       // Tests.
-      it('should set the trellisQuantisation flag', () => {
+      it('must set the trellisQuantisation flag', () => {
         expect(cli.parsed.argv).to.have.property('trellisQuantisation', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('jpeg')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.jpeg).to.have.been.calledWithMatch({ trellisQuantisation: true })
+        sinon.assert.calledWithMatch(pipeline.jpeg, { trellisQuantisation: true })
       })
     })
 
     void [ 'v', 'version' ].forEach((alias) => {
       describe(`--${alias}`, () => {
-        it('should set the version flag', (done) => {
+        it('must set the version flag', (done) => {
           cli.parse([ `--${alias}` ], (err, args, output) => {
             expect(args).to.have.property('version', true)
             done(err)
           })
         })
-        it('should display the version number', (done) => {
+        it('must display the version number', (done) => {
           cli.parse([ `--${alias}` ], (err, args, output) => {
             expect(output).to.equal(pkg.version)
             done(err)
@@ -455,16 +442,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
         beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
 
         // Tests.
-        it('should set the withMetadata flag', () => {
+        it('must set the withMetadata flag', () => {
           expect(cli.parsed.argv).to.have.property('withMetadata', true)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('withMetadata')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.withMetadata).to.have.been.called()
+          sinon.assert.called(pipeline.withMetadata)
         })
       })
     })
@@ -475,13 +462,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
     beforeEach((done) => cli.parse([ 'flip', ...ioFlags ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('flip')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.flip).to.have.been.called()
+      sinon.assert.called(pipeline.flip)
     })
   })
 })

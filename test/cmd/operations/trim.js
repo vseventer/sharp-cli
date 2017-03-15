@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 const trim = require('../../../cmd/operations/trim')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('trim', () => {
@@ -53,13 +50,13 @@ describe('trim', () => {
     beforeEach((done) => cli.parse([ 'trim' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('trim')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.trim).to.have.been.called()
+      sinon.assert.called(pipeline.trim)
     })
   })
 
@@ -71,16 +68,16 @@ describe('trim', () => {
     beforeEach((done) => cli.parse([ 'trim', tolerance ], done))
 
     // Tests.
-    it('should set the tolerance flag', () => {
+    it('must set the tolerance flag', () => {
       expect(cli.parsed.argv).to.have.property('tolerance', parseInt(tolerance, 10))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('trim')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.trim).to.have.been.calledWith(parseInt(tolerance, 10))
+      sinon.assert.calledWith(pipeline.trim, parseInt(tolerance, 10))
     })
   })
 })

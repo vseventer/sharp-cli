@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const queue = require('../../lib/queue')
 const sharp = require('../mocks/sharp')
 const tile = require('../../cmd/output')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('tile', () => {
@@ -53,13 +50,13 @@ describe('tile', () => {
     beforeEach((done) => cli.parse([ 'tile' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('tile')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.tile).to.have.been.called()
+      sinon.assert.called(pipeline.tile)
     })
   })
 
@@ -71,18 +68,16 @@ describe('tile', () => {
     beforeEach((done) => cli.parse([ 'tile', size ], done))
 
     // Tests.
-    it('should set the size flag', () => {
+    it('must set the size flag', () => {
       expect(cli.parsed.argv).to.have.property('size', parseInt(size, 10))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('tile')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.tile).to.have.been.calledWithMatch({
-        size: parseInt(size, 10)
-      })
+      sinon.assert.calledWithMatch(pipeline.tile, { size: parseInt(size, 10) })
     })
   })
 
@@ -95,16 +90,16 @@ describe('tile', () => {
       beforeEach((done) => cli.parse([ 'tile', '--container', container ], done))
 
       // Tests.
-      it('should set the container flag', () => {
+      it('must set the container flag', () => {
         expect(cli.parsed.argv).to.have.property('container', container)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('tile')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.tile).to.have.been.calledWithMatch({ container: container })
+        sinon.assert.calledWithMatch(pipeline.tile, { container })
       })
     })
 
@@ -116,16 +111,16 @@ describe('tile', () => {
       beforeEach((done) => cli.parse([ 'tile', '--layout', layout ], done))
 
       // Tests.
-      it('should set the layout flag', () => {
+      it('must set the layout flag', () => {
         expect(cli.parsed.argv).to.have.property('layout', layout)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('tile')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.tile).to.have.been.calledWithMatch({ layout: layout })
+        sinon.assert.calledWithMatch(pipeline.tile, { layout })
       })
     })
 
@@ -137,18 +132,16 @@ describe('tile', () => {
       beforeEach((done) => cli.parse([ 'tile', '--overlap', overlap ], done))
 
       // Tests.
-      it('should set the overlap flag', () => {
+      it('must set the overlap flag', () => {
         expect(cli.parsed.argv).to.have.property('overlap', parseInt(overlap, 10))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('tile')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.tile).to.have.been.calledWithMatch({
-          overlap: parseInt(overlap, 10)
-        })
+        sinon.assert.calledWithMatch(pipeline.tile, { overlap: parseInt(overlap, 10) })
       })
     })
   })

@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const convolve = require('../../../cmd/operations/convolve')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('convolve', () => {
@@ -58,19 +55,19 @@ describe('convolve', () => {
     beforeEach((done) => cli.parse([ 'convolve', width, height, kernel ], done))
 
     // Tests.
-    it('should set the width, height, and kernel flags', () => {
+    it('must set the width, height, and kernel flags', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('width', parseInt(width, 10))
       expect(args).to.have.property('height', parseInt(height, 10))
       expect(args).to.have.property('kernel', kernel)
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('convolve')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.convolve).to.have.been.calledWithMatch({
+      sinon.assert.calledWithMatch(pipeline.convolve, {
         width: parseInt(width, 10),
         height: parseInt(height, 10),
         kernel: kernel.split(' ').map((el) => parseInt(el, 10))
@@ -85,18 +82,16 @@ describe('convolve', () => {
 
       beforeEach((done) => cli.parse([ 'convolve', width, height, kernel, '--offset', offset ], done))
 
-      it('should set the offset flag', () => {
+      it('must set the offset flag', () => {
         expect(cli.parsed.argv).to.have.property('offset', parseInt(offset, 10))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('convolve')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.convolve).to.have.been.calledWithMatch({
-          offset: parseInt(offset, 10)
-        })
+        sinon.assert.calledWithMatch(pipeline.convolve, { offset: parseInt(offset, 10) })
       })
     })
     describe('--scale', () => {
@@ -105,18 +100,16 @@ describe('convolve', () => {
 
       beforeEach((done) => cli.parse([ 'convolve', width, height, kernel, '--scale', scale ], done))
 
-      it('should set the scale flag', () => {
+      it('must set the scale flag', () => {
         expect(cli.parsed.argv).to.have.property('scale', parseInt(scale, 10))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('convolve')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.convolve).to.have.been.calledWithMatch({
-          scale: parseInt(scale, 10)
-        })
+        sinon.assert.calledWithMatch(pipeline.convolve, { scale: parseInt(scale, 10) })
       })
     })
   })

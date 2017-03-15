@@ -29,7 +29,6 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
 const sinon = require('sinon')
 const Yargs = require('yargs')
 
@@ -37,9 +36,6 @@ const Yargs = require('yargs')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 const threshold = require('../../../cmd/operations/threshold')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('threshold', () => {
@@ -54,13 +50,13 @@ describe('threshold', () => {
     beforeEach((done) => cli.parse([ 'threshold' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('threshold')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.threshold).to.have.been.called()
+      sinon.assert.called(pipeline.threshold)
     })
   })
 
@@ -72,16 +68,16 @@ describe('threshold', () => {
     beforeEach((done) => cli.parse([ 'threshold', value ], done))
 
     // Tests.
-    it('should set the factor flag', () => {
+    it('must set the factor flag', () => {
       expect(cli.parsed.argv).to.have.property('value', parseInt(value, 10))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('threshold')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.threshold).to.have.been.calledWith(parseInt(value, 10))
+      sinon.assert.calledWith(pipeline.threshold, parseInt(value, 10))
     })
   })
 
@@ -90,16 +86,16 @@ describe('threshold', () => {
       describe(`--${alias}`, () => {
         beforeEach((done) => cli.parse([ 'threshold', `--${alias}` ], done))
 
-        it('should set the greyscale flag', () => {
+        it('must set the greyscale flag', () => {
           expect(cli.parsed.argv).to.have.property('greyscale', true)
         })
-        it('should update the pipeline', () => {
+        it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
           expect(queue.pipeline).to.include('threshold')
         })
-        it('should execute the pipeline', () => {
+        it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          expect(pipeline.threshold).to.have.been.calledWith(sinon.match.any, { greyscale: true })
+          sinon.assert.calledWith(pipeline.threshold, sinon.match.any, { greyscale: true })
         })
       })
     })

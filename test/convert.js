@@ -50,23 +50,23 @@ describe('convert', () => {
     after((done) => fs.remove(dest, done))
 
     // Tests.
-    it('should convert a file', () => {
+    it('must convert a file', () => {
       return convert
         .files([ input ], dest)
         .then(([ info ]) => expect(fs.existsSync(info.path)).to.be.true)
     })
-    it('should convert multiple files', () => {
+    it('must convert multiple files', () => {
       return convert
         .files([ input, input ], dest)
         .then((info) => expect(info).to.have.length(2))
     })
-    it('should support URI templates', () => {
+    it('must support URI templates', () => {
       const rand = Math.random()
       return convert
         .files([ input ], path.join(dest, `{name}-${rand}{ext}`))
         .then(([ info ]) => expect(info.path).to.contain(rand))
     })
-    it('should not allow the same file as input and output', () => {
+    it('must not allow the same file as input and output', () => {
       return convert
         .files([ input ], path.dirname(input))
         .then(() => { throw new Error('STOP') })
@@ -83,7 +83,7 @@ describe('convert', () => {
     afterEach((done) => fs.remove(dest, done))
 
     // Tests.
-    it('should convert a file', () => {
+    it('must convert a file', () => {
       return convert
         .stream(fs.createReadStream(input), fs.createWriteStream(dest))
         .then((info) => {

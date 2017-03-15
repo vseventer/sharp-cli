@@ -32,7 +32,6 @@ const path = require('path')
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
 const sinon = require('sinon')
 const Yargs = require('yargs')
 
@@ -40,9 +39,6 @@ const Yargs = require('yargs')
 const joinChannel = require('../../../cmd/channel-manipulation/join')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('join <images..>', () => {
@@ -60,18 +56,18 @@ describe('join <images..>', () => {
     beforeEach((done) => cli.parse([ 'joinChannel', input, input ], done))
 
     // Tests.
-    it('should set the operator flag', () => {
+    it('must set the operator flag', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('images')
       expect(args.images).to.eql([ path.normalize(input), path.normalize(input) ])
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('joinChannel')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.joinChannel).to.have.been.calledWith([
+      sinon.assert.calledWith(pipeline.joinChannel, [
         path.normalize(input),
         path.normalize(input)
       ])
@@ -85,19 +81,18 @@ describe('join <images..>', () => {
 
       beforeEach((done) => cli.parse([ 'joinChannel', input, '--density', density ], done))
 
-      it('should set the imageDensity flags', () => {
+      it('must set the imageDensity flags', () => {
         expect(cli.parsed.argv).to.have.property('density', parseInt(density, 10))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('joinChannel')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.joinChannel).to.have.been.calledWithMatch(
-          sinon.match.any,
-          { density: parseInt(density, 10) }
-        )
+        sinon.assert.calledWithMatch(pipeline.joinChannel, sinon.match.any, {
+          density: parseInt(density, 10)
+        })
       })
     })
   })

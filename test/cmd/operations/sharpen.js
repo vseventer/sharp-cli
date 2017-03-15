@@ -29,7 +29,6 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
 const sinon = require('sinon')
 const Yargs = require('yargs')
 
@@ -37,9 +36,6 @@ const Yargs = require('yargs')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 const sharpen = require('../../../cmd/operations/sharpen')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('sharpen', () => {
@@ -54,13 +50,13 @@ describe('sharpen', () => {
     beforeEach((done) => cli.parse([ 'sharpen' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('sharpen')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.sharpen).to.have.been.called()
+      sinon.assert.called(pipeline.sharpen)
     })
   })
 
@@ -72,16 +68,16 @@ describe('sharpen', () => {
     beforeEach((done) => cli.parse([ 'sharpen', sigma ], done))
 
     // Tests.
-    it('should set the sigma flag', () => {
+    it('must set the sigma flag', () => {
       expect(cli.parsed.argv).to.have.property('sigma', parseFloat(sigma))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('sharpen')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.sharpen).to.have.been.calledWith(parseFloat(sigma))
+      sinon.assert.calledWith(pipeline.sharpen, parseFloat(sigma))
     })
   })
 
@@ -94,16 +90,16 @@ describe('sharpen', () => {
       beforeEach((done) => cli.parse([ 'sharpen', '--flat', flat ], done))
 
       // Tests.
-      it('should set the flat flag', () => {
+      it('must set the flat flag', () => {
         expect(cli.parsed.argv).to.have.property('flat', parseFloat(flat))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('sharpen')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.sharpen).to.have.been.calledWith(sinon.match.any, parseFloat(flat))
+        sinon.assert.calledWith(pipeline.sharpen, sinon.match.any, parseFloat(flat))
       })
     })
 
@@ -115,16 +111,16 @@ describe('sharpen', () => {
       beforeEach((done) => cli.parse([ 'sharpen', '--jagged', jagged ], done))
 
       // Tests.
-      it('should set the jagged flag', () => {
+      it('must set the jagged flag', () => {
         expect(cli.parsed.argv).to.have.property('jagged', parseFloat(jagged))
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('sharpen')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.sharpen).to.have.been.calledWith(sinon.match.any, sinon.match.any, parseFloat(jagged))
+        sinon.assert.calledWith(pipeline.sharpen, sinon.match.any, sinon.match.any, parseFloat(jagged))
       })
     })
   })

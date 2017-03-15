@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const queue = require('../../../lib/queue')
 const rotate = require('../../../cmd/operations/rotate')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('rotate', () => {
@@ -53,13 +50,13 @@ describe('rotate', () => {
     beforeEach((done) => cli.parse([ 'rotate' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('rotate')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.rotate).to.have.been.called()
+      sinon.assert.called(pipeline.rotate)
     })
   })
 
@@ -71,16 +68,16 @@ describe('rotate', () => {
     beforeEach((done) => cli.parse([ 'rotate', angle ], done))
 
     // Tests.
-    it('should set the factor flag', () => {
+    it('must set the factor flag', () => {
       expect(cli.parsed.argv).to.have.property('angle', parseInt(angle, 10))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('rotate')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.rotate).to.have.been.calledWith(parseInt(angle, 10))
+      sinon.assert.calledWith(pipeline.rotate, parseInt(angle, 10))
     })
   })
 })

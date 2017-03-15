@@ -31,16 +31,13 @@ const path = require('path')
 // Package modules.
 const expect = require('must')
 const fs = require('fs-extra')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const tempfile = require('tempfile')
 
 // Local modules.
 const cli = require('../lib')
 const logger = require('./mocks/logger')
 const pkg = require('../package.json')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('CLI', () => {
@@ -58,7 +55,7 @@ describe('CLI', () => {
   afterEach('error', () => logger.error.reset())
   afterEach('log', () => logger.log.reset())
 
-  it('should run', () => {
+  it('must run', () => {
     return cli([
       '-i', input,
       '-o', dest,
@@ -67,23 +64,23 @@ describe('CLI', () => {
       'sharpen'
     ], { logger }).then(() => {
       expect(fs.existsSync(dest)).to.be.true()
-      expect(logger.log).to.be.calledWithMatch(dest)
-      expect(logger.error).not.to.be.called()
+      sinon.assert.calledWithMatch(logger.log, dest)
+      sinon.assert.notCalled(logger.error)
     })
   })
-  it('should display output', () => {
+  it('must display output', () => {
     return cli([ '-v' ], { logger })
       .then(() => {
-        expect(logger.log).to.have.been.calledWith(pkg.version)
-        expect(logger.error).not.to.be.called()
+        sinon.assert.calledWith(logger.log, pkg.version)
+        sinon.assert.notCalled(logger.error)
       })
   })
-  it('should display errors', () => {
+  it('must display errors', () => {
     return cli([ ], { logger })
       .then(() => {
-        expect(logger.log).not.to.be.called()
-        expect(logger.error).to.have.been.calledWithMatch('Missing required arguments')
-        expect(logger.error).to.have.been.calledWithMatch('Specify --help for available options')
+        sinon.assert.notCalled(logger.log)
+        sinon.assert.calledWithMatch(logger.error, 'Missing required arguments')
+        sinon.assert.calledWithMatch(logger.error, 'Specify --help for available options')
       })
   })
 })

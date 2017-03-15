@@ -23,15 +23,14 @@
     "yargs"        : "6.6.x"
   },
   "devDependencies": {
-    "fs-extra"   : "2.0.x",
-    "mocha"      : "3.2.x",
-    "must"       : "0.13.x",
-    "must-sinon" : "0.0.x",
-    "nyc"        : "10.1.x",
-    "sinon"      : "1.17.x",
-    "snazzy"     : "6.0.x",
-    "standard"   : "9.0.x",
-    "tempfile"   : "1.1.x"
+    "fs-extra" : "2.0.x",
+    "mocha"    : "3.2.x",
+    "must"     : "0.13.x",
+    "nyc"      : "10.1.x",
+    "sinon"    : "2.0.x",
+    "snazzy"   : "6.0.x",
+    "standard" : "9.0.x",
+    "tempfile" : "1.1.x"
   },
   "engines": { "node": ">=6.x" }
 }

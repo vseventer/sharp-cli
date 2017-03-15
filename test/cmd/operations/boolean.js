@@ -32,16 +32,13 @@ const path = require('path')
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const boolean = require('../../../cmd/operations/boolean')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('boolean', () => {
@@ -59,18 +56,18 @@ describe('boolean', () => {
     beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
 
     // Tests.
-    it('should set the operand and operator flags', () => {
+    it('must set the operand and operator flags', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('operand', path.normalize(input))
       expect(args).to.have.property('operator', 'and')
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('boolean')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.boolean).to.have.been.calledWith(path.normalize(input), 'and')
+      sinon.assert.calledWith(pipeline.boolean, path.normalize(input), 'and')
     })
   })
 })

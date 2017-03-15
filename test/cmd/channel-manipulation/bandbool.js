@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const bandbool = require('../../../cmd/channel-manipulation/bandbool')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('bandbool <operator>', () => {
@@ -52,15 +49,15 @@ describe('bandbool <operator>', () => {
   beforeEach((done) => cli.parse([ 'bandbool', 'and' ], done))
 
   // Tests.
-  it('should set the operator flag', () => {
+  it('must set the operator flag', () => {
     expect(cli.parsed.argv).to.have.property('operator', 'and')
   })
-  it('should update the pipeline', () => {
+  it('must update the pipeline', () => {
     expect(queue.pipeline).to.have.length(1)
     expect(queue.pipeline).to.include('bandbool')
   })
-  it('should execute the pipeline', () => {
+  it('must execute the pipeline', () => {
     const pipeline = queue.drain(sharp())
-    expect(pipeline.bandbool).to.have.been.calledWith('and')
+    sinon.assert.calledWith(pipeline.bandbool, 'and')
   })
 })

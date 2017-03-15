@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const blur = require('../../../cmd/operations/blur')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('blur', () => {
@@ -53,13 +50,13 @@ describe('blur', () => {
     beforeEach((done) => cli.parse([ 'blur' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('blur')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.blur).to.have.been.called()
+      sinon.assert.called(pipeline.blur)
     })
   })
 
@@ -71,16 +68,16 @@ describe('blur', () => {
     beforeEach((done) => cli.parse([ 'blur', sigma ], done))
 
     // Tests.
-    it('should set the sigma flag', () => {
+    it('must set the sigma flag', () => {
       expect(cli.parsed.argv).to.have.property('sigma', parseFloat(sigma))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('blur')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.blur).to.have.been.calledWith(parseFloat(sigma))
+      sinon.assert.calledWith(pipeline.blur, parseFloat(sigma))
     })
   })
 })

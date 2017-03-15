@@ -29,16 +29,13 @@
 
 // Package modules.
 const expect = require('must')
-const mustSinon = require('must-sinon')
+const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const gamma = require('../../../cmd/operations/gamma')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('gamma', () => {
@@ -53,13 +50,13 @@ describe('gamma', () => {
     beforeEach((done) => cli.parse([ 'gamma' ], done))
 
     // Tests.
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('gamma')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.gamma).to.have.been.called()
+      sinon.assert.called(pipeline.gamma)
     })
   })
 
@@ -71,16 +68,16 @@ describe('gamma', () => {
     beforeEach((done) => cli.parse([ 'gamma', factor ], done))
 
     // Tests.
-    it('should set the factor flag', () => {
+    it('must set the factor flag', () => {
       expect(cli.parsed.argv).to.have.property('factor', parseFloat(factor))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('gamma')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.gamma).to.have.been.calledWith(parseFloat(factor))
+      sinon.assert.calledWith(pipeline.gamma, parseFloat(factor))
     })
   })
 })

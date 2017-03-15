@@ -30,16 +30,12 @@
 // Package modules.
 const expect = require('must')
 const sinon = require('sinon')
-const mustSinon = require('must-sinon')
 const Yargs = require('yargs')
 
 // Local modules.
 const resize = require('../../cmd/resize')
 const queue = require('../../lib/queue')
 const sharp = require('../mocks/sharp')
-
-// Configure.
-mustSinon(expect)
 
 // Test suite.
 describe('resize', () => {
@@ -58,51 +54,45 @@ describe('resize', () => {
     beforeEach((done) => cli.parse([ 'resize', x, y ], done))
 
     // Tests.
-    it('should set the width and height flags', () => {
+    it('must set the width and height flags', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('width', parseInt(x, 10))
       expect(args).to.have.property('height', parseInt(y, 10))
     })
-    it('should update the pipeline', () => {
+    it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
       expect(queue.pipeline).to.include('resize')
     })
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.resize).to.have.been.calledWith(
-        parseInt(x, 10),
-        parseInt(y, 10)
-      )
+      sinon.assert.calledWith(pipeline.resize, parseInt(x, 10), parseInt(y, 10))
     })
   })
 
   describe('<width> [auto-height]', () => {
     beforeEach((done) => cli.parse([ 'resize', x, '0' ], done))
 
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.resize).to.have.been.calledWith(parseInt(x, 10), null)
+      sinon.assert.calledWith(pipeline.resize, parseInt(x, 10), null)
     })
   })
 
   describe('<auto-width> [height]', () => {
     beforeEach((done) => cli.parse([ 'resize', '0', y ], done))
 
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.resize).to.have.been.calledWith(null, parseInt(y, 10))
+      sinon.assert.calledWith(pipeline.resize, null, parseInt(y, 10))
     })
   })
 
   describe('<width>', () => {
     beforeEach((done) => cli.parse([ 'resize', x ], done))
 
-    it('should execute the pipeline', () => {
+    it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      expect(pipeline.resize).to.have.been.calledWith(
-        parseInt(x, 10),
-        parseInt(x, 10)
-      )
+      sinon.assert.calledWith(pipeline.resize, parseInt(x, 10), parseInt(x, 10))
     })
   })
 
@@ -110,22 +100,20 @@ describe('resize', () => {
     describe('--centreSampling', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--centreSampling' ], done))
 
-      it('should set the centreSampling and centerSampling flags', () => {
+      it('must set the centreSampling and centerSampling flags', () => {
         const args = cli.parsed.argv
         expect(args).to.have.property('centreSampling', true)
         expect(args).to.have.property('centerSampling', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('resize')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.resize).to.have.been.calledWithMatch(
-          sinon.match.any,
-          sinon.match.any,
-          { centreSampling: true }
-        )
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
+          centreSampling: true
+        })
       })
     })
 
@@ -133,17 +121,17 @@ describe('resize', () => {
     describe('--crop', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--crop', 'centre' ], done))
 
-      it('should set the crop flag', () => {
+      it('must set the crop flag', () => {
         expect(cli.parsed.argv).to.have.property('crop', 'centre')
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('resize')
         expect(queue.pipeline).to.include('crop')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.crop).to.have.been.calledWith('centre')
+        sinon.assert.calledWith(pipeline.crop, 'centre')
       })
     })
 
@@ -151,17 +139,17 @@ describe('resize', () => {
     describe('--ignoreAspectRatio', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--ignoreAspectRatio' ], done))
 
-      it('should set the ignoreAspectRatio flag', () => {
+      it('must set the ignoreAspectRatio flag', () => {
         expect(cli.parsed.argv).to.have.property('ignoreAspectRatio', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('resize')
         expect(queue.pipeline).to.include('ignoreAspectRatio')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.ignoreAspectRatio).to.have.been.called()
+        sinon.assert.called(pipeline.ignoreAspectRatio)
       })
     })
 
@@ -169,20 +157,18 @@ describe('resize', () => {
     describe('--interpolator', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--interpolator', 'bicubic' ], done))
 
-      it('should set the interpolator flag', () => {
+      it('must set the interpolator flag', () => {
         expect(cli.parsed.argv).to.have.property('interpolator', 'bicubic')
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('resize')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.resize).to.have.been.calledWithMatch(
-          sinon.match.any,
-          sinon.match.any,
-          { interpolator: 'bicubic' }
-        )
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
+          interpolator: 'bicubic'
+        })
       })
     })
 
@@ -190,20 +176,18 @@ describe('resize', () => {
     describe('--kernel', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--kernel', 'lanczos3' ], done))
 
-      it('should set the interpolator flag', () => {
+      it('must set the interpolator flag', () => {
         expect(cli.parsed.argv).to.have.property('kernel', 'lanczos3')
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('resize')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.resize).to.have.been.calledWithMatch(
-          sinon.match.any,
-          sinon.match.any,
-          { kernel: 'lanczos3' }
-        )
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
+          kernel: 'lanczos3'
+        })
       })
     })
 
@@ -211,17 +195,17 @@ describe('resize', () => {
     describe('--max', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--max' ], done))
 
-      it('should set the ignoreAspectRatio flag', () => {
+      it('must set the ignoreAspectRatio flag', () => {
         expect(cli.parsed.argv).to.have.property('max', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('resize')
         expect(queue.pipeline).to.include('max')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.max).to.have.been.called()
+        sinon.assert.called(pipeline.max)
       })
     })
 
@@ -229,17 +213,17 @@ describe('resize', () => {
     describe('--min', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--min' ], done))
 
-      it('should set the min flag', () => {
+      it('must set the min flag', () => {
         expect(cli.parsed.argv).to.have.property('min', true)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('resize')
         expect(queue.pipeline).to.include('min')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.min).to.have.been.called()
+        sinon.assert.called(pipeline.min)
       })
     })
 
@@ -247,17 +231,17 @@ describe('resize', () => {
     describe('--withoutEnlargement', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--no-withoutEnlargement' ], done))
 
-      it('should set the withoutEnlargement flag', () => {
+      it('must set the withoutEnlargement flag', () => {
         expect(cli.parsed.argv).to.have.property('withoutEnlargement', false)
       })
-      it('should update the pipeline', () => {
+      it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
         expect(queue.pipeline).to.include('resize')
         expect(queue.pipeline).to.include('withoutEnlargement')
       })
-      it('should execute the pipeline', () => {
+      it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        expect(pipeline.withoutEnlargement).to.have.been.calledWith(false)
+        sinon.assert.calledWith(pipeline.withoutEnlargement, false)
       })
     })
   })
