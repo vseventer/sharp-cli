@@ -41,11 +41,13 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#blur')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

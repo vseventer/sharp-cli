@@ -34,6 +34,7 @@ const queue = require('../../lib/queue')
 const options = {
   colourspace: {
     choices: constants.COLOURSPACE,
+    default: 'srgb',
     desc: 'The output colourspace',
     type: 'string'
   }
@@ -41,11 +42,13 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#tocolourspace')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

@@ -41,12 +41,14 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#bandbool')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

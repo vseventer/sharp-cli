@@ -34,14 +34,14 @@ const queue = require('../lib/queue')
 const options = {
   container: {
     choices: constants.CONTAINER,
+    default: 'fs',
     desc: 'Tile container',
-    defaultDescription: 'fs',
     nargs: 1
   },
   layout: {
     choices: constants.LAYOUT,
+    default: 'dz',
     desc: 'Filesystem layout',
-    defaultDescription: 'dz',
     nargs: 1
   },
   overlap: {
@@ -60,12 +60,14 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-output/#tile')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

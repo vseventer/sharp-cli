@@ -32,8 +32,8 @@ const queue = require('../../lib/queue')
 // Configure.
 const options = {
   angle: {
-    choices: [ 0, 90, 180, 270 ],
-    defaultDescription: 'auto',
+    choices: [ 'auto', 0, 90, 180, 270 ],
+    default: 'auto',
     desc: 'Explicit angle',
     type: 'number'
   }
@@ -41,16 +41,19 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#rotate')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.
 const handler = (args) => {
+  if (args.angle === 'auto') args.angle = undefined // Cast.
   return queue.push([ 'rotate', (sharp) => sharp.rotate(args.angle) ])
 }
 

@@ -53,6 +53,7 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 background rgba(0,0,0,0) --embed', 'The output will be embedded on a transparent canvas')
@@ -60,7 +61,8 @@ const builder = (yargs) => {
     .example('$0 background rgba(0,0,0,0) --flatten')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#background')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

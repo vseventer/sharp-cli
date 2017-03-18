@@ -41,8 +41,8 @@ const options = {
   },
   gravity: {
     choices: constants.GRAVITY,
+    default: 'centre',
     desc: 'Gravity at which to place the overlay',
-    defaultDescription: 'centre',
     nargs: 1,
     type: 'string'
   },
@@ -65,12 +65,14 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 overlayWith ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-composite/')
     .options(options)
-    .group(Object.keys(options), 'Command Options')
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.

@@ -47,11 +47,11 @@ void [ 'toColorspace', 'toColourspace' ].forEach((alias) => {
     afterEach('sharp', sharp.prototype.reset)
 
     // Run.
-    beforeEach((done) => cli.parse([ alias, 'rgb' ], done))
+    beforeEach((done) => cli.parse([ alias, 'srgb' ], done))
 
     // Tests.
     it('must set the colourspace flag', () => {
-      expect(cli.parsed.argv).to.have.property('colourspace', 'rgb')
+      expect(cli.parsed.argv).to.have.property('colourspace', 'srgb')
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
