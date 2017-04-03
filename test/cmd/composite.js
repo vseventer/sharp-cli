@@ -70,6 +70,42 @@ describe('overlayWith', () => {
   })
 
   describe('[options]', () => {
+    describe('--create', () => {
+      // Default configuration.
+      const width = '10'
+      const height = '20'
+      const channels = '3'
+      const background = 'rgba(0,0,0,0)'
+
+      beforeEach((done) => {
+        return cli.parse([ 'overlayWith', input, '--create', width, height, channels, background ], done)
+      })
+
+      it('must set the create flag', () => {
+        const args = cli.parsed.argv
+        expect(args).to.have.property('create')
+        expect(args.create).to.eql([
+          parseInt(width, 10),
+          parseInt(height, 10),
+          parseInt(channels, 10),
+          background
+        ])
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('overlayWith')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { create: {
+          width: parseInt(width, 10),
+          height: parseInt(height, 10),
+          channels: parseInt(channels, 10),
+          background
+        } })
+      })
+    })
+
     describe('--cutout', () => {
       beforeEach((done) => cli.parse([ 'overlayWith', input, '--cutout' ], done))
 

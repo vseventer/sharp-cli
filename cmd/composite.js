@@ -35,6 +35,12 @@ const queue = require('../lib/queue')
 
 // Configure.
 const options = {
+  create: {
+    desc: 'Describes a blank overlay to be created',
+    defaultDescription: 'width, height, channels, background',
+    nargs: 4,
+    type: 'array'
+  },
   cutout: {
     desc: 'Apply only the alpha channel of the overlay image to the input image, giving the appearance of one image being cut out of another',
     type: 'boolean'
@@ -78,10 +84,12 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   const [ top, left ] = args.offset || [ ]
+  const [ width, height, channels, background ] = args.create || [ ]
 
   // @see http://sharp.dimens.io/en/stable/api-composite/#overlaywith
   return queue.push([ 'overlayWith', (sharp) => {
     return sharp.overlayWith(args.overlay, {
+      create: args.create && { width, height, channels, background },
       gravity: args.gravity,
       top,
       left,

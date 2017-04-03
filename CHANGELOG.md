@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0 (April 3, 2017)
+> https://github.com/vseventer/sharp-cli/compare/v1.2.0...v1.3.0
+
+* Added [`--compression`](http://sharp.dimens.io/en/stable/api-output/#tiff) and
+  [`--predictor`](http://sharp.dimens.io/en/stable/api-output/#tiff)
+  (`sharp` 0.17.3).
+* Added [`--create`](http://sharp.dimens.io/en/stable/api-composite/#overlaywith)
+  (`sharp` 0.17.3).
+* Updated `fs-extra`, `nyc`, `sinon`, and `tempfile` dependencies.
+
 ## 1.2.0 (March 18, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.1.0...v1.2.0
 
