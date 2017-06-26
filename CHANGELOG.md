@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 (June 26, 2017)
+> https://github.com/vseventer/sharp-cli/compare/v1.3.0...v1.4.0
+
+* Added [`--squash`](http://sharp.dimens.io/en/stable/api-output/#tiff)
+  (`sharp` 0.18.0).
+* Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, `snazzy`, `standard`,
+  and `yargs` dependencies.
+
 ## 1.3.0 (April 3, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.2.0...v1.3.0
 

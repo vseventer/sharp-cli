@@ -70,6 +70,7 @@ Optimization Options
   --overshootDeringing              Apply overshoot deringing                              [boolean]
   --sequentialRead                  An advanced setting that switches the libvips access method to
                                     VIPS_ACCESS_SEQUENTIAL                                 [boolean]
+  --squash                          Squash 8-bit images down to 1 bit                      [boolean]
   --trellisQuantisation             Apply trellis quantisation                             [boolean]
 
 Misc. Options

@@ -443,6 +443,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--squash', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--squash', ...ioFlags ], done))
+
+      // Tests.
+      it('must set the squash flag', () => {
+        expect(cli.parsed.argv).to.have.property('squash', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { squash: true })
+      })
+    })
+
     describe('--trellisQuantisation', () => {
       // Run.
       beforeEach((done) => cli.parse([ '--trellisQuantisation', ...ioFlags ], done))
