@@ -72,6 +72,8 @@ Optimization Options
                                     VIPS_ACCESS_SEQUENTIAL                                 [boolean]
   --squash                          Squash 8-bit images down to 1 bit                      [boolean]
   --trellisQuantisation             Apply trellis quantisation                             [boolean]
+  --xres                            Horizontal resolution                    [number] [default: 1.0]
+  --yres                            Vertical resolution                      [number] [default: 1.0]
 
 Misc. Options
   --help, -h     Show help                                                                 [boolean]

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0 (July 20, 2017)
+> https://github.com/vseventer/sharp-cli/compare/v1.4.0...v1.5.0
+
+* Added [`--xres`](http://sharp.dimens.io/en/stable/api-output/#tiff) and
+  [`--yres`](http://sharp.dimens.io/en/stable/api-output/#tiff) (`sharp` 0.18.2).
+* Updated `fs-extra` dependency.
+
 ## 1.4.0 (June 26, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.3.0...v1.4.0
 

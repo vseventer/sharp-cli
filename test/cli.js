@@ -515,6 +515,48 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
       })
     })
+
+    describe('--xres', () => {
+      // Default horizontal resolution.
+      const xRes = '1.5'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--xres', xRes, ...ioFlags ], done))
+
+      // Tests.
+      it('must set the xres flag', () => {
+        expect(cli.parsed.argv).to.have.property('xres', parseFloat(xRes))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { xres: parseFloat(xRes) })
+      })
+    })
+
+    describe('--yres', () => {
+      // Default vertical resolution.
+      const yRes = '1.5'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--yres', yRes, ...ioFlags ], done))
+
+      // Tests.
+      it('must set the yres flag', () => {
+        expect(cli.parsed.argv).to.have.property('yres', parseFloat(yRes))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { yres: parseFloat(yRes) })
+      })
+    })
   })
 
   describe('[command]', () => {
