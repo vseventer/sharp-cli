@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.1 (September 22, 2017)
+* Updated `mocha`, `nyc`, and `sharp` dependencies.
+
 ## 1.5.0 (July 20, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.4.0...v1.5.0
 
