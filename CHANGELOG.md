@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.2 (October 27, 2017)
+* Updated `mocha`, `sinon`, and `yargs` dependencies.
+
 ## 1.5.1 (September 22, 2017)
 * Updated `mocha`, `nyc`, and `sharp` dependencies.
 

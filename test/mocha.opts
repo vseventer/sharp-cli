@@ -1,5 +1,4 @@
 --check-leaks
---no-exit
 --reporter spec
 --slow      25
 --timeout  250
