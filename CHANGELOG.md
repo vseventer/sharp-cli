@@ -21,14 +21,14 @@
 ## 1.5.0 (July 20, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.4.0...v1.5.0
 
-* Added [`--xres`](http://sharp.dimens.io/en/stable/api-output/#tiff) and
-  [`--yres`](http://sharp.dimens.io/en/stable/api-output/#tiff) (`sharp` 0.18.2).
+* Added [`--xres`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff) and
+  [`--yres`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff) (`sharp` 0.18.2).
 * Updated `fs-extra` dependency.
 
 ## 1.4.0 (June 26, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.3.0...v1.4.0
 
-* Added [`--squash`](http://sharp.dimens.io/en/stable/api-output/#tiff)
+* Added [`--squash`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff)
   (`sharp` 0.18.0).
 * Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, `snazzy`, `standard`,
   and `yargs` dependencies.
@@ -36,10 +36,10 @@
 ## 1.3.0 (April 3, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.2.0...v1.3.0
 
-* Added [`--compression`](http://sharp.dimens.io/en/stable/api-output/#tiff) and
-  [`--predictor`](http://sharp.dimens.io/en/stable/api-output/#tiff)
+* Added [`--compression`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff)
+  and [`--predictor`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff)
   (`sharp` 0.17.3).
-* Added [`--create`](http://sharp.dimens.io/en/stable/api-composite/#overlaywith)
+* Added [`--create`](http://sharp.pixelplumbing.com/en/stable/api-composite/#overlaywith)
   (`sharp` 0.17.3).
 * Updated `fs-extra`, `nyc`, `sinon`, and `tempfile` dependencies.
 
@@ -53,9 +53,9 @@
 ## 1.1.0 (Febuary 13, 2017)
 > https://github.com/vseventer/sharp-cli/compare/v1.0.1...v1.1.0
 
-* Added [`--alphaQuality`](http://sharp.dimens.io/en/stable/api-output/#webp),
-  [`--lossless`](http://sharp.dimens.io/en/stable/api-output/#webp), and
-  [`nearLossless`](http://sharp.dimens.io/en/stable/api-output/#webp)
+* Added [`--alphaQuality`](http://sharp.pixelplumbing.com/en/stable/api-output/#webp),
+  [`--lossless`](http://sharp.pixelplumbing.com/en/stable/api-output/#webp), and
+  [`nearLossless`](http://sharp.pixelplumbing.com/en/stable/api-output/#webp)
   (`sharp` 0.17.2).
 * Removed `stream-to-buffer` as it caused errors when working with large files.
   Unfortunately, this means input and output cannot use the same file.
@@ -75,39 +75,39 @@
 * Enhancement: update `sharp` (`0.16.x`).
 
 ## 0.6.0 (August 18, 2016)
-* Enhancement: add [`--bandbool`](http://sharp.dimens.io/en/stable/api/#bandbooloperation).
-* Enhancement: add [`--extractChannel`](http://sharp.dimens.io/en/stable/api/#extractchannelchannel).
-* Enhancement: add [`--overlayCutout`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
-* Enhancement: add [`--overlayLeft`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
-* Enhancement: add [`--overlayTile`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
-* Enhancement: add [`--overlayTop`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options).
-* Enhancement: add [`--trim`](http://sharp.dimens.io/en/stable/api/#trimtolerance).
+* Enhancement: add [`--bandbool`](http://sharp.pixelplumbing.com/en/stable/api/#bandbooloperation).
+* Enhancement: add [`--extractChannel`](http://sharp.pixelplumbing.com/en/stable/api/#extractchannelchannel).
+* Enhancement: add [`--overlayCutout`](http://sharp.pixelplumbing.com/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayLeft`](http://sharp.pixelplumbing.com/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayTile`](http://sharp.pixelplumbing.com/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--overlayTop`](http://sharp.pixelplumbing.com/en/stable/api/#overlaywithimage-options).
+* Enhancement: add [`--trim`](http://sharp.pixelplumbing.com/en/stable/api/#trimtolerance).
 * Enhancement: simplify verbose output.
 * Enhancement: update dependencies.
 
 ## 0.5.0 (June 21, 2016)
-* Enhancement: add [`--kernel`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).
-* Enhancement: rename `--interpolateWith` to [`--interpolator`](http://sharp.dimens.io/en/stable/api/#resizewidth-height-options).
+* Enhancement: add [`--kernel`](http://sharp.pixelplumbing.com/en/stable/api/#resizewidth-height-options).
+* Enhancement: rename `--interpolateWith` to [`--interpolator`](http://sharp.pixelplumbing.com/en/stable/api/#resizewidth-height-options).
 
 ## 0.4.2 (June 21, 2016)
 * Bugfix: mark `--grayscale` as boolean option.
 * Enhancement: update dependencies, including `sharp` (`0.15.x`).
 
 ## 0.4.1 (April 18, 2016)
-* Enhancement: add [`--tileContainer`](http://sharp.dimens.io/en/stable/api/#tileoptions).
+* Enhancement: add [`--tileContainer`](http://sharp.pixelplumbing.com/en/stable/api/#tileoptions).
 
 ## 0.4.0 (April 4, 2016)
-* Enhancement: add [`--extend`](http://sharp.dimens.io/en/stable/api/#extendextension) support.
-* Enhancement: add [`--overlayGravity`](http://sharp.dimens.io/en/stable/api/#overlaywithimage-options) support.
-* Enhancement: add [`--tileLayout`](http://sharp.dimens.io/en/stable/api/#tileoptions) support.
+* Enhancement: add [`--extend`](http://sharp.pixelplumbing.com/en/stable/api/#extendextension) support.
+* Enhancement: add [`--overlayGravity`](http://sharp.pixelplumbing.com/en/stable/api/#overlaywithimage-options) support.
+* Enhancement: add [`--tileLayout`](http://sharp.pixelplumbing.com/en/stable/api/#tileoptions) support.
 * Enhancement: update dependencies, including `sharp` (`0.14.x`).
 
 ## 0.3.1 (February 21, 2016)
 * Enhancement: update dependencies, including `sharp` (`0.13.x`).
 
 ## 0.3.0 (January 26, 2016)
-* Enhancement: add [`--negate`](http://sharp.dimens.io/en/stable/api/#negate) support.
-* Enhancement: add [`--threshold`](http://sharp.dimens.io/en/stable/api/#thresholdthreshold) support.
+* Enhancement: add [`--negate`](http://sharp.pixelplumbing.com/en/stable/api/#negate) support.
+* Enhancement: add [`--threshold`](http://sharp.pixelplumbing.com/en/stable/api/#thresholdthreshold) support.
 * Enhancement: update dependencies, including `sharp` (`0.12.x`).
 
 ## 0.2.2 (January 13, 2016)

@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#gamma
+// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#gamma
 
 // Strict mode.
 'use strict'
@@ -44,7 +44,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#gamma')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#gamma')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

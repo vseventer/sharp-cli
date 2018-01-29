@@ -98,11 +98,11 @@ Examples:
   sharpen                                             SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
 
-For more information on available options, please visit http://sharp.dimens.io/
+For more information on available options, please visit http://sharp.pixelplumbing.com/
 ```
 
 ## Related
-* [sharp](http://sharp.dimens.io/) - API for this module
+* [sharp](http://sharp.pixelplumbing.com/) - API for this module
 
 ## Changelog
 See the [Changelog](./CHANGELOG.md) for a list of changes.

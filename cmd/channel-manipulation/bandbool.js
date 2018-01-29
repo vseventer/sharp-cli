@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#bandbool
+// @see http://sharp.pixelplumbing.com/en/stable/api-channel/#bandbool
 
 // Strict mode.
 'use strict'
@@ -45,7 +45,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
-    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-channel/#bandbool')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-channel/#bandbool')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

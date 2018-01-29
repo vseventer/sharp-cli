@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-channel/#extractchannel
+// @see http://sharp.pixelplumbing.com/en/stable/api-channel/#extractchannel
 
 // Strict mode.
 'use strict'

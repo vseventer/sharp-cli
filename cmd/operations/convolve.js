@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-operation/#convolve
+// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#convolve
 
 // Strict mode.
 'use strict'
@@ -63,7 +63,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"', 'The output will be the convolution of the input image with the horizontal Sobel operator')
-    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-operation/#convolve')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#convolve')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

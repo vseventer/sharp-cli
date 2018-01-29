@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.dimens.io/en/stable/api-colour/#greyscale
+// @see http://sharp.pixelplumbing.com/en/stable/api-colour/#greyscale
 
 // Strict mode.
 'use strict'
@@ -33,7 +33,7 @@ const queue = require('../../lib/queue')
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#greyscale')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-colour/#greyscale')
 }
 
 // Command handler.
