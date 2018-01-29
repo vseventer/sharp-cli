@@ -73,7 +73,6 @@ const options = {
     type: 'number'
   },
   withoutEnlargement: {
-    default: true,
     desc: 'Do not enlarge the output image if the input image width or height are already less than the required dimensions',
     type: 'boolean'
   }
@@ -127,8 +126,8 @@ const handler = (args) => {
   }
 
   // @see http://sharp.dimens.io/en/stable/api-resize/#withoutenlargement
-  if (args.withoutEnlargement === false) {
-    queue.push([ 'withoutEnlargement', (sharp) => sharp.withoutEnlargement(false) ])
+  if (args.withoutEnlargement) {
+    queue.push([ 'withoutEnlargement', (sharp) => sharp.withoutEnlargement(args.withoutEnlargement) ])
   }
 
   // Return the queue.

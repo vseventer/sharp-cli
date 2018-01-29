@@ -209,10 +209,10 @@ describe('resize', () => {
 
     // @see http://sharp.dimens.io/en/stable/api-resize/#withoutenlargement
     describe('--withoutEnlargement', () => {
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--no-withoutEnlargement' ], done))
+      beforeEach((done) => cli.parse([ 'resize', x, y, '--withoutEnlargement' ], done))
 
       it('must set the withoutEnlargement flag', () => {
-        expect(cli.parsed.argv).to.have.property('withoutEnlargement', false)
+        expect(cli.parsed.argv).to.have.property('withoutEnlargement', true)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
@@ -221,7 +221,7 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWith(pipeline.withoutEnlargement, false)
+        sinon.assert.calledWith(pipeline.withoutEnlargement, true)
       })
     })
   })
