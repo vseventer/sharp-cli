@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.5.3
+## 1.6.0
 * Fixed bug with URI templates on Windows.
 * Updated output paths to resolve only after parsing URI template.
-* Updated `fs-extra`, `mocha`, `nyc`, and `sinon`.
+* Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, and `yargs` dependencies.
 
 ## 1.5.2 (October 27, 2017)
 * Updated `mocha`, `sinon`, and `yargs` dependencies.
