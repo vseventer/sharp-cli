@@ -11,42 +11,47 @@
 sharp <options> [command..]
 
 Commands:
-  background <rgba>                      Set the background to embed, extend, or flatten the image
-                                         with
-  bandbool <operator>                    Perform a bitwise boolean operation on all input image
-                                         channels (bands) to produce a single channel output image
-  blur [sigma]                           Blur the image
-  boolean <operand> <operator>           Perform a bitwise boolean operation with operand image
-  convolve <width> <height> <kernel>     Convolve the image with the specified kernel
-  extract <top> <left> <width> <height>  Extract a region of the image
-  extractChannel <band>                  Extract a single channel from a multi-channel image
-  flip                                   Flip the image about the vertical Y axis
-  flop                                   Flop the image about the horizontal X axis
-  gamma [factor]                         Apply a gamma correction by reducing the encoding (darken)
-                                         pre-resize then increasing the encoding (brighten)
-                                         post-resize
-  greyscale                              Convert to 8-bit greyscale; 256 shades of grey
+  sharp background <rgba>                      Set the background to embed, extend, or flatten the
+                                               image with
+  sharp bandbool <operator>                    Perform a bitwise boolean operation on all input
+                                               image channels (bands) to produce a single channel
+                                               output image
+  sharp blur [sigma]                           Blur the image
+  sharp boolean <operand> <operator>           Perform a bitwise boolean operation with operand
+                                               image
+  sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
+  sharp extract <top> <left> <width> <height>  Extract a region of the image
+  sharp extractChannel <band>                  Extract a single channel from a multi-channel image
+  sharp flip                                   Flip the image about the vertical Y axis
+  sharp flop                                   Flop the image about the horizontal X axis
+  sharp gamma [factor]                         Apply a gamma correction by reducing the encoding
+                                               (darken) pre-resize then increasing the encoding
+                                               (brighten) post-resize
+  sharp greyscale                              Convert to 8-bit greyscale; 256 shades of grey
                                                                                 [aliases: grayscale]
-  joinChannel <images..>                 Join one or more channels to the image
-  negate                                 Produce the "negative" of the image
-  normalise                              Enhance output image contrast by stretching its luminance
-                                         to cover the full dynamic range        [aliases: normalize]
-  overlayWith <overlay>                  Overlay (composite) an image over the processed (resized,
-                                         extracted etc.) image
-  resize <width> [height]                Resize image to width × height
-  rotate [angle]                         Rotate the output image
-  sharpen [sigma]                        Sharpen the image
-  threshold [value]                      Any pixel value greather than or equal to the threshold
-                                         value will be set to 255, otherwise it will be set to 0
-  tile [size]                            Use tile-based deep zoom (image pyramid) output
-  toColourspace <colourspace>            Set the output colourspace          [aliases: toColorspace]
-  trim [tolerance]                       Trim "boring" pixels from all edges that contain values
-                                         within a percentage similarity of the top-left pixel
+  sharp joinChannel <images..>                 Join one or more channels to the image
+  sharp negate                                 Produce the "negative" of the image
+  sharp normalise                              Enhance output image contrast by stretching its
+                                               luminance to cover the full dynamic range
+                                                                                [aliases: normalize]
+  sharp overlayWith <overlay>                  Overlay (composite) an image over the processed
+                                               (resized, extracted etc.) image
+  sharp resize <width> [height]                Resize image to width × height
+  sharp rotate [angle]                         Rotate the output image
+  sharp sharpen [sigma]                        Sharpen the image
+  sharp threshold [value]                      Any pixel value greather than or equal to the
+                                               threshold value will be set to 255, otherwise it will
+                                               be set to 0
+  sharp tile [size]                            Use tile-based deep zoom (image pyramid) output
+  sharp toColourspace <colourspace>            Set the output colourspace    [aliases: toColorspace]
+  sharp trim [tolerance]                       Trim "boring" pixels from all edges that contain
+                                               values within a percentage similarity of the top-left
+                                               pixel
 
 Global Options
-  --compressionLevel, -c  zlib compression level                               [number] [default: 6]
+  --compressionLevel, -c  zlib compression level                               [number] [default: 9]
   --format, -f            Force output to a given format
-                                    [choices: "jpeg", "png", "raw", "tiff", "webp"] [default: input]
+                  [choices: "input", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
@@ -62,12 +67,16 @@ Optimization Options
   --alphaQuality                    Quality of alpha layer                    [number] [default: 80]
   --chromaSubsampling               Set to "4:4:4" to prevent chroma subsampling when quality <= 90
                                                                            [string] [default: 4:2:0]
+  --compression                     Compression options
+                              [string] [choices: "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
   --lossless                        Use lossless compression mode                          [boolean]
   --nearLossless                    use near_lossless compression mode                     [boolean]
   --optimise, --optimize            Apply optimiseScans, overshootDeringing, and trellisQuantisation
                                                                                            [boolean]
   --optimiseScans, --optimizeScans  Optimise progressive scans                             [boolean]
   --overshootDeringing              Apply overshoot deringing                              [boolean]
+  --predictor                       Compression predictor
+                           [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
   --sequentialRead                  An advanced setting that switches the libvips access method to
                                     VIPS_ACCESS_SEQUENTIAL                                 [boolean]
   --squash                          Squash 8-bit images down to 1 bit                      [boolean]
