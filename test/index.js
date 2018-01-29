@@ -52,8 +52,8 @@ describe('CLI', () => {
   after((done) => fs.remove(dest, done))
 
   // Reset.
-  afterEach('error', () => logger.error.reset())
-  afterEach('log', () => logger.log.reset())
+  afterEach('error', () => logger.error.resetHistory())
+  afterEach('log', () => logger.log.resetHistory())
 
   it('must run', () => {
     return cli([

@@ -34,7 +34,7 @@ const methods = Object.getOwnPropertyNames(sharp.prototype)
 // Patch methods, add reset and restore handlers.
 methods.forEach((name) => sinon.spy(sharp.prototype, name))
 sharp.prototype.reset = () => {
-  methods.forEach((name) => sharp.prototype[name].reset())
+  methods.forEach((name) => sharp.prototype[name].resetHistory())
 }
 sharp.prototype.restore = () => {
   methods.forEach((name) => sharp.prototype[name].restore())
