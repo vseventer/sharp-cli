@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0
+## 1.6.0 (January 28, 2018)
 * Added [`--fastShrinkOnLoad`](http://sharp.pixelplumbing.com/en/stable/api-resize/#resize)
   (`sharp` 0.19.0).
 * Added gravity option to [`--embed`](http://sharp.pixelplumbing.com/en/stable/api-resize/#embed).
