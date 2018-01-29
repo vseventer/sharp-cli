@@ -69,10 +69,13 @@ describe('background', () => {
   describe('[options]', () => {
     // @see http://sharp.dimens.io/en/stable/api-resize/#embed
     describe('--embed', () => {
-      beforeEach((done) => cli.parse([ 'background', rgba, '--embed' ], done))
+      // Default gravity
+      const gravity = 'northeast'
+
+      beforeEach((done) => cli.parse([ 'background', rgba, '--embed', gravity ], done))
 
       it('must set the embed flag', () => {
-        expect(cli.parsed.argv).to.have.property('embed', true)
+        expect(cli.parsed.argv).to.have.property('embed', gravity)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(2)
@@ -81,7 +84,7 @@ describe('background', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.called(pipeline.embed)
+        sinon.assert.calledWith(pipeline.embed, gravity)
       })
     })
 

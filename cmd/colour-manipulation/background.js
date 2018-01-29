@@ -27,13 +27,17 @@
 'use strict'
 
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
   embed: {
+    choices: constants.GRAVITY,
+    default: 'centre',
     desc: 'Preserving aspect ratio, resize the image to the maximum width or height specified then embed on the background of the exact width and height specified',
-    type: 'boolean'
+    nargs: 1,
+    type: 'string'
   },
   extend: {
     desc: 'Extends/pads the edges of the image with the colour in the background',
@@ -56,7 +60,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 background rgba(0,0,0,0) --embed', 'The output will be embedded on a transparent canvas')
+    .example('$0 background rgba(0,0,0,0) --embed centre', 'The output will be embedded on a transparent canvas')
     .example('$0 background rgba(0,0,0,0) --extend 10 20 10 10', 'The output will have 10 transparent pixels to the top, left, and right edges and 20 to the bottom edge')
     .example('$0 background rgba(0,0,0,0) --flatten')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-colour/#background')
@@ -71,8 +75,8 @@ const handler = (args) => {
   queue.push([ 'background', (sharp) => sharp.background(args.rgba) ])
 
   // @see http://sharp.dimens.io/en/stable/api-resize/#embed
-  if (args.embed) {
-    queue.push([ 'embed', (sharp) => sharp.embed() ])
+  if (args.embed !== options.embed.default) {
+    queue.push([ 'embed', (sharp) => sharp.embed(args.embed) ])
   }
 
   // @see http://sharp.dimens.io/en/stable/api-operation/#extend
