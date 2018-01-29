@@ -4,12 +4,14 @@
 * Added [`--fastShrinkOnLoad`](http://sharp.pixelplumbing.com/en/stable/api-resize/#resize)
   (`sharp` 0.19.0).
 * Added gravity option to [`--embed`](http://sharp.pixelplumbing.com/en/stable/api-resize/#embed).
-* Fixed bug with URI templates on Windows.
+* Fixed bug with [`--withoutEnlargement`](http://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement)
+  (#11).
+* Fixed bug with URI templates on Windows (#8).
 * Removed `--interpolator` and `--centreSampling` resize options (`sharp` 0.19.0).
 * Updated default [`--compressionLevel`](http://sharp.pixelplumbing.com/en/stable/api-output/#png)
   and [`--predictor`](http://sharp.pixelplumbing.com/en/stable/api-output/#tiff)
   (`sharp` 0.19.0).
-* Updated output paths to resolve only after parsing URI template.
+* Updated output paths to resolve only after parsing URI template (#9).
 * Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, and `yargs` dependencies.
 
 ## 1.5.2 (October 27, 2017)
