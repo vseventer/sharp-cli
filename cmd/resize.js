@@ -32,17 +32,18 @@ const queue = require('../lib/queue')
 
 // Configure.
 const options = {
-  centreSampling: {
-    alias: 'centerSampling',
-    desc: 'Use *magick centre sampling convention instead of corner sampling',
-    type: 'boolean'
-  },
   crop: {
     choices: [ ...constants.GRAVITY, ...constants.STRATEGY, undefined ],
     defaultDescription: 'centre',
     desc: 'Crop to an edge/corner, or crop dynamically',
     nargs: 1,
     type: 'string'
+  },
+  fastShrinkOnLoad: {
+    default: true,
+    desc: 'Take greater advantage of the JPEG and WebP shrink-on-load feature',
+    type: 'boolean'
+
   },
   height: {
     desc: 'Number of pixels wide the resultant image should be',
@@ -51,13 +52,6 @@ const options = {
   ignoreAspectRatio: {
     desc: 'Ignoring the aspect ratio of the input, stretch the image to the exact width and/or height',
     type: 'boolean'
-  },
-  interpolator: {
-    choices: constants.INTERPOLATOR,
-    default: 'bicubic',
-    desc: 'The interpolator to use for image enlargement',
-    nargs: 1,
-    type: 'string'
   },
   kernel: {
     choices: constants.KERNEL,
@@ -90,7 +84,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 resize 200 300 --kernel lanczos2 --interpolator nohalo', 'The output will be 200 pixels wide and 300 pixels high containing a lanczos2/nohalo scaled version of the input')
+    .example('$0 resize 200 300 --kernel lanczos2', 'The output will be 200 pixels wide and 300 pixels high containing a lanczos2 scaled version of the input')
     .example('$0 resize 200 200 --crop entropy', 'The output will be a 200px square auto-cropped image')
     .example('$0 resize 200 200 --max', 'The output will be no wider than 200 pixels and no higher than 200 pixels regardless of the input image dimensions')
     .epilog('For more information on available options, please visit http://sharp.dimens.io/en/stable/api-resize/')
@@ -107,9 +101,8 @@ const handler = (args) => {
   // @see http://sharp.dimens.io/en/stable/api-resize/#resize
   queue.push([ 'resize', (sharp) => {
     return sharp.resize(width, height, {
-      kernel: args.kernel,
-      interpolator: args.interpolator,
-      centreSampling: args.centreSampling
+      fastShrinkOnLoad: args.fastShrinkOnLoad,
+      kernel: args.kernel
     })
   }])
 

@@ -97,26 +97,6 @@ describe('resize', () => {
   })
 
   describe('[options]', () => {
-    describe('--centreSampling', () => {
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--centreSampling' ], done))
-
-      it('must set the centreSampling and centerSampling flags', () => {
-        const args = cli.parsed.argv
-        expect(args).to.have.property('centreSampling', true)
-        expect(args).to.have.property('centerSampling', true)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('resize')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
-          centreSampling: true
-        })
-      })
-    })
-
     // @see http://sharp.dimens.io/en/stable/api-resize/#crop
     describe('--crop', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--crop', 'centre' ], done))
@@ -135,6 +115,25 @@ describe('resize', () => {
       })
     })
 
+    // @see http://sharp.dimens.io/en/stable/api-resize/#resize
+    describe('--fastShrinkOnLoad', () => {
+      beforeEach((done) => cli.parse([ 'resize', x, y, '--no-fastShrinkOnLoad' ], done))
+
+      it('must set the fastShrinkOnLoad flag', () => {
+        expect(cli.parsed.argv).to.have.property('fastShrinkOnLoad', false)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('resize')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
+          fastShrinkOnLoad: false
+        })
+      })
+    })
+
     // @see http://sharp.dimens.io/en/stable/api-resize/#ignoreaspectratio
     describe('--ignoreAspectRatio', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--ignoreAspectRatio' ], done))
@@ -150,25 +149,6 @@ describe('resize', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.called(pipeline.ignoreAspectRatio)
-      })
-    })
-
-    // @see http://sharp.dimens.io/en/stable/api-resize/#resize
-    describe('--interpolator', () => {
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--interpolator', 'bicubic' ], done))
-
-      it('must set the interpolator flag', () => {
-        expect(cli.parsed.argv).to.have.property('interpolator', 'bicubic')
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('resize')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, {
-          interpolator: 'bicubic'
-        })
       })
     })
 
