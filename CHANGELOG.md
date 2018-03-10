@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.7.0 (March 9, 2018)
-* Added [linear](http://sharp.dimens.io/en/stable/api-operation/#linear) command.
+* Added [linear](http://sharp.pixelplumbing.com/en/stable/api-operation/#linear) command.
 * Added `--angle` option to [tile](http://sharp.pixelplumbing.com/en/stable/api-output/#tile) command.
 * Updated `sharp`, `sinon`, `snazzy`, and `standard` dependencies.
 
