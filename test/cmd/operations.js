@@ -34,6 +34,7 @@ describe('Operations', () => {
   require('./operations/flip')
   require('./operations/flop')
   require('./operations/gamma')
+  require('./operations/linear')
   require('./operations/negate')
   require('./operations/normalise')
   require('./operations/rotate')

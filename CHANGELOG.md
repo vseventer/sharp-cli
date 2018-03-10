@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 (March 9, 2018)
+* Added [linear](http://sharp.dimens.io/en/stable/api-operation/#linear) command.
+* Added `--angle` option to [tile](http://sharp.pixelplumbing.com/en/stable/api-output/#tile) command.
+* Updated `sharp`, `sinon`, `snazzy`, and `standard` dependencies.
+
 ## 1.6.0 (January 28, 2018)
 * Added [`--fastShrinkOnLoad`](http://sharp.pixelplumbing.com/en/stable/api-resize/#resize)
   (`sharp` 0.19.0).

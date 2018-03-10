@@ -21,44 +21,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-output/#tile
+// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#linear
 
 // Strict mode.
 'use strict'
 
 // Local modules.
-const constants = require('../lib/constants')
-const queue = require('../lib/queue')
+const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  angle: {
-    choices: [ 0, 90, 180, 270 ],
-    default: 0,
-    desc: 'Tile angle of rotation',
-    nargs: 1
-  },
-  container: {
-    choices: constants.CONTAINER,
-    default: 'fs',
-    desc: 'Tile container',
-    nargs: 1
-  },
-  layout: {
-    choices: constants.LAYOUT,
-    default: 'dz',
-    desc: 'Filesystem layout',
-    nargs: 1
-  },
-  overlap: {
-    desc: 'Tile overlap in pixels',
-    defaultDescription: '0',
+  multiplier: {
+    desc: 'Multiplier',
+    default: 1.0,
     nargs: 1,
     type: 'number'
   },
-  size: {
-    desc: 'Tile size in pixels',
-    defaultDescription: 256,
+  offset: {
+    desc: 'Offset',
+    default: 0.0,
     nargs: 1,
     type: 'number'
   }
@@ -69,30 +50,19 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-output/#tile')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#linear')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => {
-  return queue.push([ 'tile', (sharp) => {
-    return sharp.tile({
-      size: args.size,
-      overlap: args.overlap,
-      angle: args.angle,
-      container: args.container,
-      layout: args.layout
-    })
-  }])
-}
+const handler = (args) => queue.push([ 'linear', (sharp) => sharp.linear(args.multiplier, args.offset) ])
 
 // Exports.
 module.exports = {
-  command: 'tile [size]',
-  describe: 'Use tile-based deep zoom (image pyramid) output',
+  command: 'linear [multiplier] [offset]',
+  describe: 'Apply the linear formula a × input + b to the image',
   builder,
   handler
 }

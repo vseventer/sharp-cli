@@ -82,6 +82,27 @@ describe('tile', () => {
   })
 
   describe('[options]', () => {
+    describe('--angle', () => {
+      // Default angle.
+      const angle = '90'
+
+      // Run.
+      beforeEach((done) => cli.parse([ 'tile', '--angle', angle ], done))
+
+      // Tests.
+      it('must set the angle flag', () => {
+        expect(cli.parsed.argv).to.have.property('angle', parseInt(angle, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { angle: parseInt(angle, 10) })
+      })
+    })
+
     describe('--container', () => {
       // Default container.
       const container = 'fs'

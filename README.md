@@ -30,6 +30,7 @@ Commands:
   sharp greyscale                              Convert to 8-bit greyscale; 256 shades of grey
                                                                                 [aliases: grayscale]
   sharp joinChannel <images..>                 Join one or more channels to the image
+  sharp linear [multiplier] [offset]           Apply the linear formula a × input + b to the image
   sharp negate                                 Produce the "negative" of the image
   sharp normalise                              Enhance output image contrast by stretching its
                                                luminance to cover the full dynamic range
