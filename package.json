@@ -1,6 +1,6 @@
 {
   "name": "sharp-cli",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "CLI for sharp.",
   "keywords": [
     "cli",
@@ -28,16 +28,16 @@
   "dependencies": {
     "bubble-stream-error": "1.0.x",
     "multiyargs": "1.0.x",
-    "sharp": "0.20.0",
+    "sharp": "0.20.1",
     "url-template": "2.0.x",
     "yargs": "11.0.x"
   },
   "devDependencies": {
-    "fs-extra": "5.0.x",
-    "mocha": "5.0.x",
+    "fs-extra": "7.0.x",
+    "mocha": "5.2.x",
     "must": "0.13.x",
-    "nyc": "11.4.x",
-    "sinon": "4.4.x",
+    "nyc": "12.0.x",
+    "sinon": "6.1.x",
     "snazzy": "7.1.x",
     "standard": "11.0.x",
     "tempfile": "2.0.x"

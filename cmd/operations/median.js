@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,24 +21,44 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#median
+
 // Strict mode.
 'use strict'
 
-// Test suite.
-describe('Operations', () => {
-  require('./operations/blur')
-  require('./operations/boolean')
-  require('./operations/convolve')
-  require('./operations/extract')
-  require('./operations/flip')
-  require('./operations/flop')
-  require('./operations/gamma')
-  require('./operations/linear')
-  require('./operations/median')
-  require('./operations/negate')
-  require('./operations/normalise')
-  require('./operations/rotate')
-  require('./operations/sharpen')
-  require('./operations/threshold')
-  require('./operations/trim')
-})
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  size: {
+    desc: 'Square mask size.',
+    defaultDescription: 3,
+    nargs: 1,
+    type: 'number'
+  }
+}
+
+// Command builder.
+const builder = (yargs) => {
+  const optionNames = Object.keys(options)
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#median')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'median', (sharp) => sharp.median(args.size) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'median [size]',
+  describe: 'Apply median filter',
+  builder,
+  handler
+}

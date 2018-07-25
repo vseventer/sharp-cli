@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.1
+* Updated `fs-extra`, `mocha`, `nyc`, `sharp`, and `sinon` dependencies.
+
 ## 1.7.0 (March 9, 2018)
 * Added [linear](http://sharp.pixelplumbing.com/en/stable/api-operation/#linear) command.
 * Added `--angle` option to [tile](http://sharp.pixelplumbing.com/en/stable/api-output/#tile) command.
