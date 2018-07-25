@@ -1,6 +1,9 @@
 # Changelog
 
 ## 1.7.1
+* Added `ccittfax4` compression option to TIFF output.
+* Added [median](http://sharp.pixelplumbing.com/en/stable/api-operation/#median) command.
+* Added [tint](http://sharp.pixelplumbing.com/en/stable/api-colour/#tint) command.
 * Updated `fs-extra`, `mocha`, `nyc`, `sharp`, and `sinon` dependencies.
 
 ## 1.7.0 (March 9, 2018)

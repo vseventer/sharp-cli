@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,13 +21,40 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see http://sharp.pixelplumbing.com/en/stable/api-colour/#tint
+
 // Strict mode.
 'use strict'
 
-// Test suite.
-describe('Colour Manipulation', () => {
-  require('./colour-manipulation/background')
-  require('./colour-manipulation/greyscale')
-  require('./colour-manipulation/tint')
-  require('./colour-manipulation/tocolourspace')
-})
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  rgb: {
+    desc: 'String parsed by the color module to extract chroma values',
+    type: 'string'
+  }
+}
+
+// Command builder.
+const builder = (yargs) => {
+  const optionNames = Object.keys(options)
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-colour/#tint')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
+}
+
+// Command handler.
+const handler = (args) => queue.push([ 'tint', (sharp) => sharp.tint(args.rgb) ])
+
+// Exports.
+module.exports = {
+  command: 'tint <rgb>',
+  describe: 'Tint the image using the provided chroma while preserving the image luminance',
+  builder,
+  handler
+}
