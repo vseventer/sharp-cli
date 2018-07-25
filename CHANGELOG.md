@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.1
+## 1.7.1 (July 24, 2018)
 * Added [`--optimiseCoding`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
 * Added `ccittfax4` compression option to TIFF output.
 * Added [median](http://sharp.pixelplumbing.com/en/stable/api-operation/#median) command.

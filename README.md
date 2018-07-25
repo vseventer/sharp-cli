@@ -31,6 +31,7 @@ Commands:
                                                                                 [aliases: grayscale]
   sharp joinChannel <images..>                 Join one or more channels to the image
   sharp linear [multiplier] [offset]           Apply the linear formula a × input + b to the image
+  sharp median [size]                          Apply median filter
   sharp negate                                 Produce the "negative" of the image
   sharp normalise                              Enhance output image contrast by stretching its
                                                luminance to cover the full dynamic range
@@ -43,6 +44,8 @@ Commands:
   sharp threshold [value]                      Any pixel value greather than or equal to the
                                                threshold value will be set to 255, otherwise it will
                                                be set to 0
+  sharp tint <rgb>                             Tint the image using the provided chroma while
+                                               preserving the image luminance
   sharp tile [size]                            Use tile-based deep zoom (image pyramid) output
   sharp toColourspace <colourspace>            Set the output colourspace    [aliases: toColorspace]
   sharp trim [tolerance]                       Trim "boring" pixels from all edges that contain
@@ -64,26 +67,27 @@ Global Options
                           image                                                            [boolean]
 
 Optimization Options
-  --adaptiveFiltering               Use adaptive row filtering                             [boolean]
-  --alphaQuality                    Quality of alpha layer                    [number] [default: 80]
-  --chromaSubsampling               Set to "4:4:4" to prevent chroma subsampling when quality <= 90
-                                                                           [string] [default: 4:2:0]
-  --compression                     Compression options
-                              [string] [choices: "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
-  --lossless                        Use lossless compression mode                          [boolean]
-  --nearLossless                    use near_lossless compression mode                     [boolean]
-  --optimise, --optimize            Apply optimiseScans, overshootDeringing, and trellisQuantisation
-                                                                                           [boolean]
-  --optimiseScans, --optimizeScans  Optimise progressive scans                             [boolean]
-  --overshootDeringing              Apply overshoot deringing                              [boolean]
-  --predictor                       Compression predictor
+  --adaptiveFiltering                 Use adaptive row filtering                           [boolean]
+  --alphaQuality                      Quality of alpha layer                  [number] [default: 80]
+  --chromaSubsampling                 Set to "4:4:4" to prevent chroma subsampling when quality <=
+                                      90                                   [string] [default: 4:2:0]
+  --compression                       Compression options
+                 [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
+  --lossless                          Use lossless compression mode                        [boolean]
+  --nearLossless                      use near_lossless compression mode                   [boolean]
+  --optimise, --optimize              Apply optimiseScans, overshootDeringing, and
+                                      trellisQuantisation                                  [boolean]
+  --optimiseCoding, --optimizeCoding  Optimise Huffman coding tables       [boolean] [default: true]
+  --optimiseScans, --optimizeScans    Optimise progressive scans                           [boolean]
+  --overshootDeringing                Apply overshoot deringing                            [boolean]
+  --predictor                         Compression predictor
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
-  --sequentialRead                  An advanced setting that switches the libvips access method to
-                                    VIPS_ACCESS_SEQUENTIAL                                 [boolean]
-  --squash                          Squash 8-bit images down to 1 bit                      [boolean]
-  --trellisQuantisation             Apply trellis quantisation                             [boolean]
-  --xres                            Horizontal resolution                    [number] [default: 1.0]
-  --yres                            Vertical resolution                      [number] [default: 1.0]
+  --sequentialRead                    An advanced setting that switches the libvips access method to
+                                      VIPS_ACCESS_SEQUENTIAL                               [boolean]
+  --squash                            Squash 8-bit images down to 1 bit                    [boolean]
+  --trellisQuantisation               Apply trellis quantisation                           [boolean]
+  --xres                              Horizontal resolution                  [number] [default: 1.0]
+  --yres                              Vertical resolution                    [number] [default: 1.0]
 
 Misc. Options
   --help, -h     Show help                                                                 [boolean]
