@@ -302,6 +302,26 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    void [ 'optimiseCoding', 'optimizeCoding' ].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--no-${alias}`, ...ioFlags ], done))
+
+        // Tests.
+        it('must set the optimiseScans flag', () => {
+          expect(cli.parsed.argv).to.have.property('optimiseCoding', false)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('jpeg')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.jpeg, { optimiseCoding: false })
+        })
+      })
+    })
+
     void [ 'optimiseScans', 'optimizeScans' ].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run (implies --progressive).
