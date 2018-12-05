@@ -30,16 +30,16 @@
     "multiyargs": "1.0.x",
     "sharp": "0.20.8",
     "url-template": "2.0.x",
-    "yargs": "11.0.x"
+    "yargs": "12.0.x"
   },
   "devDependencies": {
     "fs-extra": "7.0.x",
     "mocha": "5.2.x",
     "must": "0.13.x",
-    "nyc": "12.0.x",
-    "sinon": "6.1.x",
-    "snazzy": "7.1.x",
-    "standard": "11.0.x",
+    "nyc": "13.1.x",
+    "sinon": "7.1.x",
+    "snazzy": "8.0.x",
+    "standard": "12.0.x",
     "tempfile": "2.0.x"
   },
   "engines": {

@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.7.2-dev
+## 1.7.2 (December 4, 2018)
 * Added [`--depth`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
 * Added [`--quantisationTable`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
 * Added [removeAlpha](https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha) command.
+* Updated `nyc`, `sharp`, `sinon`, `snazzy`, `standard`, and `yargs` dependencies.
 
 ## 1.7.1 (July 24, 2018)
 * Added [`--optimiseCoding`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
