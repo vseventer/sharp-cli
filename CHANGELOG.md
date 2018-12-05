@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.2-dev
+* Added [removeAlpha](https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha) command.
+
 ## 1.7.1 (July 24, 2018)
 * Added [`--optimiseCoding`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
 * Added `ccittfax4` compression option to TIFF output.
