@@ -77,12 +77,12 @@ describe('join <images..>', () => {
   describe('[options]', () => {
     describe('--density', () => {
       // Default density.
-      const density = '72'
+      const density = '72.1'
 
       beforeEach((done) => cli.parse([ 'joinChannel', input, '--density', density ], done))
 
       it('must set the imageDensity flags', () => {
-        expect(cli.parsed.argv).to.have.property('density', parseInt(density, 10))
+        expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -91,7 +91,7 @@ describe('join <images..>', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.joinChannel, sinon.match.any, {
-          density: parseInt(density, 10)
+          density: parseFloat(density)
         })
       })
     })

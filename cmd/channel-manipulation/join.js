@@ -35,7 +35,7 @@ const queue = require('../../lib/queue')
 // Configure.
 const options = {
   density: {
-    desc: 'Integral number representing the DPI for vector images',
+    desc: 'Number representing the DPI for vector images',
     defaultDescription: 72,
     nargs: 1,
     type: 'number'
