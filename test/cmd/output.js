@@ -124,6 +124,27 @@ describe('tile', () => {
       })
     })
 
+    describe('--depth', () => {
+      // Default depth.
+      const depth = 'onepixel'
+
+      // Run.
+      beforeEach((done) => cli.parse([ 'tile', '--depth', depth ], done))
+
+      // Tests.
+      it('must set the depth flag', () => {
+        expect(cli.parsed.argv).to.have.property('depth', depth)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { depth })
+      })
+    })
+
     describe('--layout', () => {
       // Default layout.
       const layout = 'dz'

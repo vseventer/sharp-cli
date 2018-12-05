@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.7.2-dev
+* Added [`--depth`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
 * Added [`--quantisationTable`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
 * Added [removeAlpha](https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha) command.
 

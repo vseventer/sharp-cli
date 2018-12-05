@@ -44,6 +44,12 @@ const options = {
     desc: 'Tile container',
     nargs: 1
   },
+  depth: {
+    choices: constants.DEPTH,
+    defaultDescription: 'auto',
+    desc: 'Pyramid depth',
+    nargs: 1
+  },
   layout: {
     choices: constants.LAYOUT,
     default: 'dz',
@@ -83,6 +89,7 @@ const handler = (args) => {
       size: args.size,
       overlap: args.overlap,
       angle: args.angle,
+      depth: args.depth,
       container: args.container,
       layout: args.layout
     })
