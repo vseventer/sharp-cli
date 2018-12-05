@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.7.2-dev
+* Added [`--quantisationTable`](http://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.
 * Added [removeAlpha](https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha) command.
 
 ## 1.7.1 (July 24, 2018)

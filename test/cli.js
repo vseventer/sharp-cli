@@ -445,6 +445,29 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    void [ 'quantisationTable', 'quantizationTable' ].forEach((alias) => {
+      // Default quantisation table.
+      const table = '1'
+
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, table, ...ioFlags ], done))
+
+        // Tests.
+        it('must set the quantisationTable flag', () => {
+          expect(cli.parsed.argv).to.have.property('quantisationTable', parseInt(table, 10))
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('jpeg')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.jpeg, { quantisationTable: parseInt(table, 10) })
+        })
+      })
+    })
+
     describe('--sequentialRead', () => {
       // Run.
       beforeEach((done) => cli.parse([ '--sequentialRead', ...ioFlags ], done))
