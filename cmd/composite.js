@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-composite/
+// @see https://sharp.pixelplumbing.com/en/stable/api-composite/
 
 // Strict mode.
 'use strict'
@@ -75,7 +75,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 overlayWith ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-composite/')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-composite/')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -86,7 +86,7 @@ const handler = (args) => {
   const [ top, left ] = args.offset || [ ]
   const [ width, height, channels, background ] = args.create || [ ]
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-composite/#overlaywith
+  // @see https://sharp.pixelplumbing.com/en/stable/api-composite/#overlaywith
   return queue.push([ 'overlayWith', (sharp) => {
     return sharp.overlayWith(args.overlay, {
       create: args.create && { width, height, channels, background },

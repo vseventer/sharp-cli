@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#negate
+// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#negate
 
 // Strict mode.
 'use strict'
@@ -33,7 +33,7 @@ const queue = require('../../lib/queue')
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#negate')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-operation/#negate')
 }
 
 // Command handler.

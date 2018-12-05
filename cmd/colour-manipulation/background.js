@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-colour/#background
+// @see https://sharp.pixelplumbing.com/en/stable/api-colour/#background
 
 // Strict mode.
 'use strict'
@@ -63,7 +63,7 @@ const builder = (yargs) => {
     .example('$0 background rgba(0,0,0,0) --embed centre', 'The output will be embedded on a transparent canvas')
     .example('$0 background rgba(0,0,0,0) --extend 10 20 10 10', 'The output will have 10 transparent pixels to the top, left, and right edges and 20 to the bottom edge')
     .example('$0 background rgba(0,0,0,0) --flatten')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-colour/#background')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-colour/#background')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -71,15 +71,15 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  // @see http://sharp.pixelplumbing.com/en/stable/api-colour/#background
+  // @see https://sharp.pixelplumbing.com/en/stable/api-colour/#background
   queue.push([ 'background', (sharp) => sharp.background(args.rgba) ])
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#embed
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#embed
   if (args.embed !== options.embed.default) {
     queue.push([ 'embed', (sharp) => sharp.embed(args.embed) ])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-operation/#extend
+  // @see https://sharp.pixelplumbing.com/en/stable/api-operation/#extend
   if (args.extend) {
     queue.push([ 'extend', (sharp) => {
       const [ top, right, bottom, left ] = args.extend
@@ -87,7 +87,7 @@ const handler = (args) => {
     }])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-operation/#flatten
+  // @see https://sharp.pixelplumbing.com/en/stable/api-operation/#flatten
   if (args.flatten) {
     queue.push([ 'flatten', (sharp) => sharp.flatten() ])
   }

@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-resize/
+// @see https://sharp.pixelplumbing.com/en/stable/api-resize/
 
 // Strict mode.
 'use strict'
@@ -86,7 +86,7 @@ const builder = (yargs) => {
     .example('$0 resize 200 300 --kernel lanczos2', 'The output will be 200 pixels wide and 300 pixels high containing a lanczos2 scaled version of the input')
     .example('$0 resize 200 200 --crop entropy', 'The output will be a 200px square auto-cropped image')
     .example('$0 resize 200 200 --max', 'The output will be no wider than 200 pixels and no higher than 200 pixels regardless of the input image dimensions')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-resize/')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-resize/')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -97,7 +97,7 @@ const handler = (args) => {
   const width = args.width === 0 ? null : args.width // Auto-scale.
   const height = args.height === 0 ? null : (args.height || width) // Auto-scale or square.
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
   queue.push([ 'resize', (sharp) => {
     return sharp.resize(width, height, {
       fastShrinkOnLoad: args.fastShrinkOnLoad,
@@ -105,27 +105,27 @@ const handler = (args) => {
     })
   }])
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#crop
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#crop
   if (args.crop) {
     queue.push([ 'crop', (sharp) => sharp.crop(args.crop) ])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#max
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#max
   if (args.max) {
     queue.push([ 'max', (sharp) => sharp.max() ])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#min
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#min
   if (args.min) {
     queue.push([ 'min', (sharp) => sharp.min() ])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#ignoreaspectratio
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#ignoreaspectratio
   if (args.ignoreAspectRatio) {
     queue.push([ 'ignoreAspectRatio', (sharp) => sharp.ignoreAspectRatio() ])
   }
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
+  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
   if (args.withoutEnlargement) {
     queue.push([ 'withoutEnlargement', (sharp) => sharp.withoutEnlargement(args.withoutEnlargement) ])
   }

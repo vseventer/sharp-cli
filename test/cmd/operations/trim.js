@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#trim
+// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#trim
 
 // Strict mode.
 'use strict'

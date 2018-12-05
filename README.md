@@ -105,7 +105,7 @@ Examples:
   sharpen                                             SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
 
-For more information on available options, please visit http://sharp.pixelplumbing.com/
+For more information on available options, please visit https://sharp.pixelplumbing.com/
 ```
 
 ## Related

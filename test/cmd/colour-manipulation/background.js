@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-resize/
+// @see https://sharp.pixelplumbing.com/en/stable/api-resize/
 
 // Strict mode.
 'use strict'
@@ -67,7 +67,7 @@ describe('background', () => {
   })
 
   describe('[options]', () => {
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#embed
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#embed
     describe('--embed', () => {
       // Default gravity
       const gravity = 'northeast'
@@ -88,7 +88,7 @@ describe('background', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-operation/#extend
+    // @see https://sharp.pixelplumbing.com/en/stable/api-operation/#extend
     describe('--extend', () => {
       // Default padding.
       const top = '10'
@@ -124,7 +124,7 @@ describe('background', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-operation/#flatten
+    // @see https://sharp.pixelplumbing.com/en/stable/api-operation/#flatten
     describe('--flatten', () => {
       beforeEach((done) => cli.parse([ 'background', rgba, '--flatten' ], done))
 

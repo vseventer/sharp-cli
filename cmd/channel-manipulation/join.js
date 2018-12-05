@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-channel/#joinchannel
+// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#joinchannel
 
 // Strict mode.
 'use strict'
@@ -53,7 +53,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-channel/#joinchannel')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#joinchannel')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-resize/
+// @see https://sharp.pixelplumbing.com/en/stable/api-resize/
 
 // Strict mode.
 'use strict'
@@ -97,7 +97,7 @@ describe('resize', () => {
   })
 
   describe('[options]', () => {
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#crop
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#crop
     describe('--crop', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--crop', 'centre' ], done))
 
@@ -115,7 +115,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
     describe('--fastShrinkOnLoad', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--no-fastShrinkOnLoad' ], done))
 
@@ -134,7 +134,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#ignoreaspectratio
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#ignoreaspectratio
     describe('--ignoreAspectRatio', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--ignoreAspectRatio' ], done))
 
@@ -152,7 +152,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
     describe('--kernel', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--kernel', 'lanczos3' ], done))
 
@@ -171,7 +171,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#max
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#max
     describe('--max', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--max' ], done))
 
@@ -189,7 +189,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#min
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#min
     describe('--min', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--min' ], done))
 
@@ -207,7 +207,7 @@ describe('resize', () => {
       })
     })
 
-    // @see http://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
+    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
     describe('--withoutEnlargement', () => {
       beforeEach((done) => cli.parse([ 'resize', x, y, '--withoutEnlargement' ], done))
 

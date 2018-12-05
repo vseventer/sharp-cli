@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#flop
+// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#flop
 
 // Strict mode.
 'use strict'
