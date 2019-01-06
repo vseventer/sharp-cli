@@ -32,5 +32,5 @@ describe('Commands', () => {
   require('./cmd/operations')
   require('./cmd/composite')
   require('./cmd/output')
-  require('./cmd/resize')
+  require('./cmd/resizing')
 })

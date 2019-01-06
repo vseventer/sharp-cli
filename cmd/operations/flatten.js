@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#extract
+// @see https://sharp.dimens.io/en/stable/api-operation/#flatten
 
 // Strict mode.
 'use strict'
@@ -31,21 +31,10 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  left: {
-    desc: 'Zero-indexed offset from left edge',
-    type: 'number'
-  },
-  top: {
-    desc: 'Zero-indexed offset from top edge',
-    type: 'number'
-  },
-  width: {
-    desc: 'Dimension of extracted image',
-    type: 'number'
-  },
-  height: {
-    desc: 'Dimension of extracted image',
-    type: 'number'
+  background: {
+    defaultDescription: 'rgb(0, 0, 0)',
+    desc: 'Background colour, parsed by the color module',
+    type: 'string'
   }
 }
 
@@ -54,7 +43,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-operation/#extract')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-operation/#flatten')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -62,20 +51,15 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'extract', (sharp) => {
-    return sharp.extract({
-      left: args.left,
-      top: args.top,
-      width: args.width,
-      height: args.height
-    })
+  return queue.push([ 'flatten', (sharp) => {
+    return sharp.flatten({ background: args.background })
   }])
 }
 
 // Exports.
 module.exports = {
-  command: 'extract <top> <left> <width> <height>',
-  describe: 'Extract a region of the image',
+  command: 'flatten [background]',
+  describe: 'Merge alpha transparency channel, if any, with a background',
   builder,
   handler
 }

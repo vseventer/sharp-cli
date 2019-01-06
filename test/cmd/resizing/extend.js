@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#rotate
+// @see https://sharp.dimens.io/en/stable/api-resize/#extend
 
 // Strict mode.
 'use strict'
@@ -33,51 +33,48 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
+const extend = require('../../../cmd/resizing/extend')
 const queue = require('../../../lib/queue')
-const rotate = require('../../../cmd/operations/rotate')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-describe('rotate', () => {
-  const cli = (new Yargs()).command(rotate)
+describe('extend', () => {
+  const cli = (new Yargs()).command(extend)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('..', () => {
-    // Run.
-    beforeEach((done) => cli.parse([ 'rotate' ], done))
-
-    // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('rotate')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.rotate)
-    })
-  })
-
-  describe('[angle]', () => {
-    // Default angle.
-    const angle = '90'
+  describe('<top> <bottom> <left> <right>', () => {
+    // Default offsets.
+    const top = '10'
+    const bottom = '20'
+    const left = '10'
+    const right = '10'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'rotate', angle ], done))
+    beforeEach((done) => cli.parse([ 'extend', top, bottom, left, right ], done))
 
     // Tests.
-    it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('angle', parseInt(angle, 10))
+    it('must set the top, bottom, left, and right flags', () => {
+      const args = cli.parsed.argv
+      expect(args).to.have.property('top', parseInt(args.top, 10))
+      expect(args).to.have.property('bottom', parseInt(args.bottom, 10))
+      expect(args).to.have.property('left', parseInt(args.left, 10))
+      expect(args).to.have.property('right', parseInt(args.right, 10))
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('rotate')
+      expect(queue.pipeline).to.include('extend')
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.rotate, parseInt(angle, 10))
+      sinon.assert.calledWithMatch(pipeline.extend, {
+        top: parseInt(top, 10),
+        bottom: parseInt(bottom, 10),
+        left: parseInt(left, 10),
+        right: parseInt(right, 10)
+      })
     })
   })
 
@@ -87,7 +84,7 @@ describe('rotate', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'rotate', '--background', background ], done))
+      beforeEach((done) => cli.parse([ 'extend', '10', '20', '10', '10', '--background', background ], done))
 
       // Tests.
       it('must set the background flag', () => {
@@ -95,11 +92,11 @@ describe('rotate', () => {
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('rotate')
+        expect(queue.pipeline).to.include('extend')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWith(pipeline.rotate, undefined, { background })
+        sinon.assert.calledWithMatch(pipeline.extend, { background })
       })
     })
   })

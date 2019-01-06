@@ -394,6 +394,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--pyramid', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--pyramid', ...ioFlags ], done))
+
+      // Tests.
+      it('must set the pyramid flag', () => {
+        expect(cli.parsed.argv).to.have.property('pyramid', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { pyramid: true })
+      })
+    })
+
     void [ 'p', 'progressive' ].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
@@ -501,6 +519,57 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.tiff, { squash: true })
+      })
+    })
+
+    describe('--tileHeight', () => {
+      // Default tileHeight.
+      const tileHeight = '100'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--tileHeight', tileHeight, ...ioFlags ], done))
+
+      // Tests.
+      it('must set the tileHeight flag', () => {
+        expect(cli.parsed.argv).to.have.property('tileHeight', parseInt(tileHeight, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, {
+          tile: true,
+          tileHeight: parseInt(tileHeight, 10),
+          tileWidth: parseInt(tileHeight, 10)
+        })
+      })
+    })
+
+    describe('--tileWidth', () => {
+      // Default tileHeight and tileWidth.
+      const tileHeight = '100'
+      const tileWidth = '50'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--tileHeight', tileHeight, '--tileWidth', tileWidth, ...ioFlags ], done))
+
+      // Tests.
+      it('must set the tileWidth flag', () => {
+        expect(cli.parsed.argv).to.have.property('tileWidth', parseInt(tileWidth, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, {
+          tile: true,
+          tileHeight: parseInt(tileHeight, 10),
+          tileWidth: parseInt(tileWidth, 10)
+        })
       })
     })
 

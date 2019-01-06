@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,24 +21,43 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.dimens.io/en/stable/api-resize/#trim
+
 // Strict mode.
 'use strict'
 
-// Test suite.
-describe('Operations', () => {
-  require('./operations/blur')
-  require('./operations/boolean')
-  require('./operations/convolve')
-  require('./operations/flatten')
-  require('./operations/flip')
-  require('./operations/flop')
-  require('./operations/gamma')
-  require('./operations/linear')
-  require('./operations/median')
-  require('./operations/negate')
-  require('./operations/normalise')
-  require('./operations/recomb')
-  require('./operations/rotate')
-  require('./operations/sharpen')
-  require('./operations/threshold')
-})
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  threshold: {
+    desc: 'The allowed difference from the top-left pixel',
+    defaultDescription: '10',
+    type: 'number'
+  }
+}
+
+// Command builder.
+const builder = (yargs) => {
+  const optionNames = Object.keys(options)
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-resize/#trim')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'trim', (sharp) => sharp.trim(args.threshold) ])
+}
+
+// Exports.
+module.exports = {
+  command: 'trim [threshold]',
+  describe: 'Trim "boring" pixels from all edges that contain values within a percentage similarity of the top-left pixel',
+  builder,
+  handler
+}

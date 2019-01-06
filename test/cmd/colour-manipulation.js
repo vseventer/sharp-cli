@@ -27,7 +27,6 @@
 
 // Test suite.
 describe('Colour Manipulation', () => {
-  require('./colour-manipulation/background')
   require('./colour-manipulation/greyscale')
   require('./colour-manipulation/tint')
   require('./colour-manipulation/tocolourspace')

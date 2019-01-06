@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#trim
+// @see https://sharp.dimens.io/en/stable/api-operation/#recomb
 
 // Strict mode.
 'use strict'
@@ -33,51 +33,41 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
+const recomb = require('../../../cmd/operations/recomb')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
-const trim = require('../../../cmd/operations/trim')
 
 // Test suite.
-describe('trim', () => {
-  const cli = (new Yargs()).command(trim)
+describe('recomb', () => {
+  const cli = (new Yargs()).command(recomb)
+
+  // Default matrix.
+  const matrix = '0.3588 0.7044 0.1368 0.2990 0.5870 0.1140 0.2392 0.4696 0.0912'
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('..', () => {
+  describe('<matrix>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'trim' ], done))
+    beforeEach((done) => cli.parse([ 'recomb', matrix ], done))
 
     // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('trim')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.trim)
-    })
-  })
-
-  describe('[tolerance]', () => {
-    // Default tolerance.
-    const tolerance = '10'
-
-    // Run.
-    beforeEach((done) => cli.parse([ 'trim', tolerance ], done))
-
-    // Tests.
-    it('must set the tolerance flag', () => {
-      expect(cli.parsed.argv).to.have.property('tolerance', parseInt(tolerance, 10))
+    it('must set the matrix flag', () => {
+      expect(cli.parsed.argv).to.have.property('matrix', matrix)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('trim')
+      expect(queue.pipeline).to.include('recomb')
     })
     it('must execute the pipeline', () => {
+      const arg = matrix.split(' ').map((el) => parseFloat(el))
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.trim, parseInt(tolerance, 10))
+      sinon.assert.calledWithMatch(pipeline.recomb, [
+        arg.slice(0, 3),
+        arg.slice(3, 6),
+        arg.slice(6, 9)
+      ])
     })
   })
 })

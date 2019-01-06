@@ -59,7 +59,7 @@ describe('CLI', () => {
     return cli([
       '-i', input,
       '-o', dest,
-      'resize', '100', '--crop', 'south', '--',
+      'resize', '100', '--position', 'south', '--',
       'greyscale', '--',
       'sharpen'
     ], { logger }).then(() => {

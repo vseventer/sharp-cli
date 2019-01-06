@@ -27,14 +27,14 @@
 'use strict'
 
 // Local modules.
-const constants = require('../lib/constants')
-const queue = require('../lib/queue')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
   background: {
     defaultDescription: 'rgba(0, 0, 0, 1)',
-    desc: 'Background color when using a fit of contain, parsed by the color module.',
+    desc: 'Background colour when using a fit of contain, parsed by the color module.',
     type: 'string'
   },
   fastShrinkOnLoad: {

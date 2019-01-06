@@ -26,20 +26,9 @@
 'use strict'
 
 // Test suite.
-describe('Operations', () => {
-  require('./operations/blur')
-  require('./operations/boolean')
-  require('./operations/convolve')
-  require('./operations/flatten')
-  require('./operations/flip')
-  require('./operations/flop')
-  require('./operations/gamma')
-  require('./operations/linear')
-  require('./operations/median')
-  require('./operations/negate')
-  require('./operations/normalise')
-  require('./operations/recomb')
-  require('./operations/rotate')
-  require('./operations/sharpen')
-  require('./operations/threshold')
+describe('Resizing', () => {
+  require('./resizing/extend')
+  require('./resizing/extract')
+  require('./resizing/resize')
+  require('./resizing/trim')
 })

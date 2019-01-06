@@ -21,26 +21,61 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.dimens.io/en/stable/api-resize/#extract
+
 // Strict mode.
 'use strict'
 
-// Package modules.
-const sharp = require('sharp')
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Configure.
+const options = {
+  left: {
+    desc: 'Zero-indexed offset from left edge',
+    type: 'number'
+  },
+  top: {
+    desc: 'Zero-indexed offset from top edge',
+    type: 'number'
+  },
+  width: {
+    desc: 'Dimension of extracted image',
+    type: 'number'
+  },
+  height: {
+    desc: 'Dimension of extracted image',
+    type: 'number'
+  }
+}
+
+// Command builder.
+const builder = (yargs) => {
+  const optionNames = Object.keys(options)
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-resize/#extract')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
+}
+
+// Command handler.
+const handler = (args) => {
+  return queue.push([ 'extract', (sharp) => {
+    return sharp.extract({
+      left: args.left,
+      top: args.top,
+      width: args.width,
+      height: args.height
+    })
+  }])
+}
 
 // Exports.
 module.exports = {
-  BAND: [ 'red', 'green', 'blue' ],
-  BOOL: Object.keys(sharp.bool),
-  COLOURSPACE: Object.keys(sharp.colourspace),
-  CONTAINER: [ 'fs', 'zip' ],
-  DEPTH: [ 'onepixel', 'onetile', 'one' ],
-  FIT: Object.keys(sharp.fit),
-  FORMAT: [ 'jpeg', 'jpg', 'png', 'raw', 'tiff', 'webp' ],
-  GRAVITY: Object.keys(sharp.gravity),
-  KERNEL: Object.keys(sharp.kernel),
-  LAYOUT: [ 'dz', 'google', 'zoomify' ],
-  POSITION: Object.keys(sharp.position),
-  STRATEGY: Object.keys(sharp.strategy),
-  TIFF_COMPRESSION: [ 'ccittfax4', 'deflate', 'jpeg', 'lzw', 'none' ],
-  TIFF_PREDICTOR: [ 'float', 'horizontal', 'none' ]
+  command: 'extract <top> <left> <width> <height>',
+  describe: 'Extract a region of the image',
+  builder,
+  handler
 }

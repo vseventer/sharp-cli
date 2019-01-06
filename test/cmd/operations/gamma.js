@@ -80,4 +80,25 @@ describe('gamma', () => {
       sinon.assert.calledWith(pipeline.gamma, parseFloat(factor))
     })
   })
+
+  describe('[factorOut]', () => {
+    // Default factorOut.
+    const factorOut = '1.1'
+
+    // Run.
+    beforeEach((done) => cli.parse([ 'gamma', '2.2', factorOut ], done))
+
+    // Tests.
+    it('must set the factorOut flag', () => {
+      expect(cli.parsed.argv).to.have.property('factorOut', parseFloat(factorOut))
+    })
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('gamma')
+    })
+    it('must execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, parseFloat(factorOut))
+    })
+  })
 })

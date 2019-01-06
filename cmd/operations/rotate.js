@@ -32,10 +32,13 @@ const queue = require('../../lib/queue')
 // Configure.
 const options = {
   angle: {
-    choices: [ 'auto', 0, 90, 180, 270 ],
     default: 'auto',
-    desc: 'Explicit angle',
+    desc: 'Angle of rotation',
     type: 'number'
+  },
+  background: {
+    desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
+    type: 'string'
   }
 }
 
@@ -54,7 +57,11 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   if (args.angle === 'auto') args.angle = undefined // Cast.
-  return queue.push([ 'rotate', (sharp) => sharp.rotate(args.angle) ])
+  return queue.push([ 'rotate', (sharp) => {
+    return sharp.rotate(args.angle, {
+      background: args.background
+    })
+  }])
 }
 
 // Exports.

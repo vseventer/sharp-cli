@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.0 (January 5, 2018)
+* Added `--background` option to [`resize`](https://sharp.dimens.io/en/stable/api-resize/#resize) and [`rotate`](https://sharp.dimens.io/en/stable/api-operation/#rotate) commands.
+* Added [`--fit` and `--position`](https://sharp.dimens.io/en/stable/api-resize/#resize) options.
+* Added [`--factorOut`](https://sharp.dimens.io/en/stable/api-operation/#gamma) option.
+* Added [`--pyramid`, `--tileWidth`, and `--tileHeight`](https://sharp.dimens.io/en/stable/api-output/#tiff) options.
+* Added [`extend`](https://sharp.dimens.io/en/stable/api-resize/#extend) command.
+* Added [`flatten`](https://sharp.dimens.io/en/stable/api-operation/#flatten) command.
+* Added [`recomb`](https://sharp.dimens.io/en/stable/api-operation/#recomb) command.
+* Removed `--crop`, `--ignoreAspectRatio`, `--min`, and `--max` options.
+* Removed `background` command.
+* Renamed `--tolerance` option to [`--threshold`](https://sharp.dimens.io/en/stable/api-resize/#trim).
+* Updated `sharp` and `sinon` dependencies.
+
 ## 1.7.2 (December 4, 2018)
 * Added [`--depth`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
 * Added [`--quantisationTable`](https://sharp.pixelplumbing.com/en/stable/api-output/#jpeg) option.

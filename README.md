@@ -11,8 +11,6 @@
 sharp <options> [command..]
 
 Commands:
-  sharp background <rgba>                      Set the background to embed, extend, or flatten the
-                                               image with
   sharp bandbool <operator>                    Perform a bitwise boolean operation on all input
                                                image channels (bands) to produce a single channel
                                                output image
@@ -20,11 +18,15 @@ Commands:
   sharp boolean <operand> <operator>           Perform a bitwise boolean operation with operand
                                                image
   sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
+  sharp extend <top> <bottom> <left> <right>   Extends/pads the edges of the image with the provided
+                                               background colour
   sharp extract <top> <left> <width> <height>  Extract a region of the image
   sharp extractChannel <band>                  Extract a single channel from a multi-channel image
+  sharp flatten [background]                   Merge alpha transparency channel, if any, with a
+                                               background
   sharp flip                                   Flip the image about the vertical Y axis
   sharp flop                                   Flop the image about the horizontal X axis
-  sharp gamma [factor]                         Apply a gamma correction by reducing the encoding
+  sharp gamma [factor] [factorOut]             Apply a gamma correction by reducing the encoding
                                                (darken) pre-resize then increasing the encoding
                                                (brighten) post-resize
   sharp greyscale                              Convert to 8-bit greyscale; 256 shades of grey
@@ -38,6 +40,7 @@ Commands:
                                                                                 [aliases: normalize]
   sharp overlayWith <overlay>                  Overlay (composite) an image over the processed
                                                (resized, extracted etc.) image
+  sharp recomb <matrix>                        Recomb the image with the specified matrix
   sharp removeAlpha                            Remove alpha channel, if any
   sharp resize <width> [height]                Resize image to width × height
   sharp rotate [angle]                         Rotate the output image
@@ -49,7 +52,7 @@ Commands:
                                                preserving the image luminance
   sharp tile [size]                            Use tile-based deep zoom (image pyramid) output
   sharp toColourspace <colourspace>            Set the output colourspace    [aliases: toColorspace]
-  sharp trim [tolerance]                       Trim "boring" pixels from all edges that contain
+  sharp trim [threshold]                       Trim "boring" pixels from all edges that contain
                                                values within a percentage similarity of the top-left
                                                pixel
 
@@ -83,10 +86,13 @@ Optimization Options
   --overshootDeringing                      Apply overshoot deringing                      [boolean]
   --predictor                               Compression predictor
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
+  --pyramid                                 Write an image pyramid                         [boolean]
   --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
   --sequentialRead                          An advanced setting that switches the libvips access
                                             method to VIPS_ACCESS_SEQUENTIAL               [boolean]
   --squash                                  Squash 8-bit images down to 1 bit              [boolean]
+  --tileHeight                              Vertical tile size                              [number]
+  --tileWidth                               Horizontal tile size                            [number]
   --trellisQuantisation                     Apply trellis quantisation                     [boolean]
   --xres                                    Horizontal resolution            [number] [default: 1.0]
   --yres                                    Vertical resolution              [number] [default: 1.0]
@@ -100,9 +106,9 @@ Examples:
                                                       200 pixels high image containing a scaled and
                                                       cropped version of input.jpg
   sharp -i ./input.jpg -o ./out -mq90 rotate 180 --   out/input.jpg will be an upside down, 300px
-  resize 300 -- background "#ff6600" --flatten --     wide, alpha channel flattened onto orange
-  overlayWith ./overlay.png --gravity southeast --    background, composited with overlay.png with
-  sharpen                                             SE gravity, sharpened, with metadata, 90%
+  resize 300 -- flatten "#ff6600" -- overlayWith      wide, alpha channel flattened onto orange
+  ./overlay.png --gravity southeast -- sharpen        background, composited with overlay.png with
+                                                      SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
 
 For more information on available options, please visit https://sharp.pixelplumbing.com/

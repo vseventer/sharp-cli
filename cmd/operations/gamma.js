@@ -36,6 +36,12 @@ const options = {
     defaultDescription: '2.2',
     nargs: 1,
     type: 'number'
+  },
+  factorOut: {
+    desc: 'The gamma factor used for scaling',
+    defaultDescription: 'factor',
+    nargs: 1,
+    type: 'number'
   }
 }
 
@@ -51,11 +57,13 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'gamma', (sharp) => sharp.gamma(args.factor) ])
+const handler = (args) => queue.push([ 'gamma', (sharp) => {
+  return sharp.gamma(args.factor, args.factorOut || args.factor)
+}])
 
 // Exports.
 module.exports = {
-  command: 'gamma [factor]',
+  command: 'gamma [factor] [factorOut]',
   describe: 'Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize',
   builder,
   handler
