@@ -73,6 +73,7 @@ describe('CLI', () => {
       .then(() => {
         sinon.assert.calledWith(logger.log, pkg.version)
         sinon.assert.notCalled(logger.error)
+        expect(process.exitCode).not.to.equal(1)
       })
   })
   it('must display errors', () => {
@@ -81,6 +82,7 @@ describe('CLI', () => {
         sinon.assert.notCalled(logger.log)
         sinon.assert.calledWithMatch(logger.error, 'Missing required arguments')
         sinon.assert.calledWithMatch(logger.error, 'Specify --help for available options')
+        expect(process.exitCode).to.equal(1)
       })
   })
 })

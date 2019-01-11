@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.0
+* Added exit code 1 for errorneuos commands (#15).
+
 ## 1.8.0 (January 5, 2019)
 * Added `--background` option to [`resize`](https://sharp.dimens.io/en/stable/api-resize/#resize) and [`rotate`](https://sharp.dimens.io/en/stable/api-operation/#rotate) commands.
 * Added [`--fit` and `--position`](https://sharp.dimens.io/en/stable/api-resize/#resize) options.
