@@ -110,6 +110,30 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    void [ 'colors', 'colours' ].forEach(alias => {
+      // Run.
+      describe(`--${alias}`, () => {
+        // Default colors.
+        const colors = '128'
+
+        // Run.
+        beforeEach((done) => cli.parse([ `--${alias}`, colors, ...ioFlags ], done))
+
+        // Tests.
+        it('must set the colors flag', () => {
+          expect(cli.parsed.argv).to.have.property('colors', parseInt(colors, 10))
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('png')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.png, { colors: parseInt(colors, 10) })
+        })
+      })
+    })
+
     describe('--compression', () => {
       // Default compression.
       const compression = 'deflate'
@@ -152,6 +176,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
           const pipeline = queue.drain(sharp())
           sinon.assert.calledWithMatch(pipeline.png, { compressionLevel: parseInt(level, 10) })
         })
+      })
+    })
+
+    describe('--dither', () => {
+      // Default dither.
+      const dither = '0.5'
+
+      // Run.
+      beforeEach((done) => cli.parse([ '--dither', dither, ...ioFlags ], done))
+
+      // Tests.
+      it('must set the dither flag', () => {
+        expect(cli.parsed.argv).to.have.property('dither', parseFloat(dither))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('png')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.png, { dither: parseFloat(dither) })
       })
     })
 
@@ -370,6 +415,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.jpeg, { overshootDeringing: true })
+      })
+    })
+
+    describe('--palette', () => {
+      // Run.
+      beforeEach((done) => cli.parse([ '--palette', ...ioFlags ], done))
+
+      // Tests.
+      it('must set the palette flag', () => {
+        expect(cli.parsed.argv).to.have.property('palette', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('png')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.png, { palette: true })
       })
     })
 

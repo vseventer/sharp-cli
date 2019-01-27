@@ -1,7 +1,11 @@
 # Changelog
 
 ## 1.9.0
+* Added [`--colors`, `--dither`, and `--palette`](https://sharp.pixelplumbing.com/en/stable/api-output/#png) options.
+* Added [`ensureAlpha`](https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha) command.
 * Added exit code 1 for errorneuos commands (#15).
+* Fixed bug to support output directories (#16) - introduced in v1.6.0.
+* Updated `sharp` dependency
 
 ## 1.8.0 (January 5, 2019)
 * Added `--background` option to [`resize`](https://sharp.dimens.io/en/stable/api-resize/#resize) and [`rotate`](https://sharp.dimens.io/en/stable/api-operation/#rotate) commands.
