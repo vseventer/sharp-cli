@@ -18,6 +18,7 @@ Commands:
   sharp boolean <operand> <operator>           Perform a bitwise boolean operation with operand
                                                image
   sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
+  sharp ensureAlpha                            Ensure alpha channel, if missing
   sharp extend <top> <bottom> <left> <right>   Extends/pads the edges of the image with the provided
                                                background colour
   sharp extract <top> <left> <width> <height>  Extract a region of the image
@@ -75,8 +76,11 @@ Optimization Options
   --alphaQuality                            Quality of alpha layer            [number] [default: 80]
   --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
                                             quality <= 90                  [string] [default: 4:2:0]
+  --colors, --colours                       Maximum number of palette entries[number] [default: 256]
   --compression                             Compression options
                  [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
+  --dither                                  Level of Floyd-Steinberg error diffusion
+                                                                             [number] [default: 1.0]
   --lossless                                Use lossless compression mode                  [boolean]
   --nearLossless                            use near_lossless compression mode             [boolean]
   --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and
@@ -84,6 +88,8 @@ Optimization Options
   --optimiseCoding, --optimizeCoding        Optimise Huffman coding tables [boolean] [default: true]
   --optimiseScans, --optimizeScans          Optimise progressive scans                     [boolean]
   --overshootDeringing                      Apply overshoot deringing                      [boolean]
+  --palette                                 Quantise to a palette-based image with alpha
+                                            transparency support                           [boolean]
   --predictor                               Compression predictor
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
   --pyramid                                 Write an image pyramid                         [boolean]
