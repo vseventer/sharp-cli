@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.9.0
+## 1.9.0 (January 26, 2019)
 * Added [`--colors`, `--dither`, and `--palette`](https://sharp.pixelplumbing.com/en/stable/api-output/#png) options.
 * Added [`ensureAlpha`](https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha) command.
 * Added exit code 1 for errorneuos commands (#15).
