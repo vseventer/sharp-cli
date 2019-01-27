@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,14 +21,28 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+
 // Strict mode.
 'use strict'
 
-// Test suite.
-describe('Channel Manipulation', () => {
-  require('./channel-manipulation/bandbool')
-  require('./channel-manipulation/ensure-alpha')
-  require('./channel-manipulation/extract')
-  require('./channel-manipulation/join')
-  require('./channel-manipulation/remove-alpha')
-})
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha')
+}
+
+// Command handler.
+const handler = (args) => queue.push([ 'ensureAlpha', (sharp) => sharp.ensureAlpha() ])
+
+// Exports.
+module.exports = {
+  command: 'ensureAlpha',
+  describe: 'Ensure alpha channel, if missing',
+  builder,
+  handler
+}

@@ -1,4 +1,4 @@
-/* global describe */
+/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -22,14 +22,39 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+
 // Strict mode.
 'use strict'
 
+// Package modules.
+const expect = require('must')
+const sinon = require('sinon')
+const Yargs = require('yargs')
+
+// Local modules.
+const ensureAlpha = require('../../../cmd/channel-manipulation/ensure-alpha')
+const queue = require('../../../lib/queue')
+const sharp = require('../../mocks/sharp')
+
 // Test suite.
-describe('Channel Manipulation', () => {
-  require('./channel-manipulation/bandbool')
-  require('./channel-manipulation/ensure-alpha')
-  require('./channel-manipulation/extract')
-  require('./channel-manipulation/join')
-  require('./channel-manipulation/remove-alpha')
+describe('ensureAlpha', () => {
+  const cli = (new Yargs()).command(ensureAlpha)
+
+  // Reset.
+  afterEach('queue', () => queue.splice(0))
+  afterEach('sharp', sharp.prototype.reset)
+
+  // Run.
+  beforeEach((done) => cli.parse([ 'ensureAlpha' ], done))
+
+  // Tests.
+  it('must update the pipeline', () => {
+    expect(queue.pipeline).to.have.length(1)
+    expect(queue.pipeline).to.include('ensureAlpha')
+  })
+  it('must execute the pipeline', () => {
+    const pipeline = queue.drain(sharp())
+    sinon.assert.called(pipeline.ensureAlpha)
+  })
 })
