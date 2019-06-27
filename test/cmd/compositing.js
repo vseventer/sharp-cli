@@ -26,11 +26,7 @@
 'use strict'
 
 // Test suite.
-describe('Commands', () => {
-  require('./cmd/channel-manipulation')
-  require('./cmd/colour-manipulation')
-  require('./cmd/operations')
-  require('./cmd/compositing')
-  require('./cmd/output')
-  require('./cmd/resizing')
+describe('Compositing', () => {
+  require('./compositing/composite')
+  require('./compositing/overlay-with')
 })

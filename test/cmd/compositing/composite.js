@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-composite/#overlaywith
+// @see http://sharp.pixelplumbing.com/en/stable/api-composite/#composite
 
 // Strict mode.
 'use strict'
@@ -36,13 +36,13 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
-const overlayWith = require('../../cmd/composite')
-const queue = require('../../lib/queue')
-const sharp = require('../mocks/sharp')
+const composite = require('../../../cmd/compositing/composite')
+const queue = require('../../../lib/queue')
+const sharp = require('../../mocks/sharp')
 
 // Test suite.
-describe('overlayWith', () => {
-  const cli = (new Yargs()).command(overlayWith)
+describe('composite', () => {
+  const cli = (new Yargs()).command(composite)
 
   // Default input (avoid `path.join` to test for input normalizing).
   const input = `${__dirname}/../fixtures/input.jpg`
@@ -51,25 +51,44 @@ describe('overlayWith', () => {
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<overlay>', () => {
+  describe('<image>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'overlayWith', input ], done))
+    beforeEach((done) => cli.parse([ 'composite', input ], done))
 
     // Tests.
-    it('must set the overlay flag', () => {
-      expect(cli.parsed.argv).to.have.property('overlay', path.normalize(input))
+    it('must set the image flag', () => {
+      expect(cli.parsed.argv).to.have.property('image', path.normalize(input))
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('overlayWith')
+      expect(queue.pipeline).to.include('composite')
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.overlayWith, path.normalize(input))
+      sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input', path.normalize(input)))
     })
   })
 
   describe('[options]', () => {
+    describe('--blend', () => {
+      // Default blend.
+      const blend = 'add'
+
+      beforeEach((done) => cli.parse([ 'composite', input, '--blend', blend ], done))
+
+      it('must set the gravity flag', () => {
+        expect(cli.parsed.argv).to.have.property('blend', blend)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].blend', blend))
+      })
+    })
+
     describe('--create', () => {
       // Default configuration.
       const width = '10'
@@ -78,7 +97,7 @@ describe('overlayWith', () => {
       const background = 'rgba(0,0,0,0)'
 
       beforeEach((done) => {
-        return cli.parse([ 'overlayWith', input, '--create', width, height, channels, background ], done)
+        return cli.parse([ 'composite', input, '--create', width, height, channels, background ], done)
       })
 
       it('must set the create flag', () => {
@@ -93,48 +112,51 @@ describe('overlayWith', () => {
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('overlayWith')
+        expect(queue.pipeline).to.include('composite')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { create: {
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].create', {
           width: parseInt(width, 10),
           height: parseInt(height, 10),
           channels: parseInt(channels, 10),
           background
-        } })
+        }))
       })
     })
 
-    describe('--cutout', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--cutout' ], done))
+    describe('--density', () => {
+      // Default density.
+      const density = '72.1'
 
-      it('must set the cutout flag', () => {
-        expect(cli.parsed.argv).to.have.property('cutout', true)
+      beforeEach((done) => cli.parse([ 'composite', input, '--density', density ], done))
+
+      it('must set the density flag', () => {
+        expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('overlayWith')
+        expect(queue.pipeline).to.include('composite')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { cutout: true })
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].density', parseFloat(density)))
       })
     })
 
     describe('--gravity', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--gravity', 'centre' ], done))
+      beforeEach((done) => cli.parse([ 'composite', input, '--gravity', 'centre' ], done))
 
       it('must set the gravity flag', () => {
         expect(cli.parsed.argv).to.have.property('gravity', 'centre')
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('overlayWith')
+        expect(queue.pipeline).to.include('composite')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { gravity: 'centre' })
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].gravity', 'centre'))
       })
     })
 
@@ -143,7 +165,7 @@ describe('overlayWith', () => {
       const top = '10'
       const left = '20'
 
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--offset', top, left ], done))
+      beforeEach((done) => cli.parse([ 'composite', input, '--offset', top, left ], done))
 
       it('must set the offset flag', () => {
         const args = cli.parsed.argv
@@ -155,30 +177,28 @@ describe('overlayWith', () => {
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('overlayWith')
+        expect(queue.pipeline).to.include('composite')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, {
-          left: parseInt(left, 10),
-          top: parseInt(top, 10)
-        })
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].left', parseInt(left, 10)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].top', parseInt(top, 10)))
       })
     })
 
     describe('--tile', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--tile' ], done))
+      beforeEach((done) => cli.parse([ 'composite', input, '--tile' ], done))
 
       it('must set the tile flag', () => {
         expect(cli.parsed.argv).to.have.property('tile', true)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('overlayWith')
+        expect(queue.pipeline).to.include('composite')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { tile: true })
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].tile', true))
       })
     })
   })

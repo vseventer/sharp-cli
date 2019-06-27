@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-composite/
+// @see http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith
 
 // Strict mode.
 'use strict'
@@ -30,8 +30,8 @@
 const path = require('path')
 
 // Local modules.
-const constants = require('../lib/constants')
-const queue = require('../lib/queue')
+const constants = require('../../lib/constants')
+const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
@@ -75,7 +75,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 overlayWith ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-composite/')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -86,7 +86,7 @@ const handler = (args) => {
   const [ top, left ] = args.offset || [ ]
   const [ width, height, channels, background ] = args.create || [ ]
 
-  // @see https://sharp.pixelplumbing.com/en/stable/api-composite/#overlaywith
+  // @see http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith
   return queue.push([ 'overlayWith', (sharp) => {
     return sharp.overlayWith(args.overlay, {
       create: args.create && { width, height, channels, background },
@@ -102,7 +102,7 @@ const handler = (args) => {
 // Exports.
 module.exports = {
   command: 'overlayWith <overlay>',
-  describe: 'Overlay (composite) an image over the processed (resized, extracted etc.) image',
+  describe: '[DEPRECATED] Overlay (composite) an image over the processed (resized, extracted etc.) image',
   builder,
   handler
 }

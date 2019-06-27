@@ -1,7 +1,9 @@
 # Changelog
 
 ## 1.10.0
+* Added [`composite`](http://sharp.pixelplumbing.com/en/stable/api-composite/#composite) command.
 * Added [`modulate`](http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate) command.
+* Deprecated [`overlayWith`](http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith) command.
 * Increased required version to Node.js 8.
 * Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, and `tempfile` dependencies (#18).
 
