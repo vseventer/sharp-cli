@@ -15,6 +15,8 @@ Commands:
   sharp blur [sigma]                           Blur the image
   sharp boolean <operand> <operator>           Perform a bitwise boolean operation with operand
                                                image
+  sharp composite <image>                      Composite image over the processed (resized,
+                                               extracted etc.) image
   sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
   sharp ensureAlpha                            Ensure alpha channel, if missing
   sharp extend <top> <bottom> <left> <right>   Extends/pads the edges of the image with the provided
@@ -33,12 +35,14 @@ Commands:
   sharp joinChannel <images..>                 Join one or more channels to the image
   sharp linear [multiplier] [offset]           Apply the linear formula a × input + b to the image
   sharp median [size]                          Apply median filter
+  sharp modulate                               Transforms the image using brightness, saturation and
+                                               hue rotation
   sharp negate                                 Produce the "negative" of the image
   sharp normalise                              Enhance output image contrast by stretching its
                                                luminance to cover the full dynamic range
                                                                                 [aliases: normalize]
-  sharp overlayWith <overlay>                  Overlay (composite) an image over the processed
-                                               (resized, extracted etc.) image
+  sharp overlayWith <overlay>                  [DEPRECATED] Overlay (composite) an image over the
+                                               processed (resized, extracted etc.) image
   sharp recomb <matrix>                        Recomb the image with the specified matrix
   sharp removeAlpha                            Remove alpha channel, if any
   sharp resize <width> [height]                Resize image to width × height
