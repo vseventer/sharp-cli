@@ -36,6 +36,7 @@ describe('Operations', () => {
   require('./operations/gamma')
   require('./operations/linear')
   require('./operations/median')
+  require('./operations/modulate')
   require('./operations/negate')
   require('./operations/normalise')
   require('./operations/recomb')

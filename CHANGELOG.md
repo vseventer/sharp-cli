@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.10.0
+* Added [`modulate`](http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate) command.
 * Increased required version to Node.js 8.
 * Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, and `tempfile` dependencies (#18).
 
