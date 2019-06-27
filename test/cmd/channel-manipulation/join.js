@@ -81,7 +81,7 @@ describe('join <images..>', () => {
 
       beforeEach((done) => cli.parse([ 'joinChannel', input, '--density', density ], done))
 
-      it('must set the imageDensity flags', () => {
+      it('must set the density flag', () => {
         expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
       })
       it('must update the pipeline', () => {
