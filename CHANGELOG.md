@@ -2,7 +2,7 @@
 
 ## 1.10.0
 * Increased required version to Node.js 8.
-* Updated `fs-extra`, `mocha`, `nyc`, `sinon`, and `tempfile` dependencies.
+* Updated `fs-extra`, `mocha`, `nyc`, `sharp`, `sinon`, and `tempfile` dependencies (#18).
 
 ## 1.9.0 (January 26, 2019)
 * Added [`--colors`, `--dither`, and `--palette`](https://sharp.pixelplumbing.com/en/stable/api-output/#png) options.
