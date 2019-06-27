@@ -1,6 +1,6 @@
 {
   "name": "sharp-cli",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "description": "CLI for sharp.",
   "keywords": [
     "cli",
@@ -33,16 +33,16 @@
     "yargs": "12.0.x"
   },
   "devDependencies": {
-    "fs-extra": "7.0.x",
-    "mocha": "5.2.x",
+    "fs-extra": "8.0.x",
+    "mocha": "6.1.x",
     "must": "0.13.x",
-    "nyc": "13.1.x",
-    "sinon": "7.2.x",
+    "nyc": "14.1.x",
+    "sinon": "7.3.x",
     "snazzy": "8.0.x",
     "standard": "12.0.x",
-    "tempfile": "2.0.x"
+    "tempfile": "3.0.x"
   },
   "engines": {
-    "node": ">=6.x"
+    "node": ">=8.x"
   }
 }
