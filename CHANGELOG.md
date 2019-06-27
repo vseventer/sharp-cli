@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.10.0
+## 1.10.0 (June 26, 2019)
 * Added [`composite`](http://sharp.pixelplumbing.com/en/stable/api-composite/#composite) command.
 * Added [`modulate`](http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate) command.
 * Deprecated [`overlayWith`](http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith) command.
