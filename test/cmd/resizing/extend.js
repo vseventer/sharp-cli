@@ -53,7 +53,7 @@ describe('extend', () => {
     const right = '10'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'extend', top, bottom, left, right ], done))
+    beforeEach((done) => cli.parse(['extend', top, bottom, left, right], done))
 
     // Tests.
     it('must set the top, bottom, left, and right flags', () => {
@@ -84,7 +84,7 @@ describe('extend', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'extend', '10', '20', '10', '10', '--background', background ], done))
+      beforeEach((done) => cli.parse(['extend', '10', '20', '10', '10', '--background', background], done))
 
       // Tests.
       it('must set the background flag', () => {

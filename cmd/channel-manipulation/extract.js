@@ -53,7 +53,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'extractChannel', (sharp) => sharp.extractChannel(args.band) ])
+  return queue.push(['extractChannel', (sharp) => sharp.extractChannel(args.band)])
 }
 
 // Exports.

@@ -47,7 +47,7 @@ describe('blur', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'blur' ], done))
+    beforeEach((done) => cli.parse(['blur'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('blur', () => {
     const sigma = '1.1'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'blur', sigma ], done))
+    beforeEach((done) => cli.parse(['blur', sigma], done))
 
     // Tests.
     it('must set the sigma flag', () => {

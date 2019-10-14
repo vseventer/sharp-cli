@@ -51,7 +51,7 @@ describe('resize', () => {
 
   describe('<width> [height]', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'resize', x, y ], done))
+    beforeEach((done) => cli.parse(['resize', x, y], done))
 
     // Tests.
     it('must set the width and height flags', () => {
@@ -73,7 +73,7 @@ describe('resize', () => {
   })
 
   describe('<width> [auto-height]', () => {
-    beforeEach((done) => cli.parse([ 'resize', x, '0' ], done))
+    beforeEach((done) => cli.parse(['resize', x, '0'], done))
 
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
@@ -85,7 +85,7 @@ describe('resize', () => {
   })
 
   describe('<auto-width> [height]', () => {
-    beforeEach((done) => cli.parse([ 'resize', '0', y ], done))
+    beforeEach((done) => cli.parse(['resize', '0', y], done))
 
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
@@ -97,7 +97,7 @@ describe('resize', () => {
   })
 
   describe('<width>', () => {
-    beforeEach((done) => cli.parse([ 'resize', x ], done))
+    beforeEach((done) => cli.parse(['resize', x], done))
 
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
@@ -115,7 +115,7 @@ describe('resize', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--background', background ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--background', background], done))
 
       // Tests.
       it('must set the background flag', () => {
@@ -133,7 +133,7 @@ describe('resize', () => {
 
     // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
     describe('--fastShrinkOnLoad', () => {
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--no-fastShrinkOnLoad' ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--no-fastShrinkOnLoad'], done))
 
       it('must set the fastShrinkOnLoad flag', () => {
         expect(cli.parsed.argv).to.have.property('fastShrinkOnLoad', false)
@@ -153,7 +153,7 @@ describe('resize', () => {
       // Default fit.
       const fit = 'fill'
 
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--fit', fit ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--fit', fit], done))
 
       it('must set the fit flag', () => {
         expect(cli.parsed.argv).to.have.property('fit', fit)
@@ -173,7 +173,7 @@ describe('resize', () => {
       // Default kernel.
       const kernel = 'lanczos3'
 
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--kernel', kernel ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--kernel', kernel], done))
 
       it('must set the kernel flag', () => {
         expect(cli.parsed.argv).to.have.property('kernel', kernel)
@@ -193,7 +193,7 @@ describe('resize', () => {
       // Default position.
       const position = 'centre'
 
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--position', position ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--position', position], done))
 
       it('must set the position flag', () => {
         expect(cli.parsed.argv).to.have.property('position', position)
@@ -210,7 +210,7 @@ describe('resize', () => {
 
     // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
     describe('--withoutEnlargement', () => {
-      beforeEach((done) => cli.parse([ 'resize', x, y, '--withoutEnlargement' ], done))
+      beforeEach((done) => cli.parse(['resize', x, y, '--withoutEnlargement'], done))
 
       it('must set the withoutEnlargement flag', () => {
         expect(cli.parsed.argv).to.have.property('withoutEnlargement', true)

@@ -46,7 +46,7 @@ describe('flip', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'flip' ], done))
+  beforeEach((done) => cli.parse(['flip'], done))
 
   // Tests.
   it('must update the pipeline', () => {

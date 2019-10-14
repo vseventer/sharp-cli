@@ -38,7 +38,7 @@ const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-void [ 'normalise', 'normalize' ].forEach((alias) => {
+;['normalise', 'normalize'].forEach((alias) => {
   describe(alias, () => {
     const cli = (new Yargs()).command(normalise)
 
@@ -47,7 +47,7 @@ void [ 'normalise', 'normalize' ].forEach((alias) => {
     afterEach('sharp', sharp.prototype.reset)
 
     // Run.
-    beforeEach((done) => cli.parse([ alias ], done))
+    beforeEach((done) => cli.parse([alias], done))
 
     // Tests.
     it('must update the pipeline', () => {

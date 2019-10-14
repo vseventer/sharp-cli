@@ -47,7 +47,7 @@ describe('trim', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'trim' ], done))
+    beforeEach((done) => cli.parse(['trim'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('trim', () => {
     const threshold = '10'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'trim', threshold ], done))
+    beforeEach((done) => cli.parse(['trim', threshold], done))
 
     // Tests.
     it('must set the threshold flag', () => {

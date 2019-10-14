@@ -49,7 +49,7 @@ describe('tint <rgb>', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'tint', rgb ], done))
+  beforeEach((done) => cli.parse(['tint', rgb], done))
 
   // Tests.
   it('must set the colourspace flag', () => {

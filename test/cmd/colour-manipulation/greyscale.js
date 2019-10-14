@@ -38,7 +38,7 @@ const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-void [ 'grayscale', 'greyscale' ].forEach((alias) => {
+;['grayscale', 'greyscale'].forEach((alias) => {
   describe(`${alias} <operator>`, () => {
     const cli = (new Yargs()).command(greyscale)
 
@@ -47,7 +47,7 @@ void [ 'grayscale', 'greyscale' ].forEach((alias) => {
     afterEach('sharp', sharp.prototype.reset)
 
     // Run.
-    beforeEach((done) => cli.parse([ alias ], done))
+    beforeEach((done) => cli.parse([alias], done))
 
     // Tests.
     it('must update the pipeline', () => {

@@ -69,7 +69,7 @@ describe('CLI', () => {
     })
   })
   it('must display output', () => {
-    return cli([ '-v' ], { logger })
+    return cli(['-v'], { logger })
       .then(() => {
         sinon.assert.calledWith(logger.log, pkg.version)
         sinon.assert.notCalled(logger.error)
@@ -77,7 +77,7 @@ describe('CLI', () => {
       })
   })
   it('must display errors', () => {
-    return cli([ ], { logger })
+    return cli([], { logger })
       .then(() => {
         sinon.assert.notCalled(logger.log)
         sinon.assert.calledWithMatch(logger.error, 'Missing required arguments')

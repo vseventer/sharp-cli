@@ -56,7 +56,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'threshold', (sharp) => {
+  return queue.push(['threshold', (sharp) => {
     return sharp.threshold(args.value, { greyscale: args.greyscale })
   }])
 }

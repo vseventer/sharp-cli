@@ -47,7 +47,7 @@ describe('threshold', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'threshold' ], done))
+    beforeEach((done) => cli.parse(['threshold'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('threshold', () => {
     const value = '128'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'threshold', value ], done))
+    beforeEach((done) => cli.parse(['threshold', value], done))
 
     // Tests.
     it('must set the factor flag', () => {
@@ -82,9 +82,9 @@ describe('threshold', () => {
   })
 
   describe('[options]', () => {
-    void [ 'grayscale', 'greyscale' ].forEach((alias) => {
+    ['grayscale', 'greyscale'].forEach((alias) => {
       describe(`--${alias}`, () => {
-        beforeEach((done) => cli.parse([ 'threshold', `--${alias}` ], done))
+        beforeEach((done) => cli.parse(['threshold', `--${alias}`], done))
 
         it('must set the greyscale flag', () => {
           expect(cli.parsed.argv).to.have.property('greyscale', true)

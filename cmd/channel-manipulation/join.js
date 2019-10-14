@@ -61,7 +61,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'joinChannel', (sharp) => {
+  return queue.push(['joinChannel', (sharp) => {
     return sharp.joinChannel(args.images, { density: args.density })
   }])
 }

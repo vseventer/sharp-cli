@@ -53,7 +53,7 @@ describe('overlayWith', () => {
 
   describe('<overlay>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'overlayWith', input ], done))
+    beforeEach((done) => cli.parse(['overlayWith', input], done))
 
     // Tests.
     it('must set the overlay flag', () => {
@@ -78,7 +78,7 @@ describe('overlayWith', () => {
       const background = 'rgba(0,0,0,0)'
 
       beforeEach((done) => {
-        return cli.parse([ 'overlayWith', input, '--create', width, height, channels, background ], done)
+        return cli.parse(['overlayWith', input, '--create', width, height, channels, background], done)
       })
 
       it('must set the create flag', () => {
@@ -97,17 +97,19 @@ describe('overlayWith', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, { create: {
-          width: parseInt(width, 10),
-          height: parseInt(height, 10),
-          channels: parseInt(channels, 10),
-          background
-        } })
+        sinon.assert.calledWithMatch(pipeline.overlayWith, sinon.match.any, {
+          create: {
+            width: parseInt(width, 10),
+            height: parseInt(height, 10),
+            channels: parseInt(channels, 10),
+            background
+          }
+        })
       })
     })
 
     describe('--cutout', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--cutout' ], done))
+      beforeEach((done) => cli.parse(['overlayWith', input, '--cutout'], done))
 
       it('must set the cutout flag', () => {
         expect(cli.parsed.argv).to.have.property('cutout', true)
@@ -123,7 +125,7 @@ describe('overlayWith', () => {
     })
 
     describe('--gravity', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--gravity', 'centre' ], done))
+      beforeEach((done) => cli.parse(['overlayWith', input, '--gravity', 'centre'], done))
 
       it('must set the gravity flag', () => {
         expect(cli.parsed.argv).to.have.property('gravity', 'centre')
@@ -143,7 +145,7 @@ describe('overlayWith', () => {
       const top = '10'
       const left = '20'
 
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--offset', top, left ], done))
+      beforeEach((done) => cli.parse(['overlayWith', input, '--offset', top, left], done))
 
       it('must set the offset flag', () => {
         const args = cli.parsed.argv
@@ -167,7 +169,7 @@ describe('overlayWith', () => {
     })
 
     describe('--tile', () => {
-      beforeEach((done) => cli.parse([ 'overlayWith', input, '--tile' ], done))
+      beforeEach((done) => cli.parse(['overlayWith', input, '--tile'], done))
 
       it('must set the tile flag', () => {
         expect(cli.parsed.argv).to.have.property('tile', true)

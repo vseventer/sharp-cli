@@ -49,7 +49,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'tint', (sharp) => sharp.tint(args.rgb) ])
+const handler = (args) => queue.push(['tint', (sharp) => sharp.tint(args.rgb)])
 
 // Exports.
 module.exports = {

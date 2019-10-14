@@ -46,7 +46,7 @@ describe('bandbool <operator>', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'bandbool', 'and' ], done))
+  beforeEach((done) => cli.parse(['bandbool', 'and'], done))
 
   // Tests.
   it('must set the operator flag', () => {

@@ -62,7 +62,7 @@ const options = {
     type: 'string'
   },
   position: {
-    choices: [ ...constants.GRAVITY, ...constants.POSITION, ...constants.STRATEGY ],
+    choices: [...constants.GRAVITY, ...constants.POSITION, ...constants.STRATEGY],
     default: 'centre',
     desc: 'Position, gravity, or strategy to use when fit is cover or contain',
     nargs: 1,
@@ -99,7 +99,7 @@ const handler = (args) => {
   const height = args.height === 0 ? null : (args.height || width) // Auto-scale or square.
 
   // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
-  return queue.push([ 'resize', (sharp) => {
+  return queue.push(['resize', (sharp) => {
     return sharp.resize({
       background: args.background,
       fastShrinkOnLoad: args.fastShrinkOnLoad,

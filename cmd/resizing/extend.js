@@ -68,7 +68,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'extend', (sharp) => {
+  return queue.push(['extend', (sharp) => {
     return sharp.extend({
       background: args.background,
       bottom: args.bottom,

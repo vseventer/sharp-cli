@@ -53,7 +53,7 @@ describe('composite', () => {
 
   describe('<image>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'composite', input ], done))
+    beforeEach((done) => cli.parse(['composite', input], done))
 
     // Tests.
     it('must set the image flag', () => {
@@ -74,7 +74,7 @@ describe('composite', () => {
       // Default blend.
       const blend = 'add'
 
-      beforeEach((done) => cli.parse([ 'composite', input, '--blend', blend ], done))
+      beforeEach((done) => cli.parse(['composite', input, '--blend', blend], done))
 
       it('must set the gravity flag', () => {
         expect(cli.parsed.argv).to.have.property('blend', blend)
@@ -97,7 +97,7 @@ describe('composite', () => {
       const background = 'rgba(0,0,0,0)'
 
       beforeEach((done) => {
-        return cli.parse([ 'composite', input, '--create', width, height, channels, background ], done)
+        return cli.parse(['composite', input, '--create', width, height, channels, background], done)
       })
 
       it('must set the create flag', () => {
@@ -129,7 +129,7 @@ describe('composite', () => {
       // Default density.
       const density = '72.1'
 
-      beforeEach((done) => cli.parse([ 'composite', input, '--density', density ], done))
+      beforeEach((done) => cli.parse(['composite', input, '--density', density], done))
 
       it('must set the density flag', () => {
         expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
@@ -145,7 +145,7 @@ describe('composite', () => {
     })
 
     describe('--gravity', () => {
-      beforeEach((done) => cli.parse([ 'composite', input, '--gravity', 'centre' ], done))
+      beforeEach((done) => cli.parse(['composite', input, '--gravity', 'centre'], done))
 
       it('must set the gravity flag', () => {
         expect(cli.parsed.argv).to.have.property('gravity', 'centre')
@@ -165,7 +165,7 @@ describe('composite', () => {
       const top = '10'
       const left = '20'
 
-      beforeEach((done) => cli.parse([ 'composite', input, '--offset', top, left ], done))
+      beforeEach((done) => cli.parse(['composite', input, '--offset', top, left], done))
 
       it('must set the offset flag', () => {
         const args = cli.parsed.argv
@@ -187,7 +187,7 @@ describe('composite', () => {
     })
 
     describe('--tile', () => {
-      beforeEach((done) => cli.parse([ 'composite', input, '--tile' ], done))
+      beforeEach((done) => cli.parse(['composite', input, '--tile'], done))
 
       it('must set the tile flag', () => {
         expect(cli.parsed.argv).to.have.property('tile', true)

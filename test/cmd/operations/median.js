@@ -47,7 +47,7 @@ describe('median', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'median' ], done))
+    beforeEach((done) => cli.parse(['median'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('median', () => {
     const size = '4'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'median', size ], done))
+    beforeEach((done) => cli.parse(['median', size], done))
 
     // Tests.
     it('must set the size flag', () => {

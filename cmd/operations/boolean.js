@@ -61,7 +61,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'boolean', (sharp) => sharp.boolean(args.operand, args.operator) ])
+  return queue.push(['boolean', (sharp) => sharp.boolean(args.operand, args.operator)])
 }
 
 // Exports.

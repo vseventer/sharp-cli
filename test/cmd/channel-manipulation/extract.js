@@ -46,7 +46,7 @@ describe('extract <band>', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'extractChannel', 'red' ], done))
+  beforeEach((done) => cli.parse(['extractChannel', 'red'], done))
 
   // Tests.
   it('must set the operator flag', () => {

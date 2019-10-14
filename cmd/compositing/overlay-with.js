@@ -83,11 +83,11 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  const [ top, left ] = args.offset || [ ]
-  const [ width, height, channels, background ] = args.create || [ ]
+  const [top, left] = args.offset || []
+  const [width, height, channels, background] = args.create || []
 
   // @see http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith
-  return queue.push([ 'overlayWith', (sharp) => {
+  return queue.push(['overlayWith', (sharp) => {
     return sharp.overlayWith(args.overlay, {
       create: args.create && { width, height, channels, background },
       gravity: args.gravity,

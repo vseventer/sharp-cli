@@ -33,7 +33,7 @@ const queue = require('../lib/queue')
 // Configure.
 const options = {
   angle: {
-    choices: [ 0, 90, 180, 270 ],
+    choices: [0, 90, 180, 270],
     default: 0,
     desc: 'Tile angle of rotation',
     nargs: 1
@@ -84,7 +84,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'tile', (sharp) => {
+  return queue.push(['tile', (sharp) => {
     return sharp.tile({
       size: args.size,
       overlap: args.overlap,

@@ -40,10 +40,10 @@ const sharp = require('./mocks/sharp')
 
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
-  // Defaults (avoid `path.join` to test for input normalizing).
+  // Defaults (avoid path.join` to test for input normalizing).
   const input = `${__dirname}/../test/fixtures/input.jpg`
   const output = `${__dirname}/../test/`
-  const ioFlags = [ '-i', input, '-o', output ]
+  const ioFlags = ['-i', input, '-o', output]
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
@@ -52,7 +52,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
   describe('<options>', () => {
     describe('--adaptiveFiltering', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--adaptiveFiltering', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--adaptiveFiltering', ...ioFlags], done))
 
       // Tests.
       it('must set the adaptiveFiltering flag', () => {
@@ -73,7 +73,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const alphaQuality = '80'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--alphaQuality', alphaQuality, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--alphaQuality', alphaQuality, ...ioFlags], done))
 
       // Tests.
       it('must set the alphaQuality flag', () => {
@@ -94,7 +94,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const chromaSubsampling = '4:4:4'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--chromaSubsampling', chromaSubsampling, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--chromaSubsampling', chromaSubsampling, ...ioFlags], done))
 
       // Tests.
       it('must set the chromaSubsampling flag', () => {
@@ -110,14 +110,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'colors', 'colours' ].forEach(alias => {
+    ;['colors', 'colours'].forEach(alias => {
       // Run.
       describe(`--${alias}`, () => {
         // Default colors.
         const colors = '128'
 
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, colors, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, colors, ...ioFlags], done))
 
         // Tests.
         it('must set the colors flag', () => {
@@ -139,7 +139,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const compression = 'deflate'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--compression', compression, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--compression', compression, ...ioFlags], done))
 
       // Tests.
       it('must set the compression flag', () => {
@@ -155,14 +155,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'c', 'compressionLevel' ].forEach((alias) => {
+    ;['c', 'compressionLevel'].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
         // Default level.
         const level = '6'
 
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, level, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, level, ...ioFlags], done))
 
         // Tests.
         it('must set the format flag', () => {
@@ -184,7 +184,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const dither = '0.5'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--dither', dither, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--dither', dither, ...ioFlags], done))
 
       // Tests.
       it('must set the dither flag', () => {
@@ -200,14 +200,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'f', 'format' ].forEach((alias) => {
+    ;['f', 'format'].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
         // Default format.
         const format = 'jpeg'
 
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, format, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, format, ...ioFlags], done))
 
         // Tests.
         it('must set the format flag', () => {
@@ -224,16 +224,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'h', 'help' ].forEach((alias) => {
+    ;['h', 'help'].forEach((alias) => {
       describe(`--${alias}`, () => {
         it('must set the help flag', (done) => {
-          cli.parse([ `--${alias}` ], (err, args, output) => {
+          cli.parse([`--${alias}`], (err, args, output) => {
             expect(args).to.have.property('help', true)
             done(err)
           })
         })
         it('must display help', (done) => {
-          cli.parse([ `--${alias}` ], (err, args, output) => {
+          cli.parse([`--${alias}`], (err, args, output) => {
             expect(output).to.exist()
             expect(output).to.contain('Commands')
             expect(output).to.contain('Options')
@@ -244,20 +244,20 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'i', 'input' ].forEach((alias) => {
+    ;['i', 'input'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, input, input, '-o', output ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, input, input, '-o', output], done))
 
         // Tests.
         it('must set the input flag', () => {
           const args = cli.parsed.argv
           expect(args).to.have.property('input')
-          expect(args.input).to.eql([ path.normalize(input), path.normalize(input) ])
+          expect(args.input).to.eql([path.normalize(input), path.normalize(input)])
         })
 
         it('must fail when no input is given', (done) => {
-          cli.parse([ `--${alias}`, '-o', output ], (err) => {
+          cli.parse([`--${alias}`, '-o', output], (err) => {
             expect(err).to.exist()
             expect(err).to.have.property('message')
             expect(err.message).to.contain('Not enough arguments')
@@ -267,10 +267,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'l', 'limitInputPixels' ].forEach((alias) => {
+    ;['l', 'limitInputPixels'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, '10', ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, '10', ...ioFlags], done))
 
         // Tests.
         it('must set the limitInputPixels flag', () => {
@@ -289,7 +289,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--lossless', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--lossless', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--lossless', ...ioFlags], done))
 
       // Tests.
       it('must set the lossless flag', () => {
@@ -307,7 +307,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--nearLossless', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--nearLossless', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--nearLossless', ...ioFlags], done))
 
       // Tests.
       it('must set the nearLossless flag', () => {
@@ -323,10 +323,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'optimise', 'optimize' ].forEach((alias) => {
+    ;['optimise', 'optimize'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, ...ioFlags], done))
 
         // Tests.
         it('must set the optimise flag', () => {
@@ -347,10 +347,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'optimiseCoding', 'optimizeCoding' ].forEach((alias) => {
+    ;['optimiseCoding', 'optimizeCoding'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--no-${alias}`, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--no-${alias}`, ...ioFlags], done))
 
         // Tests.
         it('must set the optimiseScans flag', () => {
@@ -367,10 +367,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'optimiseScans', 'optimizeScans' ].forEach((alias) => {
+    ;['optimiseScans', 'optimizeScans'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run (implies --progressive).
-        beforeEach((done) => cli.parse([ `--${alias}`, '-p', ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, '-p', ...ioFlags], done))
 
         // Tests.
         it('must set the optimiseScans flag', () => {
@@ -388,10 +388,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'o', 'output' ].forEach((alias) => {
+    ;['o', 'output'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, output, '-i', input ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, output, '-i', input], done))
 
         // Tests.
         it('must set the output flag', () => {
@@ -402,7 +402,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--overshootDeringing', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--overshootDeringing', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--overshootDeringing', ...ioFlags], done))
 
       // Tests.
       it('must set the overshootDeringing flag', () => {
@@ -420,7 +420,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--palette', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--palette', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--palette', ...ioFlags], done))
 
       // Tests.
       it('must set the palette flag', () => {
@@ -441,7 +441,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const predictor = 'float'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--predictor', predictor, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--predictor', predictor, ...ioFlags], done))
 
       // Tests.
       it('must set the predictor flag', () => {
@@ -459,7 +459,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--pyramid', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--pyramid', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--pyramid', ...ioFlags], done))
 
       // Tests.
       it('must set the pyramid flag', () => {
@@ -475,11 +475,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'p', 'progressive' ].forEach((alias) => {
+    ;['p', 'progressive'].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, ...ioFlags], done))
 
         // Tests.
         it('must set the format flag', () => {
@@ -498,14 +498,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'q', 'quality' ].forEach((alias) => {
+    ;['q', 'quality'].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
         // Default quality.
         const quality = '80'
 
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, quality, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, quality, ...ioFlags], done))
 
         // Tests.
         it('must set the format flag', () => {
@@ -526,13 +526,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'quantisationTable', 'quantizationTable' ].forEach((alias) => {
+    ;['quantisationTable', 'quantizationTable'].forEach((alias) => {
       // Default quantisation table.
       const table = '1'
 
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, table, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, table, ...ioFlags], done))
 
         // Tests.
         it('must set the quantisationTable flag', () => {
@@ -551,7 +551,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--sequentialRead', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--sequentialRead', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--sequentialRead', ...ioFlags], done))
 
       // Tests.
       it('must set the sequentialRead flag', () => {
@@ -569,7 +569,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--squash', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--squash', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--squash', ...ioFlags], done))
 
       // Tests.
       it('must set the squash flag', () => {
@@ -590,7 +590,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const tileHeight = '100'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--tileHeight', tileHeight, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--tileHeight', tileHeight, ...ioFlags], done))
 
       // Tests.
       it('must set the tileHeight flag', () => {
@@ -616,7 +616,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const tileWidth = '50'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--tileHeight', tileHeight, '--tileWidth', tileWidth, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--tileHeight', tileHeight, '--tileWidth', tileWidth, ...ioFlags], done))
 
       // Tests.
       it('must set the tileWidth flag', () => {
@@ -638,7 +638,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--trellisQuantisation', () => {
       // Run.
-      beforeEach((done) => cli.parse([ '--trellisQuantisation', ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--trellisQuantisation', ...ioFlags], done))
 
       // Tests.
       it('must set the trellisQuantisation flag', () => {
@@ -654,16 +654,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'v', 'version' ].forEach((alias) => {
+    ;['v', 'version'].forEach((alias) => {
       describe(`--${alias}`, () => {
         it('must set the version flag', (done) => {
-          cli.parse([ `--${alias}` ], (err, args, output) => {
+          cli.parse([`--${alias}`], (err, args, output) => {
             expect(args).to.have.property('version', true)
             done(err)
           })
         })
         it('must display the version number', (done) => {
-          cli.parse([ `--${alias}` ], (err, args, output) => {
+          cli.parse([`--${alias}`], (err, args, output) => {
             expect(output).to.equal(pkg.version)
             done(err)
           })
@@ -671,10 +671,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    void [ 'm', 'withMetadata' ].forEach((alias) => {
+    ;['m', 'withMetadata'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
-        beforeEach((done) => cli.parse([ `--${alias}`, ...ioFlags ], done))
+        beforeEach((done) => cli.parse([`--${alias}`, ...ioFlags], done))
 
         // Tests.
         it('must set the withMetadata flag', () => {
@@ -696,7 +696,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const xRes = '1.5'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--xres', xRes, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--xres', xRes, ...ioFlags], done))
 
       // Tests.
       it('must set the xres flag', () => {
@@ -717,7 +717,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       const yRes = '1.5'
 
       // Run.
-      beforeEach((done) => cli.parse([ '--yres', yRes, ...ioFlags ], done))
+      beforeEach((done) => cli.parse(['--yres', yRes, ...ioFlags], done))
 
       // Tests.
       it('must set the yres flag', () => {
@@ -736,7 +736,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
   describe('[command]', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'flip', ...ioFlags ], done))
+    beforeEach((done) => cli.parse(['flip', ...ioFlags], done))
 
     // Tests.
     it('must update the pipeline', () => {

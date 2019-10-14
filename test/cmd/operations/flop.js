@@ -46,7 +46,7 @@ describe('flop', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'flop' ], done))
+  beforeEach((done) => cli.parse(['flop'], done))
 
   // Tests.
   it('must update the pipeline', () => {

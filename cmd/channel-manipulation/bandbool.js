@@ -53,7 +53,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'bandbool', (sharp) => sharp.bandbool(args.operator) ])
+  return queue.push(['bandbool', (sharp) => sharp.bandbool(args.operator)])
 }
 
 // Exports.

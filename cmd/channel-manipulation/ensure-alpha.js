@@ -37,7 +37,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'ensureAlpha', (sharp) => sharp.ensureAlpha() ])
+const handler = (args) => queue.push(['ensureAlpha', (sharp) => sharp.ensureAlpha()])
 
 // Exports.
 module.exports = {

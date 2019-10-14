@@ -73,7 +73,7 @@ const builder = (yargs) => {
 const handler = (args) => {
   const kernel = args.kernel.split(' ').map((el) => parseInt(el, 10))
 
-  return queue.push([ 'convolve', (sharp) => {
+  return queue.push(['convolve', (sharp) => {
     return sharp.convolve({
       width: args.width,
       height: args.height,

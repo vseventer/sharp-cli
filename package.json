@@ -33,13 +33,13 @@
     "yargs": "12.0.x"
   },
   "devDependencies": {
-    "fs-extra": "8.0.x",
-    "mocha": "6.1.x",
+    "fs-extra": "8.1.x",
+    "mocha": "6.2.x",
     "must": "0.13.x",
     "nyc": "14.1.x",
-    "sinon": "7.3.x",
+    "sinon": "7.5.x",
     "snazzy": "8.0.x",
-    "standard": "12.0.x",
+    "standard": "14.3.x",
     "tempfile": "3.0.x"
   },
   "engines": {

@@ -53,7 +53,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'toColourspace', (sharp) => sharp.toColourspace(args.colourspace) ])
+  return queue.push(['toColourspace', (sharp) => sharp.toColourspace(args.colourspace)])
 }
 
 // Exports.

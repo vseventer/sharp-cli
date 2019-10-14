@@ -53,7 +53,7 @@ describe('extract', () => {
     const height = '40'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'extract', top, left, width, height ], done))
+    beforeEach((done) => cli.parse(['extract', top, left, width, height], done))
 
     // Tests.
     it('must set the top, left, width, and height flags', () => {

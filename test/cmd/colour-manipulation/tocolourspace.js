@@ -38,7 +38,7 @@ const sharp = require('../../mocks/sharp')
 const toColourspace = require('../../../cmd/colour-manipulation/tocolourspace')
 
 // Test suite.
-void [ 'toColorspace', 'toColourspace' ].forEach((alias) => {
+;['toColorspace', 'toColourspace'].forEach((alias) => {
   describe(`${alias} <colourspace>`, () => {
     const cli = (new Yargs()).command(toColourspace)
 
@@ -47,7 +47,7 @@ void [ 'toColorspace', 'toColourspace' ].forEach((alias) => {
     afterEach('sharp', sharp.prototype.reset)
 
     // Run.
-    beforeEach((done) => cli.parse([ alias, 'srgb' ], done))
+    beforeEach((done) => cli.parse([alias, 'srgb'], done))
 
     // Tests.
     it('must set the colourspace flag', () => {

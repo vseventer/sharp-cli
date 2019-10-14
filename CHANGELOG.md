@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.0
+* Updated `fs-extra`, `mocha`, `sinon`, and `standard` dependencies.
+
 ## 1.10.0 (June 26, 2019)
 * Added [`composite`](http://sharp.pixelplumbing.com/en/stable/api-composite/#composite) command.
 * Added [`modulate`](http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate) command.

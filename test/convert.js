@@ -52,23 +52,23 @@ describe('convert', () => {
     // Tests.
     it('must convert a file', () => {
       return convert
-        .files([ input ], dest)
-        .then(([ info ]) => expect(fs.existsSync(info.path)).to.be.true)
+        .files([input], dest)
+        .then(([info]) => expect(fs.existsSync(info.path)).to.be.true)
     })
     it('must convert multiple files', () => {
       return convert
-        .files([ input, input ], dest)
+        .files([input, input], dest)
         .then((info) => expect(info).to.have.length(2))
     })
     it('must support URI templates', () => {
       const rand = Math.random()
       return convert
-        .files([ input ], path.join(dest, `{name}-${rand}{ext}`))
-        .then(([ info ]) => expect(info.path).to.contain(rand))
+        .files([input], path.join(dest, `{name}-${rand}{ext}`))
+        .then(([info]) => expect(info.path).to.contain(rand))
     })
     it('must not allow the same file as input and output', () => {
       return convert
-        .files([ input ], path.dirname(input))
+        .files([input], path.dirname(input))
         .then(() => { throw new Error('STOP') })
         .catch((err) => {
           expect(err).to.exist()

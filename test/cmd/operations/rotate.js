@@ -47,7 +47,7 @@ describe('rotate', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'rotate' ], done))
+    beforeEach((done) => cli.parse(['rotate'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('rotate', () => {
     const angle = '90'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'rotate', angle ], done))
+    beforeEach((done) => cli.parse(['rotate', angle], done))
 
     // Tests.
     it('must set the factor flag', () => {
@@ -87,7 +87,7 @@ describe('rotate', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'rotate', '--background', background ], done))
+      beforeEach((done) => cli.parse(['rotate', '--background', background], done))
 
       // Tests.
       it('must set the background flag', () => {

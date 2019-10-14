@@ -50,7 +50,7 @@ describe('recomb', () => {
 
   describe('<matrix>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'recomb', matrix ], done))
+    beforeEach((done) => cli.parse(['recomb', matrix], done))
 
     // Tests.
     it('must set the matrix flag', () => {

@@ -53,13 +53,13 @@ describe('join <images..>', () => {
 
   describe('<images..>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'joinChannel', input, input ], done))
+    beforeEach((done) => cli.parse(['joinChannel', input, input], done))
 
     // Tests.
     it('must set the operator flag', () => {
       const args = cli.parsed.argv
       expect(args).to.have.property('images')
-      expect(args.images).to.eql([ path.normalize(input), path.normalize(input) ])
+      expect(args.images).to.eql([path.normalize(input), path.normalize(input)])
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -79,7 +79,7 @@ describe('join <images..>', () => {
       // Default density.
       const density = '72.1'
 
-      beforeEach((done) => cli.parse([ 'joinChannel', input, '--density', density ], done))
+      beforeEach((done) => cli.parse(['joinChannel', input, '--density', density], done))
 
       it('must set the density flag', () => {
         expect(cli.parsed.argv).to.have.property('density', parseFloat(density))

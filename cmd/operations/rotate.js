@@ -57,7 +57,7 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   if (args.angle === 'auto') args.angle = undefined // Cast.
-  return queue.push([ 'rotate', (sharp) => {
+  return queue.push(['rotate', (sharp) => {
     return sharp.rotate(args.angle, {
       background: args.background
     })

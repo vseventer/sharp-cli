@@ -57,7 +57,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'linear', (sharp) => sharp.linear(args.multiplier, args.offset) ])
+const handler = (args) => queue.push(['linear', (sharp) => sharp.linear(args.multiplier, args.offset)])
 
 // Exports.
 module.exports = {

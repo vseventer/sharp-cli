@@ -53,7 +53,7 @@ describe('boolean', () => {
 
   describe('<operand> <operator>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'boolean', input, 'and' ], done))
+    beforeEach((done) => cli.parse(['boolean', input, 'and'], done))
 
     // Tests.
     it('must set the operand and operator flags', () => {

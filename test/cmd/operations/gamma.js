@@ -47,7 +47,7 @@ describe('gamma', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'gamma' ], done))
+    beforeEach((done) => cli.parse(['gamma'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('gamma', () => {
     const factor = '1.1'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'gamma', factor ], done))
+    beforeEach((done) => cli.parse(['gamma', factor], done))
 
     // Tests.
     it('must set the factor flag', () => {
@@ -86,7 +86,7 @@ describe('gamma', () => {
     const factorOut = '1.1'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'gamma', '2.2', factorOut ], done))
+    beforeEach((done) => cli.parse(['gamma', '2.2', factorOut], done))
 
     // Tests.
     it('must set the factorOut flag', () => {

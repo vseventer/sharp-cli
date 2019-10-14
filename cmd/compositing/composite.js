@@ -92,11 +92,11 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  const [ top, left ] = args.offset || [ ]
-  const [ width, height, channels, background ] = args.create || [ ]
+  const [top, left] = args.offset || []
+  const [width, height, channels, background] = args.create || []
 
   // @see http://sharp.pixelplumbing.com/en/stable/api-composite/#composite
-  return queue.push([ 'composite', (sharp) => {
+  return queue.push(['composite', (sharp) => {
     return sharp.composite([{
       input: args.image,
       blend: args.blend,

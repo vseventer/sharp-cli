@@ -52,7 +52,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'blur', (sharp) => sharp.blur(args.sigma) ])
+  return queue.push(['blur', (sharp) => sharp.blur(args.sigma)])
 }
 
 // Exports.

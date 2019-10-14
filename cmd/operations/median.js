@@ -52,7 +52,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'median', (sharp) => sharp.median(args.size) ])
+  return queue.push(['median', (sharp) => sharp.median(args.size)])
 }
 
 // Exports.

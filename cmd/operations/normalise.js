@@ -37,7 +37,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'normalise', (sharp) => sharp.normalise() ])
+const handler = (args) => queue.push(['normalise', (sharp) => sharp.normalise()])
 
 // Exports.
 module.exports = {

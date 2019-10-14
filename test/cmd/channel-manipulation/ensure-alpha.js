@@ -46,7 +46,7 @@ describe('ensureAlpha', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'ensureAlpha' ], done))
+  beforeEach((done) => cli.parse(['ensureAlpha'], done))
 
   // Tests.
   it('must update the pipeline', () => {

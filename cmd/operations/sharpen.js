@@ -63,7 +63,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'sharpen', (sharp) => sharp.sharpen(args.sigma, args.flat, args.jagged) ])
+  return queue.push(['sharpen', (sharp) => sharp.sharpen(args.sigma, args.flat, args.jagged)])
 }
 
 // Exports.

@@ -46,7 +46,7 @@ describe('removeAlpha', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'removeAlpha' ], done))
+  beforeEach((done) => cli.parse(['removeAlpha'], done))
 
   // Tests.
   it('must update the pipeline', () => {

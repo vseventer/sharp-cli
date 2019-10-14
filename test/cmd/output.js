@@ -47,7 +47,7 @@ describe('tile', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'tile' ], done))
+    beforeEach((done) => cli.parse(['tile'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('tile', () => {
     const size = '512'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'tile', size ], done))
+    beforeEach((done) => cli.parse(['tile', size], done))
 
     // Tests.
     it('must set the size flag', () => {
@@ -87,7 +87,7 @@ describe('tile', () => {
       const angle = '90'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'tile', '--angle', angle ], done))
+      beforeEach((done) => cli.parse(['tile', '--angle', angle], done))
 
       // Tests.
       it('must set the angle flag', () => {
@@ -108,7 +108,7 @@ describe('tile', () => {
       const container = 'fs'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'tile', '--container', container ], done))
+      beforeEach((done) => cli.parse(['tile', '--container', container], done))
 
       // Tests.
       it('must set the container flag', () => {
@@ -129,7 +129,7 @@ describe('tile', () => {
       const depth = 'onepixel'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'tile', '--depth', depth ], done))
+      beforeEach((done) => cli.parse(['tile', '--depth', depth], done))
 
       // Tests.
       it('must set the depth flag', () => {
@@ -150,7 +150,7 @@ describe('tile', () => {
       const layout = 'dz'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'tile', '--layout', layout ], done))
+      beforeEach((done) => cli.parse(['tile', '--layout', layout], done))
 
       // Tests.
       it('must set the layout flag', () => {
@@ -171,7 +171,7 @@ describe('tile', () => {
       const overlap = '10'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'tile', '--overlap', overlap ], done))
+      beforeEach((done) => cli.parse(['tile', '--overlap', overlap], done))
 
       // Tests.
       it('must set the overlap flag', () => {

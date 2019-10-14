@@ -51,7 +51,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'flatten', (sharp) => {
+  return queue.push(['flatten', (sharp) => {
     return sharp.flatten({ background: args.background })
   }])
 }

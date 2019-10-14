@@ -51,7 +51,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'trim', (sharp) => sharp.trim(args.threshold) ])
+  return queue.push(['trim', (sharp) => sharp.trim(args.threshold)])
 }
 
 // Exports.

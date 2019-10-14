@@ -37,7 +37,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'negate', (sharp) => sharp.negate() ])
+const handler = (args) => queue.push(['negate', (sharp) => sharp.negate()])
 
 // Exports.
 module.exports = {

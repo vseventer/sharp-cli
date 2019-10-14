@@ -47,7 +47,7 @@ describe('flatten', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'flatten' ], done))
+    beforeEach((done) => cli.parse(['flatten'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('flatten', () => {
     const background = 'rgb(0, 0, 0)'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'flatten', background ], done))
+    beforeEach((done) => cli.parse(['flatten', background], done))
 
     // Tests.
     it('must set the factor flag', () => {

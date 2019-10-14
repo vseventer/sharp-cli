@@ -47,7 +47,7 @@ describe('modulate', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'modulate' ], done))
+    beforeEach((done) => cli.parse(['modulate'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -61,12 +61,12 @@ describe('modulate', () => {
   })
 
   describe('[options]', () => {
-    void [ 'brightness', 'saturation', 'hue' ].forEach((option) => {
+    ['brightness', 'saturation', 'hue'].forEach((option) => {
       describe(`--${option}`, () => {
         // Default value.
         const value = '10'
 
-        beforeEach((done) => cli.parse([ 'modulate', `--${option}`, value ], done))
+        beforeEach((done) => cli.parse(['modulate', `--${option}`, value], done))
 
         it(`must set the ${option} flag`, () => {
           expect(cli.parsed.argv).to.have.property(option, parseInt(value, 10))
@@ -78,7 +78,7 @@ describe('modulate', () => {
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
           sinon.assert.calledWith(pipeline.modulate, {
-            [[ option ]]: parseInt(value, 10)
+            [[option]]: parseInt(value, 10)
           })
         })
       })

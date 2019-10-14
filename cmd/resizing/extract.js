@@ -62,7 +62,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([ 'extract', (sharp) => {
+  return queue.push(['extract', (sharp) => {
     return sharp.extract({
       left: args.left,
       top: args.top,

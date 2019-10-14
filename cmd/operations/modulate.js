@@ -65,7 +65,7 @@ const handler = (args) => {
   if (undefined !== args.brightness) options.brightness = args.brightness
   if (undefined !== args.saturation) options.saturation = args.saturation
   if (undefined !== args.hue) options.hue = args.hue
-  return queue.push([ 'modulate', (sharp) => {
+  return queue.push(['modulate', (sharp) => {
     return sharp.modulate(options)
   }])
 }

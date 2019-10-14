@@ -53,7 +53,7 @@ const builder = (yargs) => {
 const handler = (args) => {
   const matrix = args.matrix.split(' ').map((el) => parseFloat(el))
 
-  return queue.push([ 'recomb', (sharp) => {
+  return queue.push(['recomb', (sharp) => {
     return sharp.recomb([
       matrix.slice(0, 3),
       matrix.slice(3, 6),

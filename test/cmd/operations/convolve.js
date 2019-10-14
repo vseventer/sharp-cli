@@ -52,7 +52,7 @@ describe('convolve', () => {
 
   describe('<width> <height> <kernel>', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'convolve', width, height, kernel ], done))
+    beforeEach((done) => cli.parse(['convolve', width, height, kernel], done))
 
     // Tests.
     it('must set the width, height, and kernel flags', () => {
@@ -80,7 +80,7 @@ describe('convolve', () => {
       // Default offset.
       const offset = '10'
 
-      beforeEach((done) => cli.parse([ 'convolve', width, height, kernel, '--offset', offset ], done))
+      beforeEach((done) => cli.parse(['convolve', width, height, kernel, '--offset', offset], done))
 
       it('must set the offset flag', () => {
         expect(cli.parsed.argv).to.have.property('offset', parseInt(offset, 10))
@@ -98,7 +98,7 @@ describe('convolve', () => {
       // Default scale.
       const scale = '10'
 
-      beforeEach((done) => cli.parse([ 'convolve', width, height, kernel, '--scale', scale ], done))
+      beforeEach((done) => cli.parse(['convolve', width, height, kernel, '--scale', scale], done))
 
       it('must set the scale flag', () => {
         expect(cli.parsed.argv).to.have.property('scale', parseInt(scale, 10))

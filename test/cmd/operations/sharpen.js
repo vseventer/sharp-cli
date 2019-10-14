@@ -47,7 +47,7 @@ describe('sharpen', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'sharpen' ], done))
+    beforeEach((done) => cli.parse(['sharpen'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('sharpen', () => {
     const sigma = '1.1'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'sharpen', sigma ], done))
+    beforeEach((done) => cli.parse(['sharpen', sigma], done))
 
     // Tests.
     it('must set the sigma flag', () => {
@@ -87,7 +87,7 @@ describe('sharpen', () => {
       const flat = '1.1'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'sharpen', '--flat', flat ], done))
+      beforeEach((done) => cli.parse(['sharpen', '--flat', flat], done))
 
       // Tests.
       it('must set the flat flag', () => {
@@ -108,7 +108,7 @@ describe('sharpen', () => {
       const jagged = '1.1'
 
       // Run.
-      beforeEach((done) => cli.parse([ 'sharpen', '--jagged', jagged ], done))
+      beforeEach((done) => cli.parse(['sharpen', '--jagged', jagged], done))
 
       // Tests.
       it('must set the jagged flag', () => {

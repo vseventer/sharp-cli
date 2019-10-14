@@ -57,7 +57,7 @@ const builder = (yargs) => {
 }
 
 // Command handler.
-const handler = (args) => queue.push([ 'gamma', (sharp) => {
+const handler = (args) => queue.push(['gamma', (sharp) => {
   return sharp.gamma(args.factor, args.factorOut || args.factor)
 }])
 

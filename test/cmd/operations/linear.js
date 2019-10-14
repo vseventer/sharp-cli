@@ -47,7 +47,7 @@ describe('linear', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse([ 'linear' ], done))
+    beforeEach((done) => cli.parse(['linear'], done))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('linear', () => {
     const multiplier = '1.5'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'linear', multiplier ], done))
+    beforeEach((done) => cli.parse(['linear', multiplier], done))
 
     // Tests.
     it('must set the factor flag', () => {
@@ -86,7 +86,7 @@ describe('linear', () => {
     const offset = '0.5'
 
     // Run.
-    beforeEach((done) => cli.parse([ 'linear', '1.5', offset ], done))
+    beforeEach((done) => cli.parse(['linear', '1.5', offset], done))
 
     // Tests.
     it('must set the factor flag', () => {

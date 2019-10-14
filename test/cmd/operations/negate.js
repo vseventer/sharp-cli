@@ -46,7 +46,7 @@ describe('negate', () => {
   afterEach('sharp', sharp.prototype.reset)
 
   // Run.
-  beforeEach((done) => cli.parse([ 'negate' ], done))
+  beforeEach((done) => cli.parse(['negate'], done))
 
   // Tests.
   it('must update the pipeline', () => {
