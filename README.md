@@ -41,8 +41,6 @@ Commands:
   sharp normalise                              Enhance output image contrast by stretching its
                                                luminance to cover the full dynamic range
                                                                                 [aliases: normalize]
-  sharp overlayWith <overlay>                  [DEPRECATED] Overlay (composite) an image over the
-                                               processed (resized, extracted etc.) image
   sharp recomb <matrix>                        Recomb the image with the specified matrix
   sharp removeAlpha                            Remove alpha channel, if any
   sharp resize <width> [height]                Resize image to width × height
@@ -62,7 +60,7 @@ Commands:
 Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 9]
   --format, -f            Force output to a given format
-                  [choices: "input", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
+  [choices: "input", "heic", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
@@ -80,7 +78,8 @@ Optimization Options
                                             quality <= 90                  [string] [default: 4:2:0]
   --colors, --colours                       Maximum number of palette entries[number] [default: 256]
   --compression                             Compression options
-                 [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
+     [string] [choices: "hevc", "avc", "jpeg", "av1", "ccittfax4", "deflate", "jpeg", "lzw", "none"]
+                                                                                     [default: jpeg]
   --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
   --lossless                                Use lossless compression mode                  [boolean]
@@ -96,8 +95,11 @@ Optimization Options
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
   --pyramid                                 Write an image pyramid                         [boolean]
   --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
+  --reductionEffort                         Level of CPU effort to reduce file size
+                                                                               [number] [default: 4]
   --sequentialRead                          An advanced setting that switches the libvips access
                                             method to VIPS_ACCESS_SEQUENTIAL               [boolean]
+  --smartSubsample                          High quality chroma subsampling                [boolean]
   --squash                                  Squash 8-bit images down to 1 bit              [boolean]
   --tileHeight                              Vertical tile size                              [number]
   --tileWidth                               Horizontal tile size                            [number]
@@ -114,7 +116,7 @@ Examples:
                                                       200 pixels high image containing a scaled and
                                                       cropped version of input.jpg
   sharp -i ./input.jpg -o ./out -mq90 rotate 180 --   out/input.jpg will be an upside down, 300px
-  resize 300 -- flatten "#ff6600" -- overlayWith      wide, alpha channel flattened onto orange
+  resize 300 -- flatten "#ff6600" -- composite        wide, alpha channel flattened onto orange
   ./overlay.png --gravity southeast -- sharpen        background, composited with overlay.png with
                                                       SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
