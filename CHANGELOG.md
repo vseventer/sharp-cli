@@ -4,6 +4,7 @@
 * Added support for HEIF images.
 * Added [`--premultiplied`](https://sharp.pixelplumbing.com/en/latest/api-composite/#composite) option.
 * Added [`--reductionEffort` and `--smartSubsample`](https://sharp.pixelplumbing.com/en/stable/api-output/#webp) options.
+* Fixed bug with output directories ([#16](https://github.com/vseventer/sharp-cli/issues/16)).
 * Removed [`overlayWith`](http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith) command.
 * Updated `fs-extra`, `mocha`, `sharp`, `sinon`, and `standard` dependencies.
 

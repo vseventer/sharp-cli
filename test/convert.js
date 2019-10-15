@@ -55,6 +55,19 @@ describe('convert', () => {
         .files([input], dest)
         .then(([info]) => expect(fs.existsSync(info.path)).to.be.true)
     })
+    it('must convert a file and output to an existing directory', () => {
+      // Negative test for directory that does not exist.
+      const rand = '' + Math.random()
+      return convert
+        .files([input, input], rand)
+        .then(() => { throw new Error('STOP') })
+        .catch((err) => {
+          expect(err).to.exist()
+          expect(err).to.have.property('message')
+          expect(err.message).to.contain(`${rand}/input.jpg`)
+          expect(err.message).to.contain('No such file or directory')
+        })
+    })
     it('must convert multiple files', () => {
       return convert
         .files([input, input], dest)
