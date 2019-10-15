@@ -186,6 +186,22 @@ describe('composite', () => {
       })
     })
 
+    describe('--premultiplied', () => {
+      beforeEach((done) => cli.parse(['composite', input, '--premultiplied'], done))
+
+      it('must set the premultiplied flag', () => {
+        expect(cli.parsed.argv).to.have.property('premultiplied', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].premultiplied', true))
+      })
+    })
+
     describe('--tile', () => {
       beforeEach((done) => cli.parse(['composite', input, '--tile'], done))
 

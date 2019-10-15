@@ -72,6 +72,10 @@ const options = {
     nargs: 2,
     type: 'array'
   },
+  premultiplied: {
+    desc: 'Avoid premultiplying the image',
+    type: 'boolean'
+  },
   tile: {
     desc: 'Repeat the overlay image across the entire image with the given gravity',
     type: 'boolean'
@@ -104,6 +108,7 @@ const handler = (args) => {
       density: args.density,
       gravity: args.gravity,
       left,
+      premultiplied: args.premultiplied,
       tile: args.tile,
       top
     }])

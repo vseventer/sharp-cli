@@ -28,7 +28,7 @@
   "dependencies": {
     "bubble-stream-error": "1.0.x",
     "multiyargs": "1.0.x",
-    "sharp": "0.22.1",
+    "sharp": "0.23.1",
     "url-template": "2.0.x",
     "yargs": "12.0.x"
   },

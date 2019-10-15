@@ -1,7 +1,11 @@
 # Changelog
 
 ## 1.11.0
-* Updated `fs-extra`, `mocha`, `sinon`, and `standard` dependencies.
+* Added support for HEIF images.
+* Added [`--premultiplied`](https://sharp.pixelplumbing.com/en/latest/api-composite/#composite) option.
+* Added [`--reductionEffort` and `--smartSubsample`](https://sharp.pixelplumbing.com/en/stable/api-output/#webp) options.
+* Removed [`overlayWith`](http://sharp.pixelplumbing.com/en/v0.21.3/api-composite/#overlaywith) command.
+* Updated `fs-extra`, `mocha`, `sharp`, `sinon`, and `standard` dependencies.
 
 ## 1.10.0 (June 26, 2019)
 * Added [`composite`](http://sharp.pixelplumbing.com/en/stable/api-composite/#composite) command.

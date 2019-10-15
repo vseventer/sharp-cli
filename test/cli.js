@@ -136,7 +136,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--compression', () => {
       // Default compression.
-      const compression = 'deflate'
+      const compression = 'jpeg'
 
       // Run.
       beforeEach((done) => cli.parse(['--compression', compression, ...ioFlags], done))
@@ -146,11 +146,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('compression', compression)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.include('heif')
         expect(queue.pipeline).to.include('tiff')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.heif, { compression })
         sinon.assert.calledWithMatch(pipeline.tiff, { compression })
       })
     })
@@ -296,11 +298,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('lossless', true)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.include('heif')
         expect(queue.pipeline).to.include('webp')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.heif, { lossless: true })
         sinon.assert.calledWithMatch(pipeline.webp, { lossless: true })
       })
     })
@@ -512,13 +516,15 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property('quality', parseInt(quality, 10))
         })
         it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(3)
+          expect(queue.pipeline).to.have.length(4)
+          expect(queue.pipeline).to.include('heif')
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('tiff')
           expect(queue.pipeline).to.include('webp')
         })
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.heif, { quality: parseInt(quality, 10) })
           sinon.assert.calledWithMatch(pipeline.jpeg, { quality: parseInt(quality, 10) })
           sinon.assert.calledWithMatch(pipeline.tiff, { quality: parseInt(quality, 10) })
           sinon.assert.calledWithMatch(pipeline.webp, { quality: parseInt(quality, 10) })
@@ -549,6 +555,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--reductionEffort', () => {
+      // Default effort.
+      const reductionEffort = '1'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--reductionEffort', reductionEffort, ...ioFlags], done))
+
+      // Tests.
+      it('must set the reductionEffort flag', () => {
+        expect(cli.parsed.argv).to.have.property('reductionEffort', parseInt(reductionEffort, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { reductionEffort: parseInt(reductionEffort, 10) })
+      })
+    })
+
     describe('--sequentialRead', () => {
       // Run.
       beforeEach((done) => cli.parse(['--sequentialRead', ...ioFlags], done))
@@ -564,6 +591,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.called(pipeline.sequentialRead)
+      })
+    })
+
+    describe('--smartSubsample', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['--smartSubsample', ...ioFlags], done))
+
+      // Tests.
+      it('must set the smartSubsample flag', () => {
+        expect(cli.parsed.argv).to.have.property('smartSubsample', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { smartSubsample: true })
       })
     })
 

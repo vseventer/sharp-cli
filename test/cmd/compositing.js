@@ -28,5 +28,4 @@
 // Test suite.
 describe('Compositing', () => {
   require('./compositing/composite')
-  require('./compositing/overlay-with')
 })
