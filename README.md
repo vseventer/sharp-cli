@@ -78,10 +78,11 @@ Optimization Options
                                             quality <= 90                  [string] [default: 4:2:0]
   --colors, --colours                       Maximum number of palette entries[number] [default: 256]
   --compression                             Compression options
-     [string] [choices: "hevc", "avc", "jpeg", "av1", "ccittfax4", "deflate", "jpeg", "lzw", "none"]
-                                                                                     [default: jpeg]
+                 [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
   --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
+  --hcompression                            Compression format
+                                  [string] [choices: "hevc", "avc", "jpeg", "av1"] [default: "hevc"]
   --lossless                                Use lossless compression mode                  [boolean]
   --nearLossless                            use near_lossless compression mode             [boolean]
   --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and

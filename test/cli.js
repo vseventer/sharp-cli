@@ -136,7 +136,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--compression', () => {
       // Default compression.
-      const compression = 'jpeg'
+      const compression = 'deflate'
 
       // Run.
       beforeEach((done) => cli.parse(['--compression', compression, ...ioFlags], done))
@@ -146,13 +146,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('compression', compression)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(2)
-        expect(queue.pipeline).to.include('heif')
+        expect(queue.pipeline).to.have.length(1)
         expect(queue.pipeline).to.include('tiff')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.heif, { compression })
         sinon.assert.calledWithMatch(pipeline.tiff, { compression })
       })
     })
@@ -243,6 +241,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
             done(err)
           })
         })
+      })
+    })
+
+    describe('--hcompression', () => {
+      // Default compression.
+      const compression = 'avc'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--hcompression', compression, ...ioFlags], done))
+
+      // Tests.
+      it('must set the compression flag', () => {
+        expect(cli.parsed.argv).to.have.property('hcompression', compression)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('heif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.heif, { compression })
       })
     })
 

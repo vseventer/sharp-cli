@@ -2,6 +2,7 @@
 
 ## 1.11.0
 * Added support for HEIF images.
+* Added [`--hcompression`](https://sharp.pixelplumbing.com/en/stable/api-output/#heif) option.
 * Added [`--premultiplied`](https://sharp.pixelplumbing.com/en/latest/api-composite/#composite) option.
 * Added [`--reductionEffort` and `--smartSubsample`](https://sharp.pixelplumbing.com/en/stable/api-output/#webp) options.
 * Fixed bug with output directories ([#16](https://github.com/vseventer/sharp-cli/issues/16)).
