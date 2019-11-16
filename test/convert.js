@@ -43,8 +43,11 @@ describe('convert', () => {
 
   describe('files', () => {
     // Default output.
-    let dest
+    let copy, dest
     before(() => { dest = tempy.directory() })
+    beforeEach(() => { copy = tempy.file() })
+    beforeEach((done) => { fs.copy(input, copy, done) })
+    afterEach((done) => fs.remove(copy, done))
     afterEach((done) => fs.emptyDir(dest, done))
     after((done) => fs.remove(dest, done))
 
@@ -64,7 +67,7 @@ describe('convert', () => {
           expect(err).to.exist()
           expect(err).to.have.property('message')
           expect(err.message).to.contain(`${rand}/input.jpg`)
-          expect(err.message).to.contain('No such file or directory')
+          expect(err.message).to.contain('no such file or directory')
         })
     })
     it('must convert multiple files', () => {
@@ -80,7 +83,7 @@ describe('convert', () => {
     })
     it('must allow the same file as input and output', () => {
       return convert
-        .files([input], path.dirname(input))
+        .files([copy], path.dirname(copy))
     })
   })
   describe('stream', () => {
@@ -94,7 +97,8 @@ describe('convert', () => {
       return convert
         .stream(fs.createReadStream(input), fs.createWriteStream(dest))
         .then((info) => {
-          expect(info).not.to.exist()
+          expect(info.format).to.exist()
+          expect(info.path).not.to.exist()
           expect(fs.existsSync(dest)).to.be.true()
         })
     })
