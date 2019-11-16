@@ -31,7 +31,7 @@ const path = require('path')
 // Package modules.
 const expect = require('must')
 const fs = require('fs-extra')
-const tempfile = require('tempfile')
+const tempy = require('tempy')
 
 // Local modules.
 const convert = require('../lib/convert')
@@ -44,8 +44,7 @@ describe('convert', () => {
   describe('files', () => {
     // Default output.
     let dest
-    before(() => { dest = tempfile() })
-    before((done) => fs.ensureDir(dest, done))
+    before(() => { dest = tempy.directory() })
     afterEach((done) => fs.emptyDir(dest, done))
     after((done) => fs.remove(dest, done))
 
@@ -79,20 +78,15 @@ describe('convert', () => {
         .files([input], path.join(dest, `{name}-${rand}{ext}`))
         .then(([info]) => expect(info.path).to.contain(rand))
     })
-    it('must not allow the same file as input and output', () => {
+    it('must allow the same file as input and output', () => {
       return convert
         .files([input], path.dirname(input))
-        .then(() => { throw new Error('STOP') })
-        .catch((err) => {
-          expect(err).to.exist()
-          expect(err).to.have.property('message', 'Cannot use same file for input and output')
-        })
     })
   })
   describe('stream', () => {
     // Default output.
     let dest
-    beforeEach(() => { dest = tempfile() })
+    beforeEach(() => { dest = tempy.file() })
     afterEach((done) => fs.remove(dest, done))
 
     // Tests.

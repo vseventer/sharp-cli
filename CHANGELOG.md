@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.12.0
+* Replaced `tempfile` with `tempy` dependency.
+
 ## 1.11.0 (November 2, 2019)
 * Added support for HEIF images.
 * Added [`--hcompression`](https://sharp.pixelplumbing.com/en/stable/api-output/#heif) option.

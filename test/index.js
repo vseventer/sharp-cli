@@ -32,7 +32,7 @@ const path = require('path')
 const expect = require('must')
 const fs = require('fs-extra')
 const sinon = require('sinon')
-const tempfile = require('tempfile')
+const tempy = require('tempy')
 
 // Local modules.
 const cli = require('../lib')
@@ -46,8 +46,7 @@ describe('CLI', () => {
 
   // Default output.
   let dest
-  before(() => { dest = tempfile() })
-  before((done) => fs.ensureDir(dest, done))
+  before(() => { dest = tempy.directory() })
   afterEach((done) => fs.emptyDir(dest, done))
   after((done) => fs.remove(dest, done))
 
