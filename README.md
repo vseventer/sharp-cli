@@ -102,6 +102,8 @@ Optimization Options
                                             method to VIPS_ACCESS_SEQUENTIAL               [boolean]
   --smartSubsample                          High quality chroma subsampling                [boolean]
   --squash                                  Squash 8-bit images down to 1 bit              [boolean]
+  --tileBackground                          Background colour, parsed by the color module
+                                                          [string] [default: rgba(255, 255, 255, 1)]
   --tileHeight                              Vertical tile size                              [number]
   --tileWidth                               Horizontal tile size                            [number]
   --trellisQuantisation                     Apply trellis quantisation                     [boolean]
