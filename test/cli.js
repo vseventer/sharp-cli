@@ -649,6 +649,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--tileBackground', () => {
+      // Default tileBackground.
+      const tileBackground = 'rgb(0, 0, 0)'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--tileBackground', tileBackground, ...ioFlags], done))
+
+      // Tests.
+      it('must set the tileBackground flag', () => {
+        expect(cli.parsed.argv).to.have.property('tileBackground', tileBackground)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { background: tileBackground })
+      })
+    })
+
     describe('--tileHeight', () => {
       // Default tileHeight.
       const tileHeight = '100'

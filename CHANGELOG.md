@@ -1,8 +1,10 @@
 # Changelog
 
 ## 1.12.0
+* Added [`--tileBackground`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
 * Added support for same file for input and output ([#24](https://github.com/vseventer/sharp-cli/issues/24)).
 * Replaced `tempfile` with `tempy` dependency.
+* Updated `sharp` dependency.
 
 ## 1.11.0 (November 2, 2019)
 * Added support for HEIF images.
