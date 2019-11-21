@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.21.1
+* Fixed bug where options were applied to HEIF, even if libheif was not installed ([#25](https://github.com/vseventer/sharp-cli/issues/25)).
+
 ## 1.12.0 (November 18, 2019)
 * Added [`--tileBackground`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
 * Added support for same file for input and output ([#24](https://github.com/vseventer/sharp-cli/issues/24)).

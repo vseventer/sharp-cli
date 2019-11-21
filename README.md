@@ -60,7 +60,7 @@ Commands:
 Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 9]
   --format, -f            Force output to a given format
-  [choices: "input", "heic", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
+          [choices: "input", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
