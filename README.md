@@ -129,7 +129,7 @@ For more information on available options, please visit https://sharp.pixelplumb
 
 ## Input and output
 * The CLI supports input streams.
-* [Glob](npmjs.com/package/glob) patterns are allowed, for example `./images/**/*.jpg`.
+* [Glob](https://www.npmjs.com/package/glob) patterns are allowed, for example `./images/**/*.jpg`.
 * Supoorted output macros: `{root}`, `{dir}`, `{base}`, `{name}`, and `{ext}` (from [Node.js path](https://nodejs.org/api/path.html#path_path_parse_path), for example: `{dir}/{base}` will overwrite original files.
 
 ```
