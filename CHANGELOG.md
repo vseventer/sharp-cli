@@ -1,7 +1,9 @@
 # Changelog
 
-## 1.21.1
+## 1.13.0
+* Added support for glob input ([#27](https://github.com/vseventer/sharp-cli/issues/27)).
 * Fixed bug where options were applied to HEIF, even if libheif was not installed ([#25](https://github.com/vseventer/sharp-cli/issues/25)).
+* Replaced `url-template` dependency by regex replacement ([#26](https://github.com/vseventer/sharp-cli/issues/26)).
 
 ## 1.12.0 (November 18, 2019)
 * Added [`--tileBackground`](https://sharp.pixelplumbing.com/en/stable/api-output/#tile) option.
