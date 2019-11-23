@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.1 (November 22, 2019)
+* Fixed bug where output directory was invalid ([#26](https://github.com/vseventer/sharp-cli/issues/26)).
+
 ## 1.13.0 (November 22, 2019)
 * Added support for glob input ([#27](https://github.com/vseventer/sharp-cli/issues/27)).
 * Fixed bug where options were applied to HEIF, even if libheif was not installed ([#25](https://github.com/vseventer/sharp-cli/issues/25)).
