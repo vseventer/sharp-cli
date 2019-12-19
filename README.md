@@ -1,5 +1,5 @@
 # sharp-cli
-> CLI for [sharp](https://www.npmjs.com/package/sharp) a high performance Node.js image processing module.
+> CLI for [sharp](https://www.npmjs.com/package/sharp), a high performance Node.js image processing module.
 
 ## Install
 `$ npm install sharp-cli`
