@@ -83,7 +83,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 resize --height 100', 'The output will be 100 pixels high, auto-scaled width')
+    .example('$0 resize 0 100', 'The output will be 100 pixels high, auto-scaled width')
     .example('$0 resize 200 300 --background rgba(255,255,255,0.5) --fit contain --kernel nearest --position "right top"', 'The output will be 200 pixels wide and 300 pixels high containing the nearest-neighbour scaled version contained within the north-east corner of a semi-transparent white canvas')
     .example('$0 resize 200 200 --fit cover --position entropy', 'The output will be a 200px square auto-cropped image')
     .example('$0 resize 200 200 --withoutEnlargement', 'The output will be no wider and no higher than 200 pixels, and no larger than the input image')
