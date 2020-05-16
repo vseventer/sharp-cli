@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.14.0
+## 1.14.0 (May 16, 2020)
 * Fixed bug where resize example was missing width ([#35](https://github.com/vseventer/sharp-cli/issues/35)).
 * Resizing without specifying height will now auto-scale ([#36](https://github.com/vseventer/sharp-cli/issues/36)).
-* Updated `sharp` dependency.
+* Updated `sharp` dependency (now requires Node.js >= 10).
 
 ## 1.13.1 (November 22, 2019)
 * Fixed bug where output directory was invalid ([#26](https://github.com/vseventer/sharp-cli/issues/26)).
