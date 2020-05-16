@@ -103,7 +103,7 @@ describe('resize', () => {
       const pipeline = queue.drain(sharp())
       sinon.assert.calledWithMatch(pipeline.resize, {
         width: parseInt(x, 10),
-        height: parseInt(x, 10)
+        height: undefined
       })
     })
   })
