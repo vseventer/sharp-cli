@@ -96,7 +96,7 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   const width = args.width === 0 ? null : args.width // Auto-scale.
-  const height = args.height === 0 ? null : (args.height || width) // Auto-scale or square.
+  const height = args.height === 0 ? null : args.height // Auto-scale.
 
   // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
   return queue.push(['resize', (sharp) => {
