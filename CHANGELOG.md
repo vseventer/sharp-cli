@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.14.1 (June 6, 2020)
+* Fixed bug introduced in [#24](https://github.com/vseventer/sharp-cli/issues/24) where tile-based output was not working ([#41](https://github.com/vseventer/sharp-cli/issues/41)).
+* Removed path normalization for input- and output options to support URI templates ([#40](https://github.com/vseventer/sharp-cli/issues/40)).
+
 ## 1.14.0 (May 16, 2020)
 * Fixed bug where resize example was missing width ([#35](https://github.com/vseventer/sharp-cli/issues/35)).
 * Resizing without specifying height will now auto-scale ([#36](https://github.com/vseventer/sharp-cli/issues/36)).
