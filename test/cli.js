@@ -25,9 +25,6 @@
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
 // Package modules.
 const expect = require('must')
 const sinon = require('sinon')
@@ -274,7 +271,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         it('must set the input flag', () => {
           const args = cli.parsed.argv
           expect(args).to.have.property('input')
-          expect(args.input).to.eql([path.normalize(input), path.normalize(input)])
+          expect(args.input).to.eql([input, input])
         })
 
         it('must fail when no input is given', (done) => {
@@ -418,7 +415,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it('must set the output flag', () => {
-          expect(cli.parsed.argv).to.have.property('output', path.normalize(output))
+          expect(cli.parsed.argv).to.have.property('output', output)
         })
       })
     })
