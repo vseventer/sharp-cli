@@ -35,6 +35,8 @@ const tempy = require('tempy')
 
 // Local modules.
 const convert = require('../lib/convert')
+const queue = require('../lib/queue')
+const tile = require('../cmd/output')
 
 // Test suite.
 describe('convert', () => {
@@ -47,6 +49,9 @@ describe('convert', () => {
     before(() => { dest = tempy.directory() })
     beforeEach(() => { copy = tempy.file() })
     beforeEach((done) => { fs.copy(input, copy, done) })
+    afterEach(() => {
+      queue.length = 0 // Empty queue.
+    })
     afterEach((done) => fs.remove(copy, done))
     afterEach((done) => fs.emptyDir(dest, done))
     after((done) => fs.remove(dest, done))
@@ -67,7 +72,7 @@ describe('convert', () => {
           expect(err).to.exist()
           expect(err).to.have.property('message')
           expect(err.message).to.contain(`${rand}/input.jpg`)
-          expect(err.message).to.contain('no such file or directory')
+          expect(err.message).to.contain('No such file or directory')
         })
     })
     it('must convert multiple files', () => {
@@ -84,6 +89,11 @@ describe('convert', () => {
     it('must allow the same file as input and output', () => {
       return convert
         .files([copy], path.dirname(copy))
+    })
+    it('must support tiled output', () => {
+      tile.handler({ container: 'zip' })
+      return convert
+        .files([input], dest)
     })
   })
   describe('stream', () => {
