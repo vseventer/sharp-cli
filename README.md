@@ -59,13 +59,17 @@ Commands:
 
 Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 9]
+  --density               DPI for vector images                               [number] [default: 72]
   --format, -f            Force output to a given format
           [choices: "input", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
+  --level                 Level to extract from a multi-level input                         [number]
   --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
   --output, -o            Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]
+  --page                  Page number to start extracting from for multi-page input         [number]
+  --pages                 Number of pages to extract for multi-page input      [number] [default: 1]
   --progressive, -p       Use progressive (interlace) scan                                 [boolean]
   --quality, -q           Quality                                             [number] [default: 80]
   --withMetadata, -m      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
