@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.15.0
+## 1.15.0 (March 13, 2021)
 * Added [`alpha`](https://sharp.pixelplumbing.com/api-channel#extractchannel) band option to `extractChannel`.
 * Added [`density`, `level`, `page`, and `pages`](https://sharp.pixelplumbing.com/api-constructor) to input options.
 * Added `iiif` layout option to tile-based output.
