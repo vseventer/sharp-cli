@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.0
+* Added [`alpha`](https://sharp.pixelplumbing.com/api-channel#extractchannel) band option to `extractChannel`.
+* Added [`density`, `level`, `page`, and `pages`](https://sharp.pixelplumbing.com/api-constructor) to input options.
+* Added `iiif` layout option to tile-based output.
+* Updated `sharp` dependency.
+
 ## 1.14.1 (June 6, 2020)
 * Fixed bug introduced in [#24](https://github.com/vseventer/sharp-cli/issues/24) where tile-based output was not working ([#41](https://github.com/vseventer/sharp-cli/issues/41)).
 * Removed path normalization for input- and output options to support URI templates ([#40](https://github.com/vseventer/sharp-cli/issues/40)).

@@ -176,6 +176,19 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--density', () => {
+      // Default density.
+      const density = '300'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--density', density, ...ioFlags], done))
+
+      // Tests.
+      it('must set the density flag', () => {
+        expect(cli.parsed.argv).to.have.property('density', parseInt(density, 10))
+      })
+    })
+
     describe('--dither', () => {
       // Default dither.
       const dither = '0.5'
@@ -285,6 +298,19 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--level', () => {
+      // Default level.
+      const level = '2'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--level', level, ...ioFlags], done))
+
+      // Tests.
+      it('must set the level flag', () => {
+        expect(cli.parsed.argv).to.have.property('level', parseInt(level, 10))
+      })
+    })
+
     ;['l', 'limitInputPixels'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
@@ -293,14 +319,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
         // Tests.
         it('must set the limitInputPixels flag', () => {
           expect(cli.parsed.argv).to.have.property('limitInputPixels', 10)
-        })
-        it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(1)
-          expect(queue.pipeline).to.include('limitInputPixels')
-        })
-        it('must execute the pipeline', () => {
-          const pipeline = queue.drain(sharp())
-          sinon.assert.called(pipeline.limitInputPixels)
         })
       })
     })
@@ -435,6 +453,32 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.jpeg, { overshootDeringing: true })
+      })
+    })
+
+    describe('--page', () => {
+      // Default page.
+      const page = '2'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--page', page, ...ioFlags], done))
+
+      // Tests.
+      it('must set the page flag', () => {
+        expect(cli.parsed.argv).to.have.property('page', parseInt(page, 10))
+      })
+    })
+
+    describe('--pages', () => {
+      // Default pages.
+      const pages = '2'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--pages', pages, ...ioFlags], done))
+
+      // Tests.
+      it('must set the pages flag', () => {
+        expect(cli.parsed.argv).to.have.property('pages', parseInt(pages, 10))
       })
     })
 
@@ -599,14 +643,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Tests.
       it('must set the sequentialRead flag', () => {
         expect(cli.parsed.argv).to.have.property('sequentialRead', true)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('sequentialRead')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.called(pipeline.sequentialRead)
       })
     })
 

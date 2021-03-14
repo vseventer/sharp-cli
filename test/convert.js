@@ -59,14 +59,14 @@ describe('convert', () => {
     // Tests.
     it('must convert a file', () => {
       return convert
-        .files([input], dest)
+        .files([input], dest, {})
         .then(([info]) => expect(fs.existsSync(info.path)).to.be.true)
     })
     it('must convert a file and output to an existing directory', () => {
       // Negative test for directory that does not exist.
       const rand = '' + Math.random()
       return convert
-        .files([input, input], rand)
+        .files([input, input], rand, {})
         .then(() => { throw new Error('STOP') })
         .catch((err) => {
           expect(err).to.exist()
@@ -77,23 +77,23 @@ describe('convert', () => {
     })
     it('must convert multiple files', () => {
       return convert
-        .files([input, input], dest)
+        .files([input, input], dest, {})
         .then((info) => expect(info).to.have.length(2))
     })
     it('must support output templates', () => {
       const rand = Math.random()
       return convert
-        .files([input], path.join(dest, `{name}-${rand}{ext}`))
+        .files([input], path.join(dest, `{name}-${rand}{ext}`), {})
         .then(([info]) => expect(info.path).to.contain(`input-${rand}.jpg`))
     })
     it('must allow the same file as input and output', () => {
       return convert
-        .files([copy], path.dirname(copy))
+        .files([copy], path.dirname(copy), {})
     })
     it('must support tiled output', () => {
       tile.handler({ container: 'zip' })
       return convert
-        .files([input], dest)
+        .files([input], dest, {})
     })
   })
   describe('stream', () => {
@@ -105,7 +105,7 @@ describe('convert', () => {
     // Tests.
     it('must convert a file', () => {
       return convert
-        .stream(fs.createReadStream(input), fs.createWriteStream(dest))
+        .stream(fs.createReadStream(input), fs.createWriteStream(dest), {})
         .then((info) => {
           expect(info.format).to.exist()
           expect(info.path).not.to.exist()
