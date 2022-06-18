@@ -84,7 +84,7 @@ Optimization Options
   --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
   --hcompression                            Compression format
-                                  [string] [choices: "hevc", "avc", "jpeg", "av1"] [default: "hevc"]
+                                                  [string] [choices: "hevc", "av1"] [default: "av1"]
   --lossless                                Use lossless compression mode                  [boolean]
   --nearLossless                            use near_lossless compression mode             [boolean]
   --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and

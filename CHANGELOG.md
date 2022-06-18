@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0
+## 2.0.0 (June 18, 2022)
 * Removed `--limitInputPixels` and `--sequentialRead`.
 * Added [`--limitInputPixels`](https://sharp.pixelplumbing.com/api-composite#composite) when compositing images.
 * Updated `sharp` dependency (adding support for Apple M1) ([#61](https://github.com/vseventer/sharp-cli/pull/61)).
