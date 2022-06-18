@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0
+* Removed `--limitInputPixels` and `--sequentialRead`.
+* Added [`--limitInputPixels`](https://sharp.pixelplumbing.com/api-composite#composite) when compositing images.
+* Updated `sharp` dependency (adding support for Apple M1) ([#61](https://github.com/vseventer/sharp-cli/pull/61)).
+
 ## 1.15.0 (March 13, 2021)
 * Added [`alpha`](https://sharp.pixelplumbing.com/api-channel#extractchannel) band option to `extractChannel`.
 * Added [`density`, `level`, `page`, and `pages`](https://sharp.pixelplumbing.com/api-constructor) to input options.

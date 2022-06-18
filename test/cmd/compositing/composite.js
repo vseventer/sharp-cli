@@ -160,6 +160,26 @@ describe('composite', () => {
       })
     })
 
+    describe('--limitInputPixels', () => {
+      // Default value.
+      const value = '10'
+
+      beforeEach((done) => cli.parse(['composite', input, '--limitInputPixels', value], done))
+
+      it('must set the offset flag', () => {
+        const args = cli.parsed.argv
+        expect(args).to.have.property('limitInputPixels', parseInt(value, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].limitInputPixels', parseInt(value, 10)))
+      })
+    })
+
     describe('--offset', () => {
       // Default offset.
       const top = '10'
