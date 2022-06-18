@@ -64,8 +64,6 @@ Global Options
           [choices: "input", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --level                 Level to extract from a multi-level input                         [number]
-  --limitInputPixels, -l  Do not process input images where the number of pixels (width x height)
-                          exceeds this limit                           [number] [default: 268402689]
   --output, -o            Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]
   --page                  Page number to start extracting from for multi-page input         [number]
@@ -102,8 +100,6 @@ Optimization Options
   --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
   --reductionEffort                         Level of CPU effort to reduce file size
                                                                                [number] [default: 4]
-  --sequentialRead                          An advanced setting that switches the libvips access
-                                            method to VIPS_ACCESS_SEQUENTIAL               [boolean]
   --smartSubsample                          High quality chroma subsampling                [boolean]
   --squash                                  Squash 8-bit images down to 1 bit              [boolean]
   --tileBackground                          Background colour, parsed by the color module

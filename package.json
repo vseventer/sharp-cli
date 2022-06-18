@@ -30,8 +30,7 @@
     "glob": "^7.1.6",
     "is-directory": "0.3.x",
     "multiyargs": "1.0.x",
-    "rw-stream": "^0.3.3",
-    "sharp": "0.25.4",
+    "sharp": "0.30.6",
     "yargs": "12.0.x"
   },
   "devDependencies": {

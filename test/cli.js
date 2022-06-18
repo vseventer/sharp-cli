@@ -256,7 +256,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe('--hcompression', () => {
       // Default compression.
-      const compression = 'avc'
+      const compression = 'hevc'
 
       // Run.
       beforeEach((done) => cli.parse(['--hcompression', compression, ...ioFlags], done))
@@ -308,18 +308,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Tests.
       it('must set the level flag', () => {
         expect(cli.parsed.argv).to.have.property('level', parseInt(level, 10))
-      })
-    })
-
-    ;['l', 'limitInputPixels'].forEach((alias) => {
-      describe(`--${alias}`, () => {
-        // Run.
-        beforeEach((done) => cli.parse([`--${alias}`, '10', ...ioFlags], done))
-
-        // Tests.
-        it('must set the limitInputPixels flag', () => {
-          expect(cli.parsed.argv).to.have.property('limitInputPixels', 10)
-        })
       })
     })
 
@@ -633,16 +621,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.webp, { reductionEffort: parseInt(reductionEffort, 10) })
-      })
-    })
-
-    describe('--sequentialRead', () => {
-      // Run.
-      beforeEach((done) => cli.parse(['--sequentialRead', ...ioFlags], done))
-
-      // Tests.
-      it('must set the sequentialRead flag', () => {
-        expect(cli.parsed.argv).to.have.property('sequentialRead', true)
       })
     })
 

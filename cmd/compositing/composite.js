@@ -67,6 +67,12 @@ const options = {
     normalize: true,
     type: 'string'
   },
+  limitInputPixels: {
+    defaultDescription: 0x3FFF * 0x3FFF,
+    desc: 'Do not process input images where the number of pixels (width x height) exceeds this limit',
+    nargs: 1,
+    type: 'number'
+  },
   offset: {
     desc: 'The pixel offset from the top and left edges',
     nargs: 2,
@@ -108,6 +114,7 @@ const handler = (args) => {
       density: args.density,
       gravity: args.gravity,
       left,
+      limitInputPixels: args.limitInputPixels,
       premultiplied: args.premultiplied,
       tile: args.tile,
       top
