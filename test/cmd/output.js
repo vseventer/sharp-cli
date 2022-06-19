@@ -103,6 +103,24 @@ describe('tile', () => {
       })
     })
 
+    ;['center', 'centre'].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        beforeEach((done) => cli.parse(['tile', `--${alias}`], done))
+
+        it('must set the center flag', () => {
+          expect(cli.parsed.argv).to.have.property('center', true)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('tile')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.tile, { center: true })
+        })
+      })
+    })
+
     describe('--container', () => {
       // Default container.
       const container = 'fs'

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0
+* Added AVIF support.
+* Added [`--center`](https://sharp.pixelplumbing.com/api-output#tile).
+* Replaced `--squash` by [`--bitdepth`](https://sharp.pixelplumbing.com/api-output#tiff).
+
 ## 2.0.0 (June 18, 2022)
 * Removed `--limitInputPixels` and `--sequentialRead`.
 * Added [`--limitInputPixels`](https://sharp.pixelplumbing.com/api-composite#composite) when compositing images.

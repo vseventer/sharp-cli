@@ -38,6 +38,11 @@ const options = {
     desc: 'Tile angle of rotation',
     nargs: 1
   },
+  center: {
+    alias: 'centre',
+    desc: 'Center images in tile',
+    type: 'boolean'
+  },
   container: {
     choices: constants.CONTAINER,
     default: 'fs',
@@ -91,7 +96,8 @@ const handler = (args) => {
       angle: args.angle,
       depth: args.depth,
       container: args.container,
-      layout: args.layout
+      layout: args.layout,
+      center: args.center
     })
   }])
 }

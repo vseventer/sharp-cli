@@ -61,7 +61,7 @@ Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 9]
   --density               DPI for vector images                               [number] [default: 72]
   --format, -f            Force output to a given format
-          [choices: "input", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
+  [choices: "input", "avif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --level                 Level to extract from a multi-level input                         [number]
   --output, -o            Directory or URI template to write the image files to
@@ -76,6 +76,8 @@ Global Options
 Optimization Options
   --adaptiveFiltering                       Use adaptive row filtering                     [boolean]
   --alphaQuality                            Quality of alpha layer            [number] [default: 80]
+  --bitdepth                                Squash 8-bit images down to 1, 2, or 4 bit
+                                                         [number] [choices: 1, 2, 4, 8] [default: 8]
   --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
                                             quality <= 90                  [string] [default: 4:2:0]
   --colors, --colours                       Maximum number of palette entries[number] [default: 256]
@@ -101,7 +103,6 @@ Optimization Options
   --reductionEffort                         Level of CPU effort to reduce file size
                                                                                [number] [default: 4]
   --smartSubsample                          High quality chroma subsampling                [boolean]
-  --squash                                  Squash 8-bit images down to 1 bit              [boolean]
   --tileBackground                          Background colour, parsed by the color module
                                                           [string] [default: rgba(255, 255, 255, 1)]
   --tileHeight                              Vertical tile size                              [number]

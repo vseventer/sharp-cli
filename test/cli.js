@@ -86,6 +86,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--bitdepth', () => {
+      // Default bitdepth.
+      const bitdepth = '4'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--bitdepth', bitdepth, ...ioFlags], done))
+
+      // Tests.
+      it('must set the bitdepth flag', () => {
+        expect(cli.parsed.argv).to.have.property('bitdepth', parseInt(bitdepth, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { bitdepth: parseInt(bitdepth, 10) })
+      })
+    })
+
     describe('--chromaSubsampling', () => {
       // Default chromaSubsampling.
       const chromaSubsampling = '4:4:4'
@@ -98,7 +119,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('chromaSubsampling', chromaSubsampling)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.include('avif')
         expect(queue.pipeline).to.include('jpeg')
       })
       it('must execute the pipeline', () => {
@@ -320,7 +342,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('lossless', true)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.have.length(3)
+        expect(queue.pipeline).to.include('avif')
         expect(queue.pipeline).to.include('heif')
         expect(queue.pipeline).to.include('webp')
       })
@@ -564,7 +587,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property('quality', parseInt(quality, 10))
         })
         it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(4)
+          expect(queue.pipeline).to.have.length(5)
+          expect(queue.pipeline).to.include('avif')
           expect(queue.pipeline).to.include('heif')
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('tiff')
@@ -615,7 +639,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('reductionEffort', parseInt(reductionEffort, 10))
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.include('avif')
         expect(queue.pipeline).to.include('webp')
       })
       it('must execute the pipeline', () => {
@@ -639,24 +664,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.webp, { smartSubsample: true })
-      })
-    })
-
-    describe('--squash', () => {
-      // Run.
-      beforeEach((done) => cli.parse(['--squash', ...ioFlags], done))
-
-      // Tests.
-      it('must set the squash flag', () => {
-        expect(cli.parsed.argv).to.have.property('squash', true)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('tiff')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.tiff, { squash: true })
       })
     })
 
