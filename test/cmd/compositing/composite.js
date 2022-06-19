@@ -45,7 +45,7 @@ describe('composite', () => {
   const cli = (new Yargs()).command(composite)
 
   // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../fixtures/input.jpg`
+  const input = `${__dirname}/../fixtures/input.jpg` // eslint-disable-line n/no-path-concat
 
   // Reset.
   afterEach('queue', () => queue.splice(0))

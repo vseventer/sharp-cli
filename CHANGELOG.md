@@ -3,7 +3,9 @@
 ## 2.1.0
 * Added AVIF support.
 * Added [`--center`](https://sharp.pixelplumbing.com/api-output#tile).
+* Drop Node.js 10 support, now requires Node.js >= 12.22.
 * Replaced `--squash` by [`--bitdepth`](https://sharp.pixelplumbing.com/api-output#tiff).
+* Updated dependencies.
 
 ## 2.0.0 (June 18, 2022)
 * Removed `--limitInputPixels` and `--sequentialRead`.

@@ -38,8 +38,10 @@ const sharp = require('./mocks/sharp')
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
   // Defaults (avoid path.join` to test for input normalizing).
+  /* eslint-disable n/no-path-concat */
   const input = `${__dirname}/../test/fixtures/input.jpg`
   const output = `${__dirname}/../test/`
+  /* eslint-enable n/no-path-concat */
   const ioFlags = ['-i', input, '-o', output]
 
   // Reset.
