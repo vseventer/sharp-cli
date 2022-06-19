@@ -2,7 +2,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+// @see https://sharp.dimens.io/en/stable/api-operation/#recomb
 
 // Strict mode.
 'use strict'
@@ -33,52 +33,58 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
-const ensureAlpha = require('../../../cmd/channel-manipulation/ensure-alpha')
+const clahe = require('../../../cmd/operations/clahe')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-describe('ensureAlpha', () => {
-  const cli = (new Yargs()).command(ensureAlpha)
+describe('clahe', () => {
+  const cli = (new Yargs()).command(clahe)
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
+  const width = '20'
+  const height = '10'
+
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse(['ensureAlpha'], done))
+    beforeEach((done) => cli.parse(['clahe', width, height], done))
 
     // Tests.
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('ensureAlpha')
+      expect(queue.pipeline).to.include('clahe')
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.ensureAlpha)
+      sinon.assert.calledWithMatch(pipeline.clahe, {
+        width: parseInt(width, 10),
+        height: parseInt(height, 10)
+      })
     })
   })
 
   describe('[options]', () => {
-    describe('--alpha', () => {
-      // Default alpha.
-      const alpha = '0'
+    describe('--maxSlope', () => {
+      // Default slope.
+      const slope = '10'
 
       // Run.
-      beforeEach((done) => cli.parse(['ensureAlpha', '--alpha', alpha], done))
+      beforeEach((done) => cli.parse(['clahe', width, height, '--maxSlope', slope], done))
 
       // Tests.
-      it('must set the alpha flag', () => {
-        expect(cli.parsed.argv).to.have.property('alpha', parseInt(alpha, 10))
+      it('must set the maxSlope flag', () => {
+        expect(cli.parsed.argv).to.have.property('maxSlope', parseInt(slope, 10))
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('ensureAlpha')
+        expect(queue.pipeline).to.include('clahe')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWith(pipeline.ensureAlpha, parseInt(alpha, 10))
+        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: parseInt(slope, 10) })
       })
     })
   })

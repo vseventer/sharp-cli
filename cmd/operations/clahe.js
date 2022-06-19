@@ -1,7 +1,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+// @see https://sharp.pixelplumbing.com/api-operation#clahe
 
 // Strict mode.
 'use strict'
@@ -31,9 +31,17 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  alpha: {
-    default: 1,
-    desc: 'Alpha transparency level',
+  height: {
+    desc: 'Height of the region',
+    type: 'number'
+  },
+  maxSlope: {
+    default: 3,
+    desc: 'Maximum value for the slope of the cumulative histogram',
+    type: 'number'
+  },
+  width: {
+    desc: 'Width of the region',
     type: 'number'
   }
 }
@@ -43,7 +51,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -51,13 +59,19 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['ensureAlpha', (sharp) => sharp.ensureAlpha(args.alpha)])
+  return queue.push(['clahe', (sharp) => {
+    return sharp.clahe({
+      width: args.width,
+      height: args.height,
+      maxSlope: args.maxSlope
+    })
+  }])
 }
 
 // Exports.
 module.exports = {
-  command: 'ensureAlpha',
-  describe: 'Ensure alpha channel, if missing',
+  command: 'clahe <width> <height>',
+  describe: 'Perform contrast limiting adaptive histogram equalization CLAHE',
   builder,
   handler
 }

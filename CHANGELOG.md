@@ -2,9 +2,14 @@
 
 ## 2.1.0
 * Added AVIF support.
+* Added [`clahe`](https://sharp.pixelplumbing.com/api-operation#clahe) command.
+* Added [`--alpha`](https://sharp.pixelplumbing.com/api-channel#ensurealpha).
 * Added [`--center`](https://sharp.pixelplumbing.com/api-output#tile).
+* Added [`--id`](https://sharp.pixelplumbing.com/api-output#tile).
+* Added [`--mozjpeg`](https://sharp.pixelplumbing.com/api-output#jpeg).
 * Drop Node.js 10 support, now requires Node.js >= 12.22.
 * Replaced `--squash` by [`--bitdepth`](https://sharp.pixelplumbing.com/api-output#tiff).
+* Updated default [`--compressionLevel`](http://sharp.pixelplumbing.com/en/stable/api-output/#png).
 * Updated dependencies.
 
 ## 2.0.0 (June 18, 2022)

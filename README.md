@@ -15,6 +15,8 @@ Commands:
   sharp blur [sigma]                           Blur the image
   sharp boolean <operand> <operator>           Perform a bitwise boolean operation with operand
                                                image
+  sharp clahe <width> <height>                 Perform contrast limiting adaptive histogram
+                                               equalization CLAHE
   sharp composite <image>                      Composite image over the processed (resized,
                                                extracted etc.) image
   sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
@@ -58,7 +60,7 @@ Commands:
                                                pixel
 
 Global Options
-  --compressionLevel, -c  zlib compression level                               [number] [default: 9]
+  --compressionLevel, -c  zlib compression level                               [number] [default: 6]
   --density               DPI for vector images                               [number] [default: 72]
   --format, -f            Force output to a given format
   [choices: "input", "avif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
@@ -88,7 +90,8 @@ Optimization Options
   --hcompression                            Compression format
                                                   [string] [choices: "hevc", "av1"] [default: "av1"]
   --lossless                                Use lossless compression mode                  [boolean]
-  --nearLossless                            use near_lossless compression mode             [boolean]
+  --mozjpeg                                 Use mozjpeg defaults                           [boolean]
+  --nearLossless                            Use near_lossless compression mode             [boolean]
   --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and
                                             trellisQuantisation                            [boolean]
   --optimiseCoding, --optimizeCoding        Optimise Huffman coding tables [boolean] [default: true]

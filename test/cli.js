@@ -356,6 +356,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--mozjpeg', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['--mozjpeg', ...ioFlags], done))
+
+      // Tests.
+      it('must set the mozjpeg flag', () => {
+        expect(cli.parsed.argv).to.have.property('mozjpeg', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('jpeg')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.jpeg, { mozjpeg: true })
+      })
+    })
+
     describe('--nearLossless', () => {
       // Run.
       beforeEach((done) => cli.parse(['--nearLossless', ...ioFlags], done))

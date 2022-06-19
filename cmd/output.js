@@ -55,6 +55,11 @@ const options = {
     desc: 'Pyramid depth',
     nargs: 1
   },
+  id: {
+    default: 'https://example.com/iiif',
+    desc: 'Set the @id/id attribute of info.json',
+    nargs: 1
+  },
   layout: {
     choices: constants.LAYOUT,
     default: 'dz',
@@ -97,7 +102,8 @@ const handler = (args) => {
       depth: args.depth,
       container: args.container,
       layout: args.layout,
-      center: args.center
+      center: args.center,
+      id: args.id
     })
   }])
 }

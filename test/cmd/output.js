@@ -163,6 +163,27 @@ describe('tile', () => {
       })
     })
 
+    describe('--id', () => {
+      // Default id.
+      const id = 'http://www.example.com'
+
+      // Run.
+      beforeEach((done) => cli.parse(['tile', '--id', id], done))
+
+      // Tests.
+      it('must set the id flag', () => {
+        expect(cli.parsed.argv).to.have.property('id', id)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { id })
+      })
+    })
+
     describe('--layout', () => {
       // Default layout.
       const layout = 'dz'
