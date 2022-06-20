@@ -8,11 +8,11 @@
 * Added `--alpha` flag to [`ensureAlpha`](https://sharp.pixelplumbing.com/api-channel#ensurealpha) and [`negate`](https://sharp.pixelplumbing.com/api-operation#negate).
 * Added [`--center`](https://sharp.pixelplumbing.com/api-output#tile).
 * Added [`--id`](https://sharp.pixelplumbing.com/api-output#tile).
-* Added [`--lightness](https://sharp.pixelplumbing.com/api-operation#modulate).
+* Added [`--lightness`](https://sharp.pixelplumbing.com/api-operation#modulate).
 * Added [`--mozjpeg`](https://sharp.pixelplumbing.com/api-output#jpeg).
-* Added [`--resolutionUnit](https://sharp.pixelplumbing.com/api-output#tiff).
+* Added [`--resolutionUnit`](https://sharp.pixelplumbing.com/api-output#tiff).
 * Added [`--timeout`](https://sharp.pixelplumbing.com/api-output#timeout).
-* Added [`--withoutReduction](https://sharp.pixelplumbing.com/api-resize#resize).
+* Added [`--withoutReduction`](https://sharp.pixelplumbing.com/api-resize#resize).
 * Added [`--x1`, `--y2`, `--y3`](https://sharp.pixelplumbing.com/api-operation#sharpen).
 * Drop Node.js 10 support, now requires Node.js >= 12.22.
 * Renamed `--reductionEffort` option to `--effort`.
