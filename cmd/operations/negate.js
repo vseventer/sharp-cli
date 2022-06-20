@@ -29,15 +29,27 @@
 // Local modules.
 const queue = require('../../lib/queue')
 
+// Configure.
+const options = {
+  alpha: {
+    desc: 'Whether or not to negate any alpha channel',
+    type: 'boolean'
+  }
+}
+
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-operation/#negate')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => queue.push(['negate', (sharp) => sharp.negate()])
+const handler = (args) => queue.push(['negate', (sharp) => sharp.negate(args.alpha)])
 
 // Exports.
 module.exports = {

@@ -37,12 +37,14 @@ Commands:
   sharp joinChannel <images..>                 Join one or more channels to the image
   sharp linear [multiplier] [offset]           Apply the linear formula a × input + b to the image
   sharp median [size]                          Apply median filter
-  sharp modulate                               Transforms the image using brightness, saturation and
-                                               hue rotation
+  sharp modulate                               Transforms the image using brightness, saturation,
+                                               hue rotation, and lightness
   sharp negate                                 Produce the "negative" of the image
   sharp normalise                              Enhance output image contrast by stretching its
                                                luminance to cover the full dynamic range
                                                                                 [aliases: normalize]
+  sharp pipelineColourspace <colourspace>      Set the pipeline colourspace
+                                                                       [aliases: pipelineColorspace]
   sharp recomb <matrix>                        Recomb the image with the specified matrix
   sharp removeAlpha                            Remove alpha channel, if any
   sharp resize <width> [height]                Resize image to width × height
@@ -61,17 +63,22 @@ Commands:
 
 Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 6]
+  --delay                 Delay(s) between animation frames                                 [number]
   --density               DPI for vector images                               [number] [default: 72]
   --format, -f            Force output to a given format
-  [choices: "input", "avif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: "input"]
+    [choices: "input", "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default:
+                                                                                            "input"]
   --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
   --level                 Level to extract from a multi-level input                         [number]
+  --loop                  Number of animation iterations                       [number] [default: 0]
   --output, -o            Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]
   --page                  Page number to start extracting from for multi-page input         [number]
   --pages                 Number of pages to extract for multi-page input      [number] [default: 1]
   --progressive, -p       Use progressive (interlace) scan                                 [boolean]
   --quality, -q           Quality                                             [number] [default: 80]
+  --timeout               Number of seconds after which processing will be stopped
+                                                                               [number] [default: 0]
   --withMetadata, -m      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
                           image                                                            [boolean]
 
@@ -81,7 +88,7 @@ Optimization Options
   --bitdepth                                Squash 8-bit images down to 1, 2, or 4 bit
                                                          [number] [choices: 1, 2, 4, 8] [default: 8]
   --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
-                                            quality <= 90                  [string] [default: 4:2:0]
+                                            quality <= 90   [string] [default: 4:4:4 (AVIF) / 4:2:0]
   --colors, --colours                       Maximum number of palette entries[number] [default: 256]
   --compression                             Compression options
                  [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]

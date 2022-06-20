@@ -145,7 +145,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property('colors', parseInt(colors, 10))
         })
         it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.have.length(2)
+          expect(queue.pipeline).to.include('gif')
           expect(queue.pipeline).to.include('png')
         })
         it('must execute the pipeline', () => {
@@ -200,6 +201,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--delay', () => {
+      // Default delay.
+      const delay = '1'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--delay', delay, ...ioFlags], done))
+
+      // Tests.
+      it('must set the delay flag', () => {
+        expect(cli.parsed.argv).to.have.property('delay', parseInt(delay, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('gif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.gif, { delay: parseInt(delay, 10) })
+      })
+    })
+
     describe('--density', () => {
       // Default density.
       const density = '300'
@@ -225,7 +247,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('dither', parseFloat(dither))
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.include('gif')
         expect(queue.pipeline).to.include('png')
       })
       it('must execute the pipeline', () => {
@@ -332,6 +355,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Tests.
       it('must set the level flag', () => {
         expect(cli.parsed.argv).to.have.property('level', parseInt(level, 10))
+      })
+    })
+
+    describe('--loop', () => {
+      // Default dither.
+      const loop = '2'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--loop', loop, ...ioFlags], done))
+
+      // Tests.
+      it('must set the loop flag', () => {
+        expect(cli.parsed.argv).to.have.property('loop', parseInt(loop, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('gif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.gif, { loop: parseInt(loop, 10) })
       })
     })
 
@@ -659,8 +703,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property('reductionEffort', parseInt(reductionEffort, 10))
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(2)
+        expect(queue.pipeline).to.have.length(3)
         expect(queue.pipeline).to.include('avif')
+        expect(queue.pipeline).to.include('gif')
         expect(queue.pipeline).to.include('webp')
       })
       it('must execute the pipeline', () => {
@@ -791,6 +836,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
             done(err)
           })
         })
+      })
+    })
+
+    describe('--timeout', () => {
+      // Default timeout.
+      const timeout = '2'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--timeout', timeout, ...ioFlags], done))
+
+      // Tests.
+      it('must set the timeout flag', () => {
+        expect(cli.parsed.argv).to.have.property('timeout', parseInt(timeout, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('timeout')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.timeout, { seconds: parseInt(timeout, 10) })
       })
     })
 

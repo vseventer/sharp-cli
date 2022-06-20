@@ -1,7 +1,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,34 +21,22 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate
+// @see https://sharp.pixelplumbing.com/en/stable/api-colour/#tocolourspace
 
 // Strict mode.
 'use strict'
 
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  brightness: {
-    defaultDescription: 1,
-    desc: 'Brightness multiplier',
-    type: 'number'
-  },
-  saturation: {
-    defaultDescription: 1,
-    desc: 'Saturation multiplier',
-    type: 'number'
-  },
-  hue: {
-    defaultDescription: '0',
-    desc: 'Degrees for hue rotation',
-    type: 'number'
-  },
-  lightness: {
-    desc: 'Lightness addend',
-    type: 'number'
+  colourspace: {
+    alias: 'colorspace',
+    choices: constants.COLOURSPACE,
+    desc: 'Pipeline colourspace',
+    type: 'string'
   }
 }
 
@@ -57,7 +45,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-colour/#tocolourspace')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -65,18 +53,14 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  const options = { }
-  if (undefined !== args.brightness) options.brightness = args.brightness
-  if (undefined !== args.saturation) options.saturation = args.saturation
-  if (undefined !== args.hue) options.hue = args.hue
-  if (undefined !== args.lightness) options.lightness = args.lightness
-  return queue.push(['modulate', (sharp) => sharp.modulate(options)])
+  return queue.push(['pipelineColourspace', (sharp) => sharp.pipelineColourspace(args.colourspace)])
 }
 
 // Exports.
 module.exports = {
-  command: 'modulate',
-  describe: 'Transforms the image using brightness, saturation, hue rotation, and lightness',
+  command: 'pipelineColourspace <colourspace>',
+  aliases: 'pipelineColorspace',
+  describe: 'Set the pipeline colourspace',
   builder,
   handler
 }

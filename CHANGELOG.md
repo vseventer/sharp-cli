@@ -2,11 +2,15 @@
 
 ## 2.1.0
 * Added AVIF support.
+* Added GIF support.
 * Added [`clahe`](https://sharp.pixelplumbing.com/api-operation#clahe) command.
-* Added [`--alpha`](https://sharp.pixelplumbing.com/api-channel#ensurealpha).
+* Added [`pipelineColourspace`](https://sharp.pixelplumbing.com/api-colour#pipelinecolorspace) command.
+* Added `--alpha` flag to [`ensureAlpha`](https://sharp.pixelplumbing.com/api-channel#ensurealpha) and [`negate`](https://sharp.pixelplumbing.com/api-operation#negate).
 * Added [`--center`](https://sharp.pixelplumbing.com/api-output#tile).
 * Added [`--id`](https://sharp.pixelplumbing.com/api-output#tile).
+* Added [`--lightness](https://sharp.pixelplumbing.com/api-operation#modulate).
 * Added [`--mozjpeg`](https://sharp.pixelplumbing.com/api-output#jpeg).
+* Added [`--timeout`](https://sharp.pixelplumbing.com/api-output#timeout).
 * Drop Node.js 10 support, now requires Node.js >= 12.22.
 * Replaced `--squash` by [`--bitdepth`](https://sharp.pixelplumbing.com/api-output#tiff).
 * Updated default [`--compressionLevel`](http://sharp.pixelplumbing.com/en/stable/api-output/#png).

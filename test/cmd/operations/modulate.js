@@ -61,7 +61,7 @@ describe('modulate', () => {
   })
 
   describe('[options]', () => {
-    ['brightness', 'saturation', 'hue'].forEach((option) => {
+    ['brightness', 'saturation', 'hue', 'lightness'].forEach((option) => {
       describe(`--${option}`, () => {
         // Default value.
         const value = '10'
