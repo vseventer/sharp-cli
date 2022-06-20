@@ -94,6 +94,8 @@ Optimization Options
                  [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
   --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
+  --effort                                  Level of CPU effort to reduce file size
+                                                                [number] [default: 7 (GIF, PNG) / 4]
   --hcompression                            Compression format
                                                   [string] [choices: "hevc", "av1"] [default: "av1"]
   --lossless                                Use lossless compression mode                  [boolean]
@@ -110,8 +112,8 @@ Optimization Options
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
   --pyramid                                 Write an image pyramid                         [boolean]
   --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
-  --reductionEffort                         Level of CPU effort to reduce file size
-                                                                               [number] [default: 4]
+  --resolutionUnit                          Resolution unit
+                                                    [string] [choices: "cm", "inch"] [default: inch]
   --smartSubsample                          High quality chroma subsampling                [boolean]
   --tileBackground                          Background colour, parsed by the color module
                                                           [string] [default: rgba(255, 255, 255, 1)]

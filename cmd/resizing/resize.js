@@ -75,6 +75,10 @@ const options = {
   withoutEnlargement: {
     desc: 'Do not enlarge the output image if the input image width or height are already less than the required dimensions',
     type: 'boolean'
+  },
+  withoutReduction: {
+    desc: 'Do not reduce the output image if the input image width or height are already greater than the required dimensions',
+    type: 'boolean'
   }
 }
 
@@ -108,7 +112,8 @@ const handler = (args) => {
       kernel: args.kernel,
       position: args.position,
       width,
-      withoutEnlargement: args.withoutEnlargement
+      withoutEnlargement: args.withoutEnlargement,
+      withoutReduction: args.withoutReduction
     })
   }])
 }

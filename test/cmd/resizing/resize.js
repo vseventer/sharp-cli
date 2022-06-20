@@ -224,5 +224,22 @@ describe('resize', () => {
         sinon.assert.calledWithMatch(pipeline.resize, { withoutEnlargement: true })
       })
     })
+
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
+    describe('--withoutReduction', () => {
+      beforeEach((done) => cli.parse(['resize', x, y, '--withoutReduction'], done))
+
+      it('must set the withoutReduction flag', () => {
+        expect(cli.parsed.argv).to.have.property('withoutReduction', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('resize')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.resize, { withoutReduction: true })
+      })
+    })
   })
 })

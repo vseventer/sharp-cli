@@ -257,6 +257,31 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--effort', () => {
+      // Default effort.
+      const effort = '1'
+
+      // Run.
+      beforeEach((done) => cli.parse(['--effort', effort, ...ioFlags], done))
+
+      // Tests.
+      it('must set the effort flag', () => {
+        expect(cli.parsed.argv).to.have.property('effort', parseInt(effort, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(5)
+        expect(queue.pipeline).to.include('avif')
+        expect(queue.pipeline).to.include('gif')
+        expect(queue.pipeline).to.include('heif')
+        expect(queue.pipeline).to.include('png')
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.avif, { effort: parseInt(effort, 10) })
+      })
+    })
+
     ;['f', 'format'].forEach((alias) => {
       // Run.
       describe(`--${alias}`, () => {
@@ -691,26 +716,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    describe('--reductionEffort', () => {
-      // Default effort.
-      const reductionEffort = '1'
+    describe('--resolutionUnit', () => {
+      // Default unit.
+      const unit = 'cm'
 
       // Run.
-      beforeEach((done) => cli.parse(['--reductionEffort', reductionEffort, ...ioFlags], done))
+      beforeEach((done) => cli.parse(['--resolutionUnit', unit, ...ioFlags], done))
 
       // Tests.
-      it('must set the reductionEffort flag', () => {
-        expect(cli.parsed.argv).to.have.property('reductionEffort', parseInt(reductionEffort, 10))
+      it('must set the smartSubsample flag', () => {
+        expect(cli.parsed.argv).to.have.property('resolutionUnit', unit)
       })
       it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(3)
-        expect(queue.pipeline).to.include('avif')
-        expect(queue.pipeline).to.include('gif')
-        expect(queue.pipeline).to.include('webp')
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.webp, { reductionEffort: parseInt(reductionEffort, 10) })
+        sinon.assert.calledWithMatch(pipeline.tiff, { resolutionUnit: unit })
       })
     })
 
