@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0
+## 2.1.0 (June 19, 2022)
 * Added AVIF support.
 * Added GIF support.
 * Added [`clahe`](https://sharp.pixelplumbing.com/api-operation#clahe) command.
