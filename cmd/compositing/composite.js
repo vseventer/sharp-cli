@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-composite/#composite
+// @see http://sharp.pixelplumbing.com/api-composite#composite
 
 // Strict mode.
 'use strict'
@@ -94,7 +94,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 composite ./input.png --gravity southeast', 'The output will be the input composited with ./input.png with SE gravity')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-composite/#composite')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/api-composite#composite')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -105,7 +105,7 @@ const handler = (args) => {
   const [top, left] = args.offset || []
   const [width, height, channels, background] = args.create || []
 
-  // @see http://sharp.pixelplumbing.com/en/stable/api-composite/#composite
+  // @see http://sharp.pixelplumbing.com/api-composite#composite
   return queue.push(['composite', (sharp) => {
     return sharp.composite([{
       input: args.image,

@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+// @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
 // Strict mode.
 'use strict'
@@ -45,16 +45,41 @@ describe('ensureAlpha', () => {
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  // Run.
-  beforeEach((done) => cli.parse(['ensureAlpha'], done))
+  describe('..', () => {
+    // Run.
+    beforeEach((done) => cli.parse(['ensureAlpha'], done))
 
-  // Tests.
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('ensureAlpha')
+    // Tests.
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('ensureAlpha')
+    })
+    it('must execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      sinon.assert.called(pipeline.ensureAlpha)
+    })
   })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.ensureAlpha)
+
+  describe('[options]', () => {
+    describe('--alpha', () => {
+      // Default alpha.
+      const alpha = '0'
+
+      // Run.
+      beforeEach((done) => cli.parse(['ensureAlpha', '--alpha', alpha], done))
+
+      // Tests.
+      it('must set the alpha flag', () => {
+        expect(cli.parsed.argv).to.have.property('alpha', parseInt(alpha, 10))
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('ensureAlpha')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWith(pipeline.ensureAlpha, parseInt(alpha, 10))
+      })
+    })
   })
 })

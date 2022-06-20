@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#negate
+// @see https://sharp.pixelplumbing.com/api-operation#negate
 
 // Strict mode.
 'use strict'
@@ -45,16 +45,38 @@ describe('negate', () => {
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  // Run.
-  beforeEach((done) => cli.parse(['negate'], done))
+  describe('..', () => {
+    // Run.
+    beforeEach((done) => cli.parse(['negate'], done))
 
-  // Tests.
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('negate')
+    // Tests.
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('negate')
+    })
+    it('must execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      sinon.assert.called(pipeline.negate)
+    })
   })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.negate)
+
+  describe('[options]', () => {
+    describe('--alpha', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['negate', '--no-alpha'], done))
+
+      // Tests.
+      it('must set the alpha flag', () => {
+        expect(cli.parsed.argv).to.have.property('alpha', false)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('negate')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWith(pipeline.negate, false)
+      })
+    })
   })
 })

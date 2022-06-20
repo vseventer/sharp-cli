@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#extractchannel
+// @see https://sharp.pixelplumbing.com/api-channel#extractchannel
 
 // Strict mode.
 'use strict'
@@ -45,7 +45,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#extractchannel')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#extractchannel')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

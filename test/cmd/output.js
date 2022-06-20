@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-output/#tile
+// @see https://sharp.pixelplumbing.com/api-output#tile
 
 // Strict mode.
 'use strict'
@@ -103,6 +103,24 @@ describe('tile', () => {
       })
     })
 
+    ;['center', 'centre'].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        beforeEach((done) => cli.parse(['tile', `--${alias}`], done))
+
+        it('must set the center flag', () => {
+          expect(cli.parsed.argv).to.have.property('center', true)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('tile')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.tile, { center: true })
+        })
+      })
+    })
+
     describe('--container', () => {
       // Default container.
       const container = 'fs'
@@ -142,6 +160,27 @@ describe('tile', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.tile, { depth })
+      })
+    })
+
+    describe('--id', () => {
+      // Default id.
+      const id = 'http://www.example.com'
+
+      // Run.
+      beforeEach((done) => cli.parse(['tile', '--id', id], done))
+
+      // Tests.
+      it('must set the id flag', () => {
+        expect(cli.parsed.argv).to.have.property('id', id)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { id })
       })
     })
 

@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+// @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
 // Strict mode.
 'use strict'
@@ -29,15 +29,30 @@
 // Local modules.
 const queue = require('../../lib/queue')
 
+// Configure.
+const options = {
+  alpha: {
+    default: 1,
+    desc: 'Alpha transparency level',
+    type: 'number'
+  }
+}
+
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
+    .options(options)
+    .global(optionNames, false)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => queue.push(['ensureAlpha', (sharp) => sharp.ensureAlpha()])
+const handler = (args) => {
+  return queue.push(['ensureAlpha', (sharp) => sharp.ensureAlpha(args.alpha)])
+}
 
 // Exports.
 module.exports = {

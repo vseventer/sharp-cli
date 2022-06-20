@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-resize/
+// @see https://sharp.pixelplumbing.com/api-resize/
 
 // Strict mode.
 'use strict'
@@ -109,7 +109,7 @@ describe('resize', () => {
   })
 
   describe('[options]', () => {
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--background', () => {
       // Default background.
       const background = 'rgba(0,0,0,.5)'
@@ -131,7 +131,7 @@ describe('resize', () => {
       })
     })
 
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--fastShrinkOnLoad', () => {
       beforeEach((done) => cli.parse(['resize', x, y, '--no-fastShrinkOnLoad'], done))
 
@@ -148,7 +148,7 @@ describe('resize', () => {
       })
     })
 
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--fit', () => {
       // Default fit.
       const fit = 'fill'
@@ -168,7 +168,7 @@ describe('resize', () => {
       })
     })
 
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--kernel', () => {
       // Default kernel.
       const kernel = 'lanczos3'
@@ -188,7 +188,7 @@ describe('resize', () => {
       })
     })
 
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--position', () => {
       // Default position.
       const position = 'centre'
@@ -208,7 +208,7 @@ describe('resize', () => {
       })
     })
 
-    // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#withoutenlargement
+    // @see https://sharp.pixelplumbing.com/api-resize#withoutenlargement
     describe('--withoutEnlargement', () => {
       beforeEach((done) => cli.parse(['resize', x, y, '--withoutEnlargement'], done))
 
@@ -222,6 +222,23 @@ describe('resize', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.resize, { withoutEnlargement: true })
+      })
+    })
+
+    // @see https://sharp.pixelplumbing.com/api-resize#resize
+    describe('--withoutReduction', () => {
+      beforeEach((done) => cli.parse(['resize', x, y, '--withoutReduction'], done))
+
+      it('must set the withoutReduction flag', () => {
+        expect(cli.parsed.argv).to.have.property('withoutReduction', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('resize')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.resize, { withoutReduction: true })
       })
     })
   })

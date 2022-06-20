@@ -2,7 +2,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-operation#median
+// @see https://sharp.pixelplumbing.com/api-colour#pipelinecolorspace
 
 // Strict mode.
 'use strict'
@@ -33,51 +33,33 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
-const median = require('../../../cmd/operations/median')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
+const pipelineColourspace = require('../../../cmd/colour-manipulation/pipeline-colourspace')
 
 // Test suite.
-describe('median', () => {
-  const cli = (new Yargs()).command(median)
+;['pipelineColourspace', 'pipelineColorspace'].forEach((alias) => {
+  describe(`${alias} <colourspace>`, () => {
+    const cli = (new Yargs()).command(pipelineColourspace)
 
-  // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
-
-  describe('..', () => {
-    // Run.
-    beforeEach((done) => cli.parse(['median'], done))
-
-    // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('median')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.median)
-    })
-  })
-
-  describe('[size]', () => {
-    // Default size.
-    const size = '4'
+    // Reset.
+    afterEach('queue', () => queue.splice(0))
+    afterEach('sharp', sharp.prototype.reset)
 
     // Run.
-    beforeEach((done) => cli.parse(['median', size], done))
+    beforeEach((done) => cli.parse([alias, 'srgb'], done))
 
     // Tests.
-    it('must set the size flag', () => {
-      expect(cli.parsed.argv).to.have.property('size', parseInt(size, 10))
+    it('must set the colourspace flag', () => {
+      expect(cli.parsed.argv).to.have.property('colourspace', 'srgb')
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('median')
+      expect(queue.pipeline).to.include('pipelineColourspace')
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.median, parseInt(size, 10))
+      sinon.assert.called(pipeline.pipelineColourspace)
     })
   })
 })

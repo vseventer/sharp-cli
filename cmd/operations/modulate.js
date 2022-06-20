@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate
+// @see http://sharp.pixelplumbing.com/api-operation#modulate
 
 // Strict mode.
 'use strict'
@@ -45,6 +45,10 @@ const options = {
     defaultDescription: '0',
     desc: 'Degrees for hue rotation',
     type: 'number'
+  },
+  lightness: {
+    desc: 'Lightness addend',
+    type: 'number'
   }
 }
 
@@ -53,7 +57,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/en/stable/api-operation/#modulate')
+    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/api-operation#modulate')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -65,15 +69,14 @@ const handler = (args) => {
   if (undefined !== args.brightness) options.brightness = args.brightness
   if (undefined !== args.saturation) options.saturation = args.saturation
   if (undefined !== args.hue) options.hue = args.hue
-  return queue.push(['modulate', (sharp) => {
-    return sharp.modulate(options)
-  }])
+  if (undefined !== args.lightness) options.lightness = args.lightness
+  return queue.push(['modulate', (sharp) => sharp.modulate(options)])
 }
 
 // Exports.
 module.exports = {
   command: 'modulate',
-  describe: 'Transforms the image using brightness, saturation and hue rotation',
+  describe: 'Transforms the image using brightness, saturation, hue rotation, and lightness',
   builder,
   handler
 }

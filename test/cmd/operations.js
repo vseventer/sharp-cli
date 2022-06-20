@@ -29,6 +29,7 @@
 describe('Operations', () => {
   require('./operations/blur')
   require('./operations/boolean')
+  require('./operations/clahe')
   require('./operations/convolve')
   require('./operations/flatten')
   require('./operations/flip')

@@ -1,7 +1,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,18 +21,21 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-colour#tint
+// @see https://sharp.pixelplumbing.com/api-colour#tocolourspace
 
 // Strict mode.
 'use strict'
 
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  rgb: {
-    desc: 'String parsed by the color module to extract chroma values',
+  colourspace: {
+    alias: 'colorspace',
+    choices: constants.COLOURSPACE,
+    desc: 'Pipeline colourspace',
     type: 'string'
   }
 }
@@ -42,19 +45,22 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tint')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tocolourspace')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => queue.push(['tint', (sharp) => sharp.tint(args.rgb)])
+const handler = (args) => {
+  return queue.push(['pipelineColourspace', (sharp) => sharp.pipelineColourspace(args.colourspace)])
+}
 
 // Exports.
 module.exports = {
-  command: 'tint <rgb>',
-  describe: 'Tint the image using the provided chroma while preserving the image luminance',
+  command: 'pipelineColourspace <colourspace>',
+  aliases: 'pipelineColorspace',
+  describe: 'Set the pipeline colourspace',
   builder,
   handler
 }

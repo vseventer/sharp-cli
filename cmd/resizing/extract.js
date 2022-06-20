@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-resize/#extract
+// @see https://sharp.dimens.io/api-resize#extract
 
 // Strict mode.
 'use strict'
@@ -54,7 +54,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-resize/#extract')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extract')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

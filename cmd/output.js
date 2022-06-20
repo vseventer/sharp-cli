@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-output/#tile
+// @see https://sharp.pixelplumbing.com/api-output#tile
 
 // Strict mode.
 'use strict'
@@ -38,6 +38,11 @@ const options = {
     desc: 'Tile angle of rotation',
     nargs: 1
   },
+  center: {
+    alias: 'centre',
+    desc: 'Center images in tile',
+    type: 'boolean'
+  },
   container: {
     choices: constants.CONTAINER,
     default: 'fs',
@@ -48,6 +53,11 @@ const options = {
     choices: constants.DEPTH,
     defaultDescription: 'auto',
     desc: 'Pyramid depth',
+    nargs: 1
+  },
+  id: {
+    default: 'https://example.com/iiif',
+    desc: 'Set the @id/id attribute of info.json',
     nargs: 1
   },
   layout: {
@@ -76,7 +86,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-output/#tile')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-output#tile')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -91,7 +101,9 @@ const handler = (args) => {
       angle: args.angle,
       depth: args.depth,
       container: args.container,
-      layout: args.layout
+      layout: args.layout,
+      center: args.center,
+      id: args.id
     })
   }])
 }

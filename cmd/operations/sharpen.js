@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#sharpen
+// @see https://sharp.pixelplumbing.com/api-operation#sharpen
 
 // Strict mode.
 'use strict'
@@ -31,13 +31,15 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
-  flat: {
+  m1: {
+    alias: 'flat',
     desc: 'The level of sharpening to apply to "flat" areas',
     defaultDescription: '1.0',
     nargs: 1,
     type: 'number'
   },
-  jagged: {
+  m2: {
+    alias: 'jagged',
     desc: 'The level of sharpening to apply to "jagged" areas',
     defaultDescription: '2.0',
     nargs: 1,
@@ -47,6 +49,24 @@ const options = {
     desc: 'The sigma of the Gaussian mask',
     defaultDescription: '1 + radius / 2',
     type: 'number'
+  },
+  x1: {
+    desc: 'The threshold between "flat" and "jagged" areas',
+    defaultDescription: '2.0',
+    nargs: 1,
+    type: 'number'
+  },
+  y2: {
+    desc: 'The maximum amount of brightening',
+    defaultDescription: '10.0',
+    nargs: 1,
+    type: 'number'
+  },
+  y3: {
+    desc: 'The maximum amount of darkening',
+    defaultDescription: '20.0',
+    nargs: 1,
+    type: 'number'
   }
 }
 
@@ -55,7 +75,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-operation/#sharpen')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#sharpen')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -63,7 +83,19 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['sharpen', (sharp) => sharp.sharpen(args.sigma, args.flat, args.jagged)])
+  return queue.push(['sharpen', (sharp) => {
+    if (args.sigma || args.m1 || args.m2 || args.x1 || args.y2 || args.y3) {
+      return sharp.sharpen({
+        sigma: args.sigma,
+        m1: args.m1,
+        m2: args.m2,
+        x1: args.x1,
+        y2: args.y2,
+        y3: args.y3
+      })
+    }
+    return sharp.sharpen()
+  }])
 }
 
 // Exports.

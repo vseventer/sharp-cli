@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#greyscale
+// @see https://sharp.pixelplumbing.com/api-channel#greyscale
 
 // Strict mode.
 'use strict'

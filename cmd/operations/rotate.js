@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#rotate
+// @see https://sharp.pixelplumbing.com/api-operation#rotate
 
 // Strict mode.
 'use strict'
@@ -48,7 +48,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-operation/#rotate')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#rotate')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

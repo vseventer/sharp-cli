@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-operation/#boolean
+// @see https://sharp.pixelplumbing.com/api-operation#boolean
 
 // Strict mode.
 'use strict'
@@ -45,7 +45,7 @@ describe('boolean', () => {
   const cli = (new Yargs()).command(boolean)
 
   // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`
+  const input = `${__dirname}/../../fixtures/input.jpg` // eslint-disable-line n/no-path-concat
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
