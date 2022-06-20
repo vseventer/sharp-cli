@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-resize/#extend
+// @see https://sharp.dimens.io/api-resize#extend
 
 // Strict mode.
 'use strict'
@@ -60,7 +60,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 extend 10 20 10 10 rgba(0,0,0,0)', 'Add 10 transparent pixels to the top, left, and right edges, and 20 to the bottom edge')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-resize/#extend')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extend')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha
+// @see https://sharp.pixelplumbing.com/api-channel#removealpha
 
 // Strict mode.
 'use strict'
@@ -33,7 +33,7 @@ const queue = require('../../lib/queue')
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-channel/#removealpha')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
 }
 
 // Command handler.

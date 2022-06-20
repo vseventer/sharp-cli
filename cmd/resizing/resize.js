@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-resize/
+// @see https://sharp.pixelplumbing.com/api-resize/
 
 // Strict mode.
 'use strict'
@@ -91,7 +91,7 @@ const builder = (yargs) => {
     .example('$0 resize 200 300 --background rgba(255,255,255,0.5) --fit contain --kernel nearest --position "right top"', 'The output will be 200 pixels wide and 300 pixels high containing the nearest-neighbour scaled version contained within the north-east corner of a semi-transparent white canvas')
     .example('$0 resize 200 200 --fit cover --position entropy', 'The output will be a 200px square auto-cropped image')
     .example('$0 resize 200 200 --withoutEnlargement', 'The output will be no wider and no higher than 200 pixels, and no larger than the input image')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-resize/')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-resize/')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
@@ -102,7 +102,7 @@ const handler = (args) => {
   const width = args.width === 0 ? null : args.width // Auto-scale.
   const height = args.height === 0 ? null : args.height // Auto-scale.
 
-  // @see https://sharp.pixelplumbing.com/en/stable/api-resize/#resize
+  // @see https://sharp.pixelplumbing.com/api-resize#resize
   return queue.push(['resize', (sharp) => {
     return sharp.resize({
       background: args.background,

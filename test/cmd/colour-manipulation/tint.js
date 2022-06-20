@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-colour/#tint
+// @see https://sharp.pixelplumbing.com/api-colour#tint
 
 // Strict mode.
 'use strict'

@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-operation/#flatten
+// @see https://sharp.dimens.io/api-operation#flatten
 
 // Strict mode.
 'use strict'

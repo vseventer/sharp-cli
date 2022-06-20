@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-operation/#recomb
+// @see https://sharp.dimens.io/api-operation#recomb
 
 // Strict mode.
 'use strict'

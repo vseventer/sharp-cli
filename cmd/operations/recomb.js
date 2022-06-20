@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-operation/#recomb
+// @see https://sharp.dimens.io/api-operation#recomb
 
 // Strict mode.
 'use strict'
@@ -43,7 +43,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 recomb "0.3588 0.7044 0.1368 0.2990 0.5870 0.1140 0.2392 0.4696 0.0912"', 'The recomb will be applied to the output, in this case a sepia filter has been applied')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-operation/#recomb')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

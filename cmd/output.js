@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-output/#tile
+// @see https://sharp.pixelplumbing.com/api-output#tile
 
 // Strict mode.
 'use strict'
@@ -86,7 +86,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/en/stable/api-output/#tile')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-output#tile')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')

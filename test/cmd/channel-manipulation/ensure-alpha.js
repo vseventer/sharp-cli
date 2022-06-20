@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/en/stable/api-channel/#ensurealpha
+// @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
 // Strict mode.
 'use strict'

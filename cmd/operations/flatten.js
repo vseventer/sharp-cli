@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/en/stable/api-operation/#flatten
+// @see https://sharp.dimens.io/api-operation#flatten
 
 // Strict mode.
 'use strict'
@@ -43,7 +43,7 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/en/stable/api-operation/#flatten')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten')
     .options(options)
     .global(optionNames, false)
     .group(optionNames, 'Command Options')
