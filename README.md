@@ -65,6 +65,7 @@ Global Options
   --compressionLevel, -c  zlib compression level                               [number] [default: 6]
   --delay                 Delay(s) between animation frames                                 [number]
   --density               DPI for vector images                               [number] [default: 72]
+  --dry, -n               Do everything except write files                                 [boolean]
   --format, -f            Force output to a given format
     [choices: "input", "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default:
                                                                                             "input"]

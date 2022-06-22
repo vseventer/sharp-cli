@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.0
+* Added `dry` (do everything except write files).
+
 ## 2.1.0 (June 19, 2022)
 * Added AVIF support.
 * Added GIF support.
