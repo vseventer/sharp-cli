@@ -95,6 +95,12 @@ describe('convert', () => {
       return convert
         .files([input], dest, {})
     })
+    it('must not write to disk if the dry flag is set', () => {
+      const out = path.join(dest, `{name}-${Math.random()}{ext}`)
+      return convert
+        .files([input], out, { dry: true })
+        .then(() => expect(fs.existsSync(out)).to.be.false())
+    })
   })
   describe('stream', () => {
     // Default output.
