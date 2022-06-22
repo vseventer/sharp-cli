@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.2.0
-* Added `dry` command (do everything except write files).
+* Added `dry` (do everything except write files).
 
 ## 2.1.0 (June 19, 2022)
 * Added AVIF support.
