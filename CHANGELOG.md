@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.1 (June 30, 2022)
+* Fixed bug where images were always formatted as HEIF ([#68](https://github.com/vseventer/sharp-cli/issues/68)).
+
 ## 2.1.0 (June 19, 2022)
 * Added AVIF support.
 * Added GIF support.
