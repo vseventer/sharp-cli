@@ -253,7 +253,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.png, { dither: parseFloat(dither) })
+        sinon.assert.calledWithMatch(pipeline.gif, { dither: parseFloat(dither), force: false })
+        sinon.assert.calledWithMatch(pipeline.png, { dither: parseFloat(dither), force: false })
       })
     })
 
@@ -685,10 +686,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          sinon.assert.calledWithMatch(pipeline.heif, { quality: parseInt(quality, 10) })
-          sinon.assert.calledWithMatch(pipeline.jpeg, { quality: parseInt(quality, 10) })
-          sinon.assert.calledWithMatch(pipeline.tiff, { quality: parseInt(quality, 10) })
-          sinon.assert.calledWithMatch(pipeline.webp, { quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.avif, { force: false, quality: parseInt(quality, 10) })
+          // sharp.avif === sharp.heif - so ensure flags are always passed correctly.
+          sinon.assert.alwaysCalledWithMatch(pipeline.heif, { force: false, quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.jpeg, { force: false, quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.tiff, { force: false, quality: parseInt(quality, 10) })
+          sinon.assert.calledWithMatch(pipeline.webp, { force: false, quality: parseInt(quality, 10) })
         })
       })
     })
