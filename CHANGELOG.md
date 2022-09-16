@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0 (September 15, 2022)
+* Added [`--background](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
+* Added [`--minSize` and `--mixed`](https://sharp.pixelplumbing.com/api-output#webp).
+* Added [`--reoptimise](https://sharp.pixelplumbing.com/api-output#gif).
+* Updated TIFF compression options.
+* Updated `sharp` dependency - which now requires Node.js >= 14.15.
+
 ## 2.1.1 (June 30, 2022)
 * Fixed bug where images were always formatted as HEIF ([#68](https://github.com/vseventer/sharp-cli/issues/68)).
 

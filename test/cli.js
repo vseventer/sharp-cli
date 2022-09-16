@@ -426,6 +426,42 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--minSize', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['--minSize', ...ioFlags], done))
+
+      // Tests.
+      it('must set the minSize flag', () => {
+        expect(cli.parsed.argv).to.have.property('minSize', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { minSize: true })
+      })
+    })
+
+    describe('--mixed', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['--mixed', ...ioFlags], done))
+
+      // Tests.
+      it('must set the lossless flag', () => {
+        expect(cli.parsed.argv).to.have.property('mixed', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { mixed: true })
+      })
+    })
+
     describe('--mozjpeg', () => {
       // Run.
       beforeEach((done) => cli.parse(['--mozjpeg', ...ioFlags], done))
@@ -715,6 +751,26 @@ describe(`${pkg.name} <options> [command..]`, () => {
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
           sinon.assert.calledWithMatch(pipeline.jpeg, { quantisationTable: parseInt(table, 10) })
+        })
+      })
+    })
+
+    ;['reoptimise', 'reoptimize'].forEach((alias) => {
+      describe(`--${alias}`, () => {
+        // Run.
+        beforeEach((done) => cli.parse([`--${alias}`, `--${alias}`, ...ioFlags], done))
+
+        // Tests.
+        it('must set the reoptimise flag', () => {
+          expect(cli.parsed.argv).to.have.property('reoptimise', true)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('gif')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.gif, { reoptimise: true })
         })
       })
     })

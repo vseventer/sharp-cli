@@ -30,7 +30,7 @@
     "glob": "8.0.x",
     "is-directory": "0.3.x",
     "multiyargs": "1.0.x",
-    "sharp": "0.30.6",
+    "sharp": "0.31.0",
     "yargs": "12.0.x"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "tempy": "1.0.x"
   },
   "engines": {
-    "node": ">=12.22"
+    "node": ">=14.15"
   }
 }

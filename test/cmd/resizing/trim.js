@@ -77,7 +77,30 @@ describe('trim', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.trim, parseInt(threshold, 10))
+      sinon.assert.calledWithMatch(pipeline.trim, { threshold: parseInt(threshold, 10) })
+    })
+  })
+
+  describe('[options]', () => {
+    describe('--background', () => {
+      // Default background.
+      const background = 'rgb(0, 0, 0)'
+
+      // Run.
+      beforeEach((done) => cli.parse(['trim', '--background', background], done))
+
+      // Tests.
+      it('must set the factor flag', () => {
+        expect(cli.parsed.argv).to.have.property('background', background)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('trim')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.trim, { background })
+      })
     })
   })
 })

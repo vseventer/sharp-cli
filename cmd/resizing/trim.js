@@ -31,6 +31,11 @@ const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
+  background: {
+    defaultDescription: 'top-left pixel',
+    desc: 'Background colour, parsed by the color module',
+    type: 'string'
+  },
   threshold: {
     desc: 'The allowed difference from the top-left pixel',
     defaultDescription: '10',
@@ -51,7 +56,9 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['trim', (sharp) => sharp.trim(args.threshold)])
+  return queue.push(['trim', (sharp) => {
+    return sharp.trim({ background: args.background, threshold: args.threshold })
+  }])
 }
 
 // Exports.

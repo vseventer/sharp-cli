@@ -91,7 +91,8 @@ Optimization Options
                                             quality <= 90   [string] [default: 4:4:4 (AVIF) / 4:2:0]
   --colors, --colours                       Maximum number of palette entries[number] [default: 256]
   --compression                             Compression options
-                 [string] [choices: "ccittfax4", "deflate", "jpeg", "lzw", "none"] [default: "jpeg"]
+       [string] [choices: "ccittfax4", "deflate", "jpeg", "jp2k", "lzw", "none", "packbits", "webp",
+                                                                           "zstd"] [default: "jpeg"]
   --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
   --effort                                  Level of CPU effort to reduce file size
@@ -99,6 +100,10 @@ Optimization Options
   --hcompression                            Compression format
                                                   [string] [choices: "hevc", "av1"] [default: "av1"]
   --lossless                                Use lossless compression mode                  [boolean]
+  --minSize                                 Prevent use of animation key frames to minimize file
+                                            size                                           [boolean]
+  --mixed                                   Allow mixture of lossy and lossless animation frames
+                                                                                           [boolean]
   --mozjpeg                                 Use mozjpeg defaults                           [boolean]
   --nearLossless                            Use near_lossless compression mode             [boolean]
   --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and
@@ -112,6 +117,7 @@ Optimization Options
                            [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
   --pyramid                                 Write an image pyramid                         [boolean]
   --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
+  --reoptimise, --reoptimize                Always generate new palettes (slow)            [boolean]
   --resolutionUnit                          Resolution unit
                                                     [string] [choices: "cm", "inch"] [default: inch]
   --smartSubsample                          High quality chroma subsampling                [boolean]
