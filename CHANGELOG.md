@@ -1,9 +1,9 @@
 # Changelog
 
 ## 3.0.0 (September 15, 2022)
-* Added [`--background](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
+* Added [`--background`](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
 * Added [`--minSize` and `--mixed`](https://sharp.pixelplumbing.com/api-output#webp).
-* Added [`--reoptimise](https://sharp.pixelplumbing.com/api-output#gif).
+* Added [`--reoptimise`](https://sharp.pixelplumbing.com/api-output#gif).
 * Updated TIFF compression options.
 * Updated `sharp` dependency - which now requires Node.js >= 14.15.
 
