@@ -47,7 +47,7 @@ describe('tile', () => {
 
   describe('..', () => {
     // Run.
-    beforeEach((done) => cli.parse(['tile'], done))
+    beforeEach(() => cli.parse(['tile']))
 
     // Tests.
     it('must update the pipeline', () => {
@@ -65,7 +65,7 @@ describe('tile', () => {
     const size = '512'
 
     // Run.
-    beforeEach((done) => cli.parse(['tile', size], done))
+    beforeEach(() => cli.parse(['tile', size]))
 
     // Tests.
     it('must set the size flag', () => {
@@ -87,7 +87,7 @@ describe('tile', () => {
       const angle = '90'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--angle', angle], done))
+      beforeEach(() => cli.parse(['tile', '--angle', angle]))
 
       // Tests.
       it('must set the angle flag', () => {
@@ -105,7 +105,7 @@ describe('tile', () => {
 
     ;['center', 'centre'].forEach((alias) => {
       describe(`--${alias}`, () => {
-        beforeEach((done) => cli.parse(['tile', `--${alias}`], done))
+        beforeEach(() => cli.parse(['tile', `--${alias}`]))
 
         it('must set the center flag', () => {
           expect(cli.parsed.argv).to.have.property('center', true)
@@ -126,7 +126,7 @@ describe('tile', () => {
       const container = 'fs'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--container', container], done))
+      beforeEach(() => cli.parse(['tile', '--container', container]))
 
       // Tests.
       it('must set the container flag', () => {
@@ -147,7 +147,7 @@ describe('tile', () => {
       const depth = 'onepixel'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--depth', depth], done))
+      beforeEach(() => cli.parse(['tile', '--depth', depth]))
 
       // Tests.
       it('must set the depth flag', () => {
@@ -168,7 +168,7 @@ describe('tile', () => {
       const id = 'http://www.example.com'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--id', id], done))
+      beforeEach(() => cli.parse(['tile', '--id', id]))
 
       // Tests.
       it('must set the id flag', () => {
@@ -189,7 +189,7 @@ describe('tile', () => {
       const layout = 'dz'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--layout', layout], done))
+      beforeEach(() => cli.parse(['tile', '--layout', layout]))
 
       // Tests.
       it('must set the layout flag', () => {
@@ -210,7 +210,7 @@ describe('tile', () => {
       const overlap = '10'
 
       // Run.
-      beforeEach((done) => cli.parse(['tile', '--overlap', overlap], done))
+      beforeEach(() => cli.parse(['tile', '--overlap', overlap]))
 
       // Tests.
       it('must set the overlap flag', () => {

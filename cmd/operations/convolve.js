@@ -30,29 +30,32 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
-  height: {
-    desc: 'Height of the kernel',
+const positionals = {
+  width: {
+    desc: 'Width of the kernel in pixels',
     type: 'number'
   },
+  height: {
+    desc: 'Height of the kernel in pixels',
+    type: 'number'
+  }
+}
+
+const options = {
   kernel: {
+    demandOption: true,
     desc: 'Array of length width × height containing the kernel values',
     defaultDescription: '"-1 0 1 -2 0 2 -1 0 1"',
     type: 'string'
   },
   scale: {
-    desc: 'The scale of the kernel',
+    desc: 'The scale of the kernel in pixels',
     defaultDescription: 'sum',
-    nargs: 1,
     type: 'number'
   },
   offset: {
-    desc: 'The offset of the kernel',
-    nargs: 1,
-    type: 'number'
-  },
-  width: {
-    desc: 'Width of the kernel',
+    desc: 'The offset of the kernel in pixels',
+    defaultDescription: '0',
     type: 'number'
   }
 }
@@ -65,7 +68,8 @@ const builder = (yargs) => {
     .example('$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"', 'The output will be the convolution of the input image with the horizontal Sobel operator')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#convolve')
     .options(options)
-    .global(optionNames, false)
+    .positional('width', positionals.width)
+    .positional('height', positionals.height)
     .group(optionNames, 'Command Options')
 }
 
@@ -86,7 +90,7 @@ const handler = (args) => {
 
 // Exports.
 module.exports = {
-  command: 'convolve <width> <height> <kernel>',
+  command: 'convolve <width> <height>',
   describe: 'Convolve the image with the specified kernel',
   builder,
   handler

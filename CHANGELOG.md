@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0-dev
+* Updated `yargs` dependency.
+
 ## 3.0.0 (September 15, 2022)
 * Added [`--background`](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
 * Added [`--minSize` and `--mixed`](https://sharp.pixelplumbing.com/api-output#webp).

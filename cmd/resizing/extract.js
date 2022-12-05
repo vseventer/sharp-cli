@@ -26,11 +26,18 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
+  height: {
+    desc: 'Height of region to extract',
+    type: 'number'
+  },
   left: {
     desc: 'Zero-indexed offset from left edge',
     type: 'number'
@@ -40,35 +47,26 @@ const options = {
     type: 'number'
   },
   width: {
-    desc: 'Dimension of extracted image',
-    type: 'number'
-  },
-  height: {
-    desc: 'Dimension of extracted image',
+    desc: 'Width of region to extract',
     type: 'number'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extract')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('top', positionals.top)
+    .positional('left', positionals.left)
+    .positional('width', positionals.width)
+    .positional('height', positionals.height)
 }
 
 // Command handler.
 const handler = (args) => {
   return queue.push(['extract', (sharp) => {
-    return sharp.extract({
-      left: args.left,
-      top: args.top,
-      width: args.width,
-      height: args.height
-    })
+    return sharp.extract(pick(args, Object.keys(positionals)))
   }])
 }
 

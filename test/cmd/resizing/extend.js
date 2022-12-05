@@ -41,27 +41,27 @@ const sharp = require('../../mocks/sharp')
 describe('extend', () => {
   const cli = (new Yargs()).command(extend)
 
+  // Default offsets.
+  const top = 10
+  const bottom = 20
+  const left = 10
+  const right = 10
+
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
   describe('<top> <bottom> <left> <right>', () => {
-    // Default offsets.
-    const top = '10'
-    const bottom = '20'
-    const left = '10'
-    const right = '10'
-
     // Run.
     beforeEach((done) => cli.parse(['extend', top, bottom, left, right], done))
 
     // Tests.
     it('must set the top, bottom, left, and right flags', () => {
       const args = cli.parsed.argv
-      expect(args).to.have.property('top', parseInt(args.top, 10))
-      expect(args).to.have.property('bottom', parseInt(args.bottom, 10))
-      expect(args).to.have.property('left', parseInt(args.left, 10))
-      expect(args).to.have.property('right', parseInt(args.right, 10))
+      expect(args).to.have.property('top', args.top)
+      expect(args).to.have.property('bottom', args.bottom)
+      expect(args).to.have.property('left', args.left)
+      expect(args).to.have.property('right', args.right)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -69,12 +69,7 @@ describe('extend', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.extend, {
-        top: parseInt(top, 10),
-        bottom: parseInt(bottom, 10),
-        left: parseInt(left, 10),
-        right: parseInt(right, 10)
-      })
+      sinon.assert.calledWithMatch(pipeline.extend, { top, bottom, left, right })
     })
   })
 
@@ -84,7 +79,7 @@ describe('extend', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse(['extend', '10', '20', '10', '10', '--background', background], done))
+      beforeEach((done) => cli.parse(['extend', top, bottom, left, right, '--background', background], done))
 
       // Tests.
       it('must set the background flag', () => {

@@ -42,22 +42,30 @@ describe('resize', () => {
   const cli = (new Yargs()).command(resize)
 
   // Default width × height.
-  const x = '100'
-  const y = '200'
+  const width = 100
+  const height = 200
 
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<width> [height]', () => {
-    // Run.
-    beforeEach((done) => cli.parse(['resize', x, y], done))
+  describe('..', () => {
+    it('must prompt an error', (done) => {
+      cli.parse(['resize'], (err) => {
+        expect(err).to.exist()
+        expect(err).to.have.property('message')
+        expect(err.message).to.contain('one of width and height')
+        done()
+      })
+    })
+  })
 
-    // Tests.
-    it('must set the width and height flags', () => {
+  describe('[width]', () => {
+    beforeEach((done) => cli.parse(['resize', width], done))
+
+    it('must set the width flag', () => {
       const args = cli.parsed.argv
-      expect(args).to.have.property('width', parseInt(x, 10))
-      expect(args).to.have.property('height', parseInt(y, 10))
+      expect(args).to.have.property('width', width)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -65,46 +73,44 @@ describe('resize', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.resize, {
-        width: parseInt(x, 10),
-        height: parseInt(y, 10)
-      })
+      sinon.assert.calledWithMatch(pipeline.resize, width, null)
     })
   })
 
-  describe('<width> [auto-height]', () => {
-    beforeEach((done) => cli.parse(['resize', x, '0'], done))
+  describe('[height]', () => {
+    beforeEach((done) => cli.parse(['resize', '--height', height], done))
 
+    it('must set the height flag', () => {
+      const args = cli.parsed.argv
+      expect(args).to.have.property('height', height)
+    })
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('resize')
+    })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.resize, {
-        width: parseInt(x, 10),
-        height: null
-      })
+      sinon.assert.calledWithMatch(pipeline.resize, null, height)
     })
   })
 
-  describe('<auto-width> [height]', () => {
-    beforeEach((done) => cli.parse(['resize', '0', y], done))
+  describe('[width] [height]', () => {
+    // Run.
+    beforeEach((done) => cli.parse(['resize', width, height], done))
 
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.resize, {
-        width: null,
-        height: parseInt(y, 10)
-      })
+    // Tests.
+    it('must set the width and height flags', () => {
+      const args = cli.parsed.argv
+      expect(args).to.have.property('width', width)
+      expect(args).to.have.property('height', height)
     })
-  })
-
-  describe('<width>', () => {
-    beforeEach((done) => cli.parse(['resize', x], done))
-
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('resize')
+    })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.resize, {
-        width: parseInt(x, 10),
-        height: undefined
-      })
+      sinon.assert.calledWithMatch(pipeline.resize, width, height)
     })
   })
 
@@ -115,7 +121,7 @@ describe('resize', () => {
       const background = 'rgba(0,0,0,.5)'
 
       // Run.
-      beforeEach((done) => cli.parse(['resize', x, y, '--background', background], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--background', background], done))
 
       // Tests.
       it('must set the background flag', () => {
@@ -127,13 +133,13 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { background })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { background })
       })
     })
 
     // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--fastShrinkOnLoad', () => {
-      beforeEach((done) => cli.parse(['resize', x, y, '--no-fastShrinkOnLoad'], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--no-fastShrinkOnLoad'], done))
 
       it('must set the fastShrinkOnLoad flag', () => {
         expect(cli.parsed.argv).to.have.property('fastShrinkOnLoad', false)
@@ -144,7 +150,7 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { fastShrinkOnLoad: false })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { fastShrinkOnLoad: false })
       })
     })
 
@@ -153,7 +159,7 @@ describe('resize', () => {
       // Default fit.
       const fit = 'fill'
 
-      beforeEach((done) => cli.parse(['resize', x, y, '--fit', fit], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--fit', fit], done))
 
       it('must set the fit flag', () => {
         expect(cli.parsed.argv).to.have.property('fit', fit)
@@ -164,7 +170,7 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { fit })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { fit })
       })
     })
 
@@ -173,7 +179,7 @@ describe('resize', () => {
       // Default kernel.
       const kernel = 'lanczos3'
 
-      beforeEach((done) => cli.parse(['resize', x, y, '--kernel', kernel], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--kernel', kernel], done))
 
       it('must set the kernel flag', () => {
         expect(cli.parsed.argv).to.have.property('kernel', kernel)
@@ -184,7 +190,7 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { kernel })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { kernel })
       })
     })
 
@@ -193,7 +199,7 @@ describe('resize', () => {
       // Default position.
       const position = 'centre'
 
-      beforeEach((done) => cli.parse(['resize', x, y, '--position', position], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--position', position], done))
 
       it('must set the position flag', () => {
         expect(cli.parsed.argv).to.have.property('position', position)
@@ -204,13 +210,13 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { position })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { position })
       })
     })
 
     // @see https://sharp.pixelplumbing.com/api-resize#withoutenlargement
     describe('--withoutEnlargement', () => {
-      beforeEach((done) => cli.parse(['resize', x, y, '--withoutEnlargement'], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--withoutEnlargement'], done))
 
       it('must set the withoutEnlargement flag', () => {
         expect(cli.parsed.argv).to.have.property('withoutEnlargement', true)
@@ -221,13 +227,13 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { withoutEnlargement: true })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { withoutEnlargement: true })
       })
     })
 
     // @see https://sharp.pixelplumbing.com/api-resize#resize
     describe('--withoutReduction', () => {
-      beforeEach((done) => cli.parse(['resize', x, y, '--withoutReduction'], done))
+      beforeEach((done) => cli.parse(['resize', width, height, '--withoutReduction'], done))
 
       it('must set the withoutReduction flag', () => {
         expect(cli.parsed.argv).to.have.property('withoutReduction', true)
@@ -238,7 +244,7 @@ describe('resize', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.resize, { withoutReduction: true })
+        sinon.assert.calledWithMatch(pipeline.resize, sinon.match.any, sinon.match.any, { withoutReduction: true })
       })
     })
   })

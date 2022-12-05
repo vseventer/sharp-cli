@@ -26,102 +26,102 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
+const positionals = {
+  width: {
+    default: null,
+    desc: 'Pixels wide the resultant image should be',
+    type: 'number'
+  },
+  height: {
+    default: null,
+    desc: 'Pixels high the resultant image should be',
+    type: 'number'
+  }
+}
+
 const options = {
   background: {
     defaultDescription: 'rgba(0, 0, 0, 1)',
-    desc: 'Background colour when using a fit of contain, parsed by the color module.',
+    desc: 'Background colour when fit is contain, parsed by the color module.',
     type: 'string'
   },
   fastShrinkOnLoad: {
-    default: true,
+    defaultDescription: true,
     desc: 'Take greater advantage of the JPEG and WebP shrink-on-load feature',
     type: 'boolean'
-
   },
   fit: {
     choices: constants.FIT,
-    default: 'cover',
+    defaultDescription: 'cover',
     desc: 'How the image should be resized to fit both provided dimensions',
-    nargs: 1,
     type: 'string'
-  },
-  height: {
-    desc: 'Number of pixels wide the resultant image should be',
-    type: 'number'
   },
   kernel: {
     choices: constants.KERNEL,
-    default: 'lanczos3',
+    defaultDescription: 'lanczos3',
     desc: 'The kernel to use for image reduction',
-    nargs: 1,
     type: 'string'
   },
   position: {
     choices: [...constants.GRAVITY, ...constants.POSITION, ...constants.STRATEGY],
-    default: 'centre',
+    defaultDescription: 'centre',
     desc: 'Position, gravity, or strategy to use when fit is cover or contain',
-    nargs: 1,
     type: 'string'
   },
-  width: {
-    desc: 'Number of pixels high the resultant image should be',
-    type: 'number'
-  },
   withoutEnlargement: {
-    desc: 'Do not enlarge the output image if the input image width or height are already less than the required dimensions',
+    desc: 'Do not enlarge if the width or height are already less than the specified dimensions',
     type: 'boolean'
   },
   withoutReduction: {
-    desc: 'Do not reduce the output image if the input image width or height are already greater than the required dimensions',
+    desc: 'Do not reduce if the width or height are already greater than the specified dimensions',
     type: 'boolean'
   }
 }
+const optionNames = Object.keys(options)
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 resize 0 100', 'The output will be 100 pixels high, auto-scaled width')
-    .example('$0 resize 200 300 --background rgba(255,255,255,0.5) --fit contain --kernel nearest --position "right top"', 'The output will be 200 pixels wide and 300 pixels high containing the nearest-neighbour scaled version contained within the north-east corner of a semi-transparent white canvas')
+    .example('$0 resize 100', 'The output will be 100 pixels wide, auto-scaled height')
+    .example('$0 resize --height 100', 'The output will be 100 pixels high, auto-scaled width')
+    .example('$0 resize 200 300 --background rgba(255,255,255,0.5) --fit contain --kernel nearest --position "right top"', 'The output will be 200 pixels wide and 300 pixels high containing a nearest-neighbour scaled version contained within the north-east corner of a semi-transparent white canvas')
     .example('$0 resize 200 200 --fit cover --position entropy', 'The output will be a 200px square auto-cropped image')
     .example('$0 resize 200 200 --withoutEnlargement', 'The output will be no wider and no higher than 200 pixels, and no larger than the input image')
+    .example('$0 resize 200 200 --withoutReduction', 'The output will be at least 200 pixels wide and 200 pixels high while maintaining aspect ratio, and no smaller than the input image')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-resize/')
+    .positional('width', positionals.width)
+    .positional('height', positionals.height)
+    .check(argv => {
+      if (argv.width === null && argv.height === null) {
+        throw new Error('Expected at least one of width and height positionals')
+      }
+      return true
+    })
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
 const handler = (args) => {
-  const width = args.width === 0 ? null : args.width // Auto-scale.
-  const height = args.height === 0 ? null : args.height // Auto-scale.
-
   // @see https://sharp.pixelplumbing.com/api-resize#resize
   return queue.push(['resize', (sharp) => {
-    return sharp.resize({
-      background: args.background,
-      fastShrinkOnLoad: args.fastShrinkOnLoad,
-      fit: args.fit,
-      height,
-      kernel: args.kernel,
-      position: args.position,
-      width,
-      withoutEnlargement: args.withoutEnlargement,
-      withoutReduction: args.withoutReduction
-    })
+    return sharp.resize(args.width, args.height, pick(args, optionNames))
   }])
 }
 
 // Exports.
 module.exports = {
-  command: 'resize <width> [height]',
-  describe: 'Resize image to width × height',
+  command: 'resize [width] [height]',
+  describe: 'Resize image to width, height, or width × height',
   builder,
   handler
 }
