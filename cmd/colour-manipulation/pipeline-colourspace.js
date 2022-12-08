@@ -31,7 +31,7 @@ const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   colourspace: {
     alias: 'colorspace',
     choices: constants.COLOURSPACE,
@@ -42,13 +42,11 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 pipelineColourspace rgb16', 'Run the pipeline in 16 bits per channel RGB')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tocolourspace')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('colourspacae', positionals.colourspace)
 }
 
 // Command handler.

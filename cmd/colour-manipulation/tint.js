@@ -30,22 +30,20 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   rgb: {
-    desc: 'String parsed by the color module to extract chroma values',
+    desc: 'Parsed by the color module to extract chroma values',
     type: 'string'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 tint "rgb(255, 240, 16)"')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tint')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('rgb', positionals.rgb)
 }
 
 // Command handler.

@@ -39,7 +39,7 @@ const sharp = require('../../mocks/sharp')
 
 // Test suite.
 ;['grayscale', 'greyscale'].forEach((alias) => {
-  describe(`${alias} <operator>`, () => {
+  describe(alias, () => {
     const cli = (new Yargs()).command(greyscale)
 
     // Reset.
