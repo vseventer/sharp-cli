@@ -31,7 +31,7 @@ const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   operator: {
     choices: constants.BOOL,
     desc: 'Operator to perform that bitwise operation',
@@ -41,14 +41,11 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#bandbool')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('operator', positionals.operator)
 }
 
 // Command handler.

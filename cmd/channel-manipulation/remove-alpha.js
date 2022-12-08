@@ -33,6 +33,7 @@ const queue = require('../../lib/queue')
 const builder = (yargs) => {
   return yargs
     .strict()
+    .example('$0 removeAlpha', 'The output will be without an alpha channel')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
 }
 

@@ -21,55 +21,42 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-channel#joinchannel
+// @see https://sharp.pixelplumbing.com/api-channel#extractchannel
 
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
-  density: {
-    desc: 'Number representing the DPI for vector images',
-    defaultDescription: 72,
-    nargs: 1,
-    type: 'number'
-  },
-  images: {
-    coerce: (arr) => arr.map(path.normalize), // Positional arguments need manual normalization.
-    desc: 'One or more images',
-    normalize: true,
-    type: 'array'
+const positionals = {
+  channel: {
+    choices: constants.CHANNEL,
+    desc: 'The channel/band number to extract',
+    type: 'string'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#joinchannel')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#extractchannel')
+    .positional('channel', positionals.channel)
 }
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['joinChannel', (sharp) => {
-    return sharp.joinChannel(args.images, { density: args.density })
-  }])
+  return queue.push(['extractChannel', (sharp) => sharp.extractChannel(args.channel)])
 }
 
 // Exports.
 module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
+  command: 'extractChannel <channel>',
+  describe: 'Extract a single channel from a multi-channel image',
   builder,
   handler
 }

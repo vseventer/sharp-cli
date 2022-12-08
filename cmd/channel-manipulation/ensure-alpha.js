@@ -30,7 +30,7 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   alpha: {
     default: 1,
     desc: 'Alpha transparency level',
@@ -40,13 +40,12 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 ensureAlpha', 'The output will be a 4 channel image with a fully-opaque alpha channel')
+    .example('$0 ensureAlpha 0', 'The output will be a 4 channel image with a fully-transparent alpha channel')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('alpha', positionals.alpha)
 }
 
 // Command handler.
@@ -56,8 +55,8 @@ const handler = (args) => {
 
 // Exports.
 module.exports = {
-  command: 'ensureAlpha',
-  describe: 'Ensure alpha channel, if missing',
+  command: 'ensureAlpha [alpha]',
+  describe: 'Ensure the output image has an alpha transparency channel',
   builder,
   handler
 }

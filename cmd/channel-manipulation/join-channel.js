@@ -21,45 +21,40 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-channel#extractchannel
+// @see https://sharp.pixelplumbing.com/api-channel#joinchannel
 
 // Strict mode.
 'use strict'
 
 // Local modules.
-const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
-  band: {
-    choices: constants.BAND,
-    desc: 'The band number to extract',
-    type: 'string'
+const positionals = {
+  images: {
+    desc: 'One or more images',
+    normalize: true,
+    type: 'array'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#extractchannel')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#joinchannel')
+    .positional('images', positionals.images)
 }
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['extractChannel', (sharp) => sharp.extractChannel(args.band)])
+  return queue.push(['joinChannel', (sharp) => sharp.joinChannel(args.images)])
 }
 
 // Exports.
 module.exports = {
-  command: 'extractChannel <band>',
-  describe: 'Extract a single channel from a multi-channel image',
+  command: 'joinChannel <images..>',
+  describe: 'Join one or more channels to the image',
   builder,
   handler
 }

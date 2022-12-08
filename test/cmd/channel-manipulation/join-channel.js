@@ -36,12 +36,12 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
-const joinChannel = require('../../../cmd/channel-manipulation/join')
+const joinChannel = require('../../../cmd/channel-manipulation/join-channel')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-describe('join <images..>', () => {
+describe('joinChannel <images..>', () => {
   const cli = (new Yargs()).command(joinChannel)
 
   // Default input (avoid `path.join` to test for input normalizing).
@@ -71,29 +71,6 @@ describe('join <images..>', () => {
         path.normalize(input),
         path.normalize(input)
       ])
-    })
-  })
-
-  describe('[options]', () => {
-    describe('--density', () => {
-      // Default density.
-      const density = '72.1'
-
-      beforeEach((done) => cli.parse(['joinChannel', input, '--density', density], done))
-
-      it('must set the density flag', () => {
-        expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('joinChannel')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.joinChannel, sinon.match.any, {
-          density: parseFloat(density)
-        })
-      })
     })
   })
 })
