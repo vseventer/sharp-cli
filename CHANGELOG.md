@@ -4,6 +4,7 @@
 * Updated `yargs` dependency.
 * Removed `--density` from `joinChannel` command.
 * Renamed `--band` to `--channel` (`extractChannel` command).
+* Updated `composite` command to accept multiple images (#73).
 
 ## 3.0.0 (September 15, 2022)
 * Added [`--background`](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
