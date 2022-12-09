@@ -30,40 +30,36 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
-  factor: {
+const positionals = {
+  gamma: {
     desc: 'The gamma factor',
-    defaultDescription: '2.2',
-    nargs: 1,
+    defaultDescription: 2.2,
     type: 'number'
   },
-  factorOut: {
+  gammaOut: {
     desc: 'The gamma factor used for scaling',
-    defaultDescription: 'factor',
-    nargs: 1,
+    defaultDescription: '<gamma>',
     type: 'number'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#gamma')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('gamma', positionals.gamma)
+    .positional('gammaOut', positionals.gammaOut)
 }
 
 // Command handler.
 const handler = (args) => queue.push(['gamma', (sharp) => {
-  return sharp.gamma(args.factor, args.factorOut || args.factor)
+  return sharp.gamma(args.gamma, args.gammaOut)
 }])
 
 // Exports.
 module.exports = {
-  command: 'gamma [factor] [factorOut]',
+  command: 'gamma [gamma] [gammaOut]',
   describe: 'Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize',
   builder,
   handler

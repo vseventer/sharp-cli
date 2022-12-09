@@ -30,24 +30,22 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   sigma: {
     desc: 'The sigma of the Gaussian mask',
     defaultDescription: '1 + radius / 2',
-    nargs: 1,
     type: 'number'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .example('$0 blur', 'The output will be a fast 3x3 box blurred image')
+    .example('$0 blur 5', 'The output will be a slower but more accurate Gaussian blurred image')
+    .positional('sigma', positionals.sigma)
 }
 
 // Command handler.

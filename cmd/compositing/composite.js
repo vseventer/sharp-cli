@@ -88,7 +88,6 @@ const options = {
   density: {
     desc: 'Number representing the DPI for vector images',
     defaultDescription: 72,
-    nargs: 1,
     type: 'number'
   },
   failOn: {
@@ -145,7 +144,6 @@ const builder = (yargs) => {
       return true
     })
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 

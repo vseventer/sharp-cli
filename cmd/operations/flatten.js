@@ -30,7 +30,7 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   background: {
     defaultDescription: 'rgb(0, 0, 0)',
     desc: 'Background colour, parsed by the color module',
@@ -40,13 +40,11 @@ const options = {
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .example('$0 flatten "#F0A703"')
+    .positional('background', positionals.background)
 }
 
 // Command handler.

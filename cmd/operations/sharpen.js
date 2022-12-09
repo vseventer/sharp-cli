@@ -26,75 +26,77 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
 
 // Configure.
+const positionals = {
+  sigma: {
+    desc: 'The sigma of the Gaussian mask',
+    defaultDescription: '1 + radius / 2',
+    type: 'number'
+  }
+}
+
 const options = {
   m1: {
     alias: 'flat',
     desc: 'The level of sharpening to apply to "flat" areas',
-    defaultDescription: '1.0',
-    nargs: 1,
+    defaultDescription: 1.0,
     type: 'number'
   },
   m2: {
     alias: 'jagged',
     desc: 'The level of sharpening to apply to "jagged" areas',
-    defaultDescription: '2.0',
-    nargs: 1,
-    type: 'number'
-  },
-  sigma: {
-    desc: 'The sigma of the Gaussian mask',
-    defaultDescription: '1 + radius / 2',
+    defaultDescription: 2.0,
     type: 'number'
   },
   x1: {
     desc: 'The threshold between "flat" and "jagged" areas',
-    defaultDescription: '2.0',
-    nargs: 1,
+    defaultDescription: 2.0,
     type: 'number'
   },
   y2: {
     desc: 'The maximum amount of brightening',
-    defaultDescription: '10.0',
-    nargs: 1,
+    defaultDescription: 10.0,
     type: 'number'
   },
   y3: {
     desc: 'The maximum amount of darkening',
-    defaultDescription: '20.0',
-    nargs: 1,
+    defaultDescription: 20.0,
     type: 'number'
   }
 }
+const optionNames = Object.keys(options)
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#sharpen')
+    .example('$0 sharpen')
+    .example('$0 sharpen 2')
+    .example('$0 sharpen 2 --m1 0 --m2 3 --x1 3 --y2 15 --y3 15')
+    .positional('sigma', positionals.sigma)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
 const handler = (args) => {
+  const options = {
+    ...pick(args, Object.keys(positionals)),
+    ...pick(args, optionNames)
+  }
+
   return queue.push(['sharpen', (sharp) => {
-    if (args.sigma || args.m1 || args.m2 || args.x1 || args.y2 || args.y3) {
-      return sharp.sharpen({
-        sigma: args.sigma,
-        m1: args.m1,
-        m2: args.m2,
-        x1: args.x1,
-        y2: args.y2,
-        y3: args.y3
-      })
+    if (Object.keys(options).length === 0) {
+      return sharp.sharpen()
     }
-    return sharp.sharpen()
+    return sharp.sharpen(options)
   }])
 }
 

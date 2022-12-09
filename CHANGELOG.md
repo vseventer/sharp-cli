@@ -5,6 +5,9 @@
 * Removed `--density` from `joinChannel` command.
 * Renamed `--band` to `--channel` (`extractChannel` command).
 * Updated `composite` command to accept multiple images ([#73](https://github.com/vseventer/sharp-cli/issues/73)).
+* Updated `--kernel` option usage in `convolve` command.
+* Updated `--offset` option usage in `linear` command.
+* Updated `matrix` positional usage in `recomb` command.
 
 ## 3.0.0 (September 15, 2022)
 * Added [`--background`](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.

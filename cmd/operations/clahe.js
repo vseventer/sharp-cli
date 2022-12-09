@@ -30,18 +30,21 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   height: {
     desc: 'Height of the region',
     type: 'number'
   },
-  maxSlope: {
-    default: 3,
-    desc: 'Maximum value for the slope of the cumulative histogram',
-    type: 'number'
-  },
   width: {
     desc: 'Width of the region',
+    type: 'number'
+  }
+}
+
+const options = {
+  maxSlope: {
+    defaultDescription: 3,
+    desc: 'Maximum value for the slope of the cumulative histogram',
     type: 'number'
   }
 }
@@ -52,8 +55,10 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe')
+    .example('$0 clahe 3 3')
+    .positional('height', positionals.height)
+    .positional('width', positionals.width)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 

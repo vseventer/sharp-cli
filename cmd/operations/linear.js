@@ -30,18 +30,18 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   multiplier: {
     desc: 'Multiplier',
     default: 1.0,
-    nargs: 1,
     type: 'number'
-  },
+  }
+}
+
+const options = {
   offset: {
     desc: 'Offset',
-    default: 0.0,
-    nargs: 1,
-    type: 'number'
+    type: 'array'
   }
 }
 
@@ -51,18 +51,23 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#linear')
+    .example('$0 linear 0.5 --offset 2')
+    .example('$0 linear 0.25 0.5 0.75 --offset 150 100 50')
+    .positional('multiplier', positionals.multiplier)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => queue.push(['linear', (sharp) => sharp.linear(args.multiplier, args.offset)])
+const handler = (args) => {
+  const multiplier = args.multiplier.length === 1 ? args.multiplier[0] : args.multiplier
+  return queue.push(['linear', (sharp) => sharp.linear(multiplier, args.offset)])
+}
 
 // Exports.
 module.exports = {
-  command: 'linear [multiplier] [offset]',
-  describe: 'Apply the linear formula a × input + b to the image',
+  command: 'linear [multiplier..]',
+  describe: 'Apply the linear formula a × input + b to the image to adjust image levels',
   builder,
   handler
 }

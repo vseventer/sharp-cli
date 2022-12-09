@@ -60,16 +60,16 @@ describe('gamma', () => {
     })
   })
 
-  describe('[factor]', () => {
-    // Default factor.
-    const factor = '1.1'
+  describe('[gamma]', () => {
+    // Default gamma.
+    const gamma = 1.1
 
     // Run.
-    beforeEach((done) => cli.parse(['gamma', factor], done))
+    beforeEach((done) => cli.parse(['gamma', gamma], done))
 
     // Tests.
-    it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('factor', parseFloat(factor))
+    it('must set the gamma flag', () => {
+      expect(cli.parsed.argv).to.have.property('gamma', gamma)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,20 +77,20 @@ describe('gamma', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.gamma, parseFloat(factor))
+      sinon.assert.calledWith(pipeline.gamma, gamma)
     })
   })
 
-  describe('[factorOut]', () => {
-    // Default factorOut.
-    const factorOut = '1.1'
+  describe('[gammaOut]', () => {
+    // Default gammaOut.
+    const gammaOut = 1.1
 
     // Run.
-    beforeEach((done) => cli.parse(['gamma', '2.2', factorOut], done))
+    beforeEach((done) => cli.parse(['gamma', 2.2, gammaOut], done))
 
     // Tests.
-    it('must set the factorOut flag', () => {
-      expect(cli.parsed.argv).to.have.property('factorOut', parseFloat(factorOut))
+    it('must set the gammaOut flag', () => {
+      expect(cli.parsed.argv).to.have.property('gammaOut', gammaOut)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -98,7 +98,7 @@ describe('gamma', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, parseFloat(factorOut))
+      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut)
     })
   })
 })

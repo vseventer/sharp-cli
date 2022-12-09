@@ -34,6 +34,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flop')
+    .example('$0 flop')
 }
 
 // Command handler.
