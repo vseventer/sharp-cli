@@ -62,14 +62,14 @@ describe('tile', () => {
 
   describe('[size]', () => {
     // Default size.
-    const size = '512'
+    const size = 512
 
     // Run.
     beforeEach(() => cli.parse(['tile', size]))
 
     // Tests.
     it('must set the size flag', () => {
-      expect(cli.parsed.argv).to.have.property('size', parseInt(size, 10))
+      expect(cli.parsed.argv).to.have.property('size', size)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,21 +77,21 @@ describe('tile', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.tile, { size: parseInt(size, 10) })
+      sinon.assert.calledWithMatch(pipeline.tile, { size })
     })
   })
 
   describe('[options]', () => {
     describe('--angle', () => {
       // Default angle.
-      const angle = '90'
+      const angle = 90
 
       // Run.
       beforeEach(() => cli.parse(['tile', '--angle', angle]))
 
       // Tests.
       it('must set the angle flag', () => {
-        expect(cli.parsed.argv).to.have.property('angle', parseInt(angle, 10))
+        expect(cli.parsed.argv).to.have.property('angle', angle)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -99,7 +99,49 @@ describe('tile', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.tile, { angle: parseInt(angle, 10) })
+        sinon.assert.calledWithMatch(pipeline.tile, { angle })
+      })
+    })
+
+    describe('--background', () => {
+      // Default background.
+      const background = 'rgba(0,0,0,.5)'
+
+      // Run.
+      beforeEach((done) => cli.parse(['tile', '--background', background], done))
+
+      // Tests.
+      it('must set the background flag', () => {
+        expect(cli.parsed.argv).to.have.property('background', background)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { background })
+      })
+    })
+
+    describe('--basename', () => {
+      // Default basename.
+      const basename = 'tiles'
+
+      // Run.
+      beforeEach(() => cli.parse(['tile', '--basename', basename]))
+
+      // Tests.
+      it('must set the id flag', () => {
+        expect(cli.parsed.argv).to.have.property('basename', basename)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { basename })
       })
     })
 
@@ -207,14 +249,14 @@ describe('tile', () => {
 
     describe('--overlap', () => {
       // Default overlap.
-      const overlap = '10'
+      const overlap = 10
 
       // Run.
       beforeEach(() => cli.parse(['tile', '--overlap', overlap]))
 
       // Tests.
       it('must set the overlap flag', () => {
-        expect(cli.parsed.argv).to.have.property('overlap', parseInt(overlap, 10))
+        expect(cli.parsed.argv).to.have.property('overlap', overlap)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -222,7 +264,28 @@ describe('tile', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.tile, { overlap: parseInt(overlap, 10) })
+        sinon.assert.calledWithMatch(pipeline.tile, { overlap })
+      })
+    })
+
+    describe('--skipBlanks', () => {
+      // Default skip.
+      const skip = 10
+
+      // Run.
+      beforeEach(() => cli.parse(['tile', '--skipBlanks', skip]))
+
+      // Tests.
+      it('must set the overlap flag', () => {
+        expect(cli.parsed.argv).to.have.property('skipBlanks', skip)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tile')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tile, { skipBlanks: skip })
       })
     })
   })
