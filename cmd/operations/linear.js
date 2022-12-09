@@ -50,9 +50,9 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#linear')
     .example('$0 linear 0.5 --offset 2')
     .example('$0 linear 0.25 0.5 0.75 --offset 150 100 50')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#linear')
     .positional('multiplier', positionals.multiplier)
     .options(options)
     .group(optionNames, 'Command Options')

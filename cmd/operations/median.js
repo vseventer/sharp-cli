@@ -42,9 +42,9 @@ const positionals = {
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#median')
     .example('$0 median')
     .example('$0 median 5')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#median')
     .positional('size', positionals.size)
 }
 

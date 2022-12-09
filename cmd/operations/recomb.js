@@ -42,8 +42,8 @@ const placeholders = {
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb')
     .example('$0 recomb 0.3588 0.7044 0.1368 0.2990 0.5870 0.1140 0.2392 0.4696 0.0912', 'The recomb will be applied to the output, in this case a sepia filter has been applied')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb')
     .check(argv => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 9)) {
         throw new Error('Expected matrix positional to have 9 values')

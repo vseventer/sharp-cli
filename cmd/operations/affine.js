@@ -80,8 +80,8 @@ const optionNames = Object.keys(options)
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#affine')
     .example('$0 affine 1 0.3 0.1 0.7 --background white --interpolate nohalo')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#affine')
     .check(argv => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 4)) {
         throw new Error('Expected matrix positional to have 4 values')

@@ -76,10 +76,10 @@ const optionNames = Object.keys(options)
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#sharpen')
     .example('$0 sharpen')
     .example('$0 sharpen 2')
     .example('$0 sharpen 2 --m1 0 --m2 3 --x1 3 --y2 15 --y3 15')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#sharpen')
     .positional('sigma', positionals.sigma)
     .options(options)
     .group(optionNames, 'Command Options')

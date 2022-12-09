@@ -42,9 +42,9 @@ const positionals = {
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur')
     .example('$0 blur', 'The output will be a fast 3x3 box blurred image')
     .example('$0 blur 5', 'The output will be a slower but more accurate Gaussian blurred image')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur')
     .positional('sigma', positionals.sigma)
 }
 

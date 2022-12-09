@@ -26,6 +26,9 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
 
@@ -78,10 +81,7 @@ const handler = (args) => {
   return queue.push(['extend', (sharp) => {
     return sharp.extend({
       background: args.background,
-      bottom: args.bottom,
-      left: args.left,
-      right: args.right,
-      top: args.top
+      ...pick(args, Object.keys(positionals))
     })
   }])
 }

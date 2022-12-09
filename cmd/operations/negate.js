@@ -42,8 +42,8 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#negate')
     .example('$0 negate --no-alpha')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#negate')
     .options(options)
     .group(optionNames, 'Command Options')
 }

@@ -42,8 +42,8 @@ const positionals = {
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten')
     .example('$0 flatten "#F0A703"')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten')
     .positional('background', positionals.background)
 }
 

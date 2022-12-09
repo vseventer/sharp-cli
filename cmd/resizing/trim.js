@@ -51,6 +51,10 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 trim', 'Trim pixels with a colour similar to that of the top-left pixel')
+    .example('$0 trim 0', 'Trim pixels with the exact same colour as that of the top-left pixel')
+    .example('$0 trim --background "#FF0000"', 'Trim pixels with a similar colour to red')
+    .example('$0 trim 42 --background yellow', 'Trim all "yellow-ish" pixels')
     .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#trim')
     .positional('threshold', positionals.threshold)
     .options(options)

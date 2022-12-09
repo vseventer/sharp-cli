@@ -63,14 +63,14 @@ describe('ensureAlpha', () => {
   describe('[options]', () => {
     describe('--alpha', () => {
       // Default alpha.
-      const alpha = '0'
+      const alpha = 0
 
       // Run.
       beforeEach((done) => cli.parse(['ensureAlpha', '--alpha', alpha], done))
 
       // Tests.
       it('must set the alpha flag', () => {
-        expect(cli.parsed.argv).to.have.property('alpha', parseInt(alpha, 10))
+        expect(cli.parsed.argv).to.have.property('alpha', alpha)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -78,7 +78,7 @@ describe('ensureAlpha', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWith(pipeline.ensureAlpha, parseInt(alpha, 10))
+        sinon.assert.calledWith(pipeline.ensureAlpha, alpha)
       })
     })
   })

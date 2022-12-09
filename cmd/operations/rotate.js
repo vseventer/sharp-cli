@@ -51,8 +51,8 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#rotate')
     .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#rotate')
     .positional('angle', positionals.angle)
     .options(options)
     .group(optionNames, 'Command Options')

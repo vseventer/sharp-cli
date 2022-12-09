@@ -54,8 +54,8 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe')
     .example('$0 clahe 3 3')
+    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe')
     .positional('height', positionals.height)
     .positional('width', positionals.width)
     .options(options)
