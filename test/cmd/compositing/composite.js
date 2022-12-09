@@ -220,7 +220,7 @@ describe('composite', () => {
       beforeEach((done) => cli.parse(['composite', input, '--density', density], done))
 
       it('must set the density flag', () => {
-        expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
+        expect(cli.parsed.argv).to.have.property('density', density)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -228,7 +228,7 @@ describe('composite', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].density', parseFloat(density)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].density', density))
       })
     })
 

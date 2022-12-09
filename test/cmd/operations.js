@@ -27,6 +27,7 @@
 
 // Test suite.
 describe('Operations', () => {
+  require('./operations/affine')
   require('./operations/blur')
   require('./operations/boolean')
   require('./operations/clahe')

@@ -62,14 +62,14 @@ describe('threshold', () => {
 
   describe('[value]', () => {
     // Default value.
-    const value = '128'
+    const value = 128
 
     // Run.
     beforeEach((done) => cli.parse(['threshold', value], done))
 
     // Tests.
     it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('value', parseInt(value, 10))
+      expect(cli.parsed.argv).to.have.property('value', value)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,7 +77,7 @@ describe('threshold', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.threshold, parseInt(value, 10))
+      sinon.assert.calledWith(pipeline.threshold, value)
     })
   })
 

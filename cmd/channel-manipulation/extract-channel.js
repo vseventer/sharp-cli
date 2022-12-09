@@ -34,8 +34,7 @@ const queue = require('../../lib/queue')
 const positionals = {
   channel: {
     choices: constants.CHANNEL,
-    desc: 'The channel/band number to extract',
-    type: 'string'
+    desc: 'The channel/band number to extract'
   }
 }
 

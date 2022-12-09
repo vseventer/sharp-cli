@@ -61,20 +61,17 @@ const options = {
   fit: {
     choices: constants.FIT,
     defaultDescription: 'cover',
-    desc: 'How the image should be resized to fit both provided dimensions',
-    type: 'string'
+    desc: 'How the image should be resized to fit both provided dimensions'
   },
   kernel: {
     choices: constants.KERNEL,
     defaultDescription: 'lanczos3',
-    desc: 'The kernel to use for image reduction',
-    type: 'string'
+    desc: 'The kernel to use for image reduction'
   },
   position: {
     choices: [...constants.GRAVITY, ...constants.POSITION, ...constants.STRATEGY],
     defaultDescription: 'centre',
-    desc: 'Position, gravity, or strategy to use when fit is cover or contain',
-    type: 'string'
+    desc: 'Position, gravity, or strategy to use when fit is cover or contain'
   },
   withoutEnlargement: {
     desc: 'Do not enlarge if the width or height are already less than the specified dimensions',

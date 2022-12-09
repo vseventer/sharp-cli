@@ -45,8 +45,8 @@ describe('clahe', () => {
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  const width = '20'
-  const height = '10'
+  const width = 20
+  const height = 10
 
   describe('..', () => {
     // Run.
@@ -59,24 +59,21 @@ describe('clahe', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.clahe, {
-        width: parseInt(width, 10),
-        height: parseInt(height, 10)
-      })
+      sinon.assert.calledWithMatch(pipeline.clahe, { width, height })
     })
   })
 
   describe('[options]', () => {
     describe('--maxSlope', () => {
       // Default slope.
-      const slope = '10'
+      const slope = 10
 
       // Run.
       beforeEach((done) => cli.parse(['clahe', width, height, '--maxSlope', slope], done))
 
       // Tests.
       it('must set the maxSlope flag', () => {
-        expect(cli.parsed.argv).to.have.property('maxSlope', parseInt(slope, 10))
+        expect(cli.parsed.argv).to.have.property('maxSlope', slope)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -84,7 +81,7 @@ describe('clahe', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: parseInt(slope, 10) })
+        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope })
       })
     })
   })

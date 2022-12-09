@@ -35,8 +35,7 @@ const positionals = {
   colourspace: {
     choices: constants.COLOURSPACE,
     default: 'srgb',
-    desc: 'The output colourspace',
-    type: 'string'
+    desc: 'The output colourspace'
   }
 }
 

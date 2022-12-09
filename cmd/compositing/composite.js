@@ -59,8 +59,7 @@ const options = {
   blend: {
     choices: constants.BLEND,
     defaultDescription: 'over',
-    desc: 'How to blend this image with the image below',
-    type: 'string'
+    desc: 'How to blend this image with the image below'
   },
   create: {
     desc: 'Describes a blank overlay to be created',
@@ -74,8 +73,7 @@ const options = {
   'create.channels': {
     choices: [3, 4],
     default: 3,
-    desc: 'Number of channels of the blank overlay to be created',
-    type: 'number'
+    desc: 'Number of channels of the blank overlay to be created'
   },
   'create.height': {
     desc: 'Height of the blank overlay to be created',
@@ -93,14 +91,12 @@ const options = {
   failOn: {
     choices: constants.FAIL_ON,
     defaultDescription: 'warning',
-    desc: 'Level of sensitivity to invalid images',
-    type: 'string'
+    desc: 'Level of sensitivity to invalid images'
   },
   gravity: {
     choices: constants.GRAVITY,
     defaultDescription: 'centre',
-    desc: 'Gravity at which to place the overlay',
-    type: 'string'
+    desc: 'Gravity at which to place the overlay'
   },
   left: {
     desc: 'The pixel offset from the left edge',

@@ -39,8 +39,7 @@ const positionals = {
   },
   operator: {
     choices: constants.BOOL,
-    desc: 'Operator to perform that bitwise operation',
-    type: 'string'
+    desc: 'Operator to perform that bitwise operation'
   }
 }
 

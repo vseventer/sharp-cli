@@ -62,14 +62,14 @@ describe('trim', () => {
 
   describe('[threshold]', () => {
     // Default threshold.
-    const threshold = '10'
+    const threshold = 10
 
     // Run.
     beforeEach((done) => cli.parse(['trim', threshold], done))
 
     // Tests.
     it('must set the threshold flag', () => {
-      expect(cli.parsed.argv).to.have.property('threshold', parseInt(threshold, 10))
+      expect(cli.parsed.argv).to.have.property('threshold', threshold)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,7 +77,7 @@ describe('trim', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.trim, { threshold: parseInt(threshold, 10) })
+      sinon.assert.calledWithMatch(pipeline.trim, { threshold })
     })
   })
 
