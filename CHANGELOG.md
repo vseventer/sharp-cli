@@ -1,8 +1,10 @@
 # Changelog
 
 ## 4.0.0-dev
+* Updated `sharp` dependency.
 * Updated `yargs` dependency.
 * Added [`affine`](https://sharp.pixelplumbing.com/api-operation#affine) command.
+* Added `--background`, `--basename`, and `--skipBlanks` to `tile` command.
 * Removed `--density` from `joinChannel` command.
 * Renamed `--band` to `--channel` (`extractChannel` command).
 * Updated `composite` command to accept multiple images ([#73](https://github.com/vseventer/sharp-cli/issues/73)).
