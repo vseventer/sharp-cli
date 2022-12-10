@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0-dev
+## 4.0.0 (December 9, 2022)
 * Updated `sharp` dependency.
 * Updated `yargs` dependency.
 * Added [`affine`](https://sharp.pixelplumbing.com/api-operation#affine) command.
