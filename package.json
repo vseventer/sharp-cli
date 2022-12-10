@@ -29,16 +29,16 @@
     "bubble-stream-error": "1.0.x",
     "glob": "8.0.x",
     "is-directory": "0.3.x",
-    "multiyargs": "1.0.x",
-    "sharp": "0.31.0",
-    "yargs": "12.0.x"
+    "lodash.pick": "^4.4.0",
+    "sharp": "0.31.2",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
-    "fs-extra": "10.1.x",
-    "mocha": "9.2.x",
+    "fs-extra": "11.1.x",
+    "mocha": "10.1.x",
     "must": "0.13.x",
     "nyc": "15.1.x",
-    "sinon": "13.0.x",
+    "sinon": "15.0.x",
     "snazzy": "9.0.x",
     "standard": "17.0.x",
     "tempy": "1.0.x"

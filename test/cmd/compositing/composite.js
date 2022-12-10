@@ -51,13 +51,14 @@ describe('composite', () => {
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
 
-  describe('<image>', () => {
+  describe('[images..]', () => {
     // Run.
     beforeEach((done) => cli.parse(['composite', input], done))
 
     // Tests.
-    it('must set the image flag', () => {
-      expect(cli.parsed.argv).to.have.property('image', path.normalize(input))
+    it('must set the images flag', () => {
+      expect(cli.parsed.argv).to.have.property('images')
+      expect(cli.parsed.argv.images[0]).to.equal(path.normalize(input))
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -70,6 +71,50 @@ describe('composite', () => {
   })
 
   describe('[options]', () => {
+    it('should roll over when using multiple inputs', (done) => {
+      cli.parse([
+        'composite', '--create.width', 20, '--create.width', 30, '--create.height', 40, '--create.background', 'red',
+        input, '--blend', 'in', '--gravity', 'southeast', input, '--blend', 'out'
+      ], (err) => {
+        if (err) {
+          return done(err)
+        }
+
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.width', 20))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.height', 40))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].blend', 'in'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].gravity', 'southeast'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[1].input.create.width', 30))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[1].input.create.height', 40))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[1].blend', 'out'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[1].gravity', 'southeast'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[2].input', path.normalize(input)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[2].blend', 'out'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[2].gravity', 'southeast'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[3].input', path.normalize(input)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[3].blend', 'out'))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[3].gravity', 'southeast'))
+        done()
+      })
+    })
+
+    describe('--animated', () => {
+      beforeEach((done) => cli.parse(['composite', input, '--animated'], done))
+
+      it('must set the animated flag', () => {
+        expect(cli.parsed.argv).to.have.property('animated', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].animated', true))
+      })
+    })
+
     describe('--blend', () => {
       // Default blend.
       const blend = 'add'
@@ -91,48 +136,91 @@ describe('composite', () => {
 
     describe('--create', () => {
       // Default configuration.
-      const width = '10'
-      const height = '20'
-      const channels = '3'
+      const width = 10
+      const height = 20
+      const channels = 3
       const background = 'rgba(0,0,0,0)'
 
       beforeEach((done) => {
-        return cli.parse(['composite', input, '--create', width, height, channels, background], done)
+        return cli.parse([
+          'composite', '--create.width', width, '--create.height', height,
+          '--create.channels', channels, '--create.background', background
+        ], done)
       })
 
-      it('must set the create flag', () => {
-        const args = cli.parsed.argv
-        expect(args).to.have.property('create')
-        expect(args.create).to.eql([
-          parseInt(width, 10),
-          parseInt(height, 10),
-          parseInt(channels, 10),
-          background
-        ])
+      describe('--create.width', () => {
+        it('must set the create.width flag', () => {
+          const args = cli.parsed.argv
+          expect(args).to.have.property('create')
+          expect(args.create).to.have.property('width', width)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('composite')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.width', width))
+        })
       })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('composite')
+
+      describe('--create.height', () => {
+        it('must set the create.width flag', () => {
+          const args = cli.parsed.argv
+          expect(args).to.have.property('create')
+          expect(args.create).to.have.property('height', height)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('composite')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.height', height))
+        })
       })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].create', {
-          width: parseInt(width, 10),
-          height: parseInt(height, 10),
-          channels: parseInt(channels, 10),
-          background
-        }))
+
+      describe('--create.channels', () => {
+        it('must set the create.channels flag', () => {
+          const args = cli.parsed.argv
+          expect(args).to.have.property('create')
+          expect(args.create).to.have.property('channels', channels)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('composite')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.channels', channels))
+        })
+      })
+
+      describe('--create.background', () => {
+        it('must set the create.background flag', () => {
+          const args = cli.parsed.argv
+          expect(args).to.have.property('create')
+          expect(args.create).to.have.property('background', background)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('composite')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].input.create.background', background))
+        })
       })
     })
 
     describe('--density', () => {
       // Default density.
-      const density = '72.1'
+      const density = 72.1
 
       beforeEach((done) => cli.parse(['composite', input, '--density', density], done))
 
       it('must set the density flag', () => {
-        expect(cli.parsed.argv).to.have.property('density', parseFloat(density))
+        expect(cli.parsed.argv).to.have.property('density', density)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -140,7 +228,26 @@ describe('composite', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].density', parseFloat(density)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].density', density))
+      })
+    })
+
+    describe('--failOn', () => {
+      // Default failOn.
+      const failOn = 'error'
+
+      beforeEach((done) => cli.parse(['composite', input, '--failOn', failOn], done))
+
+      it('must set the gravity flag', () => {
+        expect(cli.parsed.argv).to.have.property('failOn', failOn)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].failOn', failOn))
       })
     })
 
@@ -162,13 +269,13 @@ describe('composite', () => {
 
     describe('--limitInputPixels', () => {
       // Default value.
-      const value = '10'
+      const value = 10
 
       beforeEach((done) => cli.parse(['composite', input, '--limitInputPixels', value], done))
 
       it('must set the offset flag', () => {
         const args = cli.parsed.argv
-        expect(args).to.have.property('limitInputPixels', parseInt(value, 10))
+        expect(args).to.have.property('limitInputPixels', value)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -176,24 +283,19 @@ describe('composite', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].limitInputPixels', parseInt(value, 10)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].limitInputPixels', value))
       })
     })
 
-    describe('--offset', () => {
-      // Default offset.
-      const top = '10'
-      const left = '20'
+    describe('--left', () => {
+      // Default left.
+      const left = 20
 
-      beforeEach((done) => cli.parse(['composite', input, '--offset', top, left], done))
+      beforeEach((done) => cli.parse(['composite', input, '--left', left, '--top', 10], done))
 
-      it('must set the offset flag', () => {
+      it('must set the left flag', () => {
         const args = cli.parsed.argv
-        expect(args).to.have.property('offset')
-        expect(args.offset).to.eql([
-          parseInt(top, 10),
-          parseInt(left, 10)
-        ])
+        expect(args).to.have.property('left', left)
       })
       it('must update the pipeline', () => {
         expect(queue.pipeline).to.have.length(1)
@@ -201,8 +303,7 @@ describe('composite', () => {
       })
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].left', parseInt(left, 10)))
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].top', parseInt(top, 10)))
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].left', left))
       })
     })
 
@@ -235,6 +336,26 @@ describe('composite', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].tile', true))
+      })
+    })
+
+    describe('--top', () => {
+      // Default top.
+      const top = 20
+
+      beforeEach((done) => cli.parse(['composite', input, '--left', 10, '--top', top], done))
+
+      it('must set the left flag', () => {
+        const args = cli.parsed.argv
+        expect(args).to.have.property('top', top)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('composite')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].top', top))
       })
     })
   })

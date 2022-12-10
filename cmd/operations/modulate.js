@@ -26,52 +26,48 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
 
 // Configure.
 const options = {
   brightness: {
-    defaultDescription: 1,
     desc: 'Brightness multiplier',
     type: 'number'
   },
-  saturation: {
-    defaultDescription: 1,
-    desc: 'Saturation multiplier',
-    type: 'number'
-  },
   hue: {
-    defaultDescription: '0',
     desc: 'Degrees for hue rotation',
     type: 'number'
   },
   lightness: {
     desc: 'Lightness addend',
     type: 'number'
+  },
+  saturation: {
+    desc: 'Saturation multiplier',
+    type: 'number'
   }
 }
+const optionNames = Object.keys(options)
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 modulate --brightness 2', 'Increase brightness by a factor of 2')
+    .example('$0 modulate --hue 180', 'Hue-rotate by 180 degrees')
+    .example('$0 modulate --lightness 50', 'Increase lightness by +50')
+    .example('$0 modulate --brightness 0.5 --saturation 0.5 --hue 90', 'Decrease brightness and saturation while also hue-rotating by 90 degrees')
     .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/api-operation#modulate')
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => {
-  const options = { }
-  if (undefined !== args.brightness) options.brightness = args.brightness
-  if (undefined !== args.saturation) options.saturation = args.saturation
-  if (undefined !== args.hue) options.hue = args.hue
-  if (undefined !== args.lightness) options.lightness = args.lightness
-  return queue.push(['modulate', (sharp) => sharp.modulate(options)])
-}
+const handler = (args) => queue.push(['modulate', (sharp) => sharp.modulate(pick(args, optionNames))])
 
 // Exports.
 module.exports = {

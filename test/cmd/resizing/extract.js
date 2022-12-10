@@ -47,21 +47,21 @@ describe('extract', () => {
 
   describe('<top> <left> <width> <height>', () => {
     // Default offset and dimensions.
-    const top = '10'
-    const left = '20'
-    const width = '30'
-    const height = '40'
+    const top = 10
+    const left = 20
+    const width = 30
+    const height = 40
 
     // Run.
-    beforeEach((done) => cli.parse(['extract', top, left, width, height], done))
+    beforeEach(() => cli.parse(['extract', top, left, width, height]))
 
     // Tests.
     it('must set the top, left, width, and height flags', () => {
       const args = cli.parsed.argv
-      expect(args).to.have.property('top', parseInt(args.top, 10))
-      expect(args).to.have.property('left', parseInt(args.left, 10))
-      expect(args).to.have.property('width', parseInt(args.width, 10))
-      expect(args).to.have.property('height', parseInt(args.height, 10))
+      expect(args).to.have.property('top', top)
+      expect(args).to.have.property('left', left)
+      expect(args).to.have.property('width', width)
+      expect(args).to.have.property('height', height)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -69,12 +69,7 @@ describe('extract', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.extract, {
-        top: parseInt(top, 10),
-        left: parseInt(left, 10),
-        width: parseInt(width, 10),
-        height: parseInt(height, 10)
-      })
+      sinon.assert.calledWith(pipeline.extract, { top, left, width, height })
     })
   })
 })

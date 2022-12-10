@@ -30,24 +30,22 @@
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   size: {
-    desc: 'Square mask size.',
+    desc: 'Square mask size',
     defaultDescription: 3,
-    nargs: 1,
     type: 'number'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
+    .example('$0 median')
+    .example('$0 median 5')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#median')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('size', positionals.size)
 }
 
 // Command handler.

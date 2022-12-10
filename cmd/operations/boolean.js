@@ -26,37 +26,30 @@
 // Strict mode.
 'use strict'
 
-// Standard lib.
-const path = require('path')
-
 // Local modules.
 const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const options = {
+const positionals = {
   operand: {
-    coerce: path.normalize, // Positional arguments need manual normalization.
     desc: 'Path to an image file',
     normalize: true,
     type: 'string'
   },
   operator: {
     choices: constants.BOOL,
-    desc: 'Operator to perform that bitwise operation',
-    type: 'string'
+    desc: 'Operator to perform that bitwise operation'
   }
 }
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#boolean')
-    .options(options)
-    .global(optionNames, false)
-    .group(optionNames, 'Command Options')
+    .positional('operand', positionals.operand)
+    .positional('operator', positionals.operator)
 }
 
 // Command handler.

@@ -26,31 +26,37 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
 
 // Configure.
+const positionals = {
+  bottom: {
+    desc: 'Pixel count to add to the bottom edge',
+    type: 'number'
+  },
+  left: {
+    desc: 'Pixel count to add to the left edge',
+    type: 'number'
+  },
+  right: {
+    desc: 'Pixel count to add to the right edge',
+    type: 'number'
+  },
+  top: {
+    desc: 'Pixel count to add to the top edge',
+    type: 'number'
+  }
+}
+
 const options = {
   background: {
     defaultDescription: 'rgba(0, 0, 0, 1)',
     desc: 'Background colour, parsed by the color module',
     type: 'string'
-  },
-  bottom: {
-    desc: 'Offset from the bottom edge',
-    type: 'number'
-  },
-  left: {
-    desc: 'Offset from the left edge',
-    type: 'number'
-  },
-  right: {
-    desc: 'Offset from the right edge',
-    type: 'number'
-  },
-  top: {
-    desc: 'Offset from the top edge',
-    type: 'number'
   }
 }
 
@@ -59,10 +65,14 @@ const builder = (yargs) => {
   const optionNames = Object.keys(options)
   return yargs
     .strict()
-    .example('$0 extend 10 20 10 10 rgba(0,0,0,0)', 'Add 10 transparent pixels to the top, left, and right edges, and 20 to the bottom edge')
+    .example('$0 extend 10 20 10 10 --background rgba(0,0,0,0)', 'Add 10 transparent pixels to the top, left, and right edges, and 20 to the bottom edge')
+    .example('$0 extend 0 10 0 0 --background red', 'Add 10 red pixels to the bottom edge.')
     .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extend')
+    .positional('top', positionals.top)
+    .positional('bottom', positionals.bottom)
+    .positional('left', positionals.left)
+    .positional('right', positionals.right)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
@@ -71,10 +81,7 @@ const handler = (args) => {
   return queue.push(['extend', (sharp) => {
     return sharp.extend({
       background: args.background,
-      bottom: args.bottom,
-      left: args.left,
-      right: args.right,
-      top: args.top
+      ...pick(args, Object.keys(positionals))
     })
   }])
 }

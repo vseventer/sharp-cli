@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.0.0-dev
+* Updated `sharp` dependency.
+* Updated `yargs` dependency.
+* Added [`affine`](https://sharp.pixelplumbing.com/api-operation#affine) command.
+* Added `--background`, `--basename`, and `--skipBlanks` to `tile` command.
+* Removed `--density` from `joinChannel` command.
+* Renamed `--band` to `--channel` (`extractChannel` command).
+* Updated `composite` command to accept multiple images ([#73](https://github.com/vseventer/sharp-cli/issues/73)).
+* Updated `--kernel` option usage in `convolve` command.
+* Updated `--offset` option usage in `linear` command.
+* Updated `matrix` positional usage in `recomb` command.
+
 ## 3.0.0 (September 15, 2022)
 * Added [`--background`](https://sharp.pixelplumbing.com/api-resize#trim) when trimming images.
 * Added [`--minSize` and `--mixed`](https://sharp.pixelplumbing.com/api-output#webp).

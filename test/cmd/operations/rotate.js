@@ -62,14 +62,14 @@ describe('rotate', () => {
 
   describe('[angle]', () => {
     // Default angle.
-    const angle = '90'
+    const angle = 90
 
     // Run.
     beforeEach((done) => cli.parse(['rotate', angle], done))
 
     // Tests.
     it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('angle', parseInt(angle, 10))
+      expect(cli.parsed.argv).to.have.property('angle', angle)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,7 +77,7 @@ describe('rotate', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.rotate, parseInt(angle, 10))
+      sinon.assert.calledWith(pipeline.rotate, angle)
     })
   })
 

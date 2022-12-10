@@ -62,14 +62,14 @@ describe('blur', () => {
 
   describe('[sigma]', () => {
     // Default sigma.
-    const sigma = '1.1'
+    const sigma = 1.1
 
     // Run.
     beforeEach((done) => cli.parse(['blur', sigma], done))
 
     // Tests.
     it('must set the sigma flag', () => {
-      expect(cli.parsed.argv).to.have.property('sigma', parseFloat(sigma))
+      expect(cli.parsed.argv).to.have.property('sigma', sigma)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,7 +77,7 @@ describe('blur', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.blur, parseFloat(sigma))
+      sinon.assert.calledWith(pipeline.blur, sigma)
     })
   })
 })

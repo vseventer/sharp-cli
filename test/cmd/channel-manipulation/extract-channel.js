@@ -33,12 +33,12 @@ const sinon = require('sinon')
 const Yargs = require('yargs')
 
 // Local modules.
-const extractChannel = require('../../../cmd/channel-manipulation/extract')
+const extractChannel = require('../../../cmd/channel-manipulation/extract-channel')
 const queue = require('../../../lib/queue')
 const sharp = require('../../mocks/sharp')
 
 // Test suite.
-describe('extract <band>', () => {
+describe('extractChannel <channel>', () => {
   const cli = (new Yargs()).command(extractChannel)
 
   // Reset.
@@ -50,7 +50,7 @@ describe('extract <band>', () => {
 
   // Tests.
   it('must set the operator flag', () => {
-    expect(cli.parsed.argv).to.have.property('band', 'red')
+    expect(cli.parsed.argv).to.have.property('channel', 'red')
   })
   it('must update the pipeline', () => {
     expect(queue.pipeline).to.have.length(1)

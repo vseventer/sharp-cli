@@ -60,16 +60,17 @@ describe('linear', () => {
     })
   })
 
-  describe('[multiplier]', () => {
+  describe('[multiplier..]', () => {
     // Default multiplier.
-    const multiplier = '1.5'
+    const multiplier = 1.5
 
     // Run.
     beforeEach((done) => cli.parse(['linear', multiplier], done))
 
     // Tests.
-    it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('multiplier', parseFloat(multiplier))
+    it('must set the multiplier flag', () => {
+      expect(cli.parsed.argv).to.have.property('multiplier')
+      expect(cli.parsed.argv.multiplier[0]).to.equal(multiplier)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,20 +78,21 @@ describe('linear', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.linear, parseFloat(multiplier))
+      sinon.assert.calledWith(pipeline.linear, multiplier)
     })
   })
 
   describe('[offset]', () => {
     // Default offset.
-    const offset = '0.5'
+    const offset = 0.5
 
     // Run.
-    beforeEach((done) => cli.parse(['linear', '1.5', offset], done))
+    beforeEach((done) => cli.parse(['linear', 1.5, '--offset', offset], done))
 
     // Tests.
-    it('must set the factor flag', () => {
-      expect(cli.parsed.argv).to.have.property('offset', parseFloat(offset))
+    it('must set the offset flag', () => {
+      expect(cli.parsed.argv).to.have.property('offset')
+      expect(cli.parsed.argv.offset[0]).to.equal(offset)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -98,7 +100,7 @@ describe('linear', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.linear, sinon.match.any, parseFloat(offset))
+      sinon.assert.calledWith(pipeline.linear, sinon.match.any, [offset])
     })
   })
 })

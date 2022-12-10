@@ -30,16 +30,19 @@
 const queue = require('../../lib/queue')
 
 // Configure.
+const positionals = {
+  value: {
+    desc: 'A value in the range 0-255 representing the level at which the threshold will be applied',
+    defaultDescription: 128,
+    type: 'number'
+  }
+}
+
 const options = {
   greyscale: {
     alias: 'grayscale',
     desc: 'Convert to single channel greyscale',
     type: 'boolean'
-  },
-  value: {
-    desc: 'A value in the range 0-255 representing the level at which the threshold will be applied',
-    defaultDescription: 128,
-    type: 'number'
   }
 }
 
@@ -49,8 +52,8 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#threshold')
+    .positional('value', positionals.value)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 

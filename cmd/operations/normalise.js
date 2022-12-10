@@ -34,6 +34,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#normalise')
+    .example('$0 normalise')
 }
 
 // Command handler.

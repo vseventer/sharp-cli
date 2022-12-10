@@ -26,17 +26,36 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const constants = require('../lib/constants')
 const queue = require('../lib/queue')
 
 // Configure.
+const positionals = {
+  size: {
+    desc: 'Tile size in pixels',
+    defaultDescription: 256,
+    type: 'number'
+  }
+}
+
 const options = {
   angle: {
     choices: [0, 90, 180, 270],
-    default: 0,
-    desc: 'Tile angle of rotation',
-    nargs: 1
+    defaultDescription: '0',
+    desc: 'Tile angle of rotation'
+  },
+  background: {
+    defaultDescription: 'rgb(255, 255, 255, 1)',
+    desc: 'Background colour, parsed by the color module',
+    type: 'string'
+  },
+  basename: {
+    desc: 'The name of the directory within the zip file',
+    type: 'string'
   },
   center: {
     alias: 'centre',
@@ -45,50 +64,45 @@ const options = {
   },
   container: {
     choices: constants.CONTAINER,
-    default: 'fs',
-    desc: 'Tile container',
-    nargs: 1
+    defaultDescription: 'fs',
+    desc: 'Tile container'
   },
   depth: {
     choices: constants.DEPTH,
     defaultDescription: 'auto',
-    desc: 'Pyramid depth',
-    nargs: 1
+    desc: 'Pyramid depth'
   },
   id: {
-    default: 'https://example.com/iiif',
+    defaultDescription: 'https://example.com/iiif',
     desc: 'Set the @id/id attribute of info.json',
-    nargs: 1
+    type: 'string'
   },
   layout: {
     choices: constants.LAYOUT,
-    default: 'dz',
-    desc: 'Filesystem layout',
-    nargs: 1
+    defaultDescription: 'dz',
+    desc: 'Filesystem layout'
   },
   overlap: {
     desc: 'Tile overlap in pixels',
     defaultDescription: '0',
-    nargs: 1,
     type: 'number'
   },
-  size: {
-    desc: 'Tile size in pixels',
-    defaultDescription: 256,
-    nargs: 1,
+  skipBlanks: {
+    defaultDescription: -1,
+    desc: 'Threshold to skip tile generation',
     type: 'number'
   }
 }
+const optionNames = Object.keys(options)
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 tile 512', 'output.dz is the Deep Zoom XML definition, output_files contains 512×512 tiles grouped by zoom level')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-output#tile')
+    .positional('size', positionals.size)
     .options(options)
-    .global(optionNames, false)
     .group(optionNames, 'Command Options')
 }
 
@@ -97,13 +111,7 @@ const handler = (args) => {
   return queue.push(['tile', (sharp) => {
     return sharp.tile({
       size: args.size,
-      overlap: args.overlap,
-      angle: args.angle,
-      depth: args.depth,
-      container: args.container,
-      layout: args.layout,
-      center: args.center,
-      id: args.id
+      ...pick(args, optionNames)
     })
   }])
 }

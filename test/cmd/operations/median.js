@@ -62,14 +62,14 @@ describe('median', () => {
 
   describe('[size]', () => {
     // Default size.
-    const size = '4'
+    const size = 4
 
     // Run.
     beforeEach((done) => cli.parse(['median', size], done))
 
     // Tests.
     it('must set the size flag', () => {
-      expect(cli.parsed.argv).to.have.property('size', parseInt(size, 10))
+      expect(cli.parsed.argv).to.have.property('size', size)
     })
     it('must update the pipeline', () => {
       expect(queue.pipeline).to.have.length(1)
@@ -77,7 +77,7 @@ describe('median', () => {
     })
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.median, parseInt(size, 10))
+      sinon.assert.calledWith(pipeline.median, size)
     })
   })
 })

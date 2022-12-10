@@ -1,7 +1,7 @@
 /*!
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Mark van Seventer
+ * Copyright (c) 2022 Mark van Seventer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-operation#sharpen
+// @see https://sharp.pixelplumbing.com/api-operation#affine
 
 // Strict mode.
 'use strict'
@@ -30,44 +30,48 @@
 const pick = require('lodash.pick')
 
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
-const positionals = {
-  sigma: {
-    desc: 'The sigma of the Gaussian mask',
-    defaultDescription: '1 + radius / 2',
+const placeholders = {
+  matrix: {
+    desc: 'Affine transformation matrix',
+    nargs: 2 * 2,
     type: 'number'
   }
 }
 
 const options = {
-  m1: {
-    alias: 'flat',
-    desc: 'The level of sharpening to apply to "flat" areas',
-    defaultDescription: 1.0,
+  background: {
+    defaultDescription: '#000000',
+    desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
+    type: 'string'
+  },
+  idx: {
+    defaultDescription: '0',
+    desc: 'The input horizontal offset',
     type: 'number'
   },
-  m2: {
-    alias: 'jagged',
-    desc: 'The level of sharpening to apply to "jagged" areas',
-    defaultDescription: 2.0,
+  idy: {
+    defaultDescription: '0',
+    desc: 'The input vertical offset',
     type: 'number'
   },
-  x1: {
-    desc: 'The threshold between "flat" and "jagged" areas',
-    defaultDescription: 2.0,
+  odx: {
+    defaultDescription: '0',
+    desc: 'The output horizontal offset',
     type: 'number'
   },
-  y2: {
-    desc: 'The maximum amount of brightening',
-    defaultDescription: 10.0,
+  ody: {
+    defaultDescription: '0',
+    desc: 'The output vertical offset',
     type: 'number'
   },
-  y3: {
-    desc: 'The maximum amount of darkening',
-    defaultDescription: 20.0,
-    type: 'number'
+  interpolate: {
+    choices: constants.INTERPOLATORS,
+    defaultDescription: 'bicubic',
+    desc: 'The input horizontal offset'
   }
 }
 const optionNames = Object.keys(options)
@@ -76,34 +80,31 @@ const optionNames = Object.keys(options)
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 sharpen')
-    .example('$0 sharpen 2')
-    .example('$0 sharpen 2 --m1 0 --m2 3 --x1 3 --y2 15 --y3 15')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#sharpen')
-    .positional('sigma', positionals.sigma)
+    .example('$0 affine 1 0.3 0.1 0.7 --background white --interpolate nohalo')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#affine')
+    .check(argv => {
+      if (!(Array.isArray(argv.matrix) && argv.matrix.length === 4)) {
+        throw new Error('Expected matrix positional to have 4 values')
+      }
+      return true
+    })
+    .positional('matrix', placeholders.matrix)
     .options(options)
     .group(optionNames, 'Command Options')
 }
 
 // Command handler.
 const handler = (args) => {
-  const options = {
-    ...pick(args, Object.keys(positionals)),
-    ...pick(args, optionNames)
-  }
-
-  return queue.push(['sharpen', (sharp) => {
-    if (Object.keys(options).length === 0) {
-      return sharp.sharpen()
-    }
-    return sharp.sharpen(options)
+  return queue.push(['affine', (sharp) => {
+    const { matrix } = args
+    return sharp.affine([matrix.slice(0, 2), matrix.slice(2, 4)], pick(args, optionNames))
   }])
 }
 
 // Exports.
 module.exports = {
-  command: 'sharpen [sigma]',
-  describe: 'Sharpen the image',
+  command: 'affine <matrix..>',
+  describe: 'Perform an affine transform on an image',
   builder,
   handler
 }

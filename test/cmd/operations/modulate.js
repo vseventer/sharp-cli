@@ -64,12 +64,12 @@ describe('modulate', () => {
     ['brightness', 'saturation', 'hue', 'lightness'].forEach((option) => {
       describe(`--${option}`, () => {
         // Default value.
-        const value = '10'
+        const value = 10
 
         beforeEach((done) => cli.parse(['modulate', `--${option}`, value], done))
 
         it(`must set the ${option} flag`, () => {
-          expect(cli.parsed.argv).to.have.property(option, parseInt(value, 10))
+          expect(cli.parsed.argv).to.have.property(option, value)
         })
         it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
@@ -77,9 +77,7 @@ describe('modulate', () => {
         })
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          sinon.assert.calledWith(pipeline.modulate, {
-            [[option]]: parseInt(value, 10)
-          })
+          sinon.assert.calledWith(pipeline.modulate, { [[option]]: value })
         })
       })
     })

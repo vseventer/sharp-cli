@@ -25,5 +25,8 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const { hideBin } = require('yargs/helpers')
+
 // Run.
-require('../lib')(process.argv.slice(2))
+require('../lib')(hideBin(process.argv))

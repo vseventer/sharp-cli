@@ -33,6 +33,7 @@ const queue = require('../../lib/queue')
 const builder = (yargs) => {
   return yargs
     .strict()
+    .example('$0 greyscale', 'The output will contain three identical color channels')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#greyscale')
 }
 

@@ -9,6 +9,7 @@
 sharp <options> [command..]
 
 Commands:
+  sharp affine <matrix..>                      Perform an affine transform on an image
   sharp bandbool <operator>                    Perform a bitwise boolean operation on all input
                                                image channels (bands) to produce a single channel
                                                output image
@@ -17,25 +18,27 @@ Commands:
                                                image
   sharp clahe <width> <height>                 Perform contrast limiting adaptive histogram
                                                equalization CLAHE
-  sharp composite <image>                      Composite image over the processed (resized,
+  sharp composite [images..]                   Composite image(s) over the processed (resized,
                                                extracted etc.) image
-  sharp convolve <width> <height> <kernel>     Convolve the image with the specified kernel
-  sharp ensureAlpha                            Ensure alpha channel, if missing
+  sharp convolve <width> <height> <kernel..>   Convolve the image with the specified kernel
+  sharp ensureAlpha [alpha]                    Ensure the output image has an alpha transparency
+                                               channel
   sharp extend <top> <bottom> <left> <right>   Extends/pads the edges of the image with the provided
                                                background colour
   sharp extract <top> <left> <width> <height>  Extract a region of the image
-  sharp extractChannel <band>                  Extract a single channel from a multi-channel image
+  sharp extractChannel <channel>               Extract a single channel from a multi-channel image
   sharp flatten [background]                   Merge alpha transparency channel, if any, with a
                                                background
   sharp flip                                   Flip the image about the vertical Y axis
   sharp flop                                   Flop the image about the horizontal X axis
-  sharp gamma [factor] [factorOut]             Apply a gamma correction by reducing the encoding
+  sharp gamma [gamma] [gammaOut]               Apply a gamma correction by reducing the encoding
                                                (darken) pre-resize then increasing the encoding
                                                (brighten) post-resize
   sharp greyscale                              Convert to 8-bit greyscale; 256 shades of grey
                                                                                 [aliases: grayscale]
   sharp joinChannel <images..>                 Join one or more channels to the image
-  sharp linear [multiplier] [offset]           Apply the linear formula a × input + b to the image
+  sharp linear [multiplier..]                  Apply the linear formula a × input + b to the image
+                                               to adjust image levels
   sharp median [size]                          Apply median filter
   sharp modulate                               Transforms the image using brightness, saturation,
                                                hue rotation, and lightness
@@ -45,9 +48,9 @@ Commands:
                                                                                 [aliases: normalize]
   sharp pipelineColourspace <colourspace>      Set the pipeline colourspace
                                                                        [aliases: pipelineColorspace]
-  sharp recomb <matrix>                        Recomb the image with the specified matrix
+  sharp recomb <matrix..>                      Recomb the image with the specified matrix
   sharp removeAlpha                            Remove alpha channel, if any
-  sharp resize <width> [height]                Resize image to width × height
+  sharp resize [width] [height]                Resize image to width, height, or width × height
   sharp rotate [angle]                         Rotate the output image
   sharp sharpen [sigma]                        Sharpen the image
   sharp threshold [value]                      Any pixel value greather than or equal to the
@@ -57,81 +60,84 @@ Commands:
                                                preserving the image luminance
   sharp tile [size]                            Use tile-based deep zoom (image pyramid) output
   sharp toColourspace <colourspace>            Set the output colourspace    [aliases: toColorspace]
-  sharp trim [threshold]                       Trim "boring" pixels from all edges that contain
-                                               values within a percentage similarity of the top-left
-                                               pixel
+  sharp trim [threshold]                       Trim pixels from all edges that contain values
+                                               similar to the given background color, which defaults
+                                               to that of the top-left pixel
 
 Global Options
-  --compressionLevel, -c  zlib compression level                               [number] [default: 6]
-  --delay                 Delay(s) between animation frames                                 [number]
-  --density               DPI for vector images                               [number] [default: 72]
-  --format, -f            Force output to a given format
+  -c, --compressionLevel  zlib compression level                               [number] [default: 6]
+      --delay             Delay(s) between animation frames                                 [number]
+      --density           DPI for vector images                               [number] [default: 72]
+  -f, --format            Force output to a given format
     [choices: "input", "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default:
                                                                                             "input"]
-  --input, -i             Path to (an) image file(s)             [array] [required] [default: stdin]
-  --level                 Level to extract from a multi-level input                         [number]
-  --loop                  Number of animation iterations                       [number] [default: 0]
-  --output, -o            Directory or URI template to write the image files to
+  -i, --input             Path to (an) image file(s)             [array] [required] [default: stdin]
+      --level             Level to extract from a multi-level input                         [number]
+      --loop              Number of animation iterations                       [number] [default: 0]
+  -o, --output            Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]
-  --page                  Page number to start extracting from for multi-page input         [number]
-  --pages                 Number of pages to extract for multi-page input      [number] [default: 1]
-  --progressive, -p       Use progressive (interlace) scan                                 [boolean]
-  --quality, -q           Quality                                             [number] [default: 80]
-  --timeout               Number of seconds after which processing will be stopped
+      --page              Page number to start extracting from for multi-page input         [number]
+      --pages             Number of pages to extract for multi-page input      [number] [default: 1]
+  -p, --progressive       Use progressive (interlace) scan                                 [boolean]
+  -q, --quality           Quality                                             [number] [default: 80]
+      --timeout           Number of seconds after which processing will be stopped
                                                                                [number] [default: 0]
-  --withMetadata, -m      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
+  -m, --withMetadata      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
                           image                                                            [boolean]
 
 Optimization Options
-  --adaptiveFiltering                       Use adaptive row filtering                     [boolean]
-  --alphaQuality                            Quality of alpha layer            [number] [default: 80]
-  --bitdepth                                Squash 8-bit images down to 1, 2, or 4 bit
-                                                         [number] [choices: 1, 2, 4, 8] [default: 8]
-  --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
-                                            quality <= 90   [string] [default: 4:4:4 (AVIF) / 4:2:0]
-  --colors, --colours                       Maximum number of palette entries[number] [default: 256]
-  --compression                             Compression options
-       [string] [choices: "ccittfax4", "deflate", "jpeg", "jp2k", "lzw", "none", "packbits", "webp",
-                                                                           "zstd"] [default: "jpeg"]
-  --dither                                  Level of Floyd-Steinberg error diffusion
+      --adaptiveFiltering                       Use adaptive row filtering                 [boolean]
+      --alphaQuality                            Quality of alpha layer        [number] [default: 80]
+      --bitdepth                                Squash 8-bit images down to 1, 2, or 4 bit
+                                                                  [choices: 1, 2, 4, 8] [default: 8]
+      --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
+                                                quality <= 90
+                                                            [string] [default: 4:4:4 (AVIF) / 4:2:0]
+      --colors, --colours                       Maximum number of palette entries
+                                                                             [number] [default: 256]
+      --compression                             Compression options
+        [choices: "ccittfax4", "deflate", "jpeg", "jp2k", "lzw", "none", "packbits", "webp", "zstd"]
+                                                                                   [default: "jpeg"]
+      --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
-  --effort                                  Level of CPU effort to reduce file size
+      --effort                                  Level of CPU effort to reduce file size
                                                                 [number] [default: 7 (GIF, PNG) / 4]
-  --hcompression                            Compression format
-                                                  [string] [choices: "hevc", "av1"] [default: "av1"]
-  --lossless                                Use lossless compression mode                  [boolean]
-  --minSize                                 Prevent use of animation key frames to minimize file
-                                            size                                           [boolean]
-  --mixed                                   Allow mixture of lossy and lossless animation frames
+      --hcompression                            Compression format
+                                                           [choices: "hevc", "av1"] [default: "av1"]
+      --lossless                                Use lossless compression mode              [boolean]
+      --minSize                                 Prevent use of animation key frames to minimize file
+                                                size                                       [boolean]
+      --mixed                                   Allow mixture of lossy and lossless animation frames
                                                                                            [boolean]
-  --mozjpeg                                 Use mozjpeg defaults                           [boolean]
-  --nearLossless                            Use near_lossless compression mode             [boolean]
-  --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and
-                                            trellisQuantisation                            [boolean]
-  --optimiseCoding, --optimizeCoding        Optimise Huffman coding tables [boolean] [default: true]
-  --optimiseScans, --optimizeScans          Optimise progressive scans                     [boolean]
-  --overshootDeringing                      Apply overshoot deringing                      [boolean]
-  --palette                                 Quantise to a palette-based image with alpha
-                                            transparency support                           [boolean]
-  --predictor                               Compression predictor
-                           [string] [choices: "float", "horizontal", "none"] [default: "horizontal"]
-  --pyramid                                 Write an image pyramid                         [boolean]
-  --quantisationTable, --quantizationTable  Quantization table to use          [number] [default: 0]
-  --reoptimise, --reoptimize                Always generate new palettes (slow)            [boolean]
-  --resolutionUnit                          Resolution unit
-                                                    [string] [choices: "cm", "inch"] [default: inch]
-  --smartSubsample                          High quality chroma subsampling                [boolean]
-  --tileBackground                          Background colour, parsed by the color module
+      --mozjpeg                                 Use mozjpeg defaults                       [boolean]
+      --nearLossless                            Use near_lossless compression mode         [boolean]
+      --optimise, --optimize                    Apply optimiseScans, overshootDeringing, and
+                                                trellisQuantisation                        [boolean]
+      --optimiseCoding, --optimizeCoding        Optimise Huffman coding tables
+                                                                           [boolean] [default: true]
+      --optimiseScans, --optimizeScans          Optimise progressive scans                 [boolean]
+      --overshootDeringing                      Apply overshoot deringing                  [boolean]
+      --palette                                 Quantise to a palette-based image with alpha
+                                                transparency support                       [boolean]
+      --predictor                               Compression predictor
+                                    [choices: "float", "horizontal", "none"] [default: "horizontal"]
+      --pyramid                                 Write an image pyramid                     [boolean]
+      --quantisationTable, --quantizationTable  Quantization table to use      [number] [default: 0]
+      --reoptimise, --reoptimize                Always generate new palettes (slow)        [boolean]
+      --resolutionUnit                          Resolution unit
+                                                             [choices: "cm", "inch"] [default: inch]
+      --smartSubsample                          High quality chroma subsampling            [boolean]
+      --tileBackground                          Background colour, parsed by the color module
                                                           [string] [default: rgba(255, 255, 255, 1)]
-  --tileHeight                              Vertical tile size                              [number]
-  --tileWidth                               Horizontal tile size                            [number]
-  --trellisQuantisation                     Apply trellis quantisation                     [boolean]
-  --xres                                    Horizontal resolution            [number] [default: 1.0]
-  --yres                                    Vertical resolution              [number] [default: 1.0]
+      --tileHeight                              Vertical tile size                          [number]
+      --tileWidth                               Horizontal tile size                        [number]
+      --trellisQuantisation                     Apply trellis quantisation                 [boolean]
+      --xres                                    Horizontal resolution        [number] [default: 1.0]
+      --yres                                    Vertical resolution          [number] [default: 1.0]
 
 Misc. Options
-  --help, -h     Show help                                                                 [boolean]
-  --version, -v  Show version number                                                       [boolean]
+  -h, --help     Show help                                                                 [boolean]
+  -v, --version  Show version number                                                       [boolean]
 
 Examples:
   sharp -i ./input.jpg -o ./out resize 300 200        out/input.jpg will be a 300 pixels wide and
