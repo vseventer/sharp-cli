@@ -34,11 +34,11 @@
     "yargs": "^17.6.2"
   },
   "devDependencies": {
-    "fs-extra": "10.1.x",
-    "mocha": "9.2.x",
+    "fs-extra": "11.1.x",
+    "mocha": "10.1.x",
     "must": "0.13.x",
     "nyc": "15.1.x",
-    "sinon": "13.0.x",
+    "sinon": "15.0.x",
     "snazzy": "9.0.x",
     "standard": "17.0.x",
     "tempy": "1.0.x"
