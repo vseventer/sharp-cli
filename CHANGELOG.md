@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.1.0
+## 4.1.0 (December 15, 2022)
 * Recategorized top-level options under Global, Input, Output, and Optimization Options.
 * Added `--subifd` and `unlimited` input options.
 * Updated `--metadata` (previously `--withMetadata`) input option to accept more granular options.
