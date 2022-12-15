@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0
+* Recategorized top-level options under Global, Input, Output, and Optimization Options.
+* Added `--subifd` and `unlimited` input options.
+* Updated `--metadata` (previously `--withMetadata`) input option to accept more granular options.
+* Expand `--animate`, `--failOn`, and `--limitInputPixels` from `composite` command to top-level.
+
 ## 4.0.0 (December 9, 2022)
 * Updated `sharp` dependency.
 * Updated `yargs` dependency.

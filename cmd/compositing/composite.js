@@ -52,10 +52,6 @@ const positionals = {
 }
 
 const options = {
-  animated: {
-    desc: 'Read all frames/pages of an animated image',
-    type: 'boolean'
-  },
   blend: {
     choices: constants.BLEND,
     defaultDescription: 'over',
@@ -88,11 +84,6 @@ const options = {
     defaultDescription: 72,
     type: 'number'
   },
-  failOn: {
-    choices: constants.FAIL_ON,
-    defaultDescription: 'warning',
-    desc: 'Level of sensitivity to invalid images'
-  },
   gravity: {
     choices: constants.GRAVITY,
     defaultDescription: 'centre',
@@ -101,11 +92,6 @@ const options = {
   left: {
     desc: 'The pixel offset from the left edge',
     implies: 'top',
-    type: 'number'
-  },
-  limitInputPixels: {
-    defaultDescription: 0x3FFF * 0x3FFF,
-    desc: 'Do not process input images where the number of pixels (width x height) exceeds this limit',
     type: 'number'
   },
   premultiplied: {
@@ -173,14 +159,14 @@ const handler = (args) => {
   return queue.push(['composite', (sharp) => {
     return sharp.composite(
       inputs.map((input, idx) => ({
-        animated: getValueAt(args.animated, idx),
+        animated: args.animated,
         blend: getValueAt(args.blend, idx),
         density: getValueAt(args.density, idx),
-        failOn: getValueAt(args.failOn, idx),
+        failOn: args.failOn,
         gravity: getValueAt(args.gravity, idx),
         input,
         left: getValueAt(args.left, idx),
-        limitInputPixels: getValueAt(args.limitInputPixels, idx),
+        limitInputPixels: args.limitInputPixels,
         premultiplied: getValueAt(args.premultiplied, idx),
         tile: getValueAt(args.tile, idx),
         top: getValueAt(args.top, idx)

@@ -65,25 +65,39 @@ Commands:
                                                to that of the top-left pixel
 
 Global Options
-  -c, --compressionLevel  zlib compression level                               [number] [default: 6]
-      --delay             Delay(s) between animation frames                                 [number]
-      --density           DPI for vector images                               [number] [default: 72]
-  -f, --format            Force output to a given format
-    [choices: "input", "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default:
-                                                                                            "input"]
-  -i, --input             Path to (an) image file(s)             [array] [required] [default: stdin]
-      --level             Level to extract from a multi-level input                         [number]
-      --loop              Number of animation iterations                       [number] [default: 0]
-  -o, --output            Directory or URI template to write the image files to
+  -i, --input    Path to (an) image file(s)                      [array] [required] [default: stdin]
+  -o, --output   Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]
+      --timeout  Number of seconds after which processing will be stopped                   [number]
+
+Input Options
+      --animated          Read all frames/pages of an animated image                       [boolean]
+      --failOn            Level of sensitivity to invalid images
+                               [choices: "none", "truncated", "error", "warning"] [default: warning]
+      --density           DPI for vector images                               [number] [default: 72]
+      --level             Level to extract from a multi-level input (OpenSlide), zero based [number]
+      --limitInputPixels  Do not process input images where the number of pixels (width x height)
+                          exceeds this limit                           [number] [default: 268402689]
       --page              Page number to start extracting from for multi-page input         [number]
       --pages             Number of pages to extract for multi-page input      [number] [default: 1]
-  -p, --progressive       Use progressive (interlace) scan                                 [boolean]
-  -q, --quality           Quality                                             [number] [default: 80]
-      --timeout           Number of seconds after which processing will be stopped
-                                                                               [number] [default: 0]
-  -m, --withMetadata      Include all metadata (EXIF, XMP, IPTC) from the input image in the output
-                          image                                                            [boolean]
+      --sequentialRead    Use sequential rather than random access where possible
+                                                                          [boolean] [default: false]
+      --subifd            subIFD to extract for OME-TIFF                      [number] [default: -1]
+      --unlimited         Remove safety features that help prevent memory exhaustion       [boolean]
+
+Output Options
+  -c, --compressionLevel          zlib compression level                       [number] [default: 6]
+  -f, --format                    Force output to a given format
+      [choices: "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: input]
+  -m, --metadata, --withMetadata  Include all metadata (EXIF, XMP, IPTC) from the input image in the
+                                  output image                                             [boolean]
+      --metadata.density          Number of pixels per inch (DPI)                           [number]
+      --metadata.exif             Object keyed by IFD0, IFD1 etc. of key/value string pairs to write
+                                  as EXIF data                                         [default: {}]
+      --metadata.icc              Filesystem path to output ICC profile     [string] [default: sRGB]
+      --metadata.orientation      Used to update the EXIF Orientation tag                   [number]
+  -p, --progressive               Use progressive (interlace) scan                         [boolean]
+  -q, --quality                   Quality                                     [number] [default: 80]
 
 Optimization Options
       --adaptiveFiltering                       Use adaptive row filtering                 [boolean]
@@ -98,12 +112,14 @@ Optimization Options
       --compression                             Compression options
         [choices: "ccittfax4", "deflate", "jpeg", "jp2k", "lzw", "none", "packbits", "webp", "zstd"]
                                                                                    [default: "jpeg"]
+      --delay                                   Delay(s) between animation frames           [number]
       --dither                                  Level of Floyd-Steinberg error diffusion
                                                                              [number] [default: 1.0]
       --effort                                  Level of CPU effort to reduce file size
                                                                 [number] [default: 7 (GIF, PNG) / 4]
       --hcompression                            Compression format
                                                            [choices: "hevc", "av1"] [default: "av1"]
+      --loop                                    Number of animation iterations [number] [default: 0]
       --lossless                                Use lossless compression mode              [boolean]
       --minSize                                 Prevent use of animation key frames to minimize file
                                                 size                                       [boolean]
@@ -148,6 +164,11 @@ Examples:
   ./overlay.png --gravity southeast -- sharpen        background, composited with overlay.png with
                                                       SE gravity, sharpened, with metadata, 90%
                                                       quality version of input.jpg
+  sharp -i ./input.jpg -o ./out --metadata            Include all metadata in the output image
+  sharp -i ./input.jpg -o ./out                       Set "IFD0-Copyright" in output EXIF metadata
+  --metadata.exif.IFD0.Copyright "Wernham Hogg"
+  sharp -i ./input.jpg -o ./out --metadata.density    Set output metadata to 96 DPI
+  96
 
 For more information on available options, please visit https://sharp.pixelplumbing.com/
 ```

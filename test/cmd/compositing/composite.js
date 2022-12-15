@@ -99,29 +99,13 @@ describe('composite', () => {
       })
     })
 
-    describe('--animated', () => {
-      beforeEach((done) => cli.parse(['composite', input, '--animated'], done))
-
-      it('must set the animated flag', () => {
-        expect(cli.parsed.argv).to.have.property('animated', true)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('composite')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].animated', true))
-      })
-    })
-
     describe('--blend', () => {
       // Default blend.
       const blend = 'add'
 
       beforeEach((done) => cli.parse(['composite', input, '--blend', blend], done))
 
-      it('must set the gravity flag', () => {
+      it('must set the blend flag', () => {
         expect(cli.parsed.argv).to.have.property('blend', blend)
       })
       it('must update the pipeline', () => {
@@ -165,7 +149,7 @@ describe('composite', () => {
       })
 
       describe('--create.height', () => {
-        it('must set the create.width flag', () => {
+        it('must set the create.height flag', () => {
           const args = cli.parsed.argv
           expect(args).to.have.property('create')
           expect(args.create).to.have.property('height', height)
@@ -232,25 +216,6 @@ describe('composite', () => {
       })
     })
 
-    describe('--failOn', () => {
-      // Default failOn.
-      const failOn = 'error'
-
-      beforeEach((done) => cli.parse(['composite', input, '--failOn', failOn], done))
-
-      it('must set the gravity flag', () => {
-        expect(cli.parsed.argv).to.have.property('failOn', failOn)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('composite')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].failOn', failOn))
-      })
-    })
-
     describe('--gravity', () => {
       beforeEach((done) => cli.parse(['composite', input, '--gravity', 'centre'], done))
 
@@ -264,26 +229,6 @@ describe('composite', () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].gravity', 'centre'))
-      })
-    })
-
-    describe('--limitInputPixels', () => {
-      // Default value.
-      const value = 10
-
-      beforeEach((done) => cli.parse(['composite', input, '--limitInputPixels', value], done))
-
-      it('must set the offset flag', () => {
-        const args = cli.parsed.argv
-        expect(args).to.have.property('limitInputPixels', value)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('composite')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].limitInputPixels', value))
       })
     })
 
@@ -345,7 +290,7 @@ describe('composite', () => {
 
       beforeEach((done) => cli.parse(['composite', input, '--left', 10, '--top', top], done))
 
-      it('must set the left flag', () => {
+      it('must set the top flag', () => {
         const args = cli.parsed.argv
         expect(args).to.have.property('top', top)
       })
