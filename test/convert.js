@@ -64,6 +64,15 @@ describe('convert', () => {
         .files([input], dest, options)
         .then(([info]) => expect(fs.existsSync(info.path)).to.be.true)
     })
+    it('must convert a file formatted based on extension', () => {
+      return convert
+        .files([input], path.join(dest, '{name}.avif'), options)
+        .then(([info]) => {
+          expect(info).to.have.property('format', 'heif')
+          expect(info).to.have.property('path')
+          expect(info.path).to.contain('.avif')
+        })
+    })
     it('must convert a file and output to an existing directory', () => {
       // Negative test for directory that does not exist.
       const rand = '' + Math.random()
