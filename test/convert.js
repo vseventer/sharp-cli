@@ -106,6 +106,16 @@ describe('convert', () => {
       return convert
         .files([input], dest, options)
     })
+    it('must warn if there is no files', () => {
+      return convert
+        .files([])
+        .then(() => { throw new Error('STOP') })
+        .catch((err) => {
+          expect(err).to.exist()
+          expect(err).to.have.property('message')
+          expect(err.message).to.contain('No input files')
+        })
+    })
   })
   describe('stream', () => {
     // Default output.
