@@ -30,7 +30,7 @@
     "glob": "8.0.x",
     "is-directory": "0.3.x",
     "lodash.pick": "^4.4.0",
-    "sharp": "0.31.2",
+    "sharp": "0.32.6",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
