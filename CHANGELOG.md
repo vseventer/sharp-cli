@@ -2,6 +2,7 @@
 
 ## 4.2.0
 * Exit process when there are no input files ([#83](https://github.com/vseventer/sharp-cli/issues/83)).
+* Updated `sharp` dependency to fix vulnerability in libwebp dependency [CVE-2023-4863](https://github.com/advisories/GHSA-j7hp-h8jx-5ppr)
 
 ## 4.1.1 (March 21, 2023)
 * Fixes bug with AVIF filename formatting ([#28](https://github.com/vseventer/sharp-cli/issues/82)).
