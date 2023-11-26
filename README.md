@@ -63,6 +63,8 @@ Commands:
   sharp trim [threshold]                       Trim pixels from all edges that contain values
                                                similar to the given background color, which defaults
                                                to that of the top-left pixel
+  sharp unflatten                              Ensure the image has an alpha channel with all white
+                                               pixel values made fully transparent
 
 Global Options
   -i, --input    Path to (an) image file(s)                      [array] [required] [default: stdin]
@@ -75,6 +77,8 @@ Input Options
       --failOn            Level of sensitivity to invalid images
                                [choices: "none", "truncated", "error", "warning"] [default: warning]
       --density           DPI for vector images                               [number] [default: 72]
+      --ignoreIcc         Should the embedded ICC profile, if any, be ignored
+                                                                          [boolean] [default: false]
       --level             Level to extract from a multi-level input (OpenSlide), zero based [number]
       --limitInputPixels  Do not process input images where the number of pixels (width x height)
                           exceeds this limit                           [number] [default: 268402689]
@@ -119,6 +123,9 @@ Optimization Options
                                                                 [number] [default: 7 (GIF, PNG) / 4]
       --hcompression                            Compression format
                                                            [choices: "hevc", "av1"] [default: "av1"]
+      --interFrameMaxError                      Maximum inter-frame error for transparency  [number]
+      --interPaletteMaxError                    Maximum inter-palette error for palette reuse
+                                                                                            [number]
       --loop                                    Number of animation iterations [number] [default: 0]
       --lossless                                Use lossless compression mode              [boolean]
       --minSize                                 Prevent use of animation key frames to minimize file
@@ -137,9 +144,11 @@ Optimization Options
                                                 transparency support                       [boolean]
       --predictor                               Compression predictor
                                     [choices: "float", "horizontal", "none"] [default: "horizontal"]
+      --preset                                  Named preset for preprocessing/filtering
+            [choices: "default", "photo", "picture", "drawing", "icon", "text"] [default: "default"]
       --pyramid                                 Write an image pyramid                     [boolean]
       --quantisationTable, --quantizationTable  Quantization table to use      [number] [default: 0]
-      --reoptimise, --reoptimize                Always generate new palettes (slow)        [boolean]
+      --reuse, --reoptimise, --reoptimize       Always generate new palettes (slow)        [boolean]
       --resolutionUnit                          Resolution unit
                                                              [choices: "cm", "inch"] [default: inch]
       --smartSubsample                          High quality chroma subsampling            [boolean]
