@@ -744,6 +744,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--preset', () => {
+      // Default preset.
+      const preset = 'text'
+
+      // Run.
+      beforeEach(() => cli.parse(['--preset', preset, ...ioFlags]))
+
+      // Tests.
+      it('must set the smartSubsample flag', () => {
+        expect(cli.parsed.argv).to.have.property('preset', preset)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { preset })
+      })
+    })
+
     describe('--pyramid', () => {
       // Run.
       beforeEach(() => cli.parse(['--pyramid', ...ioFlags]))
@@ -871,7 +892,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach(() => cli.parse(['--resolutionUnit', unit, ...ioFlags]))
 
       // Tests.
-      it('must set the smartSubsample flag', () => {
+      it('must set the resolutionUnit flag', () => {
         expect(cli.parsed.argv).to.have.property('resolutionUnit', unit)
       })
       it('must update the pipeline', () => {

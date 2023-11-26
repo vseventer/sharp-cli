@@ -7,6 +7,7 @@
 * Added `ignoreIcc` option to `composite` command.
 * Added `interFrameMaxError` and `interPaletteMaxError` output options.
 * Added `lower` and `upper` options to `normalise` command.
+* Added `preset` output option.
 * Added `reuse` alias to `optimise` and `optimize` output options.
 * Updated `sharp` dependency.
 
