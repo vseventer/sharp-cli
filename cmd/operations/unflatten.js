@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,28 +21,29 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.dimens.io/api-operation#unflatten
+
 // Strict mode.
 'use strict'
 
-// Test suite.
-describe('Operations', () => {
-  require('./operations/affine')
-  require('./operations/blur')
-  require('./operations/boolean')
-  require('./operations/clahe')
-  require('./operations/convolve')
-  require('./operations/flatten')
-  require('./operations/flip')
-  require('./operations/flop')
-  require('./operations/gamma')
-  require('./operations/linear')
-  require('./operations/median')
-  require('./operations/modulate')
-  require('./operations/negate')
-  require('./operations/normalise')
-  require('./operations/recomb')
-  require('./operations/rotate')
-  require('./operations/sharpen')
-  require('./operations/threshold')
-  require('./operations/unflatten')
-})
+// Local modules.
+const queue = require('../../lib/queue')
+
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example('$0 unflatten')
+    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#unflatten')
+}
+
+// Command handler.
+const handler = (args) => queue.push(['unflatten', (sharp) => sharp.unflatten()])
+
+// Exports.
+module.exports = {
+  command: 'unflatten',
+  describe: 'Ensure the image has an alpha channel with all white pixel values made fully transparent',
+  builder,
+  handler
+}

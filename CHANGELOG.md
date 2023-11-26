@@ -2,6 +2,7 @@
 
 ## 4.2.0
 * Exit process when there are no input files ([#83](https://github.com/vseventer/sharp-cli/issues/83)).
+* Added `unflatten` command.
 * Added `extendWith` option to `extend` command.
 * Added `ignoreIcc` option to `composite` command.
 * Added `interFrameMaxError` and `interPaletteMaxError` output options.

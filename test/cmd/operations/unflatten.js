@@ -1,4 +1,4 @@
-/* global describe */
+/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -22,28 +22,39 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.dimens.io/api-operation#unflatten
+
 // Strict mode.
 'use strict'
 
+// Package modules.
+const expect = require('must')
+const sinon = require('sinon')
+const Yargs = require('yargs')
+
+// Local modules.
+const queue = require('../../../lib/queue')
+const unflatten = require('../../../cmd/operations/unflatten')
+const sharp = require('../../mocks/sharp')
+
 // Test suite.
-describe('Operations', () => {
-  require('./operations/affine')
-  require('./operations/blur')
-  require('./operations/boolean')
-  require('./operations/clahe')
-  require('./operations/convolve')
-  require('./operations/flatten')
-  require('./operations/flip')
-  require('./operations/flop')
-  require('./operations/gamma')
-  require('./operations/linear')
-  require('./operations/median')
-  require('./operations/modulate')
-  require('./operations/negate')
-  require('./operations/normalise')
-  require('./operations/recomb')
-  require('./operations/rotate')
-  require('./operations/sharpen')
-  require('./operations/threshold')
-  require('./operations/unflatten')
+describe('unflatten', () => {
+  const cli = (new Yargs()).command(unflatten)
+
+  // Reset.
+  afterEach('queue', () => queue.splice(0))
+  afterEach('sharp', sharp.prototype.reset)
+
+  // Run.
+  beforeEach((done) => cli.parse(['unflatten'], done))
+
+  // Tests.
+  it('must update the pipeline', () => {
+    expect(queue.pipeline).to.have.length(1)
+    expect(queue.pipeline).to.include('unflatten')
+  })
+  it('must execute the pipeline', () => {
+    const pipeline = queue.drain(sharp())
+    sinon.assert.called(pipeline.unflatten)
+  })
 })
