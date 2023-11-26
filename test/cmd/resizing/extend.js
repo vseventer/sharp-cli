@@ -94,5 +94,26 @@ describe('extend', () => {
         sinon.assert.calledWithMatch(pipeline.extend, { background })
       })
     })
+
+    describe('--extendWith', () => {
+      // Default mode.
+      const mode = 'copy'
+
+      // Run.
+      beforeEach((done) => cli.parse(['extend', top, bottom, left, right, '--extendWith', mode], done))
+
+      // Tests.
+      it('must set the background flag', () => {
+        expect(cli.parsed.argv).to.have.property('extendWith', mode)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('extend')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.extend, { extendWith: mode })
+      })
+    })
   })
 })

@@ -26,8 +26,25 @@
 // Strict mode.
 'use strict'
 
+// Package modules.
+const pick = require('lodash.pick')
+
 // Local modules.
 const queue = require('../../lib/queue')
+
+const options = {
+  lower: {
+    default: 1,
+    desc: 'Percentile below which luminance values will be underexposed',
+    type: 'number'
+  },
+  upper: {
+    default: 99,
+    desc: 'Percentile below which luminance values will be overexposed',
+    type: 'number'
+  }
+}
+const optionNames = Object.keys(options)
 
 // Command builder.
 const builder = (yargs) => {
@@ -35,10 +52,12 @@ const builder = (yargs) => {
     .strict()
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#normalise')
     .example('$0 normalise')
+    .options(options)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.
-const handler = (args) => queue.push(['normalise', (sharp) => sharp.normalise()])
+const handler = (args) => queue.push(['normalise', (sharp) => sharp.normalise(pick(args, optionNames))])
 
 // Exports.
 module.exports = {

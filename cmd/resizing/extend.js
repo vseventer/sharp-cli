@@ -30,6 +30,7 @@
 const pick = require('lodash.pick')
 
 // Local modules.
+const constants = require('../../lib/constants')
 const queue = require('../../lib/queue')
 
 // Configure.
@@ -57,6 +58,11 @@ const options = {
     defaultDescription: 'rgba(0, 0, 0, 1)',
     desc: 'Background colour, parsed by the color module',
     type: 'string'
+  },
+  extendWith: {
+    choices: constants.EXTEND_WITH,
+    default: 'background',
+    desc: 'Populate new pixels using this method'
   }
 }
 
@@ -81,6 +87,7 @@ const handler = (args) => {
   return queue.push(['extend', (sharp) => {
     return sharp.extend({
       background: args.background,
+      extendWith: args.extendWith,
       ...pick(args, Object.keys(positionals))
     })
   }])

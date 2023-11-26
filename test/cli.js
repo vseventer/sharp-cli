@@ -385,6 +385,19 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--ignoreIcc', () => {
+      beforeEach((done) => cli.parse(['--ignoreIcc', 'composite', input, ...ioFlags], done))
+
+      // Tests.
+      it('must set the ignoreIcc flag', () => {
+        expect(cli.parsed.argv).to.have.property('ignoreIcc', true)
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].ignoreIcc', true))
+      })
+    })
+
     describe('--interFrameMaxError', () => {
       // Default max.
       const max = 16
@@ -624,8 +637,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property('optimiseScans', true)
         })
         it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(2)
+          expect(queue.pipeline).to.have.length(3)
           expect(queue.pipeline).to.include('jpeg')
+          expect(queue.pipeline).to.include('gif') // Because: -p.
           expect(queue.pipeline).to.include('png') // Because: -p.
         })
         it('must execute the pipeline', () => {
@@ -759,12 +773,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property('progressive', true)
         })
         it('must update the pipeline', () => {
-          expect(queue.pipeline).to.have.length(2)
+          expect(queue.pipeline).to.have.length(3)
+          expect(queue.pipeline).to.include('gif')
           expect(queue.pipeline).to.include('jpeg')
           expect(queue.pipeline).to.include('png')
         })
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.gif, { progressive: true })
           sinon.assert.calledWithMatch(pipeline.jpeg, { progressive: true })
           sinon.assert.calledWithMatch(pipeline.png, { progressive: true })
         })
@@ -827,14 +843,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
-    ;['reoptimise', 'reoptimize'].forEach((alias) => {
+    ;['reuse', 'reoptimise', 'reoptimize'].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
         beforeEach(() => cli.parse([`--${alias}`, `--${alias}`, ...ioFlags]))
 
         // Tests.
         it('must set the reoptimise flag', () => {
-          expect(cli.parsed.argv).to.have.property('reoptimise', true)
+          expect(cli.parsed.argv).to.have.property('reuse', true)
         })
         it('must update the pipeline', () => {
           expect(queue.pipeline).to.have.length(1)
@@ -842,7 +858,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         })
         it('must execute the pipeline', () => {
           const pipeline = queue.drain(sharp())
-          sinon.assert.calledWithMatch(pipeline.gif, { reoptimise: true })
+          sinon.assert.calledWithMatch(pipeline.gif, { reuse: true })
         })
       })
     })

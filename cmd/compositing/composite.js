@@ -164,6 +164,7 @@ const handler = (args) => {
         density: getValueAt(args.density, idx),
         failOn: args.failOn,
         gravity: getValueAt(args.gravity, idx),
+        ignoreIcc: getValueAt(args.ignoreIcc),
         input,
         left: getValueAt(args.left, idx),
         limitInputPixels: args.limitInputPixels,

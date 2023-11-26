@@ -46,17 +46,63 @@ const sharp = require('../../mocks/sharp')
     afterEach('queue', () => queue.splice(0))
     afterEach('sharp', sharp.prototype.reset)
 
-    // Run.
-    beforeEach((done) => cli.parse([alias], done))
+    describe('..', () => {
+      // Run.
+      beforeEach((done) => cli.parse([alias], done))
 
-    // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('normalise')
+      // Tests.
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('normalise')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.called(pipeline.normalise)
+      })
     })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.normalise)
+
+    describe('[options]', () => {
+      describe('--lower', () => {
+        // Default lower.
+        const lower = 25
+
+        // Run.
+        beforeEach((done) => cli.parse([alias, '--lower', lower], done))
+
+        // Tests.
+        it('must set the lower flag', () => {
+          expect(cli.parsed.argv).to.have.property('lower', lower)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('normalise')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.normalise, { lower })
+        })
+      })
+
+      describe('--upper', () => {
+        // Default upper.
+        const upper = 25
+
+        // Run.
+        beforeEach((done) => cli.parse([alias, '--upper', upper], done))
+
+        // Tests.
+        it('must set the upper flag', () => {
+          expect(cli.parsed.argv).to.have.property('upper', upper)
+        })
+        it('must update the pipeline', () => {
+          expect(queue.pipeline).to.have.length(1)
+          expect(queue.pipeline).to.include('normalise')
+        })
+        it('must execute the pipeline', () => {
+          const pipeline = queue.drain(sharp())
+          sinon.assert.calledWithMatch(pipeline.normalise, { upper })
+        })
+      })
     })
   })
 })
