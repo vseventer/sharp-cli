@@ -2,6 +2,7 @@
 
 ## 4.2.0
 * Exit process when there are no input files ([#83](https://github.com/vseventer/sharp-cli/issues/83)).
+* Added `interFrameMaxError` and `interPaletteMaxError` output options.
 
 ## 4.1.1 (March 21, 2023)
 * Fixes bug with AVIF filename formatting ([#28](https://github.com/vseventer/sharp-cli/issues/82)).

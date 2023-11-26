@@ -385,6 +385,48 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--interFrameMaxError', () => {
+      // Default max.
+      const max = 16
+
+      // Run.
+      beforeEach(() => cli.parse(['--interFrameMaxError', max, ...ioFlags]))
+
+      // Tests.
+      it('must set the interFrameMaxError flag', () => {
+        expect(cli.parsed.argv).to.have.property('interFrameMaxError', max)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('gif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.gif, { interFrameMaxError: max })
+      })
+    })
+
+    describe('--interPaletteMaxError', () => {
+      // Default max.
+      const max = 16
+
+      // Run.
+      beforeEach(() => cli.parse(['--interPaletteMaxError', max, ...ioFlags]))
+
+      // Tests.
+      it('must set the interPaletteMaxError flag', () => {
+        expect(cli.parsed.argv).to.have.property('interPaletteMaxError', max)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('gif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.gif, { interPaletteMaxError: max })
+      })
+    })
+
     describe('--level', () => {
       // Default level.
       const level = 2
