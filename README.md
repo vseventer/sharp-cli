@@ -106,7 +106,7 @@ Output Options
 Optimization Options
       --adaptiveFiltering                       Use adaptive row filtering                 [boolean]
       --alphaQuality                            Quality of alpha layer        [number] [default: 80]
-      --bitdepth                                Squash 8-bit images down to 1, 2, or 4 bit
+      --bitdepth                                Reduce bitdepth to 1, 2, or 4 bit
                                                                   [choices: 1, 2, 4, 8] [default: 8]
       --chromaSubsampling                       Set to "4:4:4" to prevent chroma subsampling when
                                                 quality <= 90
@@ -121,6 +121,8 @@ Optimization Options
                                                                              [number] [default: 1.0]
       --effort                                  Level of CPU effort to reduce file size
                                                                 [number] [default: 7 (GIF, PNG) / 4]
+      --hbitdepth                               Set bitdepth to 8, 10, or 12 bit
+                                                                   [choices: 8, 10, 12] [default: 8]
       --hcompression                            Compression format
                                                            [choices: "hevc", "av1"] [default: "av1"]
       --interFrameMaxError                      Maximum inter-frame error for transparency  [number]
@@ -128,6 +130,7 @@ Optimization Options
                                                                                             [number]
       --loop                                    Number of animation iterations [number] [default: 0]
       --lossless                                Use lossless compression mode              [boolean]
+      --miniswhite                              Write 1-bit images as miniswhite           [boolean]
       --minSize                                 Prevent use of animation key frames to minimize file
                                                 size                                       [boolean]
       --mixed                                   Allow mixture of lossy and lossless animation frames
