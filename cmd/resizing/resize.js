@@ -66,7 +66,7 @@ const options = {
   kernel: {
     choices: constants.KERNEL,
     defaultDescription: 'lanczos3',
-    desc: 'The kernel to use for image reduction'
+    desc: 'The kernel to use for image reduction and the inferred interpolator to use for upsampling'
   },
   position: {
     choices: [...constants.GRAVITY, ...constants.POSITION, ...constants.STRATEGY],

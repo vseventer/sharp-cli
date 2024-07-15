@@ -345,6 +345,27 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--hbitdepth', () => {
+      // Default bitdepth.
+      const bitdepth = 12
+
+      // Run.
+      beforeEach(() => cli.parse(['--hbitdepth', bitdepth, ...ioFlags]))
+
+      // Tests.
+      it('must set the hbitdepth flag', () => {
+        expect(cli.parsed.argv).to.have.property('hbitdepth', bitdepth)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('heif')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.heif, { bitdepth })
+      })
+    })
+
     describe('--hcompression', () => {
       // Default compression.
       const compression = 'hevc'
@@ -508,6 +529,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.heif, { lossless: true })
         sinon.assert.calledWithMatch(pipeline.webp, { lossless: true })
+      })
+    })
+
+    describe('--miniswhite', () => {
+      // Run.
+      beforeEach(() => cli.parse(['--miniswhite', ...ioFlags]))
+
+      // Tests.
+      it('must set the miniswhite flag', () => {
+        expect(cli.parsed.argv).to.have.property('miniswhite', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('tiff')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.tiff, { miniswhite: true })
       })
     })
 

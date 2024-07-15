@@ -30,7 +30,7 @@
     "glob": "8.0.x",
     "is-directory": "0.3.x",
     "lodash.pick": "^4.4.0",
-    "sharp": "0.32.6",
+    "sharp": "0.33.4",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "tempy": "1.0.x"
   },
   "engines": {
-    "node": ">=14.15"
+    "node": ">=18.17"
   }
 }

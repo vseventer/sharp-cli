@@ -102,5 +102,23 @@ describe('trim', () => {
         sinon.assert.calledWithMatch(pipeline.trim, { background })
       })
     })
+
+    describe('--lineArt', () => {
+      // Run.
+      beforeEach((done) => cli.parse(['trim', '--lineArt'], done))
+
+      // Tests.
+      it('must set the factor flag', () => {
+        expect(cli.parsed.argv).to.have.property('lineArt', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('trim')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true })
+      })
+    })
   })
 })

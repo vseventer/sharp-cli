@@ -43,6 +43,11 @@ const options = {
     defaultDescription: 'top-left pixel',
     desc: 'Background colour, parsed by the color module',
     type: 'string'
+  },
+  lineArt: {
+    default: false,
+    desc: 'Does the input more closely resemble line art rather than being photographic',
+    type: 'boolean'
   }
 }
 
@@ -64,7 +69,7 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   return queue.push(['trim', (sharp) => {
-    return sharp.trim({ background: args.background, threshold: args.threshold })
+    return sharp.trim({ background: args.background, lineArt: args.lineArt, threshold: args.threshold })
   }])
 }
 
