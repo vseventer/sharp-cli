@@ -4,6 +4,7 @@
 * Added `hbitdepth`, `miniswhite` options to `heif` command.
 * Added `lineArt` option to `trim` command.
 * Updated `sharp` dependency (requiring dependency to bump Node to 18.17+).
+* Updated dependencies.
 
 ## 4.2.0 (November 25, 2023)
 * Exit process when there are no input files ([#83](https://github.com/vseventer/sharp-cli/issues/83)).
