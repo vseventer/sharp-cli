@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.0.0
+## 5.0.0 (July 14, 2024)
 * Added `hbitdepth`, `miniswhite` options to `heif` command.
 * Added `lineArt` option to `trim` command.
 * Updated `sharp` dependency (requiring dependency to bump Node to 18.17+).
