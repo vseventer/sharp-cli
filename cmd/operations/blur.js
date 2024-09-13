@@ -38,19 +38,44 @@ const positionals = {
   }
 }
 
+const options = {
+  minAmplitude: {
+    defaultDescription: 0.2,
+    desc: 'A smaller value will generate a larger, more accurate mask',
+    type: 'number'
+  },
+  precision: {
+    choices: ['approximate', 'float', 'integer'],
+    defaultDescription: 'integer',
+    desc: 'How accurate the operation should be'
+  }
+}
+
 // Command builder.
 const builder = (yargs) => {
+  const optionNames = Object.keys(options)
   return yargs
     .strict()
     .example('$0 blur', 'The output will be a fast 3x3 box blurred image')
     .example('$0 blur 5', 'The output will be a slower but more accurate Gaussian blurred image')
     .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur')
     .positional('sigma', positionals.sigma)
+    .options(options)
+    .group(optionNames, 'Command Options')
 }
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['blur', (sharp) => sharp.blur(args.sigma)])
+  return queue.push(['blur', (sharp) => {
+    if (args.minAmplitude || args.precision) {
+      return sharp.blur({
+        minAmplitude: args.minAmplitude,
+        precision: args.precision,
+        sigma: args.sigma
+      })
+    }
+    return sharp.blur(args.sigma)
+  }])
 }
 
 // Exports.

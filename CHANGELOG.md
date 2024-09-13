@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0 (September 12, 2024)
+* Added `--minAmplitude` and `--precision` blur options.
+* Updated `sharp` dependency.
+
 ## 5.0.0 (July 14, 2024)
 * Added `hbitdepth`, `miniswhite` options to `heif` command.
 * Added `lineArt` option to `trim` command.

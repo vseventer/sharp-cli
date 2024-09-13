@@ -41,6 +41,10 @@ const sharp = require('../../mocks/sharp')
 describe('blur', () => {
   const cli = (new Yargs()).command(blur)
 
+  // Default amplitude and precision.
+  const amplitude = 0.5
+  const precision = 'approximate'
+
   // Reset.
   afterEach('queue', () => queue.splice(0))
   afterEach('sharp', sharp.prototype.reset)
@@ -78,6 +82,42 @@ describe('blur', () => {
     it('must execute the pipeline', () => {
       const pipeline = queue.drain(sharp())
       sinon.assert.calledWith(pipeline.blur, sigma)
+    })
+  })
+
+  describe('[minAmplitude]', () => {
+    // Run.
+    beforeEach((done) => cli.parse(['blur', 5, '--minAmplitude', amplitude, '--precision', precision], done))
+
+    // Tests.
+    it('must set the minAmplitude flag', () => {
+      expect(cli.parsed.argv).to.have.property('minAmplitude')
+    })
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('blur')
+    })
+    it('must execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      sinon.assert.calledWithMatch(pipeline.blur, { minAmplitude: amplitude })
+    })
+  })
+
+  describe('[precision]', () => {
+    // Run.
+    beforeEach((done) => cli.parse(['blur', 5, '--minAmplitude', amplitude, '--precision', precision], done))
+
+    // Tests.
+    it('must set the offset flag', () => {
+      expect(cli.parsed.argv).to.have.property('precision')
+    })
+    it('must update the pipeline', () => {
+      expect(queue.pipeline).to.have.length(1)
+      expect(queue.pipeline).to.include('blur')
+    })
+    it('must execute the pipeline', () => {
+      const pipeline = queue.drain(sharp())
+      sinon.assert.calledWithMatch(pipeline.blur, { precision })
     })
   })
 })
