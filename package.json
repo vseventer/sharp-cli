@@ -29,7 +29,7 @@
     "bubble-stream-error": "1.0.x",
     "glob": "11.0.x",
     "is-directory": "0.3.x",
-    "lodash.pick": "4.4.x",
+    "lodash.pick": "3.1.0",
     "sharp": "0.33.5",
     "yargs": "^17.6.2"
   },
