@@ -74,6 +74,7 @@ Global Options
 
 Input Options
       --animated          Read all frames/pages of an animated image                       [boolean]
+      --autoOrient        Rotate/flip the image to match EXIF Orientation, if any          [boolean]
       --failOn            Level of sensitivity to invalid images
                                [choices: "none", "truncated", "error", "warning"] [default: warning]
       --density           DPI for vector images                               [number] [default: 72]
@@ -84,6 +85,7 @@ Input Options
                           exceeds this limit                           [number] [default: 268402689]
       --page              Page number to start extracting from for multi-page input         [number]
       --pages             Number of pages to extract for multi-page input      [number] [default: 1]
+      --pdfBackground     Background colour to use when PDF is partially transparent        [string]
       --sequentialRead    Use sequential rather than random access where possible
                                                                           [boolean] [default: false]
       --subifd            subIFD to extract for OME-TIFF                      [number] [default: -1]
@@ -154,6 +156,8 @@ Optimization Options
       --reuse, --reoptimise, --reoptimize       Always generate new palettes (slow)        [boolean]
       --resolutionUnit                          Resolution unit
                                                              [choices: "cm", "inch"] [default: inch]
+      --smartDeblock                            Auto-adjust the deblocking filter, can improve low
+                                                contrast edges                             [boolean]
       --smartSubsample                          High quality chroma subsampling            [boolean]
       --tileBackground                          Background colour, parsed by the color module
                                                           [string] [default: rgba(255, 255, 255, 1)]

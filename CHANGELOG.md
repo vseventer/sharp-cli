@@ -2,7 +2,8 @@
 
 ## 5.2.0
 
-- Added [`--smartDeblock`](https://sharp.pixelplumbing.com/api-output#webp) option.
+- Added [`--autoOrient`, `pdfBackground`](https://sharp.pixelplumbing.com/api-constructor/) input option.
+- Added [`--smartDeblock`](https://sharp.pixelplumbing.com/api-output#webp) output option.
 - Updated `sharp` dependency.
 - Updated dependencies.
 

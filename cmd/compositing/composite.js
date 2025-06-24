@@ -160,6 +160,7 @@ const handler = (args) => {
     return sharp.composite(
       inputs.map((input, idx) => ({
         animated: args.animated,
+        autoOrient: args.autoOrient,
         blend: getValueAt(args.blend, idx),
         density: getValueAt(args.density, idx),
         failOn: args.failOn,
@@ -168,6 +169,7 @@ const handler = (args) => {
         input,
         left: getValueAt(args.left, idx),
         limitInputPixels: args.limitInputPixels,
+        pdfBackground: args.pdfBackground,
         premultiplied: getValueAt(args.premultiplied, idx),
         tile: getValueAt(args.tile, idx),
         top: getValueAt(args.top, idx)

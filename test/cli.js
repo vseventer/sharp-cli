@@ -101,6 +101,19 @@ describe(`${pkg.name} <options> [command..]`, () => {
       })
     })
 
+    describe('--autoOrient', () => {
+      beforeEach((done) => cli.parse(['--autoOrient', 'composite', input, ...ioFlags], done))
+
+      it('must set the autoOrient flag', () => {
+        const args = cli.parsed.argv
+        expect(args).to.have.property('autoOrient', true)
+      })
+      it('must set the autoOrient flag when using composite', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].autoOrient', true))
+      })
+    })
+
     describe('--bitdepth', () => {
       // Default bitdepth.
       const bitdepth = 4
@@ -759,6 +772,22 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.png, { palette: true })
+      })
+    })
+
+    describe('--pdfBackground', () => {
+      // Default value.
+      const value = 'rgb(255, 255, 255)'
+
+      beforeEach((done) => cli.parse(['--pdfBackground', value, 'composite', input, ...ioFlags], done))
+
+      it('must set the pdfBackground flag', () => {
+        const args = cli.parsed.argv
+        expect(args).to.have.property('pdfBackground', value)
+      })
+      it('must set the pdfBackground flag when using composite', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.composite, sinon.match.hasNested('[0].pdfBackground', value))
       })
     })
 
