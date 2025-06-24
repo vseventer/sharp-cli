@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.2.0
+## 5.2.0 (June 24, 2025)
 
 - Added [`--autoOrient`, `pdfBackground`](https://sharp.pixelplumbing.com/api-constructor/) input option.
 - Added [`--smartDeblock`](https://sharp.pixelplumbing.com/api-output#webp) output option.
