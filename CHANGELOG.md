@@ -2,6 +2,8 @@
 
 ## 5.2.0
 
+- Added [`--smartDeblock`](https://sharp.pixelplumbing.com/api-output#webp) option.
+- Updated `sharp` dependency.
 - Updated dependencies.
 
 ## 5.1.0 (September 12, 2024)

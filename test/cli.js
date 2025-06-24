@@ -791,7 +791,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
       beforeEach(() => cli.parse(['--preset', preset, ...ioFlags]))
 
       // Tests.
-      it('must set the smartSubsample flag', () => {
+      it('must set the preset flag', () => {
         expect(cli.parsed.argv).to.have.property('preset', preset)
       })
       it('must update the pipeline', () => {
@@ -941,6 +941,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it('must execute the pipeline', () => {
         const pipeline = queue.drain(sharp())
         sinon.assert.calledWithMatch(pipeline.tiff, { resolutionUnit: unit })
+      })
+    })
+
+    describe('--smartDeblock', () => {
+      // Run.
+      beforeEach(() => cli.parse(['--smartDeblock', ...ioFlags]))
+
+      // Tests.
+      it('must set the smartDeblock flag', () => {
+        expect(cli.parsed.argv).to.have.property('smartDeblock', true)
+      })
+      it('must update the pipeline', () => {
+        expect(queue.pipeline).to.have.length(1)
+        expect(queue.pipeline).to.include('webp')
+      })
+      it('must execute the pipeline', () => {
+        const pipeline = queue.drain(sharp())
+        sinon.assert.calledWithMatch(pipeline.webp, { smartDeblock: true })
       })
     })
 
