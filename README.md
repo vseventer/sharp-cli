@@ -95,9 +95,12 @@ Input Options
       --unlimited         Remove safety features that help prevent memory exhaustion       [boolean]
 
 Output Options
+      --bigtiff                   Use BigTIFF variant                                      [boolean]
   -c, --compressionLevel          zlib compression level                       [number] [default: 6]
   -f, --format                    Force output to a given format
       [choices: "avif", "gif", "heif", "jpeg", "jpg", "png", "raw", "tiff", "webp"] [default: input]
+      --keepDuplicateFrames       Keep duplicate frames in the output instead of combining them
+                                                                                           [boolean]
   -m, --metadata, --withMetadata  Include all metadata (EXIF, XMP, IPTC) from the input image in the
                                   output image                                             [boolean]
       --metadata.density          Number of pixels per inch (DPI)                           [number]
