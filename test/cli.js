@@ -396,7 +396,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     describe("--hbitdepth", () => {
       // Default bitdepth.
-      const bitdepth = 12;
+      const bitdepth = 8;
 
       // Run.
       beforeEach(() => cli.parse(["--hbitdepth", bitdepth, ...ioFlags]));

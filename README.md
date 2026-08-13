@@ -56,7 +56,7 @@ Commands:
   sharp resize [width] [height]                Resize image to width, height, or width × height
   sharp rotate [angle]                         Rotate the output image
   sharp sharpen [sigma]                        Sharpen the image
-  sharp threshold [value]                      Any pixel value greather than or equal to the
+  sharp threshold [value]                      Any pixel value greater than or equal to the
                                                threshold value will be set to 255, otherwise it will
                                                be set to 0
   sharp tint <rgb>                             Tint the image using the provided chroma while
