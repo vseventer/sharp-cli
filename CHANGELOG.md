@@ -8,7 +8,7 @@
 - Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output#gif) output option.
 - Fixes bug where zero (`0`) number option values would be silently ignored (e.g. `--compressionLevel`, `--dither`, `--delay`, or `--effort`).
 - Drop `bubble-stream-error` dependency in favor of Node.js native `stream.pipeline`.
-- Updated `sharp` dependency.
+- Updated `sharp` dependency to 0.34.5.
 - Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
 
 ## 5.2.0 (June 24, 2025)
