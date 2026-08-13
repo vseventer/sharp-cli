@@ -4,6 +4,7 @@
 
 - Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output/#tiff) output option.
 - Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output/#gif) output option.
+- Fixes bug where zero (`0`) number option values would be silently ignored (e.g. `--compressionLevel`, `--dither`, `--delay`, or `--effort`).
 - Updated `sharp` dependency.
 - Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
 
