@@ -2,6 +2,7 @@
 
 ## 6.0.0
 
+- Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output/#gif) output option.
 - Updated `sharp` dependency.
 - Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
 

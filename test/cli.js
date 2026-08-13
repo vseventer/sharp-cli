@@ -498,6 +498,26 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--keepDuplicateFrames", () => {
+      // Run.
+      beforeEach(() => cli.parse(["--keepDuplicateFrames", ...ioFlags]));
+
+      // Tests.
+      it("must set the keepDuplicateFrames flag", () => {
+        expect(cli.parsed.argv).to.have.property("keepDuplicateFrames", true);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("gif");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.gif, {
+          keepDuplicateFrames: true,
+        });
+      });
+    });
+
     describe("--level", () => {
       // Default level.
       const level = 2;
