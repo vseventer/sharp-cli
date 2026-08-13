@@ -24,8 +24,12 @@ Commands:
   sharp composite [images..]                   Composite image(s) over the processed (resized,
                                                extracted etc.) image
   sharp convolve <width> <height> <kernel..>   Convolve the image with the specified kernel
+  sharp dilate [width]                         Expand foreground objects using the dilate
+                                               morphological operator
   sharp ensureAlpha [alpha]                    Ensure the output image has an alpha transparency
                                                channel
+  sharp erode [width]                          Shrink foreground objects using the erode
+                                               morphological operator
   sharp extend <top> <bottom> <left> <right>   Extends/pads the edges of the image with the provided
                                                background colour
   sharp extract <top> <left> <width> <height>  Extract a region of the image

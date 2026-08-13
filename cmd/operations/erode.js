@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,30 +21,44 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// @see https://sharp.pixelplumbing.com/api-operation#erode
+
 // Strict mode.
 "use strict";
 
-// Test suite.
-describe("Operations", () => {
-  require("./operations/affine");
-  require("./operations/blur");
-  require("./operations/boolean");
-  require("./operations/clahe");
-  require("./operations/convolve");
-  require("./operations/dilate");
-  require("./operations/erode");
-  require("./operations/flatten");
-  require("./operations/flip");
-  require("./operations/flop");
-  require("./operations/gamma");
-  require("./operations/linear");
-  require("./operations/median");
-  require("./operations/modulate");
-  require("./operations/negate");
-  require("./operations/normalise");
-  require("./operations/recomb");
-  require("./operations/rotate");
-  require("./operations/sharpen");
-  require("./operations/threshold");
-  require("./operations/unflatten");
-});
+// Local modules.
+const queue = require("../../lib/queue");
+
+// Configure.
+const positionals = {
+  width: {
+    desc: "Erosion width in pixels",
+    defaultDescription: 1,
+    type: "number",
+  },
+};
+
+// Command builder.
+const builder = (yargs) => {
+  return yargs
+    .strict()
+    .example("$0 erode")
+    .example("$0 erode 3")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#erode",
+    )
+    .positional("width", positionals.width);
+};
+
+// Command handler.
+const handler = (args) => {
+  return queue.push(["erode", (sharp) => sharp.erode(args.width)]);
+};
+
+// Exports.
+module.exports = {
+  command: "erode [width]",
+  describe: "Shrink foreground objects using the erode morphological operator",
+  builder,
+  handler,
+};

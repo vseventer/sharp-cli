@@ -4,6 +4,7 @@
 
 > Last release compatible with Node.js 18.
 
+- Added [`dilate`](https://sharp.pixelplumbing.com/api-operation#dilate) and [`erode`](https://sharp.pixelplumbing.com/api-operation#erode) operations.
 - Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output#tiff) output option.
 - Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output#gif) output option.
 - Fixes bug where zero (`0`) number option values would be silently ignored (e.g. `--compressionLevel`, `--dither`, `--delay`, or `--effort`).
