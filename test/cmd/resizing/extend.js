@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-resize#extend
+// @see https://sharp.pixelplumbing.com/api-resize#extend
 
 // Strict mode.
 "use strict";

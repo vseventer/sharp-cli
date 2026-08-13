@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-operation#flatten
+// @see https://sharp.pixelplumbing.com/api-operation#flatten
 
 // Strict mode.
 "use strict";
@@ -44,7 +44,7 @@ const builder = (yargs) => {
     .strict()
     .example('$0 flatten "#F0A703"')
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flatten",
     )
     .positional("background", positionals.background);
 };

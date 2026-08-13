@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-resize#extract
+// @see https://sharp.pixelplumbing.com/api-resize#extract
 
 // Strict mode.
 "use strict";
@@ -57,7 +57,7 @@ const builder = (yargs) => {
   return yargs
     .strict()
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-resize#extract",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-resize#extract",
     )
     .positional("top", positionals.top)
     .positional("left", positionals.left)

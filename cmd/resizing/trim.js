@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-resize#trim
+// @see https://sharp.pixelplumbing.com/api-resize#trim
 
 // Strict mode.
 "use strict";
@@ -70,7 +70,7 @@ const builder = (yargs) => {
     )
     .example("$0 trim 42 --background yellow", 'Trim all "yellow-ish" pixels')
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-resize#trim",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-resize#trim",
     )
     .positional("threshold", positionals.threshold)
     .options(options)

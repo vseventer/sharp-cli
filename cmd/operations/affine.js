@@ -82,7 +82,7 @@ const builder = (yargs) => {
     .strict()
     .example("$0 affine 1 0.3 0.1 0.7 --background white --interpolate nohalo")
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-operation#affine",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#affine",
     )
     .check((argv) => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 4)) {

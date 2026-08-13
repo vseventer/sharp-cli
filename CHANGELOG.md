@@ -4,8 +4,8 @@
 
 > Last release compatible with Node.js 18.
 
-- Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output/#tiff) output option.
-- Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output/#gif) output option.
+- Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output#tiff) output option.
+- Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output#gif) output option.
 - Fixes bug where zero (`0`) number option values would be silently ignored (e.g. `--compressionLevel`, `--dither`, `--delay`, or `--effort`).
 - Drop `bubble-stream-error` dependency in favor of Node.js native `stream.pipeline`.
 - Updated `sharp` dependency.
@@ -167,16 +167,16 @@
 
 ## 1.8.0 (January 5, 2019)
 
-- Added `--background` option to [`resize`](https://sharp.dimens.io/api-resize#resize) and [`rotate`](https://sharp.dimens.io/api-operation#rotate) commands.
-- Added [`--fit` and `--position`](https://sharp.dimens.io/api-resize#resize) options.
-- Added [`--factorOut`](https://sharp.dimens.io/api-operation#gamma) option.
-- Added [`--pyramid`, `--tileWidth`, and `--tileHeight`](https://sharp.dimens.io/api-output#tiff) options.
-- Added [`extend`](https://sharp.dimens.io/api-resize#extend) command.
-- Added [`flatten`](https://sharp.dimens.io/api-operation#flatten) command.
-- Added [`recomb`](https://sharp.dimens.io/api-operation#recomb) command.
+- Added `--background` option to [`resize`](https://sharp.pixelplumbing.com/api-resize#resize) and [`rotate`](https://sharp.pixelplumbing.com/api-operation#rotate) commands.
+- Added [`--fit` and `--position`](https://sharp.pixelplumbing.com/api-resize#resize) options.
+- Added [`--factorOut`](https://sharp.pixelplumbing.com/api-operation#gamma) option.
+- Added [`--pyramid`, `--tileWidth`, and `--tileHeight`](https://sharp.pixelplumbing.com/api-output#tiff) options.
+- Added [`extend`](https://sharp.pixelplumbing.com/api-resize#extend) command.
+- Added [`flatten`](https://sharp.pixelplumbing.com/api-operation#flatten) command.
+- Added [`recomb`](https://sharp.pixelplumbing.com/api-operation#recomb) command.
 - Removed `--crop`, `--ignoreAspectRatio`, `--min`, and `--max` options.
 - Removed `background` command.
-- Renamed `--tolerance` option to [`--threshold`](https://sharp.dimens.io/api-resize#trim).
+- Renamed `--tolerance` option to [`--threshold`](https://sharp.pixelplumbing.com/api-resize#trim).
 - Updated `sharp` and `sinon` dependencies.
 
 ## 1.7.2 (December 4, 2018)

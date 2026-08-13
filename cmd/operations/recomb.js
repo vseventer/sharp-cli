@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-operation#recomb
+// @see https://sharp.pixelplumbing.com/api-operation#recomb
 
 // Strict mode.
 "use strict";
@@ -47,7 +47,7 @@ const builder = (yargs) => {
       "The recomb will be applied to the output, in this case a sepia filter has been applied",
     )
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#recomb",
     )
     .check((argv) => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 9)) {

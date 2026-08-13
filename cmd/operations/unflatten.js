@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.dimens.io/api-operation#unflatten
+// @see https://sharp.pixelplumbing.com/api-operation#unflatten
 
 // Strict mode.
 "use strict";
@@ -35,7 +35,7 @@ const builder = (yargs) => {
     .strict()
     .example("$0 unflatten")
     .epilog(
-      "For more information on available options, please visit https://sharp.dimens.io/api-operation#unflatten",
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#unflatten",
     );
 };
 
