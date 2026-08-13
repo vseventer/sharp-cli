@@ -27,6 +27,7 @@
 
 // Standard lib.
 const path = require("path");
+const { Readable } = require("stream");
 
 // Package modules.
 const expect = require("must");
@@ -141,6 +142,21 @@ describe("convert", () => {
           expect(info.format).to.exist();
           expect(info.path).not.to.exist();
           expect(fs.existsSync(dest)).to.be.true();
+        });
+    });
+    it("must reject stream errors", () => {
+      return convert
+        .stream(
+          Readable.from(["not an image"]),
+          fs.createWriteStream(dest),
+          options,
+        )
+        .then(() => {
+          throw new Error("STOP");
+        })
+        .catch((err) => {
+          expect(err).to.exist();
+          expect(err.message).to.contain("unsupported image format");
         });
     });
   });

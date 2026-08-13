@@ -2,9 +2,12 @@
 
 ## 5.3.0 (August 13, 2026)
 
+> Last release compatible with Node.js 18.
+
 - Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output/#tiff) output option.
 - Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output/#gif) output option.
 - Fixes bug where zero (`0`) number option values would be silently ignored (e.g. `--compressionLevel`, `--dither`, `--delay`, or `--effort`).
+- Drop `bubble-stream-error` dependency in favor of Node.js native `stream.pipeline`.
 - Updated `sharp` dependency.
 - Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
 
