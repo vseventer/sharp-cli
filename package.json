@@ -27,7 +27,7 @@
     "posttest": "nyc report --reporter=lcov"
   },
   "dependencies": {
-    "glob": "11.0.x",
+    "glob": "10.5.x",
     "is-directory": "0.3.x",
     "lodash.pick": "3.1.0",
     "sharp": "0.34.5",
