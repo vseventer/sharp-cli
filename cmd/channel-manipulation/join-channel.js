@@ -24,37 +24,39 @@
 // @see https://sharp.pixelplumbing.com/api-channel#joinchannel
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   images: {
-    desc: 'One or more images',
+    desc: "One or more images",
     normalize: true,
-    type: 'array'
-  }
-}
+    type: "array",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#joinchannel')
-    .positional('images', positionals.images)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#joinchannel",
+    )
+    .positional("images", positionals.images);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['joinChannel', (sharp) => sharp.joinChannel(args.images)])
-}
+  return queue.push(["joinChannel", (sharp) => sharp.joinChannel(args.images)]);
+};
 
 // Exports.
 module.exports = {
-  command: 'joinChannel <images..>',
-  describe: 'Join one or more channels to the image',
+  command: "joinChannel <images..>",
+  describe: "Join one or more channels to the image",
   builder,
-  handler
-}
+  handler,
+};

@@ -23,10 +23,10 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const { hideBin } = require('yargs/helpers')
+const { hideBin } = require("yargs/helpers");
 
 // Run.
-require('../lib')(hideBin(process.argv))
+require("../lib")(hideBin(process.argv));

@@ -24,40 +24,45 @@
 // @see https://sharp.pixelplumbing.com/api-colour#tocolourspace
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   colourspace: {
     choices: constants.COLOURSPACE,
-    default: 'srgb',
-    desc: 'The output colourspace'
-  }
-}
+    default: "srgb",
+    desc: "The output colourspace",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 toColourspace rgb16', 'Output 16 bits per pixel RGB')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tocolourspace')
-    .positional('colourspace', positionals.colourspace)
-}
+    .example("$0 toColourspace rgb16", "Output 16 bits per pixel RGB")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tocolourspace",
+    )
+    .positional("colourspace", positionals.colourspace);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['toColourspace', (sharp) => sharp.toColourspace(args.colourspace)])
-}
+  return queue.push([
+    "toColourspace",
+    (sharp) => sharp.toColourspace(args.colourspace),
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'toColourspace <colourspace>',
-  aliases: 'toColorspace',
-  describe: 'Set the output colourspace',
+  command: "toColourspace <colourspace>",
+  aliases: "toColorspace",
+  describe: "Set the output colourspace",
   builder,
-  handler
-}
+  handler,
+};

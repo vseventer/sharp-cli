@@ -25,39 +25,39 @@
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const bandbool = require('../../../cmd/channel-manipulation/bandbool')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const bandbool = require("../../../cmd/channel-manipulation/bandbool");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('bandbool <operator>', () => {
-  const cli = (new Yargs()).command(bandbool)
+describe("bandbool <operator>", () => {
+  const cli = new Yargs().command(bandbool);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['bandbool', 'and'], done))
+  beforeEach((done) => cli.parse(["bandbool", "and"], done));
 
   // Tests.
-  it('must set the operator flag', () => {
-    expect(cli.parsed.argv).to.have.property('operator', 'and')
-  })
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('bandbool')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.calledWith(pipeline.bandbool, 'and')
-  })
-})
+  it("must set the operator flag", () => {
+    expect(cli.parsed.argv).to.have.property("operator", "and");
+  });
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("bandbool");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.calledWith(pipeline.bandbool, "and");
+  });
+});

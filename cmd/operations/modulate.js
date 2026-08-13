@@ -24,55 +24,65 @@
 // @see http://sharp.pixelplumbing.com/api-operation#modulate
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const pick = require('lodash.pick')
+const pick = require("lodash.pick");
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const options = {
   brightness: {
-    desc: 'Brightness multiplier',
-    type: 'number'
+    desc: "Brightness multiplier",
+    type: "number",
   },
   hue: {
-    desc: 'Degrees for hue rotation',
-    type: 'number'
+    desc: "Degrees for hue rotation",
+    type: "number",
   },
   lightness: {
-    desc: 'Lightness addend',
-    type: 'number'
+    desc: "Lightness addend",
+    type: "number",
   },
   saturation: {
-    desc: 'Saturation multiplier',
-    type: 'number'
-  }
-}
-const optionNames = Object.keys(options)
+    desc: "Saturation multiplier",
+    type: "number",
+  },
+};
+const optionNames = Object.keys(options);
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 modulate --brightness 2', 'Increase brightness by a factor of 2')
-    .example('$0 modulate --hue 180', 'Hue-rotate by 180 degrees')
-    .example('$0 modulate --lightness 50', 'Increase lightness by +50')
-    .example('$0 modulate --brightness 0.5 --saturation 0.5 --hue 90', 'Decrease brightness and saturation while also hue-rotating by 90 degrees')
-    .epilog('For more information on available options, please visit http://sharp.pixelplumbing.com/api-operation#modulate')
+    .example(
+      "$0 modulate --brightness 2",
+      "Increase brightness by a factor of 2",
+    )
+    .example("$0 modulate --hue 180", "Hue-rotate by 180 degrees")
+    .example("$0 modulate --lightness 50", "Increase lightness by +50")
+    .example(
+      "$0 modulate --brightness 0.5 --saturation 0.5 --hue 90",
+      "Decrease brightness and saturation while also hue-rotating by 90 degrees",
+    )
+    .epilog(
+      "For more information on available options, please visit http://sharp.pixelplumbing.com/api-operation#modulate",
+    )
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
-const handler = (args) => queue.push(['modulate', (sharp) => sharp.modulate(pick(args, optionNames))])
+const handler = (args) =>
+  queue.push(["modulate", (sharp) => sharp.modulate(pick(args, optionNames))]);
 
 // Exports.
 module.exports = {
-  command: 'modulate',
-  describe: 'Transforms the image using brightness, saturation, hue rotation, and lightness',
+  command: "modulate",
+  describe:
+    "Transforms the image using brightness, saturation, hue rotation, and lightness",
   builder,
-  handler
-}
+  handler,
+};

@@ -24,79 +24,91 @@
 // @see https://sharp.dimens.io/api-resize#extend
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const pick = require('lodash.pick')
+const pick = require("lodash.pick");
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   bottom: {
-    desc: 'Pixel count to add to the bottom edge',
-    type: 'number'
+    desc: "Pixel count to add to the bottom edge",
+    type: "number",
   },
   left: {
-    desc: 'Pixel count to add to the left edge',
-    type: 'number'
+    desc: "Pixel count to add to the left edge",
+    type: "number",
   },
   right: {
-    desc: 'Pixel count to add to the right edge',
-    type: 'number'
+    desc: "Pixel count to add to the right edge",
+    type: "number",
   },
   top: {
-    desc: 'Pixel count to add to the top edge',
-    type: 'number'
-  }
-}
+    desc: "Pixel count to add to the top edge",
+    type: "number",
+  },
+};
 
 const options = {
   background: {
-    defaultDescription: 'rgba(0, 0, 0, 1)',
-    desc: 'Background colour, parsed by the color module',
-    type: 'string'
+    defaultDescription: "rgba(0, 0, 0, 1)",
+    desc: "Background colour, parsed by the color module",
+    type: "string",
   },
   extendWith: {
     choices: constants.EXTEND_WITH,
-    default: 'background',
-    desc: 'Populate new pixels using this method'
-  }
-}
+    default: "background",
+    desc: "Populate new pixels using this method",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 extend 10 20 10 10 --background rgba(0,0,0,0)', 'Add 10 transparent pixels to the top, left, and right edges, and 20 to the bottom edge')
-    .example('$0 extend 0 10 0 0 --background red', 'Add 10 red pixels to the bottom edge.')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extend')
-    .positional('top', positionals.top)
-    .positional('bottom', positionals.bottom)
-    .positional('left', positionals.left)
-    .positional('right', positionals.right)
+    .example(
+      "$0 extend 10 20 10 10 --background rgba(0,0,0,0)",
+      "Add 10 transparent pixels to the top, left, and right edges, and 20 to the bottom edge",
+    )
+    .example(
+      "$0 extend 0 10 0 0 --background red",
+      "Add 10 red pixels to the bottom edge.",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.dimens.io/api-resize#extend",
+    )
+    .positional("top", positionals.top)
+    .positional("bottom", positionals.bottom)
+    .positional("left", positionals.left)
+    .positional("right", positionals.right)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['extend', (sharp) => {
-    return sharp.extend({
-      background: args.background,
-      extendWith: args.extendWith,
-      ...pick(args, Object.keys(positionals))
-    })
-  }])
-}
+  return queue.push([
+    "extend",
+    (sharp) => {
+      return sharp.extend({
+        background: args.background,
+        extendWith: args.extendWith,
+        ...pick(args, Object.keys(positionals)),
+      });
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'extend <top> <bottom> <left> <right>',
-  describe: 'Extends/pads the edges of the image with the provided background colour',
+  command: "extend <top> <bottom> <left> <right>",
+  describe:
+    "Extends/pads the edges of the image with the provided background colour",
   builder,
-  handler
-}
+  handler,
+};

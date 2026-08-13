@@ -24,49 +24,57 @@
 // @see https://sharp.pixelplumbing.com/api-operation#rotate
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   angle: {
-    defaultDescription: 'auto',
-    desc: 'Angle of rotation',
-    type: 'number'
-  }
-}
+    defaultDescription: "auto",
+    desc: "Angle of rotation",
+    type: "number",
+  },
+};
 
 const options = {
   background: {
-    defaultDescription: '#000000',
-    desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
-    type: 'string'
-  }
-}
+    defaultDescription: "#000000",
+    desc: "String parsed by the color module to extract values for red, green, blue and alpha",
+    type: "string",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 rotate', 'The output will be auto-rotated using EXIF Orientation tag')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#rotate')
-    .positional('angle', positionals.angle)
+    .example(
+      "$0 rotate",
+      "The output will be auto-rotated using EXIF Orientation tag",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#rotate",
+    )
+    .positional("angle", positionals.angle)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['rotate', (sharp) => sharp.rotate(args.angle, { background: args.background })])
-}
+  return queue.push([
+    "rotate",
+    (sharp) => sharp.rotate(args.angle, { background: args.background }),
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'rotate [angle]',
-  describe: 'Rotate the output image',
+  command: "rotate [angle]",
+  describe: "Rotate the output image",
   builder,
-  handler
-}
+  handler,
+};

@@ -24,38 +24,46 @@
 // @see https://sharp.pixelplumbing.com/api-channel#extractchannel
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   channel: {
     choices: constants.CHANNEL,
-    desc: 'The channel/band number to extract'
-  }
-}
+    desc: "The channel/band number to extract",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 extractChannel green', 'The output will contain the green channel of the input image')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#extractchannel')
-    .positional('channel', positionals.channel)
-}
+    .example(
+      "$0 extractChannel green",
+      "The output will contain the green channel of the input image",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#extractchannel",
+    )
+    .positional("channel", positionals.channel);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['extractChannel', (sharp) => sharp.extractChannel(args.channel)])
-}
+  return queue.push([
+    "extractChannel",
+    (sharp) => sharp.extractChannel(args.channel),
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'extractChannel <channel>',
-  describe: 'Extract a single channel from a multi-channel image',
+  command: "extractChannel <channel>",
+  describe: "Extract a single channel from a multi-channel image",
   builder,
-  handler
-}
+  handler,
+};

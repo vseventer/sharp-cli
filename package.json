@@ -1,6 +1,6 @@
 {
   "name": "sharp-cli",
-  "version": "5.2.0",
+  "version": "6.0.0-dev",
   "description": "CLI for sharp.",
   "keywords": [
     "cli",
@@ -21,7 +21,8 @@
   },
   "main": "lib/",
   "scripts": {
-    "pretest": "standard | snazzy",
+    "format": "prettier . --write",
+    "pretest": "prettier . --check",
     "test": "nyc mocha",
     "posttest": "nyc report --reporter=lcov"
   },
@@ -30,7 +31,7 @@
     "glob": "11.0.x",
     "is-directory": "0.3.x",
     "lodash.pick": "3.1.0",
-    "sharp": "0.34.2",
+    "sharp": "0.34.3",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
@@ -38,9 +39,8 @@
     "mocha": "10.8.x",
     "must": "0.13.x",
     "nyc": "17.1.x",
+    "prettier": "3.9.6",
     "sinon": "21.0.x",
-    "snazzy": "9.0.x",
-    "standard": "17.1.x",
     "tempy": "1.0.x"
   },
   "engines": {

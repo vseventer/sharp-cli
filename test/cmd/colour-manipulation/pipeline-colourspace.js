@@ -25,41 +25,41 @@
 // @see https://sharp.pixelplumbing.com/api-colour#pipelinecolorspace
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
-const pipelineColourspace = require('../../../cmd/colour-manipulation/pipeline-colourspace')
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
+const pipelineColourspace = require("../../../cmd/colour-manipulation/pipeline-colourspace");
 
 // Test suite.
-;['pipelineColourspace', 'pipelineColorspace'].forEach((alias) => {
+["pipelineColourspace", "pipelineColorspace"].forEach((alias) => {
   describe(`${alias} <colourspace>`, () => {
-    const cli = (new Yargs()).command(pipelineColourspace)
+    const cli = new Yargs().command(pipelineColourspace);
 
     // Reset.
-    afterEach('queue', () => queue.splice(0))
-    afterEach('sharp', sharp.prototype.reset)
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
     // Run.
-    beforeEach((done) => cli.parse([alias, 'srgb'], done))
+    beforeEach((done) => cli.parse([alias, "srgb"], done));
 
     // Tests.
-    it('must set the colourspace flag', () => {
-      expect(cli.parsed.argv).to.have.property('colourspace', 'srgb')
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('pipelineColourspace')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.pipelineColourspace)
-    })
-  })
-})
+    it("must set the colourspace flag", () => {
+      expect(cli.parsed.argv).to.have.property("colourspace", "srgb");
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("pipelineColourspace");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.called(pipeline.pipelineColourspace);
+    });
+  });
+});

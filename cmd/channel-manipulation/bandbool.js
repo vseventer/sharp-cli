@@ -24,38 +24,44 @@
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   operator: {
     choices: constants.BOOL,
-    desc: 'Operator to perform that bitwise operation'
-  }
-}
+    desc: "Operator to perform that bitwise operation",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 bandbool and', 'The output will be a single channel image where each pixel `P = R & G & B`')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#bandbool')
-    .positional('operator', positionals.operator)
-}
+    .example(
+      "$0 bandbool and",
+      "The output will be a single channel image where each pixel `P = R & G & B`",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#bandbool",
+    )
+    .positional("operator", positionals.operator);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['bandbool', (sharp) => sharp.bandbool(args.operator)])
-}
+  return queue.push(["bandbool", (sharp) => sharp.bandbool(args.operator)]);
+};
 
 // Exports.
 module.exports = {
-  command: 'bandbool <operator>',
-  describe: 'Perform a bitwise boolean operation on all input image channels (bands) to produce a single channel output image',
+  command: "bandbool <operator>",
+  describe:
+    "Perform a bitwise boolean operation on all input image channels (bands) to produce a single channel output image",
   builder,
-  handler
-}
+  handler,
+};

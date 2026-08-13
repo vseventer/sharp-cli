@@ -23,12 +23,12 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Test suite.
-describe('Colour Manipulation', () => {
-  require('./colour-manipulation/greyscale')
-  require('./colour-manipulation/pipeline-colourspace')
-  require('./colour-manipulation/tint')
-  require('./colour-manipulation/tocolourspace')
-})
+describe("Colour Manipulation", () => {
+  require("./colour-manipulation/greyscale");
+  require("./colour-manipulation/pipeline-colourspace");
+  require("./colour-manipulation/tint");
+  require("./colour-manipulation/tocolourspace");
+});

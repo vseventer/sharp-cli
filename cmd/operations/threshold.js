@@ -24,50 +24,56 @@
 // @see https://sharp.pixelplumbing.com/api-operation#threshold
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   value: {
-    desc: 'A value in the range 0-255 representing the level at which the threshold will be applied',
+    desc: "A value in the range 0-255 representing the level at which the threshold will be applied",
     defaultDescription: 128,
-    type: 'number'
-  }
-}
+    type: "number",
+  },
+};
 
 const options = {
   greyscale: {
-    alias: 'grayscale',
-    desc: 'Convert to single channel greyscale',
-    type: 'boolean'
-  }
-}
+    alias: "grayscale",
+    desc: "Convert to single channel greyscale",
+    type: "boolean",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#threshold')
-    .positional('value', positionals.value)
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#threshold",
+    )
+    .positional("value", positionals.value)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['threshold', (sharp) => {
-    return sharp.threshold(args.value, { greyscale: args.greyscale })
-  }])
-}
+  return queue.push([
+    "threshold",
+    (sharp) => {
+      return sharp.threshold(args.value, { greyscale: args.greyscale });
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'threshold [value]',
-  describe: 'Any pixel value greather than or equal to the threshold value will be set to 255, otherwise it will be set to 0',
+  command: "threshold [value]",
+  describe:
+    "Any pixel value greather than or equal to the threshold value will be set to 255, otherwise it will be set to 0",
   builder,
-  handler
-}
+  handler,
+};

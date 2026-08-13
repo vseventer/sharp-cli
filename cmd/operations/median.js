@@ -24,39 +24,41 @@
 // @see https://sharp.pixelplumbing.com/api-operation#median
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   size: {
-    desc: 'Square mask size',
+    desc: "Square mask size",
     defaultDescription: 3,
-    type: 'number'
-  }
-}
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 median')
-    .example('$0 median 5')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#median')
-    .positional('size', positionals.size)
-}
+    .example("$0 median")
+    .example("$0 median 5")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#median",
+    )
+    .positional("size", positionals.size);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['median', (sharp) => sharp.median(args.size)])
-}
+  return queue.push(["median", (sharp) => sharp.median(args.size)]);
+};
 
 // Exports.
 module.exports = {
-  command: 'median [size]',
-  describe: 'Apply median filter',
+  command: "median [size]",
+  describe: "Apply median filter",
   builder,
-  handler
-}
+  handler,
+};

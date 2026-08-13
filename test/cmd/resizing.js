@@ -23,12 +23,12 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Test suite.
-describe('Resizing', () => {
-  require('./resizing/extend')
-  require('./resizing/extract')
-  require('./resizing/resize')
-  require('./resizing/trim')
-})
+describe("Resizing", () => {
+  require("./resizing/extend");
+  require("./resizing/extract");
+  require("./resizing/resize");
+  require("./resizing/trim");
+});

@@ -24,87 +24,95 @@
 // @see https://sharp.pixelplumbing.com/api-operation#affine
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const pick = require('lodash.pick')
+const pick = require("lodash.pick");
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const placeholders = {
   matrix: {
-    desc: 'Affine transformation matrix',
+    desc: "Affine transformation matrix",
     nargs: 2 * 2,
-    type: 'number'
-  }
-}
+    type: "number",
+  },
+};
 
 const options = {
   background: {
-    defaultDescription: '#000000',
-    desc: 'String parsed by the color module to extract values for red, green, blue and alpha',
-    type: 'string'
+    defaultDescription: "#000000",
+    desc: "String parsed by the color module to extract values for red, green, blue and alpha",
+    type: "string",
   },
   idx: {
-    defaultDescription: '0',
-    desc: 'The input horizontal offset',
-    type: 'number'
+    defaultDescription: "0",
+    desc: "The input horizontal offset",
+    type: "number",
   },
   idy: {
-    defaultDescription: '0',
-    desc: 'The input vertical offset',
-    type: 'number'
+    defaultDescription: "0",
+    desc: "The input vertical offset",
+    type: "number",
   },
   odx: {
-    defaultDescription: '0',
-    desc: 'The output horizontal offset',
-    type: 'number'
+    defaultDescription: "0",
+    desc: "The output horizontal offset",
+    type: "number",
   },
   ody: {
-    defaultDescription: '0',
-    desc: 'The output vertical offset',
-    type: 'number'
+    defaultDescription: "0",
+    desc: "The output vertical offset",
+    type: "number",
   },
   interpolate: {
     choices: constants.INTERPOLATORS,
-    defaultDescription: 'bicubic',
-    desc: 'The input horizontal offset'
-  }
-}
-const optionNames = Object.keys(options)
+    defaultDescription: "bicubic",
+    desc: "The input horizontal offset",
+  },
+};
+const optionNames = Object.keys(options);
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 affine 1 0.3 0.1 0.7 --background white --interpolate nohalo')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#affine')
-    .check(argv => {
+    .example("$0 affine 1 0.3 0.1 0.7 --background white --interpolate nohalo")
+    .epilog(
+      "For more information on available options, please visit https://sharp.dimens.io/api-operation#affine",
+    )
+    .check((argv) => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 4)) {
-        throw new Error('Expected matrix positional to have 4 values')
+        throw new Error("Expected matrix positional to have 4 values");
       }
-      return true
+      return true;
     })
-    .positional('matrix', placeholders.matrix)
+    .positional("matrix", placeholders.matrix)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['affine', (sharp) => {
-    const { matrix } = args
-    return sharp.affine([matrix.slice(0, 2), matrix.slice(2, 4)], pick(args, optionNames))
-  }])
-}
+  return queue.push([
+    "affine",
+    (sharp) => {
+      const { matrix } = args;
+      return sharp.affine(
+        [matrix.slice(0, 2), matrix.slice(2, 4)],
+        pick(args, optionNames),
+      );
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'affine <matrix..>',
-  describe: 'Perform an affine transform on an image',
+  command: "affine <matrix..>",
+  describe: "Perform an affine transform on an image",
   builder,
-  handler
-}
+  handler,
+};

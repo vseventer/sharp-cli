@@ -23,9 +23,9 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Test suite.
-describe('Compositing', () => {
-  require('./compositing/composite')
-})
+describe("Compositing", () => {
+  require("./compositing/composite");
+});

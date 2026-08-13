@@ -24,64 +24,72 @@
 // @see https://sharp.pixelplumbing.com/api-operation#blur
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   sigma: {
-    desc: 'The sigma of the Gaussian mask',
-    defaultDescription: '1 + radius / 2',
-    type: 'number'
-  }
-}
+    desc: "The sigma of the Gaussian mask",
+    defaultDescription: "1 + radius / 2",
+    type: "number",
+  },
+};
 
 const options = {
   minAmplitude: {
     defaultDescription: 0.2,
-    desc: 'A smaller value will generate a larger, more accurate mask',
-    type: 'number'
+    desc: "A smaller value will generate a larger, more accurate mask",
+    type: "number",
   },
   precision: {
-    choices: ['approximate', 'float', 'integer'],
-    defaultDescription: 'integer',
-    desc: 'How accurate the operation should be'
-  }
-}
+    choices: ["approximate", "float", "integer"],
+    defaultDescription: "integer",
+    desc: "How accurate the operation should be",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 blur', 'The output will be a fast 3x3 box blurred image')
-    .example('$0 blur 5', 'The output will be a slower but more accurate Gaussian blurred image')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur')
-    .positional('sigma', positionals.sigma)
+    .example("$0 blur", "The output will be a fast 3x3 box blurred image")
+    .example(
+      "$0 blur 5",
+      "The output will be a slower but more accurate Gaussian blurred image",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#blur",
+    )
+    .positional("sigma", positionals.sigma)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['blur', (sharp) => {
-    if (args.minAmplitude || args.precision) {
-      return sharp.blur({
-        minAmplitude: args.minAmplitude,
-        precision: args.precision,
-        sigma: args.sigma
-      })
-    }
-    return sharp.blur(args.sigma)
-  }])
-}
+  return queue.push([
+    "blur",
+    (sharp) => {
+      if (args.minAmplitude || args.precision) {
+        return sharp.blur({
+          minAmplitude: args.minAmplitude,
+          precision: args.precision,
+          sigma: args.sigma,
+        });
+      }
+      return sharp.blur(args.sigma);
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'blur [sigma]',
-  describe: 'Blur the image',
+  command: "blur [sigma]",
+  describe: "Blur the image",
   builder,
-  handler
-}
+  handler,
+};

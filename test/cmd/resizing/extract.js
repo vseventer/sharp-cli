@@ -25,51 +25,51 @@
 // @see https://sharp.pixelplumbing.com/api-operation#extract
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const extract = require('../../../cmd/resizing/extract')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const extract = require("../../../cmd/resizing/extract");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('extract', () => {
-  const cli = (new Yargs()).command(extract)
+describe("extract", () => {
+  const cli = new Yargs().command(extract);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('<top> <left> <width> <height>', () => {
+  describe("<top> <left> <width> <height>", () => {
     // Default offset and dimensions.
-    const top = 10
-    const left = 20
-    const width = 30
-    const height = 40
+    const top = 10;
+    const left = 20;
+    const width = 30;
+    const height = 40;
 
     // Run.
-    beforeEach(() => cli.parse(['extract', top, left, width, height]))
+    beforeEach(() => cli.parse(["extract", top, left, width, height]));
 
     // Tests.
-    it('must set the top, left, width, and height flags', () => {
-      const args = cli.parsed.argv
-      expect(args).to.have.property('top', top)
-      expect(args).to.have.property('left', left)
-      expect(args).to.have.property('width', width)
-      expect(args).to.have.property('height', height)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('extract')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.extract, { top, left, width, height })
-    })
-  })
-})
+    it("must set the top, left, width, and height flags", () => {
+      const args = cli.parsed.argv;
+      expect(args).to.have.property("top", top);
+      expect(args).to.have.property("left", left);
+      expect(args).to.have.property("width", width);
+      expect(args).to.have.property("height", height);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("extract");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWith(pipeline.extract, { top, left, width, height });
+    });
+  });
+});

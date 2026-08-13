@@ -25,82 +25,82 @@
 // @see https://sharp.pixelplumbing.com/api-operation#rotate
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const queue = require('../../../lib/queue')
-const linear = require('../../../cmd/operations/linear')
-const sharp = require('../../mocks/sharp')
+const queue = require("../../../lib/queue");
+const linear = require("../../../cmd/operations/linear");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('linear', () => {
-  const cli = (new Yargs()).command(linear)
+describe("linear", () => {
+  const cli = new Yargs().command(linear);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('..', () => {
+  describe("..", () => {
     // Run.
-    beforeEach((done) => cli.parse(['linear'], done))
+    beforeEach((done) => cli.parse(["linear"], done));
 
     // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('linear')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.linear)
-    })
-  })
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("linear");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.called(pipeline.linear);
+    });
+  });
 
-  describe('[multiplier..]', () => {
+  describe("[multiplier..]", () => {
     // Default multiplier.
-    const multiplier = 1.5
+    const multiplier = 1.5;
 
     // Run.
-    beforeEach((done) => cli.parse(['linear', multiplier], done))
+    beforeEach((done) => cli.parse(["linear", multiplier], done));
 
     // Tests.
-    it('must set the multiplier flag', () => {
-      expect(cli.parsed.argv).to.have.property('multiplier')
-      expect(cli.parsed.argv.multiplier[0]).to.equal(multiplier)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('linear')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.linear, multiplier)
-    })
-  })
+    it("must set the multiplier flag", () => {
+      expect(cli.parsed.argv).to.have.property("multiplier");
+      expect(cli.parsed.argv.multiplier[0]).to.equal(multiplier);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("linear");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWith(pipeline.linear, multiplier);
+    });
+  });
 
-  describe('[offset]', () => {
+  describe("[offset]", () => {
     // Default offset.
-    const offset = 0.5
+    const offset = 0.5;
 
     // Run.
-    beforeEach((done) => cli.parse(['linear', 1.5, '--offset', offset], done))
+    beforeEach((done) => cli.parse(["linear", 1.5, "--offset", offset], done));
 
     // Tests.
-    it('must set the offset flag', () => {
-      expect(cli.parsed.argv).to.have.property('offset')
-      expect(cli.parsed.argv.offset[0]).to.equal(offset)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('linear')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.linear, sinon.match.any, [offset])
-    })
-  })
-})
+    it("must set the offset flag", () => {
+      expect(cli.parsed.argv).to.have.property("offset");
+      expect(cli.parsed.argv.offset[0]).to.equal(offset);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("linear");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWith(pipeline.linear, sinon.match.any, [offset]);
+    });
+  });
+});

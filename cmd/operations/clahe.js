@@ -24,59 +24,64 @@
 // @see https://sharp.pixelplumbing.com/api-operation#clahe
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   height: {
-    desc: 'Height of the region',
-    type: 'number'
+    desc: "Height of the region",
+    type: "number",
   },
   width: {
-    desc: 'Width of the region',
-    type: 'number'
-  }
-}
+    desc: "Width of the region",
+    type: "number",
+  },
+};
 
 const options = {
   maxSlope: {
     defaultDescription: 3,
-    desc: 'Maximum value for the slope of the cumulative histogram',
-    type: 'number'
-  }
-}
+    desc: "Maximum value for the slope of the cumulative histogram",
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 clahe 3 3')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe')
-    .positional('height', positionals.height)
-    .positional('width', positionals.width)
+    .example("$0 clahe 3 3")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#clahe",
+    )
+    .positional("height", positionals.height)
+    .positional("width", positionals.width)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['clahe', (sharp) => {
-    return sharp.clahe({
-      width: args.width,
-      height: args.height,
-      maxSlope: args.maxSlope
-    })
-  }])
-}
+  return queue.push([
+    "clahe",
+    (sharp) => {
+      return sharp.clahe({
+        width: args.width,
+        height: args.height,
+        maxSlope: args.maxSlope,
+      });
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'clahe <width> <height>',
-  describe: 'Perform contrast limiting adaptive histogram equalization CLAHE',
+  command: "clahe <width> <height>",
+  describe: "Perform contrast limiting adaptive histogram equalization CLAHE",
   builder,
-  handler
-}
+  handler,
+};

@@ -24,35 +24,38 @@
 // @see https://sharp.pixelplumbing.com/api-colour#tint
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   rgb: {
-    desc: 'Parsed by the color module to extract chroma values',
-    type: 'string'
-  }
-}
+    desc: "Parsed by the color module to extract chroma values",
+    type: "string",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 tint "rgb(255, 240, 16)"')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tint')
-    .positional('rgb', positionals.rgb)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#tint",
+    )
+    .positional("rgb", positionals.rgb);
+};
 
 // Command handler.
-const handler = (args) => queue.push(['tint', (sharp) => sharp.tint(args.rgb)])
+const handler = (args) => queue.push(["tint", (sharp) => sharp.tint(args.rgb)]);
 
 // Exports.
 module.exports = {
-  command: 'tint <rgb>',
-  describe: 'Tint the image using the provided chroma while preserving the image luminance',
+  command: "tint <rgb>",
+  describe:
+    "Tint the image using the provided chroma while preserving the image luminance",
   builder,
-  handler
-}
+  handler,
+};

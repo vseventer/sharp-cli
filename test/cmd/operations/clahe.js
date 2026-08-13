@@ -25,64 +25,66 @@
 // @see https://sharp.dimens.io/api-operation#recomb
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const clahe = require('../../../cmd/operations/clahe')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const clahe = require("../../../cmd/operations/clahe");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('clahe', () => {
-  const cli = (new Yargs()).command(clahe)
+describe("clahe", () => {
+  const cli = new Yargs().command(clahe);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  const width = 20
-  const height = 10
+  const width = 20;
+  const height = 10;
 
-  describe('..', () => {
+  describe("..", () => {
     // Run.
-    beforeEach((done) => cli.parse(['clahe', width, height], done))
+    beforeEach((done) => cli.parse(["clahe", width, height], done));
 
     // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('clahe')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.clahe, { width, height })
-    })
-  })
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("clahe");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWithMatch(pipeline.clahe, { width, height });
+    });
+  });
 
-  describe('[options]', () => {
-    describe('--maxSlope', () => {
+  describe("[options]", () => {
+    describe("--maxSlope", () => {
       // Default slope.
-      const slope = 10
+      const slope = 10;
 
       // Run.
-      beforeEach((done) => cli.parse(['clahe', width, height, '--maxSlope', slope], done))
+      beforeEach((done) =>
+        cli.parse(["clahe", width, height, "--maxSlope", slope], done),
+      );
 
       // Tests.
-      it('must set the maxSlope flag', () => {
-        expect(cli.parsed.argv).to.have.property('maxSlope', slope)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('clahe')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope })
-      })
-    })
-  })
-})
+      it("must set the maxSlope flag", () => {
+        expect(cli.parsed.argv).to.have.property("maxSlope", slope);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("clahe");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope });
+      });
+    });
+  });
+});

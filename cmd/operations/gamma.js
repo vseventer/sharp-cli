@@ -24,43 +24,50 @@
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   gamma: {
-    desc: 'The gamma factor',
+    desc: "The gamma factor",
     defaultDescription: 2.2,
-    type: 'number'
+    type: "number",
   },
   gammaOut: {
-    desc: 'The gamma factor used for scaling',
-    defaultDescription: '<gamma>',
-    type: 'number'
-  }
-}
+    desc: "The gamma factor used for scaling",
+    defaultDescription: "<gamma>",
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#gamma')
-    .positional('gamma', positionals.gamma)
-    .positional('gammaOut', positionals.gammaOut)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#gamma",
+    )
+    .positional("gamma", positionals.gamma)
+    .positional("gammaOut", positionals.gammaOut);
+};
 
 // Command handler.
-const handler = (args) => queue.push(['gamma', (sharp) => {
-  return sharp.gamma(args.gamma, args.gammaOut)
-}])
+const handler = (args) =>
+  queue.push([
+    "gamma",
+    (sharp) => {
+      return sharp.gamma(args.gamma, args.gammaOut);
+    },
+  ]);
 
 // Exports.
 module.exports = {
-  command: 'gamma [gamma] [gammaOut]',
-  describe: 'Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize',
+  command: "gamma [gamma] [gammaOut]",
+  describe:
+    "Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize",
   builder,
-  handler
-}
+  handler,
+};

@@ -1,10 +1,13 @@
 # sharp-cli
+
 > CLI for [sharp](https://www.npmjs.com/package/sharp), a high performance Node.js image processing module.
 
 ## Install
+
 `$ npm install sharp-cli`
 
 ## Usage
+
 ```
 sharp <options> [command..]
 
@@ -190,9 +193,10 @@ For more information on available options, please visit https://sharp.pixelplumb
 ```
 
 ## Input and output
-* The CLI supports input streams.
-* [Glob](https://www.npmjs.com/package/glob) patterns are allowed, for example `--input './images/**/*.jpg'`. Make sure you quote the pattern when using the CLI.
-* Supported output macros: `{root}`, `{dir}`, `{base}`, `{name}`, and `{ext}` (from [Node.js path](https://nodejs.org/api/path.html#path_path_parse_path)), for example: `--output {dir}` will overwrite original files.
+
+- The CLI supports input streams.
+- [Glob](https://www.npmjs.com/package/glob) patterns are allowed, for example `--input './images/**/*.jpg'`. Make sure you quote the pattern when using the CLI.
+- Supported output macros: `{root}`, `{dir}`, `{base}`, `{name}`, and `{ext}` (from [Node.js path](https://nodejs.org/api/path.html#path_path_parse_path)), for example: `--output {dir}` will overwrite original files.
 
 ```
 ┌─────────────────────┬────────────┐
@@ -204,12 +208,15 @@ For more information on available options, please visit https://sharp.pixelplumb
 ```
 
 ## Related
-* [sharp](http://sharp.pixelplumbing.com/) - API for this module
+
+- [sharp](http://sharp.pixelplumbing.com/) - API for this module
 
 ## Changelog
+
 See the [Changelog](./CHANGELOG.md) for a list of changes.
 
 ## License
+
     The MIT License (MIT)
 
     Copyright (c) 2019 Mark van Seventer

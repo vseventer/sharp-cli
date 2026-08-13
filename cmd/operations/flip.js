@@ -24,26 +24,28 @@
 // @see https://sharp.pixelplumbing.com/api-operation#flip
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flip')
-    .example('$0 flip')
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flip",
+    )
+    .example("$0 flip");
+};
 
 // Command handler.
-const handler = (args) => queue.push(['flip', (sharp) => sharp.flip()])
+const handler = (args) => queue.push(["flip", (sharp) => sharp.flip()]);
 
 // Exports.
 module.exports = {
-  command: 'flip',
-  describe: 'Flip the image about the vertical Y axis',
+  command: "flip",
+  describe: "Flip the image about the vertical Y axis",
   builder,
-  handler
-}
+  handler,
+};

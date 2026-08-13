@@ -24,50 +24,57 @@
 // @see https://sharp.pixelplumbing.com/api-operation#linear
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   multiplier: {
-    desc: 'Multiplier',
+    desc: "Multiplier",
     default: 1.0,
-    type: 'number'
-  }
-}
+    type: "number",
+  },
+};
 
 const options = {
   offset: {
-    desc: 'Offset',
-    type: 'array'
-  }
-}
+    desc: "Offset",
+    type: "array",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 linear 0.5 --offset 2')
-    .example('$0 linear 0.25 0.5 0.75 --offset 150 100 50')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#linear')
-    .positional('multiplier', positionals.multiplier)
+    .example("$0 linear 0.5 --offset 2")
+    .example("$0 linear 0.25 0.5 0.75 --offset 150 100 50")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#linear",
+    )
+    .positional("multiplier", positionals.multiplier)
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  const multiplier = args.multiplier.length === 1 ? args.multiplier[0] : args.multiplier
-  return queue.push(['linear', (sharp) => sharp.linear(multiplier, args.offset)])
-}
+  const multiplier =
+    args.multiplier.length === 1 ? args.multiplier[0] : args.multiplier;
+  return queue.push([
+    "linear",
+    (sharp) => sharp.linear(multiplier, args.offset),
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'linear [multiplier..]',
-  describe: 'Apply the linear formula a × input + b to the image to adjust image levels',
+  command: "linear [multiplier..]",
+  describe:
+    "Apply the linear formula a × input + b to the image to adjust image levels",
   builder,
-  handler
-}
+  handler,
+};

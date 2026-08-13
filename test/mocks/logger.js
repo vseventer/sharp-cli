@@ -22,13 +22,13 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const sinon = require('sinon')
+const sinon = require("sinon");
 
 // Exports.
 module.exports = {
   error: sinon.spy(),
-  log: sinon.spy()
-}
+  log: sinon.spy(),
+};

@@ -25,36 +25,36 @@
 // @see https://sharp.pixelplumbing.com/api-operation#flip
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const flip = require('../../../cmd/operations/flip')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const flip = require("../../../cmd/operations/flip");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('flip', () => {
-  const cli = (new Yargs()).command(flip)
+describe("flip", () => {
+  const cli = new Yargs().command(flip);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['flip'], done))
+  beforeEach((done) => cli.parse(["flip"], done));
 
   // Tests.
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('flip')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.flip)
-  })
-})
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("flip");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.called(pipeline.flip);
+  });
+});

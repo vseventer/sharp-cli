@@ -25,42 +25,42 @@
 // @see https://sharp.pixelplumbing.com/api-colour#tint
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
-const tint = require('../../../cmd/colour-manipulation/tint')
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
+const tint = require("../../../cmd/colour-manipulation/tint");
 
 // Test suite.
-describe('tint <rgb>', () => {
-  const cli = (new Yargs()).command(tint)
+describe("tint <rgb>", () => {
+  const cli = new Yargs().command(tint);
 
   // Default rgb.
-  const rgb = 'rgba(0,0,0)'
+  const rgb = "rgba(0,0,0)";
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['tint', rgb], done))
+  beforeEach((done) => cli.parse(["tint", rgb], done));
 
   // Tests.
-  it('must set the colourspace flag', () => {
-    expect(cli.parsed.argv).to.have.property('rgb', rgb)
-  })
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('tint')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.tint)
-  })
-})
+  it("must set the colourspace flag", () => {
+    expect(cli.parsed.argv).to.have.property("rgb", rgb);
+  });
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("tint");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.called(pipeline.tint);
+  });
+});

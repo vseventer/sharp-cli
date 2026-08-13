@@ -25,36 +25,36 @@
 // @see https://sharp.dimens.io/api-operation#unflatten
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const queue = require('../../../lib/queue')
-const unflatten = require('../../../cmd/operations/unflatten')
-const sharp = require('../../mocks/sharp')
+const queue = require("../../../lib/queue");
+const unflatten = require("../../../cmd/operations/unflatten");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('unflatten', () => {
-  const cli = (new Yargs()).command(unflatten)
+describe("unflatten", () => {
+  const cli = new Yargs().command(unflatten);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['unflatten'], done))
+  beforeEach((done) => cli.parse(["unflatten"], done));
 
   // Tests.
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('unflatten')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.unflatten)
-  })
-})
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("unflatten");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.called(pipeline.unflatten);
+  });
+});

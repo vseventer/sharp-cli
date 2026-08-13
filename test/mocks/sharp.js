@@ -22,23 +22,23 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const sharp = require('sharp')
-const sinon = require('sinon')
+const sharp = require("sharp");
+const sinon = require("sinon");
 
 // Configure.
-const methods = Object.getOwnPropertyNames(sharp.prototype)
+const methods = Object.getOwnPropertyNames(sharp.prototype);
 
 // Patch methods, add reset and restore handlers.
-methods.forEach((name) => sinon.spy(sharp.prototype, name))
+methods.forEach((name) => sinon.spy(sharp.prototype, name));
 sharp.prototype.reset = () => {
-  methods.forEach((name) => sharp.prototype[name].resetHistory())
-}
+  methods.forEach((name) => sharp.prototype[name].resetHistory());
+};
 sharp.prototype.restore = () => {
-  methods.forEach((name) => sharp.prototype[name].restore())
-}
+  methods.forEach((name) => sharp.prototype[name].restore());
+};
 
 // Exports.
-module.exports = sharp
+module.exports = sharp;

@@ -24,27 +24,33 @@
 // @see https://sharp.pixelplumbing.com/api-colour#greyscale
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 greyscale', 'The output will contain three identical color channels')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#greyscale')
-}
+    .example(
+      "$0 greyscale",
+      "The output will contain three identical color channels",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-colour#greyscale",
+    );
+};
 
 // Command handler.
-const handler = (args) => queue.push(['greyscale', (sharp) => sharp.greyscale()])
+const handler = (args) =>
+  queue.push(["greyscale", (sharp) => sharp.greyscale()]);
 
 // Exports.
 module.exports = {
-  command: 'greyscale',
-  aliases: 'grayscale',
-  describe: 'Convert to 8-bit greyscale; 256 shades of grey',
+  command: "greyscale",
+  aliases: "grayscale",
+  describe: "Convert to 8-bit greyscale; 256 shades of grey",
   builder,
-  handler
-}
+  handler,
+};

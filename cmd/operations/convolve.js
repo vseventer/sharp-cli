@@ -24,80 +24,88 @@
 // @see https://sharp.pixelplumbing.com/api-operation#convolve
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const pick = require('lodash.pick')
+const pick = require("lodash.pick");
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   height: {
-    desc: 'Height of the kernel in pixels',
-    type: 'number'
+    desc: "Height of the kernel in pixels",
+    type: "number",
   },
   kernel: {
-    desc: 'Array of length width × height containing the kernel values',
+    desc: "Array of length width × height containing the kernel values",
     defaultDescription: '"-1 0 1 -2 0 2 -1 0 1"',
-    type: 'number'
+    type: "number",
   },
   width: {
-    desc: 'Width of the kernel in pixels',
-    type: 'number'
-  }
-}
-const positionalNames = Object.keys(positionals)
+    desc: "Width of the kernel in pixels",
+    type: "number",
+  },
+};
+const positionalNames = Object.keys(positionals);
 
 const options = {
   scale: {
-    desc: 'The scale of the kernel in pixels',
-    defaultDescription: 'sum',
-    type: 'number'
+    desc: "The scale of the kernel in pixels",
+    defaultDescription: "sum",
+    type: "number",
   },
   offset: {
-    desc: 'The offset of the kernel in pixels',
-    defaultDescription: '0',
-    type: 'number'
-  }
-}
-const optionNames = Object.keys(options)
+    desc: "The offset of the kernel in pixels",
+    defaultDescription: "0",
+    type: "number",
+  },
+};
+const optionNames = Object.keys(options);
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"', 'The output will be the convolution of the input image with the horizontal Sobel operator')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#convolve')
-    .check(argv => {
-      const length = argv.width * argv.height
+    .example(
+      '$0 convolve 3 3 "-1 0 1 -2 0 2 -1 0 1"',
+      "The output will be the convolution of the input image with the horizontal Sobel operator",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#convolve",
+    )
+    .check((argv) => {
+      const length = argv.width * argv.height;
       if (!(Array.isArray(argv.kernel) && argv.kernel.length === length)) {
-        throw new Error(`Expected kernel positional to have ${length} values`)
+        throw new Error(`Expected kernel positional to have ${length} values`);
       }
-      return true
+      return true;
     })
     .options(options)
-    .positional('kernel', positionals.kernel)
-    .positional('height', positionals.height)
-    .positional('width', positionals.width)
-    .group(optionNames, 'Command Options')
-}
+    .positional("kernel", positionals.kernel)
+    .positional("height", positionals.height)
+    .positional("width", positionals.width)
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['convolve', (sharp) => {
-    return sharp.convolve({
-      ...pick(args, positionalNames),
-      ...pick(args, optionNames)
-    })
-  }])
-}
+  return queue.push([
+    "convolve",
+    (sharp) => {
+      return sharp.convolve({
+        ...pick(args, positionalNames),
+        ...pick(args, optionNames),
+      });
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'convolve <width> <height> <kernel..>',
-  describe: 'Convolve the image with the specified kernel',
+  command: "convolve <width> <height> <kernel..>",
+  describe: "Convolve the image with the specified kernel",
   builder,
-  handler
-}
+  handler,
+};

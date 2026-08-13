@@ -25,49 +25,51 @@
 // @see https://sharp.dimens.io/api-operation#recomb
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const recomb = require('../../../cmd/operations/recomb')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const recomb = require("../../../cmd/operations/recomb");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('recomb', () => {
-  const cli = (new Yargs()).command(recomb)
+describe("recomb", () => {
+  const cli = new Yargs().command(recomb);
 
   // Default matrix.
-  const matrix = [0.3588, 0.7044, 0.1368, 0.2990, 0.5870, 0.1140, 0.2392, 0.4696, 0.0912]
+  const matrix = [
+    0.3588, 0.7044, 0.1368, 0.299, 0.587, 0.114, 0.2392, 0.4696, 0.0912,
+  ];
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('<matrix..>', () => {
+  describe("<matrix..>", () => {
     // Run.
-    beforeEach((done) => cli.parse(['recomb', ...matrix], done))
+    beforeEach((done) => cli.parse(["recomb", ...matrix], done));
 
     // Tests.
-    it('must set the matrix flag', () => {
-      expect(cli.parsed.argv).to.have.property('matrix')
-      expect(cli.parsed.argv.matrix).to.eql(matrix)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('recomb')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
+    it("must set the matrix flag", () => {
+      expect(cli.parsed.argv).to.have.property("matrix");
+      expect(cli.parsed.argv.matrix).to.eql(matrix);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("recomb");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
       sinon.assert.calledWithMatch(pipeline.recomb, [
         matrix.slice(0, 3),
         matrix.slice(3, 6),
-        matrix.slice(6, 9)
-      ])
-    })
-  })
-})
+        matrix.slice(6, 9),
+      ]);
+    });
+  });
+});

@@ -24,56 +24,61 @@
 // @see https://sharp.dimens.io/api-resize#extract
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const pick = require('lodash.pick')
+const pick = require("lodash.pick");
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   height: {
-    desc: 'Height of region to extract',
-    type: 'number'
+    desc: "Height of region to extract",
+    type: "number",
   },
   left: {
-    desc: 'Zero-indexed offset from left edge',
-    type: 'number'
+    desc: "Zero-indexed offset from left edge",
+    type: "number",
   },
   top: {
-    desc: 'Zero-indexed offset from top edge',
-    type: 'number'
+    desc: "Zero-indexed offset from top edge",
+    type: "number",
   },
   width: {
-    desc: 'Width of region to extract',
-    type: 'number'
-  }
-}
+    desc: "Width of region to extract",
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-resize#extract')
-    .positional('top', positionals.top)
-    .positional('left', positionals.left)
-    .positional('width', positionals.width)
-    .positional('height', positionals.height)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.dimens.io/api-resize#extract",
+    )
+    .positional("top", positionals.top)
+    .positional("left", positionals.left)
+    .positional("width", positionals.width)
+    .positional("height", positionals.height);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['extract', (sharp) => {
-    return sharp.extract(pick(args, Object.keys(positionals)))
-  }])
-}
+  return queue.push([
+    "extract",
+    (sharp) => {
+      return sharp.extract(pick(args, Object.keys(positionals)));
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'extract <top> <left> <width> <height>',
-  describe: 'Extract a region of the image',
+  command: "extract <top> <left> <width> <height>",
+  describe: "Extract a region of the image",
   builder,
-  handler
-}
+  handler,
+};

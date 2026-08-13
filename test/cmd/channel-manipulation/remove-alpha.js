@@ -25,36 +25,36 @@
 // @see https://sharp.pixelplumbing.com/api-channel#removealpha
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const removeAlpha = require('../../../cmd/channel-manipulation/remove-alpha')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const removeAlpha = require("../../../cmd/channel-manipulation/remove-alpha");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('removeAlpha', () => {
-  const cli = (new Yargs()).command(removeAlpha)
+describe("removeAlpha", () => {
+  const cli = new Yargs().command(removeAlpha);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['removeAlpha'], done))
+  beforeEach((done) => cli.parse(["removeAlpha"], done));
 
   // Tests.
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('removeAlpha')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.called(pipeline.removeAlpha)
-  })
-})
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("removeAlpha");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.called(pipeline.removeAlpha);
+  });
+});

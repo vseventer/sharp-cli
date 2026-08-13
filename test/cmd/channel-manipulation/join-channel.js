@@ -25,52 +25,55 @@
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Standard lib.
-const path = require('path')
+const path = require("path");
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const joinChannel = require('../../../cmd/channel-manipulation/join-channel')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const joinChannel = require("../../../cmd/channel-manipulation/join-channel");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('joinChannel <images..>', () => {
-  const cli = (new Yargs()).command(joinChannel)
+describe("joinChannel <images..>", () => {
+  const cli = new Yargs().command(joinChannel);
 
   // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg` // eslint-disable-line n/no-path-concat
+  const input = `${__dirname}/../../fixtures/input.jpg`; // eslint-disable-line n/no-path-concat
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('<images..>', () => {
+  describe("<images..>", () => {
     // Run.
-    beforeEach((done) => cli.parse(['joinChannel', input, input], done))
+    beforeEach((done) => cli.parse(["joinChannel", input, input], done));
 
     // Tests.
-    it('must set the operator flag', () => {
-      const args = cli.parsed.argv
-      expect(args).to.have.property('images')
-      expect(args.images).to.eql([path.normalize(input), path.normalize(input)])
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('joinChannel')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
+    it("must set the operator flag", () => {
+      const args = cli.parsed.argv;
+      expect(args).to.have.property("images");
+      expect(args.images).to.eql([
+        path.normalize(input),
+        path.normalize(input),
+      ]);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("joinChannel");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
       sinon.assert.calledWith(pipeline.joinChannel, [
         path.normalize(input),
-        path.normalize(input)
-      ])
-    })
-  })
-})
+        path.normalize(input),
+      ]);
+    });
+  });
+});

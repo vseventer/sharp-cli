@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.0.0
+
+- Updated `sharp` dependency.
+- Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
+
 ## 5.2.0 (June 24, 2025)
 
 - Added [`--autoOrient`, `pdfBackground`](https://sharp.pixelplumbing.com/api-constructor/) input option.

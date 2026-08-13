@@ -25,39 +25,39 @@
 // @see https://sharp.pixelplumbing.com/api-channel#extractchannel
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const extractChannel = require('../../../cmd/channel-manipulation/extract-channel')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const extractChannel = require("../../../cmd/channel-manipulation/extract-channel");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('extractChannel <channel>', () => {
-  const cli = (new Yargs()).command(extractChannel)
+describe("extractChannel <channel>", () => {
+  const cli = new Yargs().command(extractChannel);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
   // Run.
-  beforeEach((done) => cli.parse(['extractChannel', 'red'], done))
+  beforeEach((done) => cli.parse(["extractChannel", "red"], done));
 
   // Tests.
-  it('must set the operator flag', () => {
-    expect(cli.parsed.argv).to.have.property('channel', 'red')
-  })
-  it('must update the pipeline', () => {
-    expect(queue.pipeline).to.have.length(1)
-    expect(queue.pipeline).to.include('extractChannel')
-  })
-  it('must execute the pipeline', () => {
-    const pipeline = queue.drain(sharp())
-    sinon.assert.calledWith(pipeline.extractChannel, 'red')
-  })
-})
+  it("must set the operator flag", () => {
+    expect(cli.parsed.argv).to.have.property("channel", "red");
+  });
+  it("must update the pipeline", () => {
+    expect(queue.pipeline).to.have.length(1);
+    expect(queue.pipeline).to.include("extractChannel");
+  });
+  it("must execute the pipeline", () => {
+    const pipeline = queue.drain(sharp());
+    sinon.assert.calledWith(pipeline.extractChannel, "red");
+  });
+});

@@ -23,65 +23,78 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Standard lib.
-const path = require('path')
+const path = require("path");
 
 // Package modules.
-const expect = require('must')
-const fs = require('fs-extra')
-const sinon = require('sinon')
-const tempy = require('tempy')
+const expect = require("must");
+const fs = require("fs-extra");
+const sinon = require("sinon");
+const tempy = require("tempy");
 
 // Local modules.
-const cli = require('../lib')
-const logger = require('./mocks/logger')
-const pkg = require('../package.json')
+const cli = require("../lib");
+const logger = require("./mocks/logger");
+const pkg = require("../package.json");
 
 // Test suite.
-describe('CLI', () => {
+describe("CLI", () => {
   // Default input.
-  const input = path.join(__dirname, './fixtures/input.jpg')
+  const input = path.join(__dirname, "./fixtures/input.jpg");
 
   // Default output.
-  let dest
-  before(() => { dest = tempy.directory() })
-  afterEach((done) => fs.emptyDir(dest, done))
-  after((done) => fs.remove(dest, done))
+  let dest;
+  before(() => {
+    dest = tempy.directory();
+  });
+  afterEach((done) => fs.emptyDir(dest, done));
+  after((done) => fs.remove(dest, done));
 
   // Reset.
-  afterEach('error', () => logger.error.resetHistory())
-  afterEach('log', () => logger.log.resetHistory())
+  afterEach("error", () => logger.error.resetHistory());
+  afterEach("log", () => logger.log.resetHistory());
 
-  it('must run', () => {
-    return cli([
-      '-i', input,
-      '-o', dest,
-      'resize', '100', '--position', 'south', '--',
-      'greyscale', '--',
-      'sharpen'
-    ], { logger }).then(() => {
-      expect(fs.existsSync(dest)).to.be.true()
-      sinon.assert.calledWithMatch(logger.log, dest)
-      sinon.assert.notCalled(logger.error)
-    })
-  })
-  it('must display output', () => {
-    return cli(['-v'], { logger })
-      .then(() => {
-        sinon.assert.calledWith(logger.log, pkg.version)
-        sinon.assert.notCalled(logger.error)
-        expect(process.exitCode).not.to.equal(1)
-      })
-  })
-  it('must display errors', () => {
-    return cli([], { logger })
-      .then(() => {
-        sinon.assert.notCalled(logger.log)
-        sinon.assert.calledWithMatch(logger.error, 'Missing required arguments')
-        sinon.assert.calledWithMatch(logger.error, 'Specify --help for available options')
-        expect(process.exitCode).to.equal(1)
-      })
-  })
-})
+  it("must run", () => {
+    return cli(
+      [
+        "-i",
+        input,
+        "-o",
+        dest,
+        "resize",
+        "100",
+        "--position",
+        "south",
+        "--",
+        "greyscale",
+        "--",
+        "sharpen",
+      ],
+      { logger },
+    ).then(() => {
+      expect(fs.existsSync(dest)).to.be.true();
+      sinon.assert.calledWithMatch(logger.log, dest);
+      sinon.assert.notCalled(logger.error);
+    });
+  });
+  it("must display output", () => {
+    return cli(["-v"], { logger }).then(() => {
+      sinon.assert.calledWith(logger.log, pkg.version);
+      sinon.assert.notCalled(logger.error);
+      expect(process.exitCode).not.to.equal(1);
+    });
+  });
+  it("must display errors", () => {
+    return cli([], { logger }).then(() => {
+      sinon.assert.notCalled(logger.log);
+      sinon.assert.calledWithMatch(logger.error, "Missing required arguments");
+      sinon.assert.calledWithMatch(
+        logger.error,
+        "Specify --help for available options",
+      );
+      expect(process.exitCode).to.equal(1);
+    });
+  });
+});

@@ -25,80 +25,80 @@
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const gamma = require('../../../cmd/operations/gamma')
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
+const gamma = require("../../../cmd/operations/gamma");
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
 
 // Test suite.
-describe('gamma', () => {
-  const cli = (new Yargs()).command(gamma)
+describe("gamma", () => {
+  const cli = new Yargs().command(gamma);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('..', () => {
+  describe("..", () => {
     // Run.
-    beforeEach((done) => cli.parse(['gamma'], done))
+    beforeEach((done) => cli.parse(["gamma"], done));
 
     // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('gamma')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.gamma)
-    })
-  })
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("gamma");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.called(pipeline.gamma);
+    });
+  });
 
-  describe('[gamma]', () => {
+  describe("[gamma]", () => {
     // Default gamma.
-    const gamma = 1.1
+    const gamma = 1.1;
 
     // Run.
-    beforeEach((done) => cli.parse(['gamma', gamma], done))
+    beforeEach((done) => cli.parse(["gamma", gamma], done));
 
     // Tests.
-    it('must set the gamma flag', () => {
-      expect(cli.parsed.argv).to.have.property('gamma', gamma)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('gamma')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.gamma, gamma)
-    })
-  })
+    it("must set the gamma flag", () => {
+      expect(cli.parsed.argv).to.have.property("gamma", gamma);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("gamma");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWith(pipeline.gamma, gamma);
+    });
+  });
 
-  describe('[gammaOut]', () => {
+  describe("[gammaOut]", () => {
     // Default gammaOut.
-    const gammaOut = 1.1
+    const gammaOut = 1.1;
 
     // Run.
-    beforeEach((done) => cli.parse(['gamma', 2.2, gammaOut], done))
+    beforeEach((done) => cli.parse(["gamma", 2.2, gammaOut], done));
 
     // Tests.
-    it('must set the gammaOut flag', () => {
-      expect(cli.parsed.argv).to.have.property('gammaOut', gammaOut)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('gamma')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut)
-    })
-  })
-})
+    it("must set the gammaOut flag", () => {
+      expect(cli.parsed.argv).to.have.property("gammaOut", gammaOut);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("gamma");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut);
+    });
+  });
+});

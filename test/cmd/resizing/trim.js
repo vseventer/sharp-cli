@@ -25,100 +25,102 @@
 // @see https://sharp.dimens.io/api-resize#trim
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Package modules.
-const expect = require('must')
-const sinon = require('sinon')
-const Yargs = require('yargs')
+const expect = require("must");
+const sinon = require("sinon");
+const Yargs = require("yargs");
 
 // Local modules.
-const queue = require('../../../lib/queue')
-const sharp = require('../../mocks/sharp')
-const trim = require('../../../cmd/resizing/trim')
+const queue = require("../../../lib/queue");
+const sharp = require("../../mocks/sharp");
+const trim = require("../../../cmd/resizing/trim");
 
 // Test suite.
-describe('trim', () => {
-  const cli = (new Yargs()).command(trim)
+describe("trim", () => {
+  const cli = new Yargs().command(trim);
 
   // Reset.
-  afterEach('queue', () => queue.splice(0))
-  afterEach('sharp', sharp.prototype.reset)
+  afterEach("queue", () => queue.splice(0));
+  afterEach("sharp", sharp.prototype.reset);
 
-  describe('..', () => {
+  describe("..", () => {
     // Run.
-    beforeEach((done) => cli.parse(['trim'], done))
+    beforeEach((done) => cli.parse(["trim"], done));
 
     // Tests.
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('trim')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.called(pipeline.trim)
-    })
-  })
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("trim");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.called(pipeline.trim);
+    });
+  });
 
-  describe('[threshold]', () => {
+  describe("[threshold]", () => {
     // Default threshold.
-    const threshold = 10
+    const threshold = 10;
 
     // Run.
-    beforeEach((done) => cli.parse(['trim', threshold], done))
+    beforeEach((done) => cli.parse(["trim", threshold], done));
 
     // Tests.
-    it('must set the threshold flag', () => {
-      expect(cli.parsed.argv).to.have.property('threshold', threshold)
-    })
-    it('must update the pipeline', () => {
-      expect(queue.pipeline).to.have.length(1)
-      expect(queue.pipeline).to.include('trim')
-    })
-    it('must execute the pipeline', () => {
-      const pipeline = queue.drain(sharp())
-      sinon.assert.calledWithMatch(pipeline.trim, { threshold })
-    })
-  })
+    it("must set the threshold flag", () => {
+      expect(cli.parsed.argv).to.have.property("threshold", threshold);
+    });
+    it("must update the pipeline", () => {
+      expect(queue.pipeline).to.have.length(1);
+      expect(queue.pipeline).to.include("trim");
+    });
+    it("must execute the pipeline", () => {
+      const pipeline = queue.drain(sharp());
+      sinon.assert.calledWithMatch(pipeline.trim, { threshold });
+    });
+  });
 
-  describe('[options]', () => {
-    describe('--background', () => {
+  describe("[options]", () => {
+    describe("--background", () => {
       // Default background.
-      const background = 'rgb(0, 0, 0)'
+      const background = "rgb(0, 0, 0)";
 
       // Run.
-      beforeEach((done) => cli.parse(['trim', '--background', background], done))
+      beforeEach((done) =>
+        cli.parse(["trim", "--background", background], done),
+      );
 
       // Tests.
-      it('must set the factor flag', () => {
-        expect(cli.parsed.argv).to.have.property('background', background)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('trim')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.trim, { background })
-      })
-    })
+      it("must set the factor flag", () => {
+        expect(cli.parsed.argv).to.have.property("background", background);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("trim");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.trim, { background });
+      });
+    });
 
-    describe('--lineArt', () => {
+    describe("--lineArt", () => {
       // Run.
-      beforeEach((done) => cli.parse(['trim', '--lineArt'], done))
+      beforeEach((done) => cli.parse(["trim", "--lineArt"], done));
 
       // Tests.
-      it('must set the factor flag', () => {
-        expect(cli.parsed.argv).to.have.property('lineArt', true)
-      })
-      it('must update the pipeline', () => {
-        expect(queue.pipeline).to.have.length(1)
-        expect(queue.pipeline).to.include('trim')
-      })
-      it('must execute the pipeline', () => {
-        const pipeline = queue.drain(sharp())
-        sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true })
-      })
-    })
-  })
-})
+      it("must set the factor flag", () => {
+        expect(cli.parsed.argv).to.have.property("lineArt", true);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("trim");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true });
+      });
+    });
+  });
+});

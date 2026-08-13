@@ -24,26 +24,29 @@
 // @see https://sharp.pixelplumbing.com/api-channel#removealpha
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 removeAlpha', 'The output will be without an alpha channel')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
-}
+    .example("$0 removeAlpha", "The output will be without an alpha channel")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha",
+    );
+};
 
 // Command handler.
-const handler = (args) => queue.push(['removeAlpha', (sharp) => sharp.removeAlpha()])
+const handler = (args) =>
+  queue.push(["removeAlpha", (sharp) => sharp.removeAlpha()]);
 
 // Exports.
 module.exports = {
-  command: 'removeAlpha',
-  describe: 'Remove alpha channel, if any',
+  command: "removeAlpha",
+  describe: "Remove alpha channel, if any",
   builder,
-  handler
-}
+  handler,
+};

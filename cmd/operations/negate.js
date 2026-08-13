@@ -24,37 +24,40 @@
 // @see https://sharp.pixelplumbing.com/api-operation#negate
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const options = {
   alpha: {
-    desc: 'Whether or not to negate any alpha channel',
-    type: 'boolean'
-  }
-}
+    desc: "Whether or not to negate any alpha channel",
+    type: "boolean",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
-  const optionNames = Object.keys(options)
+  const optionNames = Object.keys(options);
   return yargs
     .strict()
-    .example('$0 negate --no-alpha')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#negate')
+    .example("$0 negate --no-alpha")
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#negate",
+    )
     .options(options)
-    .group(optionNames, 'Command Options')
-}
+    .group(optionNames, "Command Options");
+};
 
 // Command handler.
-const handler = (args) => queue.push(['negate', (sharp) => sharp.negate(args.alpha)])
+const handler = (args) =>
+  queue.push(["negate", (sharp) => sharp.negate(args.alpha)]);
 
 // Exports.
 module.exports = {
-  command: 'negate',
+  command: "negate",
   describe: 'Produce the "negative" of the image',
   builder,
-  handler
-}
+  handler,
+};

@@ -23,13 +23,13 @@
  */
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Test suite.
-describe('Channel Manipulation', () => {
-  require('./channel-manipulation/bandbool')
-  require('./channel-manipulation/ensure-alpha')
-  require('./channel-manipulation/extract-channel')
-  require('./channel-manipulation/join-channel')
-  require('./channel-manipulation/remove-alpha')
-})
+describe("Channel Manipulation", () => {
+  require("./channel-manipulation/bandbool");
+  require("./channel-manipulation/ensure-alpha");
+  require("./channel-manipulation/extract-channel");
+  require("./channel-manipulation/join-channel");
+  require("./channel-manipulation/remove-alpha");
+});

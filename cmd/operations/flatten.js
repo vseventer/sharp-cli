@@ -24,40 +24,45 @@
 // @see https://sharp.dimens.io/api-operation#flatten
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   background: {
-    defaultDescription: 'rgb(0, 0, 0)',
-    desc: 'Background colour, parsed by the color module',
-    type: 'string'
-  }
-}
+    defaultDescription: "rgb(0, 0, 0)",
+    desc: "Background colour, parsed by the color module",
+    type: "string",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
     .example('$0 flatten "#F0A703"')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten')
-    .positional('background', positionals.background)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.dimens.io/api-operation#flatten",
+    )
+    .positional("background", positionals.background);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['flatten', (sharp) => {
-    return sharp.flatten({ background: args.background })
-  }])
-}
+  return queue.push([
+    "flatten",
+    (sharp) => {
+      return sharp.flatten({ background: args.background });
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'flatten [background]',
-  describe: 'Merge alpha transparency channel, if any, with a background',
+  command: "flatten [background]",
+  describe: "Merge alpha transparency channel, if any, with a background",
   builder,
-  handler
-}
+  handler,
+};

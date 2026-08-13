@@ -24,51 +24,59 @@
 // @see https://sharp.dimens.io/api-operation#recomb
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const placeholders = {
   matrix: {
-    desc: 'Recombination matrix',
+    desc: "Recombination matrix",
     nargs: 3 * 3,
-    type: 'number'
-  }
-}
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 recomb 0.3588 0.7044 0.1368 0.2990 0.5870 0.1140 0.2392 0.4696 0.0912', 'The recomb will be applied to the output, in this case a sepia filter has been applied')
-    .epilog('For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb')
-    .check(argv => {
+    .example(
+      "$0 recomb 0.3588 0.7044 0.1368 0.2990 0.5870 0.1140 0.2392 0.4696 0.0912",
+      "The recomb will be applied to the output, in this case a sepia filter has been applied",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.dimens.io/api-operation#recomb",
+    )
+    .check((argv) => {
       if (!(Array.isArray(argv.matrix) && argv.matrix.length === 9)) {
-        throw new Error('Expected matrix positional to have 9 values')
+        throw new Error("Expected matrix positional to have 9 values");
       }
-      return true
+      return true;
     })
-    .positional('matrix', placeholders.matrix)
-}
+    .positional("matrix", placeholders.matrix);
+};
 
 // Command handler.
 const handler = (args) => {
-  const { matrix } = args
-  return queue.push(['recomb', (sharp) => {
-    return sharp.recomb([
-      matrix.slice(0, 3),
-      matrix.slice(3, 6),
-      matrix.slice(6, 9)
-    ])
-  }])
-}
+  const { matrix } = args;
+  return queue.push([
+    "recomb",
+    (sharp) => {
+      return sharp.recomb([
+        matrix.slice(0, 3),
+        matrix.slice(3, 6),
+        matrix.slice(6, 9),
+      ]);
+    },
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'recomb <matrix..>',
-  describe: 'Recomb the image with the specified matrix',
+  command: "recomb <matrix..>",
+  describe: "Recomb the image with the specified matrix",
   builder,
-  handler
-}
+  handler,
+};

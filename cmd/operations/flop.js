@@ -24,26 +24,28 @@
 // @see https://sharp.pixelplumbing.com/api-operation#flop
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flop')
-    .example('$0 flop')
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#flop",
+    )
+    .example("$0 flop");
+};
 
 // Command handler.
-const handler = (args) => queue.push(['flop', (sharp) => sharp.flop()])
+const handler = (args) => queue.push(["flop", (sharp) => sharp.flop()]);
 
 // Exports.
 module.exports = {
-  command: 'flop',
-  describe: 'Flop the image about the horizontal X axis',
+  command: "flop",
+  describe: "Flop the image about the horizontal X axis",
   builder,
-  handler
-}
+  handler,
+};

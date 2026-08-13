@@ -24,43 +24,48 @@
 // @see https://sharp.pixelplumbing.com/api-operation#boolean
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const constants = require('../../lib/constants')
-const queue = require('../../lib/queue')
+const constants = require("../../lib/constants");
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   operand: {
-    desc: 'Path to an image file',
+    desc: "Path to an image file",
     normalize: true,
-    type: 'string'
+    type: "string",
   },
   operator: {
     choices: constants.BOOL,
-    desc: 'Operator to perform that bitwise operation'
-  }
-}
+    desc: "Operator to perform that bitwise operation",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#boolean')
-    .positional('operand', positionals.operand)
-    .positional('operator', positionals.operator)
-}
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#boolean",
+    )
+    .positional("operand", positionals.operand)
+    .positional("operator", positionals.operator);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['boolean', (sharp) => sharp.boolean(args.operand, args.operator)])
-}
+  return queue.push([
+    "boolean",
+    (sharp) => sharp.boolean(args.operand, args.operator),
+  ]);
+};
 
 // Exports.
 module.exports = {
-  command: 'boolean <operand> <operator>',
-  describe: 'Perform a bitwise boolean operation with operand image',
+  command: "boolean <operand> <operator>",
+  describe: "Perform a bitwise boolean operation with operand image",
   builder,
-  handler
-}
+  handler,
+};

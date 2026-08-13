@@ -24,39 +24,47 @@
 // @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
 // Strict mode.
-'use strict'
+"use strict";
 
 // Local modules.
-const queue = require('../../lib/queue')
+const queue = require("../../lib/queue");
 
 // Configure.
 const positionals = {
   alpha: {
     default: 1,
-    desc: 'Alpha transparency level',
-    type: 'number'
-  }
-}
+    desc: "Alpha transparency level",
+    type: "number",
+  },
+};
 
 // Command builder.
 const builder = (yargs) => {
   return yargs
     .strict()
-    .example('$0 ensureAlpha', 'The output will be a 4 channel image with a fully-opaque alpha channel')
-    .example('$0 ensureAlpha 0', 'The output will be a 4 channel image with a fully-transparent alpha channel')
-    .epilog('For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha')
-    .positional('alpha', positionals.alpha)
-}
+    .example(
+      "$0 ensureAlpha",
+      "The output will be a 4 channel image with a fully-opaque alpha channel",
+    )
+    .example(
+      "$0 ensureAlpha 0",
+      "The output will be a 4 channel image with a fully-transparent alpha channel",
+    )
+    .epilog(
+      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-channel#removealpha",
+    )
+    .positional("alpha", positionals.alpha);
+};
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(['ensureAlpha', (sharp) => sharp.ensureAlpha(args.alpha)])
-}
+  return queue.push(["ensureAlpha", (sharp) => sharp.ensureAlpha(args.alpha)]);
+};
 
 // Exports.
 module.exports = {
-  command: 'ensureAlpha [alpha]',
-  describe: 'Ensure the output image has an alpha transparency channel',
+  command: "ensureAlpha [alpha]",
+  describe: "Ensure the output image has an alpha transparency channel",
   builder,
-  handler
-}
+  handler,
+};
