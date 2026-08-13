@@ -124,6 +124,24 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--bigtiff", () => {
+      // Run.
+      beforeEach(() => cli.parse(["--bigtiff", ...ioFlags]));
+
+      // Tests.
+      it("must set the bigtiff flag", () => {
+        expect(cli.parsed.argv).to.have.property("bigtiff", true);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("tiff");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.tiff, { bigtiff: true });
+      });
+    });
+
     describe("--bitdepth", () => {
       // Default bitdepth.
       const bitdepth = 4;

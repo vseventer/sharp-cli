@@ -1,7 +1,8 @@
 # Changelog
 
-## 6.0.0
+## 5.3.0 (August 13, 2026)
 
+- Added [`--bigtiff`](https://sharp.pixelplumbing.com/api-output/#tiff) output option.
 - Added [`--keepDuplicateFrames`](https://sharp.pixelplumbing.com/api-output/#gif) output option.
 - Updated `sharp` dependency.
 - Updated dependencies, including replacing `standard` and `snazzy` with `prettier`.
