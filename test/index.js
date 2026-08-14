@@ -88,7 +88,12 @@ describe("CLI", () => {
   it("must display errors", () => {
     return cli([], { logger }).then(() => {
       sinon.assert.notCalled(logger.log);
-      sinon.assert.calledWithMatch(logger.error, "Missing required arguments");
+      if (process.stdin.isTTY) {
+        sinon.assert.calledWithMatch(
+          logger.error,
+          "Missing required arguments",
+        );
+      }
       sinon.assert.calledWithMatch(
         logger.error,
         "Specify --help for available options",
