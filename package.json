@@ -22,7 +22,8 @@
   "main": "lib/",
   "scripts": {
     "format": "prettier . --write",
-    "pretest": "prettier . --check",
+    "lint": "eslint",
+    "pretest": "npm run lint && prettier . --check",
     "test": "nyc mocha",
     "posttest": "nyc report --reporter=lcov"
   },
@@ -32,7 +33,10 @@
     "yargs": "^17.6.2"
   },
   "devDependencies": {
+    "@eslint/js": "9.39.x",
+    "eslint": "^9.39.5",
     "fs-extra": "11.3.x",
+    "globals": "17.11.x",
     "mocha": "10.8.x",
     "must": "0.13.x",
     "nyc": "17.1.x",

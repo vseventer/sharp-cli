@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -45,7 +44,7 @@ describe("joinChannel <images..>", () => {
   const cli = new Yargs().command(joinChannel);
 
   // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`; // eslint-disable-line n/no-path-concat
+  const input = `${__dirname}/../../fixtures/input.jpg`;
 
   // Reset.
   afterEach("queue", () => queue.splice(0));

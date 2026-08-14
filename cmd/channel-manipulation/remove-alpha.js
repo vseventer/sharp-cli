@@ -40,7 +40,7 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) =>
+const handler = () =>
   queue.push(["removeAlpha", (sharp) => sharp.removeAlpha()]);
 
 // Exports.

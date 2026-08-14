@@ -40,8 +40,7 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) =>
-  queue.push(["unflatten", (sharp) => sharp.unflatten()]);
+const handler = () => queue.push(["unflatten", (sharp) => sharp.unflatten()]);
 
 // Exports.
 module.exports = {

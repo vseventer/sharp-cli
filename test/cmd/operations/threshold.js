@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *

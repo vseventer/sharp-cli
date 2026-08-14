@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -38,10 +37,8 @@ const sharp = require("./mocks/sharp");
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
   // Defaults (avoid path.join` to test for input normalizing).
-  /* eslint-disable n/no-path-concat */
   const input = `${__dirname}/../test/fixtures/input.jpg`;
   const output = `${__dirname}/../test/`;
-  /* eslint-enable n/no-path-concat */
   const ioFlags = ["-i", input, "-o", output];
 
   // Reset.
@@ -1222,7 +1219,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
     ["v", "version"].forEach((alias) => {
       describe(`--${alias}`, () => {
         it("must set the version flag", (done) => {
-          cli.parse([`--${alias}`], (err, args, output) => {
+          cli.parse([`--${alias}`], (err, args) => {
             expect(args).to.have.property("version", true);
             done(err);
           });

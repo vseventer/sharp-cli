@@ -43,8 +43,7 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) =>
-  queue.push(["greyscale", (sharp) => sharp.greyscale()]);
+const handler = () => queue.push(["greyscale", (sharp) => sharp.greyscale()]);
 
 // Exports.
 module.exports = {

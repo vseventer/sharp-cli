@@ -40,7 +40,7 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) => queue.push(["flop", (sharp) => sharp.flop()]);
+const handler = () => queue.push(["flop", (sharp) => sharp.flop()]);
 
 // Exports.
 module.exports = {

@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
