@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "glob": "10.5.x",
-    "is-directory": "0.3.x",
     "sharp": "0.34.5",
     "yargs": "^17.6.2"
   },

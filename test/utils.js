@@ -29,10 +29,20 @@
 const expect = require("must");
 
 // Local modules.
-const { pick } = require("../lib/utils");
+const { isDirectory, pick } = require("../lib/utils");
 
 // Test suite.
 describe("utils", () => {
+  describe("isDirectory", () => {
+    it("must identify directories", () => {
+      expect(isDirectory(__dirname)).to.be.true();
+    });
+
+    it("must return false for missing paths", () => {
+      expect(isDirectory(`${__dirname}/missing`)).to.be.false();
+    });
+  });
+
   describe("pick", () => {
     it("must pick own properties, including falsy values", () => {
       const input = { falseValue: false, nullValue: null, zero: 0 };
