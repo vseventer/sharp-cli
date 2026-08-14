@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#negate
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const options = {
@@ -55,7 +52,7 @@ const handler = (args) =>
   queue.push(["negate", (sharp) => sharp.negate(args.alpha)]);
 
 // Exports.
-module.exports = {
+export default {
   command: "negate",
   describe: 'Produce the "negative" of the image',
   builder,

@@ -23,67 +23,66 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#recomb
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const clahe = require("../../../cmd/operations/clahe");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import clahe from "../../../cmd/operations/clahe.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("clahe", () => {
-  const cli = new Yargs().command(clahe);
+export default function register() {
+  describe("clahe", () => {
+    const cli = yargsFactory().command(clahe);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  const width = 20;
-  const height = 10;
+    const width = 20;
+    const height = 10;
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["clahe", width, height], done));
-
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("clahe");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.clahe, { width, height });
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--maxSlope", () => {
-      // Default slope.
-      const slope = 10;
-
+    describe("..", () => {
       // Run.
-      beforeEach((done) =>
-        cli.parse(["clahe", width, height, "--maxSlope", slope], done),
-      );
+      beforeEach(() => cli.parse(["clahe", width, height]));
 
       // Tests.
-      it("must set the maxSlope flag", () => {
-        expect(cli.parsed.argv).to.have.property("maxSlope", slope);
-      });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
         expect(queue.pipeline).to.include("clahe");
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope });
+        sinon.assert.calledWithMatch(pipeline.clahe, { width, height });
+      });
+    });
+
+    describe("[options]", () => {
+      describe("--maxSlope", () => {
+        // Default slope.
+        const slope = 10;
+
+        // Run.
+        beforeEach(() =>
+          cli.parse(["clahe", width, height, "--maxSlope", slope]),
+        );
+
+        // Tests.
+        it("must set the maxSlope flag", () => {
+          expect(cli.parsed.argv).to.have.property("maxSlope", slope);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("clahe");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope });
+        });
       });
     });
   });
-});
+}

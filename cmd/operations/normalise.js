@@ -23,13 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#normalise
 
-// Strict mode.
-"use strict";
-
-// Package modules.
 // Local modules.
-const queue = require("../../lib/queue");
-const { pick } = require("../../lib/utils");
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 const options = {
   lower: {
@@ -65,7 +61,7 @@ const handler = (args) =>
   ]);
 
 // Exports.
-module.exports = {
+export default {
   command: "normalise",
   aliases: "normalize",
   describe:

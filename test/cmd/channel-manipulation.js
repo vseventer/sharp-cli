@@ -21,14 +21,20 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerBandbool from "./channel-manipulation/bandbool.js";
+import registerEnsureAlpha from "./channel-manipulation/ensure-alpha.js";
+import registerExtractChannel from "./channel-manipulation/extract-channel.js";
+import registerJoinChannel from "./channel-manipulation/join-channel.js";
+import registerRemoveAlpha from "./channel-manipulation/remove-alpha.js";
 
 // Test suite.
-describe("Channel Manipulation", () => {
-  require("./channel-manipulation/bandbool");
-  require("./channel-manipulation/ensure-alpha");
-  require("./channel-manipulation/extract-channel");
-  require("./channel-manipulation/join-channel");
-  require("./channel-manipulation/remove-alpha");
-});
+export default function register() {
+  describe("Channel Manipulation", () => {
+    registerBandbool();
+    registerEnsureAlpha();
+    registerExtractChannel();
+    registerJoinChannel();
+    registerRemoveAlpha();
+  });
+}

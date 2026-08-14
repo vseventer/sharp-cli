@@ -21,13 +21,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerGreyscale from "./colour-manipulation/greyscale.js";
+import registerPipelineColourspace from "./colour-manipulation/pipeline-colourspace.js";
+import registerTint from "./colour-manipulation/tint.js";
+import registerToColourspace from "./colour-manipulation/tocolourspace.js";
 
 // Test suite.
-describe("Colour Manipulation", () => {
-  require("./colour-manipulation/greyscale");
-  require("./colour-manipulation/pipeline-colourspace");
-  require("./colour-manipulation/tint");
-  require("./colour-manipulation/tocolourspace");
-});
+export default function register() {
+  describe("Colour Manipulation", () => {
+    registerGreyscale();
+    registerPipelineColourspace();
+    registerTint();
+    registerToColourspace();
+  });
+}

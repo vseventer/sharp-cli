@@ -21,30 +21,52 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerAffine from "./operations/affine.js";
+import registerBlur from "./operations/blur.js";
+import registerBoolean from "./operations/boolean.js";
+import registerClahe from "./operations/clahe.js";
+import registerConvolve from "./operations/convolve.js";
+import registerDilate from "./operations/dilate.js";
+import registerErode from "./operations/erode.js";
+import registerFlatten from "./operations/flatten.js";
+import registerFlip from "./operations/flip.js";
+import registerFlop from "./operations/flop.js";
+import registerGamma from "./operations/gamma.js";
+import registerLinear from "./operations/linear.js";
+import registerMedian from "./operations/median.js";
+import registerModulate from "./operations/modulate.js";
+import registerNegate from "./operations/negate.js";
+import registerNormalise from "./operations/normalise.js";
+import registerRecomb from "./operations/recomb.js";
+import registerRotate from "./operations/rotate.js";
+import registerSharpen from "./operations/sharpen.js";
+import registerThreshold from "./operations/threshold.js";
+import registerUnflatten from "./operations/unflatten.js";
 
 // Test suite.
-describe("Operations", () => {
-  require("./operations/affine");
-  require("./operations/blur");
-  require("./operations/boolean");
-  require("./operations/clahe");
-  require("./operations/convolve");
-  require("./operations/dilate");
-  require("./operations/erode");
-  require("./operations/flatten");
-  require("./operations/flip");
-  require("./operations/flop");
-  require("./operations/gamma");
-  require("./operations/linear");
-  require("./operations/median");
-  require("./operations/modulate");
-  require("./operations/negate");
-  require("./operations/normalise");
-  require("./operations/recomb");
-  require("./operations/rotate");
-  require("./operations/sharpen");
-  require("./operations/threshold");
-  require("./operations/unflatten");
-});
+export default function register() {
+  describe("Operations", () => {
+    registerAffine();
+    registerBlur();
+    registerBoolean();
+    registerClahe();
+    registerConvolve();
+    registerDilate();
+    registerErode();
+    registerFlatten();
+    registerFlip();
+    registerFlop();
+    registerGamma();
+    registerLinear();
+    registerMedian();
+    registerModulate();
+    registerNegate();
+    registerNormalise();
+    registerRecomb();
+    registerRotate();
+    registerSharpen();
+    registerThreshold();
+    registerUnflatten();
+  });
+}

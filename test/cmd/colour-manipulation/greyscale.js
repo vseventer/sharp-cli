@@ -23,39 +23,38 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#greyscale
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const greyscale = require("../../../cmd/colour-manipulation/greyscale");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import greyscale from "../../../cmd/colour-manipulation/greyscale.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-["grayscale", "greyscale"].forEach((alias) => {
-  describe(alias, () => {
-    const cli = new Yargs().command(greyscale);
+export default function register() {
+  ["grayscale", "greyscale"].forEach((alias) => {
+    describe(alias, () => {
+      const cli = yargsFactory().command(greyscale);
 
-    // Reset.
-    afterEach("queue", () => queue.splice(0));
-    afterEach("sharp", sharp.prototype.reset);
+      // Reset.
+      afterEach("queue", () => queue.splice(0));
+      afterEach("sharp", sharp.prototype.reset);
 
-    // Run.
-    beforeEach((done) => cli.parse([alias], done));
+      // Run.
+      beforeEach(() => cli.parse([alias]));
 
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("greyscale");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.greyscale);
+      // Tests.
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("greyscale");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.greyscale);
+      });
     });
   });
-});
+}

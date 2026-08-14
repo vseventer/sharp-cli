@@ -21,35 +21,35 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Standard lib.
-const path = require("path");
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 // Package modules.
-const expect = require("must");
-const fs = require("fs-extra");
-const sinon = require("sinon");
-const tempy = require("tempy");
+import expect from "must";
+import fs from "fs-extra";
+import sinon from "sinon";
+import tempy from "tempy";
 
 // Local modules.
-const cli = require("../lib");
-const logger = require("./mocks/logger");
-const pkg = require("../package.json");
+import cli from "../lib/index.js";
+import logger from "./mocks/logger.js";
+
+// Assets.
+const pkg = createRequire(import.meta.url)("../package.json");
 
 // Test suite.
 describe("CLI", () => {
   // Default input.
-  const input = path.join(__dirname, "./fixtures/input.jpg");
+  const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
 
   // Default output.
   let dest;
   before(() => {
     dest = tempy.directory();
   });
-  afterEach((done) => fs.emptyDir(dest, done));
-  after((done) => fs.remove(dest, done));
+  afterEach(() => fs.emptyDir(dest));
+  after(() => fs.remove(dest));
 
   // Reset.
   afterEach("error", () => logger.error.resetHistory());

@@ -21,14 +21,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const sinon = require("sinon");
+import sinon from "sinon";
 
 // Exports.
-module.exports = {
+export default {
   error: sinon.spy(),
   log: sinon.spy(),
 };

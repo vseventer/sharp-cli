@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-colour#greyscale
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Command builder.
 const builder = (yargs) => {
@@ -46,7 +43,7 @@ const builder = (yargs) => {
 const handler = () => queue.push(["greyscale", (sharp) => sharp.greyscale()]);
 
 // Exports.
-module.exports = {
+export default {
   command: "greyscale",
   aliases: "grayscale",
   describe: "Convert to 8-bit greyscale; 256 shades of grey",

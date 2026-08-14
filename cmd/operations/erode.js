@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#erode
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -56,7 +53,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "erode [width]",
   describe: "Shrink foreground objects using the erode morphological operator",
   builder,

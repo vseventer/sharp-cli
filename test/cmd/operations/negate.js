@@ -23,59 +23,58 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#negate
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const negate = require("../../../cmd/operations/negate");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import negate from "../../../cmd/operations/negate.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("negate", () => {
-  const cli = new Yargs().command(negate);
+export default function register() {
+  describe("negate", () => {
+    const cli = yargsFactory().command(negate);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["negate"], done));
-
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("negate");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.negate);
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--alpha", () => {
+    describe("..", () => {
       // Run.
-      beforeEach((done) => cli.parse(["negate", "--no-alpha"], done));
+      beforeEach(() => cli.parse(["negate"]));
 
       // Tests.
-      it("must set the alpha flag", () => {
-        expect(cli.parsed.argv).to.have.property("alpha", false);
-      });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
         expect(queue.pipeline).to.include("negate");
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWith(pipeline.negate, false);
+        sinon.assert.called(pipeline.negate);
+      });
+    });
+
+    describe("[options]", () => {
+      describe("--alpha", () => {
+        // Run.
+        beforeEach(() => cli.parse(["negate", "--no-alpha"]));
+
+        // Tests.
+        it("must set the alpha flag", () => {
+          expect(cli.parsed.argv).to.have.property("alpha", false);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("negate");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWith(pipeline.negate, false);
+        });
       });
     });
   });
-});
+}

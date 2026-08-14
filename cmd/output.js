@@ -23,14 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-output#tile
 
-// Strict mode.
-"use strict";
-
-// Package modules.
 // Local modules.
-const constants = require("../lib/constants");
-const queue = require("../lib/queue");
-const { pick } = require("../lib/utils");
+import constants from "../lib/constants.js";
+import queue from "../lib/queue.js";
+import { pick } from "../lib/utils.js";
 
 // Configure.
 const positionals = {
@@ -124,7 +120,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "tile [size]",
   describe: "Use tile-based deep zoom (image pyramid) output",
   builder,

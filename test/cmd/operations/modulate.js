@@ -23,64 +23,61 @@
 
 // @see http://sharp.pixelplumbing.com/api-operation#modulate
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
-const modulate = require("../../../cmd/operations/modulate");
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
+import modulate from "../../../cmd/operations/modulate.js";
 
 // Test suite.
-describe("modulate", () => {
-  const cli = new Yargs().command(modulate);
+export default function register() {
+  describe("modulate", () => {
+    const cli = yargsFactory().command(modulate);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["modulate"], done));
+    describe("..", () => {
+      // Run.
+      beforeEach(() => cli.parse(["modulate"]));
 
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("modulate");
+      // Tests.
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("modulate");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.modulate);
+      });
     });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.modulate);
-    });
-  });
 
-  describe("[options]", () => {
-    ["brightness", "saturation", "hue", "lightness"].forEach((option) => {
-      describe(`--${option}`, () => {
-        // Default value.
-        const value = 10;
+    describe("[options]", () => {
+      ["brightness", "saturation", "hue", "lightness"].forEach((option) => {
+        describe(`--${option}`, () => {
+          // Default value.
+          const value = 10;
 
-        beforeEach((done) =>
-          cli.parse(["modulate", `--${option}`, value], done),
-        );
+          beforeEach(() => cli.parse(["modulate", `--${option}`, value]));
 
-        it(`must set the ${option} flag`, () => {
-          expect(cli.parsed.argv).to.have.property(option, value);
-        });
-        it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("modulate");
-        });
-        it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
-          sinon.assert.calledWith(pipeline.modulate, { [[option]]: value });
+          it(`must set the ${option} flag`, () => {
+            expect(cli.parsed.argv).to.have.property(option, value);
+          });
+          it("must update the pipeline", () => {
+            expect(queue.pipeline).to.have.length(1);
+            expect(queue.pipeline).to.include("modulate");
+          });
+          it("must execute the pipeline", () => {
+            const pipeline = queue.drain(sharp());
+            sinon.assert.calledWith(pipeline.modulate, { [[option]]: value });
+          });
         });
       });
     });
   });
-});
+}

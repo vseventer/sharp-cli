@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#blur
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -87,7 +84,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "blur [sigma]",
   describe: "Blur the image",
   builder,

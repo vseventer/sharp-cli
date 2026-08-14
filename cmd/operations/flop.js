@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#flop
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Command builder.
 const builder = (yargs) => {
@@ -43,7 +40,7 @@ const builder = (yargs) => {
 const handler = () => queue.push(["flop", (sharp) => sharp.flop()]);
 
 // Exports.
-module.exports = {
+export default {
   command: "flop",
   describe: "Flop the image about the horizontal X axis",
   builder,

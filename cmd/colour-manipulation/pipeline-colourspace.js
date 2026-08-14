@@ -23,12 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-colour#tocolourspace
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -62,7 +59,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "pipelineColourspace <colourspace>",
   aliases: "pipelineColorspace",
   describe: "Set the pipeline colourspace",

@@ -21,24 +21,21 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
+import expect from "must";
 
 // Local modules.
-const { isDirectory, pick } = require("../lib/utils");
+import { isDirectory, pick } from "../lib/utils.js";
 
 // Test suite.
 describe("utils", () => {
   describe("isDirectory", () => {
     it("must identify directories", () => {
-      expect(isDirectory(__dirname)).to.be.true();
+      expect(isDirectory(new URL(".", import.meta.url))).to.be.true();
     });
 
     it("must return false for missing paths", () => {
-      expect(isDirectory(`${__dirname}/missing`)).to.be.false();
+      expect(isDirectory(new URL("./missing", import.meta.url))).to.be.false();
     });
   });
 

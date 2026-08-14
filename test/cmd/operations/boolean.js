@@ -23,50 +23,52 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#boolean
 
-// Strict mode.
-"use strict";
-
 // Standard lib.
-const path = require("path");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const boolean = require("../../../cmd/operations/boolean");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import boolean from "../../../cmd/operations/boolean.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("boolean", () => {
-  const cli = new Yargs().command(boolean);
+export default function register() {
+  describe("boolean", () => {
+    const cli = yargsFactory().command(boolean);
 
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`;
+    // Default input (avoid `path.join` to test for input normalizing).
+    const input = fileURLToPath(
+      new URL("../../fixtures/input.jpg", import.meta.url),
+    );
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("<operand> <operator>", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["boolean", input, "and"], done));
+    describe("<operand> <operator>", () => {
+      // Run.
+      beforeEach(() => cli.parse(["boolean", input, "and"]));
 
-    // Tests.
-    it("must set the operand and operator flags", () => {
-      const args = cli.parsed.argv;
-      expect(args).to.have.property("operand", path.normalize(input));
-      expect(args).to.have.property("operator", "and");
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("boolean");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.boolean, path.normalize(input), "and");
+      // Tests.
+      it("must set the operand and operator flags", () => {
+        const args = cli.parsed.argv;
+        expect(args).to.have.property("operand", path.normalize(input));
+        expect(args).to.have.property("operator", "and");
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("boolean");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.boolean, path.normalize(input), "and");
+      });
     });
   });
-});
+}

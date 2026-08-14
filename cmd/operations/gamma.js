@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -64,7 +61,7 @@ const handler = (args) =>
   ]);
 
 // Exports.
-module.exports = {
+export default {
   command: "gamma [gamma] [gammaOut]",
   describe:
     "Apply a gamma correction by reducing the encoding (darken) pre-resize then increasing the encoding (brighten) post-resize",

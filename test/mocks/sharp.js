@@ -21,12 +21,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const sharp = require("sharp");
-const sinon = require("sinon");
+import sharp from "sharp";
+import sinon from "sinon";
 
 // Configure.
 const methods = Object.getOwnPropertyNames(sharp.prototype);
@@ -41,4 +38,4 @@ sharp.prototype.restore = () => {
 };
 
 // Exports.
-module.exports = sharp;
+export default sharp;

@@ -23,14 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize/
 
-// Strict mode.
-"use strict";
-
-// Package modules.
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
-const { pick } = require("../../lib/utils");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 // Configure.
 const positionals = {
@@ -144,7 +140,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "resize [width] [height]",
   describe: "Resize image to width, height, or width × height",
   builder,

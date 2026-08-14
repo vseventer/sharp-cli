@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#linear
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -71,7 +68,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "linear [multiplier..]",
   describe:
     "Apply the linear formula a × input + b to the image to adjust image levels",

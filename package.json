@@ -14,17 +14,18 @@
   "homepage": "https://github.com/vseventer/sharp-cli",
   "bugs": "https://github.com/vseventer/sharp-cli/issues",
   "license": "MIT",
+  "type": "module",
   "author": "Mark van Seventer <mark@vseventer.com>",
   "repository": "vseventer/sharp-cli",
   "bin": {
     "sharp": "bin/cli.js"
   },
-  "main": "lib/",
+  "main": "lib/index.js",
   "scripts": {
     "format": "prettier . --write",
     "lint": "eslint",
     "pretest": "npm run lint && prettier . --check",
-    "test": "nyc mocha",
+    "test": "NODE_OPTIONS=--experimental-loader=@istanbuljs/esm-loader-hook nyc mocha",
     "posttest": "nyc report --reporter=lcov"
   },
   "dependencies": {
@@ -34,7 +35,8 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.x",
-    "eslint": "^9.39.5",
+    "@istanbuljs/esm-loader-hook": "0.3.x",
+    "eslint": "9.39.x",
     "fs-extra": "11.3.x",
     "globals": "17.11.x",
     "mocha": "10.8.x",
