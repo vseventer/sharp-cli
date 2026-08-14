@@ -27,11 +27,10 @@
 "use strict";
 
 // Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
 const constants = require("../../lib/constants");
 const queue = require("../../lib/queue");
+const { pick } = require("../../lib/utils");
 
 // Configure.
 const placeholders = {

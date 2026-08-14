@@ -1,3 +1,4 @@
+/* global describe, it */
 /*!
  * The MIT License (MIT)
  *
@@ -21,55 +22,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-operation#normalise
-
 // Strict mode.
 "use strict";
 
 // Package modules.
+const expect = require("must");
+
 // Local modules.
-const queue = require("../../lib/queue");
-const { pick } = require("../../lib/utils");
+const { pick } = require("../lib/utils");
 
-const options = {
-  lower: {
-    default: 1,
-    desc: "Percentile below which luminance values will be underexposed",
-    type: "number",
-  },
-  upper: {
-    default: 99,
-    desc: "Percentile below which luminance values will be overexposed",
-    type: "number",
-  },
-};
-const optionNames = Object.keys(options);
+// Test suite.
+describe("utils", () => {
+  describe("pick", () => {
+    it("must pick own properties, including falsy values", () => {
+      const input = { falseValue: false, nullValue: null, zero: 0 };
+      expect(pick(input, ["falseValue", "nullValue", "zero"])).to.eql(input);
+    });
 
-// Command builder.
-const builder = (yargs) => {
-  return yargs
-    .strict()
-    .epilog(
-      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#normalise",
-    )
-    .example("$0 normalise")
-    .options(options)
-    .group(optionNames, "Command Options");
-};
-
-// Command handler.
-const handler = (args) =>
-  queue.push([
-    "normalise",
-    (sharp) => sharp.normalise(pick(args, optionNames)),
-  ]);
-
-// Exports.
-module.exports = {
-  command: "normalise",
-  aliases: "normalize",
-  describe:
-    "Enhance output image contrast by stretching its luminance to cover the full dynamic range",
-  builder,
-  handler,
-};
+    it("must omit missing properties", () => {
+      expect(pick({ value: 1 }, ["missing"])).to.eql({});
+    });
+  });
+});

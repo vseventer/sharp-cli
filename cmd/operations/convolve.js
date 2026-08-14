@@ -27,10 +27,9 @@
 "use strict";
 
 // Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
 const queue = require("../../lib/queue");
+const { pick } = require("../../lib/utils");
 
 // Configure.
 const positionals = {
