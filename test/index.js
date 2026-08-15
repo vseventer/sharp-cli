@@ -28,7 +28,7 @@ import { fileURLToPath } from "node:url";
 import expect from "must";
 import fs from "fs-extra";
 import sinon from "sinon";
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 
 // Local modules.
 import cli from "../lib/index.js";
@@ -45,7 +45,7 @@ describe("CLI", () => {
   // Default output.
   let dest;
   before(() => {
-    dest = tempy.directory();
+    dest = temporaryDirectory();
   });
   afterEach(() => fs.emptyDir(dest));
   after(() => fs.remove(dest));

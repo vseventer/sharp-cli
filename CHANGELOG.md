@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.0.0
+
+- Updated `sharp` dependency to 0.35.3.
+- Updated depedencies.
+
 ## 5.3.0 (August 13, 2026)
 
 > Last release compatible with Node.js 18.

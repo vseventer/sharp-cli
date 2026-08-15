@@ -29,7 +29,7 @@ import { fileURLToPath } from "node:url";
 // Package modules.
 import expect from "must";
 import fs from "fs-extra";
-import tempy from "tempy";
+import { temporaryDirectory, temporaryFile } from "tempy";
 
 // Local modules.
 import convert from "../lib/convert.js";
@@ -47,10 +47,10 @@ describe("convert", () => {
     // Default output.
     let copy, dest;
     before(() => {
-      dest = tempy.directory();
+      dest = temporaryDirectory();
     });
     beforeEach(() => {
-      copy = tempy.file();
+      copy = temporaryFile();
     });
     beforeEach(async () => fs.copy(input, copy));
     afterEach(() => {
@@ -125,7 +125,7 @@ describe("convert", () => {
     // Default output.
     let dest;
     beforeEach(() => {
-      dest = tempy.file();
+      dest = temporaryFile();
     });
     afterEach(() => fs.remove(dest));
 
