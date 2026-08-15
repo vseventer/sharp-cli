@@ -23,14 +23,9 @@
 
 // @see http://sharp.pixelplumbing.com/api-operation#modulate
 
-// Strict mode.
-"use strict";
-
-// Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 // Configure.
 const options = {
@@ -79,7 +74,7 @@ const handler = (args) =>
   queue.push(["modulate", (sharp) => sharp.modulate(pick(args, optionNames))]);
 
 // Exports.
-module.exports = {
+export default {
   command: "modulate",
   describe:
     "Transforms the image using brightness, saturation, hue rotation, and lightness",

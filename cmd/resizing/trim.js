@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#trim
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -92,7 +89,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "trim [threshold]",
   describe:
     "Trim pixels from all edges that contain values similar to the given background color, which defaults to that of the top-left pixel",

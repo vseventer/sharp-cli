@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,76 +23,42 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#extend
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const extend = require("../../../cmd/resizing/extend");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import extend from "../../../cmd/resizing/extend.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("extend", () => {
-  const cli = new Yargs().command(extend);
+export default function register() {
+  describe("extend", () => {
+    const cli = yargsFactory().command(extend);
 
-  // Default offsets.
-  const top = 10;
-  const bottom = 20;
-  const left = 10;
-  const right = 10;
+    // Default offsets.
+    const top = 10;
+    const bottom = 20;
+    const left = 10;
+    const right = 10;
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("<top> <bottom> <left> <right>", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["extend", top, bottom, left, right], done));
-
-    // Tests.
-    it("must set the top, bottom, left, and right flags", () => {
-      const args = cli.parsed.argv;
-      expect(args).to.have.property("top", args.top);
-      expect(args).to.have.property("bottom", args.bottom);
-      expect(args).to.have.property("left", args.left);
-      expect(args).to.have.property("right", args.right);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("extend");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.extend, {
-        top,
-        bottom,
-        left,
-        right,
-      });
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--background", () => {
-      // Default background.
-      const background = "rgba(0,0,0,.5)";
-
+    describe("<top> <bottom> <left> <right>", () => {
       // Run.
-      beforeEach((done) =>
-        cli.parse(
-          ["extend", top, bottom, left, right, "--background", background],
-          done,
-        ),
-      );
+      beforeEach(() => cli.parse(["extend", top, bottom, left, right]));
 
       // Tests.
-      it("must set the background flag", () => {
-        expect(cli.parsed.argv).to.have.property("background", background);
+      it("must set the top, bottom, left, and right flags", () => {
+        const args = cli.parsed.argv;
+        expect(args).to.have.property("top", args.top);
+        expect(args).to.have.property("bottom", args.bottom);
+        expect(args).to.have.property("left", args.left);
+        expect(args).to.have.property("right", args.right);
       });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
@@ -101,34 +66,69 @@ describe("extend", () => {
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.extend, { background });
+        sinon.assert.calledWithMatch(pipeline.extend, {
+          top,
+          bottom,
+          left,
+          right,
+        });
       });
     });
 
-    describe("--extendWith", () => {
-      // Default mode.
-      const mode = "copy";
+    describe("[options]", () => {
+      describe("--background", () => {
+        // Default background.
+        const background = "rgba(0,0,0,.5)";
 
-      // Run.
-      beforeEach((done) =>
-        cli.parse(
-          ["extend", top, bottom, left, right, "--extendWith", mode],
-          done,
-        ),
-      );
+        // Run.
+        beforeEach(() =>
+          cli.parse([
+            "extend",
+            top,
+            bottom,
+            left,
+            right,
+            "--background",
+            background,
+          ]),
+        );
 
-      // Tests.
-      it("must set the background flag", () => {
-        expect(cli.parsed.argv).to.have.property("extendWith", mode);
+        // Tests.
+        it("must set the background flag", () => {
+          expect(cli.parsed.argv).to.have.property("background", background);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("extend");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.extend, { background });
+        });
       });
-      it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("extend");
-      });
-      it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.extend, { extendWith: mode });
+
+      describe("--extendWith", () => {
+        // Default mode.
+        const mode = "copy";
+
+        // Run.
+        beforeEach(() =>
+          cli.parse(["extend", top, bottom, left, right, "--extendWith", mode]),
+        );
+
+        // Tests.
+        it("must set the background flag", () => {
+          expect(cli.parsed.argv).to.have.property("extendWith", mode);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("extend");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.extend, { extendWith: mode });
+        });
       });
     });
   });
-});
+}

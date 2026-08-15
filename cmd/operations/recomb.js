@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#recomb
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const placeholders = {
@@ -74,7 +71,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "recomb <matrix..>",
   describe: "Recomb the image with the specified matrix",
   builder,

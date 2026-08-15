@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,76 +23,50 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#trim
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
-const trim = require("../../../cmd/resizing/trim");
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
+import trim from "../../../cmd/resizing/trim.js";
 
 // Test suite.
-describe("trim", () => {
-  const cli = new Yargs().command(trim);
+export default function register() {
+  describe("trim", () => {
+    const cli = yargsFactory().command(trim);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["trim"], done));
-
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("trim");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.trim);
-    });
-  });
-
-  describe("[threshold]", () => {
-    // Default threshold.
-    const threshold = 10;
-
-    // Run.
-    beforeEach((done) => cli.parse(["trim", threshold], done));
-
-    // Tests.
-    it("must set the threshold flag", () => {
-      expect(cli.parsed.argv).to.have.property("threshold", threshold);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("trim");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.trim, { threshold });
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--background", () => {
-      // Default background.
-      const background = "rgb(0, 0, 0)";
-
+    describe("..", () => {
       // Run.
-      beforeEach((done) =>
-        cli.parse(["trim", "--background", background], done),
-      );
+      beforeEach(() => cli.parse(["trim"]));
 
       // Tests.
-      it("must set the factor flag", () => {
-        expect(cli.parsed.argv).to.have.property("background", background);
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("trim");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.trim);
+      });
+    });
+
+    describe("[threshold]", () => {
+      // Default threshold.
+      const threshold = 10;
+
+      // Run.
+      beforeEach(() => cli.parse(["trim", threshold]));
+
+      // Tests.
+      it("must set the threshold flag", () => {
+        expect(cli.parsed.argv).to.have.property("threshold", threshold);
       });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
@@ -101,26 +74,49 @@ describe("trim", () => {
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.trim, { background });
+        sinon.assert.calledWithMatch(pipeline.trim, { threshold });
       });
     });
 
-    describe("--lineArt", () => {
-      // Run.
-      beforeEach((done) => cli.parse(["trim", "--lineArt"], done));
+    describe("[options]", () => {
+      describe("--background", () => {
+        // Default background.
+        const background = "rgb(0, 0, 0)";
 
-      // Tests.
-      it("must set the factor flag", () => {
-        expect(cli.parsed.argv).to.have.property("lineArt", true);
+        // Run.
+        beforeEach(() => cli.parse(["trim", "--background", background]));
+
+        // Tests.
+        it("must set the factor flag", () => {
+          expect(cli.parsed.argv).to.have.property("background", background);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("trim");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.trim, { background });
+        });
       });
-      it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("trim");
-      });
-      it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true });
+
+      describe("--lineArt", () => {
+        // Run.
+        beforeEach(() => cli.parse(["trim", "--lineArt"]));
+
+        // Tests.
+        it("must set the factor flag", () => {
+          expect(cli.parsed.argv).to.have.property("lineArt", true);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("trim");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true });
+        });
       });
     });
   });
-});
+}

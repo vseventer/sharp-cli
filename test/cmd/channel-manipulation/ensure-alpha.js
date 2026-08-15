@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,62 +23,61 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const ensureAlpha = require("../../../cmd/channel-manipulation/ensure-alpha");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import ensureAlpha from "../../../cmd/channel-manipulation/ensure-alpha.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("ensureAlpha", () => {
-  const cli = new Yargs().command(ensureAlpha);
+export default function register() {
+  describe("ensureAlpha", () => {
+    const cli = yargsFactory().command(ensureAlpha);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["ensureAlpha"], done));
-
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("ensureAlpha");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.ensureAlpha);
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--alpha", () => {
-      // Default alpha.
-      const alpha = 0;
-
+    describe("..", () => {
       // Run.
-      beforeEach((done) => cli.parse(["ensureAlpha", "--alpha", alpha], done));
+      beforeEach(() => cli.parse(["ensureAlpha"]));
 
       // Tests.
-      it("must set the alpha flag", () => {
-        expect(cli.parsed.argv).to.have.property("alpha", alpha);
-      });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
         expect(queue.pipeline).to.include("ensureAlpha");
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWith(pipeline.ensureAlpha, alpha);
+        sinon.assert.called(pipeline.ensureAlpha);
+      });
+    });
+
+    describe("[options]", () => {
+      describe("--alpha", () => {
+        // Default alpha.
+        const alpha = 0;
+
+        // Run.
+        beforeEach(() => cli.parse(["ensureAlpha", "--alpha", alpha]));
+
+        // Tests.
+        it("must set the alpha flag", () => {
+          expect(cli.parsed.argv).to.have.property("alpha", alpha);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("ensureAlpha");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWith(pipeline.ensureAlpha, alpha);
+        });
       });
     });
   });
-});
+}

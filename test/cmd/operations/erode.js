@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,55 +23,54 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#erode
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const erode = require("../../../cmd/operations/erode");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import erode from "../../../cmd/operations/erode.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("erode", () => {
-  const cli = new Yargs().command(erode);
+export default function register() {
+  describe("erode", () => {
+    const cli = yargsFactory().command(erode);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    beforeEach((done) => cli.parse(["erode"], done));
+    describe("..", () => {
+      beforeEach(() => cli.parse(["erode"]));
 
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("erode");
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("erode");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.erode, undefined);
+      });
     });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.erode, undefined);
+
+    describe("[width]", () => {
+      const width = 3;
+
+      beforeEach(() => cli.parse(["erode", width]));
+
+      it("must set the width flag", () => {
+        expect(cli.parsed.argv).to.have.property("width", width);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("erode");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.erode, width);
+      });
     });
   });
-
-  describe("[width]", () => {
-    const width = 3;
-
-    beforeEach((done) => cli.parse(["erode", width], done));
-
-    it("must set the width flag", () => {
-      expect(cli.parsed.argv).to.have.property("width", width);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("erode");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.erode, width);
-    });
-  });
-});
+}

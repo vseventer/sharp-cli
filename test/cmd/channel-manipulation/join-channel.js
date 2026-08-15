@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,56 +23,58 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
-// Strict mode.
-"use strict";
-
 // Standard lib.
-const path = require("path");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const joinChannel = require("../../../cmd/channel-manipulation/join-channel");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import joinChannel from "../../../cmd/channel-manipulation/join-channel.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("joinChannel <images..>", () => {
-  const cli = new Yargs().command(joinChannel);
+export default function register() {
+  describe("joinChannel <images..>", () => {
+    const cli = yargsFactory().command(joinChannel);
 
-  // Default input (avoid `path.join` to test for input normalizing).
-  const input = `${__dirname}/../../fixtures/input.jpg`; // eslint-disable-line n/no-path-concat
+    // Default input (avoid `path.join` to test for input normalizing).
+    const input = fileURLToPath(
+      new URL("../../fixtures/input.jpg", import.meta.url),
+    );
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("<images..>", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["joinChannel", input, input], done));
+    describe("<images..>", () => {
+      // Run.
+      beforeEach(() => cli.parse(["joinChannel", input, input]));
 
-    // Tests.
-    it("must set the operator flag", () => {
-      const args = cli.parsed.argv;
-      expect(args).to.have.property("images");
-      expect(args.images).to.eql([
-        path.normalize(input),
-        path.normalize(input),
-      ]);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("joinChannel");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.joinChannel, [
-        path.normalize(input),
-        path.normalize(input),
-      ]);
+      // Tests.
+      it("must set the operator flag", () => {
+        const args = cli.parsed.argv;
+        expect(args).to.have.property("images");
+        expect(args.images).to.eql([
+          path.normalize(input),
+          path.normalize(input),
+        ]);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("joinChannel");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.joinChannel, [
+          path.normalize(input),
+          path.normalize(input),
+        ]);
+      });
     });
   });
-});
+}

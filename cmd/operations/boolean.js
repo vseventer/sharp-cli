@@ -23,12 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#boolean
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -63,7 +60,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "boolean <operand> <operator>",
   describe: "Perform a bitwise boolean operation with operand image",
   builder,

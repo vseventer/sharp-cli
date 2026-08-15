@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,13 +21,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerExtend from "./resizing/extend.js";
+import registerExtract from "./resizing/extract.js";
+import registerResize from "./resizing/resize.js";
+import registerTrim from "./resizing/trim.js";
 
 // Test suite.
-describe("Resizing", () => {
-  require("./resizing/extend");
-  require("./resizing/extract");
-  require("./resizing/resize");
-  require("./resizing/trim");
-});
+export default function register() {
+  describe("Resizing", () => {
+    registerExtend();
+    registerExtract();
+    registerResize();
+    registerTrim();
+  });
+}

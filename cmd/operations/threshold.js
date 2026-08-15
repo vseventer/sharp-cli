@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#threshold
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -70,7 +67,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "threshold [value]",
   describe:
     "Any pixel value greater than or equal to the threshold value will be set to 255, otherwise it will be set to 0",

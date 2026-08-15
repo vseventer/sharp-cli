@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,74 +23,41 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#convolve
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const convolve = require("../../../cmd/operations/convolve");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import convolve from "../../../cmd/operations/convolve.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("convolve", () => {
-  const cli = new Yargs().command(convolve);
+export default function register() {
+  describe("convolve", () => {
+    const cli = yargsFactory().command(convolve);
 
-  // Default width, height, and kernel.
-  const width = 3;
-  const height = 3;
-  const kernel = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
+    // Default width, height, and kernel.
+    const width = 3;
+    const height = 3;
+    const kernel = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("<width> <height> <kernel>", () => {
-    // Run.
-    beforeEach((done) =>
-      cli.parse(["convolve", width, height, ...kernel], done),
-    );
+    describe("<width> <height> <kernel>", () => {
+      // Run.
+      beforeEach(() => cli.parse(["convolve", width, height, ...kernel]));
 
-    // Tests.
-    it("must set the width, height, and kernel flags", () => {
-      const args = cli.parsed.argv;
-      expect(args).to.have.property("width", width);
-      expect(args).to.have.property("height", height);
-      expect(args).to.have.property("kernel");
-      expect(args.kernel).to.eql(kernel);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("convolve");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.convolve, {
-        width,
-        height,
-        kernel,
-      });
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--offset", () => {
-      // Default offset.
-      const offset = 10;
-
-      beforeEach((done) =>
-        cli.parse(
-          ["convolve", width, height, ...kernel, "--offset", offset],
-          done,
-        ),
-      );
-
-      it("must set the offset flag", () => {
-        expect(cli.parsed.argv).to.have.property("offset", offset);
+      // Tests.
+      it("must set the width, height, and kernel flags", () => {
+        const args = cli.parsed.argv;
+        expect(args).to.have.property("width", width);
+        expect(args).to.have.property("height", height);
+        expect(args).to.have.property("kernel");
+        expect(args.kernel).to.eql(kernel);
       });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
@@ -99,31 +65,55 @@ describe("convolve", () => {
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.convolve, { offset });
+        sinon.assert.calledWithMatch(pipeline.convolve, {
+          width,
+          height,
+          kernel,
+        });
       });
     });
-    describe("--scale", () => {
-      // Default scale.
-      const scale = 10;
 
-      beforeEach((done) =>
-        cli.parse(
-          ["convolve", width, height, ...kernel, "--scale", scale],
-          done,
-        ),
-      );
+    describe("[options]", () => {
+      describe("--offset", () => {
+        // Default offset.
+        const offset = 10;
 
-      it("must set the scale flag", () => {
-        expect(cli.parsed.argv).to.have.property("scale", scale);
+        beforeEach(() =>
+          cli.parse(["convolve", width, height, ...kernel, "--offset", offset]),
+        );
+
+        it("must set the offset flag", () => {
+          expect(cli.parsed.argv).to.have.property("offset", offset);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("convolve");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.convolve, { offset });
+        });
       });
-      it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("convolve");
-      });
-      it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
-        sinon.assert.calledWithMatch(pipeline.convolve, { scale });
+      describe("--scale", () => {
+        // Default scale.
+        const scale = 10;
+
+        beforeEach(() =>
+          cli.parse(["convolve", width, height, ...kernel, "--scale", scale]),
+        );
+
+        it("must set the scale flag", () => {
+          expect(cli.parsed.argv).to.have.property("scale", scale);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("convolve");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWithMatch(pipeline.convolve, { scale });
+        });
       });
     });
   });
-});
+}

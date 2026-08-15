@@ -23,15 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#extend
 
-// Strict mode.
-"use strict";
-
-// Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 // Configure.
 const positionals = {
@@ -105,7 +100,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "extend <top> <bottom> <left> <right>",
   describe:
     "Extends/pads the edges of the image with the provided background colour",

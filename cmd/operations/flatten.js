@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#flatten
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -60,7 +57,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "flatten [background]",
   describe: "Merge alpha transparency channel, if any, with a background",
   builder,

@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,52 +23,51 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#recomb
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const recomb = require("../../../cmd/operations/recomb");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import recomb from "../../../cmd/operations/recomb.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("recomb", () => {
-  const cli = new Yargs().command(recomb);
+export default function register() {
+  describe("recomb", () => {
+    const cli = yargsFactory().command(recomb);
 
-  // Default matrix.
-  const matrix = [
-    0.3588, 0.7044, 0.1368, 0.299, 0.587, 0.114, 0.2392, 0.4696, 0.0912,
-  ];
+    // Default matrix.
+    const matrix = [
+      0.3588, 0.7044, 0.1368, 0.299, 0.587, 0.114, 0.2392, 0.4696, 0.0912,
+    ];
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("<matrix..>", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["recomb", ...matrix], done));
+    describe("<matrix..>", () => {
+      // Run.
+      beforeEach(() => cli.parse(["recomb", ...matrix]));
 
-    // Tests.
-    it("must set the matrix flag", () => {
-      expect(cli.parsed.argv).to.have.property("matrix");
-      expect(cli.parsed.argv.matrix).to.eql(matrix);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("recomb");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.recomb, [
-        matrix.slice(0, 3),
-        matrix.slice(3, 6),
-        matrix.slice(6, 9),
-      ]);
+      // Tests.
+      it("must set the matrix flag", () => {
+        expect(cli.parsed.argv).to.have.property("matrix");
+        expect(cli.parsed.argv.matrix).to.eql(matrix);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("recomb");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.recomb, [
+          matrix.slice(0, 3),
+          matrix.slice(3, 6),
+          matrix.slice(6, 9),
+        ]);
+      });
     });
   });
-});
+}

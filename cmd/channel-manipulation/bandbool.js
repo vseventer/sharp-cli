@@ -23,12 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -58,7 +55,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "bandbool <operator>",
   describe:
     "Perform a bitwise boolean operation on all input image channels (bands) to produce a single channel output image",

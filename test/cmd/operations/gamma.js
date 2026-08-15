@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,81 +23,80 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const gamma = require("../../../cmd/operations/gamma");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import gamma from "../../../cmd/operations/gamma.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("gamma", () => {
-  const cli = new Yargs().command(gamma);
+export default function register() {
+  describe("gamma", () => {
+    const cli = yargsFactory().command(gamma);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["gamma"], done));
+    describe("..", () => {
+      // Run.
+      beforeEach(() => cli.parse(["gamma"]));
 
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("gamma");
+      // Tests.
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("gamma");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.gamma);
+      });
     });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.gamma);
+
+    describe("[gamma]", () => {
+      // Default gamma.
+      const gamma = 1.1;
+
+      // Run.
+      beforeEach(() => cli.parse(["gamma", gamma]));
+
+      // Tests.
+      it("must set the gamma flag", () => {
+        expect(cli.parsed.argv).to.have.property("gamma", gamma);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("gamma");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.gamma, gamma);
+      });
+    });
+
+    describe("[gammaOut]", () => {
+      // Default gammaOut.
+      const gammaOut = 1.1;
+
+      // Run.
+      beforeEach(() => cli.parse(["gamma", 2.2, gammaOut]));
+
+      // Tests.
+      it("must set the gammaOut flag", () => {
+        expect(cli.parsed.argv).to.have.property("gammaOut", gammaOut);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("gamma");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut);
+      });
     });
   });
-
-  describe("[gamma]", () => {
-    // Default gamma.
-    const gamma = 1.1;
-
-    // Run.
-    beforeEach((done) => cli.parse(["gamma", gamma], done));
-
-    // Tests.
-    it("must set the gamma flag", () => {
-      expect(cli.parsed.argv).to.have.property("gamma", gamma);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("gamma");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.gamma, gamma);
-    });
-  });
-
-  describe("[gammaOut]", () => {
-    // Default gammaOut.
-    const gammaOut = 1.1;
-
-    // Run.
-    beforeEach((done) => cli.parse(["gamma", 2.2, gammaOut], done));
-
-    // Tests.
-    it("must set the gammaOut flag", () => {
-      expect(cli.parsed.argv).to.have.property("gammaOut", gammaOut);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("gamma");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut);
-    });
-  });
-});
+}

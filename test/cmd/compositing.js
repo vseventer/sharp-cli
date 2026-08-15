@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,10 +21,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerComposite from "./compositing/composite.js";
 
 // Test suite.
-describe("Compositing", () => {
-  require("./compositing/composite");
-});
+export default function register() {
+  describe("Compositing", () => {
+    registerComposite();
+  });
+}

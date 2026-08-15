@@ -21,51 +21,32 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// @see https://sharp.pixelplumbing.com/api-operation#normalise
+// Package modules.
+import expect from "must";
 
 // Local modules.
-import queue from "../../lib/queue.js";
-import { pick } from "../../lib/utils.js";
+import { isDirectory, pick } from "../lib/utils.js";
 
-const options = {
-  lower: {
-    default: 1,
-    desc: "Percentile below which luminance values will be underexposed",
-    type: "number",
-  },
-  upper: {
-    default: 99,
-    desc: "Percentile below which luminance values will be overexposed",
-    type: "number",
-  },
-};
-const optionNames = Object.keys(options);
+// Test suite.
+describe("utils", () => {
+  describe("isDirectory", () => {
+    it("must identify directories", () => {
+      expect(isDirectory(new URL(".", import.meta.url))).to.be.true();
+    });
 
-// Command builder.
-const builder = (yargs) => {
-  return yargs
-    .strict()
-    .epilog(
-      "For more information on available options, please visit https://sharp.pixelplumbing.com/api-operation#normalise",
-    )
-    .example("$0 normalise")
-    .options(options)
-    .group(optionNames, "Command Options");
-};
+    it("must return false for missing paths", () => {
+      expect(isDirectory(new URL("./missing", import.meta.url))).to.be.false();
+    });
+  });
 
-// Command handler.
-const handler = (args) =>
-  queue.push([
-    "normalise",
-    (sharp) => sharp.normalise(pick(args, optionNames)),
-  ]);
+  describe("pick", () => {
+    it("must pick own properties, including falsy values", () => {
+      const input = { falseValue: false, nullValue: null, zero: 0 };
+      expect(pick(input, ["falseValue", "nullValue", "zero"])).to.eql(input);
+    });
 
-// Exports.
-export default {
-  command: "normalise",
-  aliases: "normalize",
-  describe:
-    "Enhance output image contrast by stretching its luminance to cover the full dynamic range",
-  builder,
-  handler,
-};
+    it("must omit missing properties", () => {
+      expect(pick({ value: 1 }, ["missing"])).to.eql({});
+    });
+  });
+});

@@ -23,15 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#affine
 
-// Strict mode.
-"use strict";
-
-// Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 // Configure.
 const placeholders = {
@@ -110,7 +105,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "affine <matrix..>",
   describe: "Perform an affine transform on an image",
   builder,

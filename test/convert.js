@@ -1,4 +1,3 @@
-/* global describe, it, before, after, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -22,29 +21,27 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Standard lib.
-const path = require("path");
-const { Readable } = require("stream");
+import path from "node:path";
+import { Readable } from "node:stream";
+import { fileURLToPath } from "node:url";
 
 // Package modules.
-const expect = require("must");
-const fs = require("fs-extra");
-const tempy = require("tempy");
+import expect from "must";
+import fs from "fs-extra";
+import tempy from "tempy";
 
 // Local modules.
-const convert = require("../lib/convert");
-const queue = require("../lib/queue");
-const tile = require("../cmd/output");
+import convert from "../lib/convert.js";
+import queue from "../lib/queue.js";
+import tile from "../cmd/output.js";
 
 // Test suite.
 describe("convert", () => {
   const options = { sequentialRead: false };
 
   // Default input.
-  const input = path.join(__dirname, "./fixtures/input.jpg");
+  const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
 
   describe("files", () => {
     // Default output.
@@ -55,15 +52,13 @@ describe("convert", () => {
     beforeEach(() => {
       copy = tempy.file();
     });
-    beforeEach((done) => {
-      fs.copy(input, copy, done);
-    });
+    beforeEach(async () => fs.copy(input, copy));
     afterEach(() => {
       queue.length = 0; // Empty queue.
     });
-    afterEach((done) => fs.remove(copy, done));
-    afterEach((done) => fs.emptyDir(dest, done));
-    after((done) => fs.remove(dest, done));
+    afterEach(() => fs.remove(copy));
+    afterEach(() => fs.emptyDir(dest));
+    after(() => fs.remove(dest));
 
     // Tests.
     it("must convert a file", () => {
@@ -132,7 +127,7 @@ describe("convert", () => {
     beforeEach(() => {
       dest = tempy.file();
     });
-    afterEach((done) => fs.remove(dest, done));
+    afterEach(() => fs.remove(dest));
 
     // Tests.
     it("must convert a file", () => {

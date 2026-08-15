@@ -22,11 +22,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const { hideBin } = require("yargs/helpers");
+import { hideBin } from "yargs/helpers";
+
+// Local modules.
+import sharp from "../lib/index.js";
 
 // Run.
-require("../lib")(hideBin(process.argv));
+sharp(hideBin(process.argv));

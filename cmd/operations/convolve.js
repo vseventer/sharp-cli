@@ -23,14 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#convolve
 
-// Strict mode.
-"use strict";
-
-// Package modules.
-const pick = require("lodash.pick");
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
+import { pick } from "../../lib/utils.js";
 
 // Configure.
 const positionals = {
@@ -103,7 +98,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "convolve <width> <height> <kernel..>",
   describe: "Convolve the image with the specified kernel",
   builder,

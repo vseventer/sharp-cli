@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,137 +23,130 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#sharpen
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
-const sharpen = require("../../../cmd/operations/sharpen");
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
+import sharpen from "../../../cmd/operations/sharpen.js";
 
 // Test suite.
-describe("sharpen", () => {
-  const cli = new Yargs().command(sharpen);
+export default function register() {
+  describe("sharpen", () => {
+    const cli = yargsFactory().command(sharpen);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["sharpen"], done));
+    describe("..", () => {
+      // Run.
+      beforeEach(() => cli.parse(["sharpen"]));
 
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("sharpen");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.sharpen);
-    });
-  });
-
-  describe("[sigma]", () => {
-    // Default sigma.
-    const sigma = 1.1;
-
-    // Run.
-    beforeEach((done) => cli.parse(["sharpen", sigma], done));
-
-    // Tests.
-    it("must set the sigma flag", () => {
-      expect(cli.parsed.argv).to.have.property("sigma", sigma);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("sharpen");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWithMatch(pipeline.sharpen, { sigma });
-    });
-  });
-
-  describe("[options]", () => {
-    ["m1", "flat"].forEach((alias) => {
-      describe(`--${alias}`, () => {
-        // Default flat.
-        const flat = 1.1;
-
-        // Run.
-        beforeEach((done) =>
-          cli.parse(["sharpen", 2, `--${alias}`, flat], done),
-        );
-
-        // Tests.
-        it("must set the flat flag", () => {
-          expect(cli.parsed.argv).to.have.property("m1", flat);
-        });
-        it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("sharpen");
-        });
-        it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
-          sinon.assert.calledWithMatch(pipeline.sharpen, { m1: flat });
-        });
+      // Tests.
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("sharpen");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.sharpen);
       });
     });
 
-    ["m2", "jagged"].forEach((alias) => {
-      describe(`--${alias}`, () => {
-        // Default jagged.
-        const jagged = 1.1;
+    describe("[sigma]", () => {
+      // Default sigma.
+      const sigma = 1.1;
 
-        // Run.
-        beforeEach((done) =>
-          cli.parse(["sharpen", 2, `--${alias}`, jagged], done),
-        );
+      // Run.
+      beforeEach(() => cli.parse(["sharpen", sigma]));
 
-        // Tests.
-        it("must set the jagged flag", () => {
-          expect(cli.parsed.argv).to.have.property("jagged", jagged);
-        });
-        it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("sharpen");
-        });
-        it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
-          sinon.assert.calledWithMatch(pipeline.sharpen, { m2: jagged });
-        });
+      // Tests.
+      it("must set the sigma flag", () => {
+        expect(cli.parsed.argv).to.have.property("sigma", sigma);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("sharpen");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWithMatch(pipeline.sharpen, { sigma });
       });
     });
 
-    ["x1", "y2", "y3"].forEach((alias) => {
-      describe(`--${alias}`, () => {
-        // Default value.
-        const value = 1.1;
+    describe("[options]", () => {
+      ["m1", "flat"].forEach((alias) => {
+        describe(`--${alias}`, () => {
+          // Default flat.
+          const flat = 1.1;
 
-        // Run.
-        beforeEach((done) =>
-          cli.parse(["sharpen", 2, `--${alias}`, value], done),
-        );
+          // Run.
+          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, flat]));
 
-        // Tests.
-        it("must set the flat flag", () => {
-          expect(cli.parsed.argv).to.have.property(alias, value);
+          // Tests.
+          it("must set the flat flag", () => {
+            expect(cli.parsed.argv).to.have.property("m1", flat);
+          });
+          it("must update the pipeline", () => {
+            expect(queue.pipeline).to.have.length(1);
+            expect(queue.pipeline).to.include("sharpen");
+          });
+          it("must execute the pipeline", () => {
+            const pipeline = queue.drain(sharp());
+            sinon.assert.calledWithMatch(pipeline.sharpen, { m1: flat });
+          });
         });
-        it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("sharpen");
+      });
+
+      ["m2", "jagged"].forEach((alias) => {
+        describe(`--${alias}`, () => {
+          // Default jagged.
+          const jagged = 1.1;
+
+          // Run.
+          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, jagged]));
+
+          // Tests.
+          it("must set the jagged flag", () => {
+            expect(cli.parsed.argv).to.have.property("jagged", jagged);
+          });
+          it("must update the pipeline", () => {
+            expect(queue.pipeline).to.have.length(1);
+            expect(queue.pipeline).to.include("sharpen");
+          });
+          it("must execute the pipeline", () => {
+            const pipeline = queue.drain(sharp());
+            sinon.assert.calledWithMatch(pipeline.sharpen, { m2: jagged });
+          });
         });
-        it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
-          sinon.assert.calledWithMatch(pipeline.sharpen, { [alias]: value });
+      });
+
+      ["x1", "y2", "y3"].forEach((alias) => {
+        describe(`--${alias}`, () => {
+          // Default value.
+          const value = 1.1;
+
+          // Run.
+          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, value]));
+
+          // Tests.
+          it("must set the flat flag", () => {
+            expect(cli.parsed.argv).to.have.property(alias, value);
+          });
+          it("must update the pipeline", () => {
+            expect(queue.pipeline).to.have.length(1);
+            expect(queue.pipeline).to.include("sharpen");
+          });
+          it("must execute the pipeline", () => {
+            const pipeline = queue.drain(sharp());
+            sinon.assert.calledWithMatch(pipeline.sharpen, { [alias]: value });
+          });
         });
       });
     });
   });
-});
+}

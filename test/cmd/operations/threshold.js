@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,82 +23,81 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#threshold
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
-const threshold = require("../../../cmd/operations/threshold");
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
+import threshold from "../../../cmd/operations/threshold.js";
 
 // Test suite.
-describe("threshold", () => {
-  const cli = new Yargs().command(threshold);
+export default function register() {
+  describe("threshold", () => {
+    const cli = yargsFactory().command(threshold);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["threshold"], done));
+    describe("..", () => {
+      // Run.
+      beforeEach(() => cli.parse(["threshold"]));
 
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("threshold");
+      // Tests.
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("threshold");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.threshold);
+      });
     });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.threshold);
+
+    describe("[value]", () => {
+      // Default value.
+      const value = 128;
+
+      // Run.
+      beforeEach(() => cli.parse(["threshold", value]));
+
+      // Tests.
+      it("must set the factor flag", () => {
+        expect(cli.parsed.argv).to.have.property("value", value);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("threshold");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.threshold, value);
+      });
     });
-  });
 
-  describe("[value]", () => {
-    // Default value.
-    const value = 128;
+    describe("[options]", () => {
+      ["grayscale", "greyscale"].forEach((alias) => {
+        describe(`--${alias}`, () => {
+          beforeEach(() => cli.parse(["threshold", `--${alias}`]));
 
-    // Run.
-    beforeEach((done) => cli.parse(["threshold", value], done));
-
-    // Tests.
-    it("must set the factor flag", () => {
-      expect(cli.parsed.argv).to.have.property("value", value);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("threshold");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.threshold, value);
-    });
-  });
-
-  describe("[options]", () => {
-    ["grayscale", "greyscale"].forEach((alias) => {
-      describe(`--${alias}`, () => {
-        beforeEach((done) => cli.parse(["threshold", `--${alias}`], done));
-
-        it("must set the greyscale flag", () => {
-          expect(cli.parsed.argv).to.have.property("greyscale", true);
-        });
-        it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("threshold");
-        });
-        it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
-          sinon.assert.calledWith(pipeline.threshold, sinon.match.any, {
-            greyscale: true,
+          it("must set the greyscale flag", () => {
+            expect(cli.parsed.argv).to.have.property("greyscale", true);
+          });
+          it("must update the pipeline", () => {
+            expect(queue.pipeline).to.have.length(1);
+            expect(queue.pipeline).to.include("threshold");
+          });
+          it("must execute the pipeline", () => {
+            const pipeline = queue.drain(sharp());
+            sinon.assert.calledWith(pipeline.threshold, sinon.match.any, {
+              greyscale: true,
+            });
           });
         });
       });
     });
   });
-});
+}

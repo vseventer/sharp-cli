@@ -23,12 +23,9 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#extractchannel
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -61,7 +58,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "extractChannel <channel>",
   describe: "Extract a single channel from a multi-channel image",
   builder,

@@ -1,4 +1,3 @@
-/* global describe */
 /*!
  * The MIT License (MIT)
  *
@@ -22,15 +21,20 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Local modules.
+import registerChannelManipulation from "./cmd/channel-manipulation.js";
+import registerColourManipulation from "./cmd/colour-manipulation.js";
+import registerOperations from "./cmd/operations.js";
+import registerCompositing from "./cmd/compositing.js";
+import registerOutput from "./cmd/output.js";
+import registerResizing from "./cmd/resizing.js";
 
 // Test suite.
 describe("Commands", () => {
-  require("./cmd/channel-manipulation");
-  require("./cmd/colour-manipulation");
-  require("./cmd/operations");
-  require("./cmd/compositing");
-  require("./cmd/output");
-  require("./cmd/resizing");
+  registerChannelManipulation();
+  registerColourManipulation();
+  registerOperations();
+  registerCompositing();
+  registerOutput();
+  registerResizing();
 });

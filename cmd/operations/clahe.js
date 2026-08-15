@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#clahe
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -79,7 +76,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "clahe <width> <height>",
   describe: "Perform contrast limiting adaptive histogram equalization CLAHE",
   builder,

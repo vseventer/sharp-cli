@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#unflatten
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Command builder.
 const builder = (yargs) => {
@@ -40,11 +37,10 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) =>
-  queue.push(["unflatten", (sharp) => sharp.unflatten()]);
+const handler = () => queue.push(["unflatten", (sharp) => sharp.unflatten()]);
 
 // Exports.
-module.exports = {
+export default {
   command: "unflatten",
   describe:
     "Ensure the image has an alpha channel with all white pixel values made fully transparent",

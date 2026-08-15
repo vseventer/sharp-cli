@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,76 +23,50 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#rotate
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const queue = require("../../../lib/queue");
-const rotate = require("../../../cmd/operations/rotate");
-const sharp = require("../../mocks/sharp");
+import queue from "../../../lib/queue.js";
+import rotate from "../../../cmd/operations/rotate.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("rotate", () => {
-  const cli = new Yargs().command(rotate);
+export default function register() {
+  describe("rotate", () => {
+    const cli = yargsFactory().command(rotate);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    // Run.
-    beforeEach((done) => cli.parse(["rotate"], done));
-
-    // Tests.
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("rotate");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.called(pipeline.rotate);
-    });
-  });
-
-  describe("[angle]", () => {
-    // Default angle.
-    const angle = 90;
-
-    // Run.
-    beforeEach((done) => cli.parse(["rotate", angle], done));
-
-    // Tests.
-    it("must set the factor flag", () => {
-      expect(cli.parsed.argv).to.have.property("angle", angle);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("rotate");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.rotate, angle);
-    });
-  });
-
-  describe("[options]", () => {
-    describe("--background", () => {
-      // Default background.
-      const background = "rgba(0,0,0,.5)";
-
+    describe("..", () => {
       // Run.
-      beforeEach((done) =>
-        cli.parse(["rotate", "--background", background], done),
-      );
+      beforeEach(() => cli.parse(["rotate"]));
 
       // Tests.
-      it("must set the background flag", () => {
-        expect(cli.parsed.argv).to.have.property("background", background);
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("rotate");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.called(pipeline.rotate);
+      });
+    });
+
+    describe("[angle]", () => {
+      // Default angle.
+      const angle = 90;
+
+      // Run.
+      beforeEach(() => cli.parse(["rotate", angle]));
+
+      // Tests.
+      it("must set the factor flag", () => {
+        expect(cli.parsed.argv).to.have.property("angle", angle);
       });
       it("must update the pipeline", () => {
         expect(queue.pipeline).to.have.length(1);
@@ -101,8 +74,31 @@ describe("rotate", () => {
       });
       it("must execute the pipeline", () => {
         const pipeline = queue.drain(sharp());
-        sinon.assert.calledWith(pipeline.rotate, undefined, { background });
+        sinon.assert.calledWith(pipeline.rotate, angle);
+      });
+    });
+
+    describe("[options]", () => {
+      describe("--background", () => {
+        // Default background.
+        const background = "rgba(0,0,0,.5)";
+
+        // Run.
+        beforeEach(() => cli.parse(["rotate", "--background", background]));
+
+        // Tests.
+        it("must set the background flag", () => {
+          expect(cli.parsed.argv).to.have.property("background", background);
+        });
+        it("must update the pipeline", () => {
+          expect(queue.pipeline).to.have.length(1);
+          expect(queue.pipeline).to.include("rotate");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = queue.drain(sharp());
+          sinon.assert.calledWith(pipeline.rotate, undefined, { background });
+        });
       });
     });
   });
-});
+}

@@ -23,11 +23,8 @@
 
 // @see https://sharp.pixelplumbing.com/api-colour#tint
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const queue = require("../../lib/queue");
+import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -52,7 +49,7 @@ const builder = (yargs) => {
 const handler = (args) => queue.push(["tint", (sharp) => sharp.tint(args.rgb)]);
 
 // Exports.
-module.exports = {
+export default {
   command: "tint <rgb>",
   describe:
     "Tint the image using the provided chroma while preserving the image luminance",

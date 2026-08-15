@@ -23,12 +23,9 @@
 
 // @see http://sharp.pixelplumbing.com/api-composite#composite
 
-// Strict mode.
-"use strict";
-
 // Local modules.
-const constants = require("../../lib/constants");
-const queue = require("../../lib/queue");
+import constants from "../../lib/constants.js";
+import queue from "../../lib/queue.js";
 
 // Helpers.
 function getValueAt(arrayLike, index) {
@@ -206,7 +203,7 @@ const handler = (args) => {
 };
 
 // Exports.
-module.exports = {
+export default {
   command: "composite [images..]",
   describe:
     "Composite image(s) over the processed (resized, extracted etc.) image",

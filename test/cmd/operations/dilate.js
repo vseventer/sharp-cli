@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -24,55 +23,54 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#dilate
 
-// Strict mode.
-"use strict";
-
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
-const Yargs = require("yargs");
+import expect from "must";
+import sinon from "sinon";
+import yargsFactory from "yargs";
 
 // Local modules.
-const dilate = require("../../../cmd/operations/dilate");
-const queue = require("../../../lib/queue");
-const sharp = require("../../mocks/sharp");
+import dilate from "../../../cmd/operations/dilate.js";
+import queue from "../../../lib/queue.js";
+import sharp from "../../mocks/sharp.js";
 
 // Test suite.
-describe("dilate", () => {
-  const cli = new Yargs().command(dilate);
+export default function register() {
+  describe("dilate", () => {
+    const cli = yargsFactory().command(dilate);
 
-  // Reset.
-  afterEach("queue", () => queue.splice(0));
-  afterEach("sharp", sharp.prototype.reset);
+    // Reset.
+    afterEach("queue", () => queue.splice(0));
+    afterEach("sharp", sharp.prototype.reset);
 
-  describe("..", () => {
-    beforeEach((done) => cli.parse(["dilate"], done));
+    describe("..", () => {
+      beforeEach(() => cli.parse(["dilate"]));
 
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("dilate");
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("dilate");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.dilate, undefined);
+      });
     });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.dilate, undefined);
+
+    describe("[width]", () => {
+      const width = 3;
+
+      beforeEach(() => cli.parse(["dilate", width]));
+
+      it("must set the width flag", () => {
+        expect(cli.parsed.argv).to.have.property("width", width);
+      });
+      it("must update the pipeline", () => {
+        expect(queue.pipeline).to.have.length(1);
+        expect(queue.pipeline).to.include("dilate");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = queue.drain(sharp());
+        sinon.assert.calledWith(pipeline.dilate, width);
+      });
     });
   });
-
-  describe("[width]", () => {
-    const width = 3;
-
-    beforeEach((done) => cli.parse(["dilate", width], done));
-
-    it("must set the width flag", () => {
-      expect(cli.parsed.argv).to.have.property("width", width);
-    });
-    it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("dilate");
-    });
-    it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
-      sinon.assert.calledWith(pipeline.dilate, width);
-    });
-  });
-});
+}

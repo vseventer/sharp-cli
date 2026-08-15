@@ -1,4 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
 /*!
  * The MIT License (MIT)
  *
@@ -22,27 +21,34 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Strict mode.
-"use strict";
+// Standard lib.
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 // Package modules.
-const expect = require("must");
-const sinon = require("sinon");
+import expect from "must";
+import sinon from "sinon";
 
 // Local modules.
-const cli = require("../lib/cli");
-const pkg = require("../package.json");
-const queue = require("../lib/queue");
-const sharp = require("./mocks/sharp");
+import cli from "../lib/cli.js";
+import queue from "../lib/queue.js";
+import sharp from "./mocks/sharp.js";
+
+// Assets.
+const pkg = createRequire(import.meta.url)("../package.json");
 
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {
   // Defaults (avoid path.join` to test for input normalizing).
-  /* eslint-disable n/no-path-concat */
-  const input = `${__dirname}/../test/fixtures/input.jpg`;
-  const output = `${__dirname}/../test/`;
-  /* eslint-enable n/no-path-concat */
+  const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
+  const output = fileURLToPath(new URL("./", import.meta.url));
   const ioFlags = ["-i", input, "-o", output];
+  const parse = (args) =>
+    new Promise((resolve) =>
+      cli.parse(args, (error, argv, output) =>
+        resolve({ error, argv, output }),
+      ),
+    );
 
   // Reset.
   afterEach("queue", () => queue.splice(0));
@@ -89,8 +95,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
 
     describe("--animated", () => {
-      beforeEach((done) =>
-        cli.parse(["--animated", "composite", input, ...ioFlags], done),
+      beforeEach(() =>
+        cli.parse(["--animated", "composite", input, ...ioFlags]),
       );
 
       it("must set the animated flag", () => {
@@ -107,8 +113,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
 
     describe("--autoOrient", () => {
-      beforeEach((done) =>
-        cli.parse(["--autoOrient", "composite", input, ...ioFlags], done),
+      beforeEach(() =>
+        cli.parse(["--autoOrient", "composite", input, ...ioFlags]),
       );
 
       it("must set the autoOrient flag", () => {
@@ -346,8 +352,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Default failOn.
       const failOn = "error";
 
-      beforeEach((done) =>
-        cli.parse(["--failOn", failOn, "composite", input, ...ioFlags], done),
+      beforeEach(() =>
+        cli.parse(["--failOn", failOn, "composite", input, ...ioFlags]),
       );
 
       it("must set the failOn flag", () => {
@@ -455,8 +461,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
 
     describe("--ignoreIcc", () => {
-      beforeEach((done) =>
-        cli.parse(["--ignoreIcc", "composite", input, ...ioFlags], done),
+      beforeEach(() =>
+        cli.parse(["--ignoreIcc", "composite", input, ...ioFlags]),
       );
 
       // Tests.
@@ -553,11 +559,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Default value.
       const value = 10;
 
-      beforeEach((done) =>
-        cli.parse(
-          ["--limitInputPixels", value, "composite", input, ...ioFlags],
-          done,
-        ),
+      beforeEach(() =>
+        cli.parse([
+          "--limitInputPixels",
+          value,
+          "composite",
+          input,
+          ...ioFlags,
+        ]),
       );
 
       it("must set the limitInputPixels flag", () => {
@@ -849,11 +858,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
       // Default value.
       const value = "rgb(255, 255, 255)";
 
-      beforeEach((done) =>
-        cli.parse(
-          ["--pdfBackground", value, "composite", input, ...ioFlags],
-          done,
-        ),
+      beforeEach(() =>
+        cli.parse(["--pdfBackground", value, "composite", input, ...ioFlags]),
       );
 
       it("must set the pdfBackground flag", () => {
@@ -1221,17 +1227,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
     ["v", "version"].forEach((alias) => {
       describe(`--${alias}`, () => {
-        it("must set the version flag", (done) => {
-          cli.parse([`--${alias}`], (err, args, output) => {
-            expect(args).to.have.property("version", true);
-            done(err);
-          });
+        it("must set the version flag", async () => {
+          const { argv } = await parse([`--${alias}`]);
+          expect(argv).to.have.property("version", true);
         });
-        it("must display the version number", (done) => {
-          cli.parse([`--${alias}`], (err, args, output) => {
-            expect(output).to.equal(pkg.version);
-            done(err);
-          });
+        it("must display the version number", async () => {
+          const { output } = await parse([`--${alias}`]);
+          expect(output).to.equal(pkg.version);
         });
       });
     });
