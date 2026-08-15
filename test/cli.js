@@ -345,6 +345,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
         const pipeline = queue.drain(sharp());
         sinon.assert.calledWithMatch(pipeline.avif, { effort });
       });
+
+      it("must only apply the option to the selected format", () => {
+        const pipeline = queue.drain(sharp(), { format: "png" });
+        sinon.assert.calledWithMatch(pipeline.png, { effort });
+        sinon.assert.notCalled(pipeline.webp);
+      });
     });
 
     describe("--failOn", () => {

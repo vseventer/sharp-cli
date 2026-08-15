@@ -102,7 +102,7 @@ Output Options
       --bigtiff                   Use BigTIFF variant                                      [boolean]
   -c, --compressionLevel          zlib compression level                       [number] [default: 6]
   -f, --format                    Force output to a given format
-             [choices: "avif", "gif", "heif", "jpeg", "jpg", "png", "tiff", "webp"] [default: input]
+                    [choices: "avif", "gif", "heif", "jpeg", "png", "tiff", "webp"] [default: input]
       --keepDuplicateFrames       Keep duplicate frames in the output instead of combining them
                                                                                            [boolean]
   -m, --metadata, --withMetadata  Include all metadata (EXIF, XMP, IPTC) from the input image in the

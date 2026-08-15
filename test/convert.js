@@ -32,6 +32,7 @@ import fs from "fs-extra";
 import tempy from "tempy";
 
 // Local modules.
+import cli from "../lib/cli.js";
 import convert from "../lib/convert.js";
 import queue from "../lib/queue.js";
 import tile from "../cmd/output.js";
@@ -74,6 +75,11 @@ describe("convert", () => {
           expect(info).to.have.property("path");
           expect(info.path).to.contain(".avif");
         });
+    });
+    it("must select format options based on the input extension", async () => {
+      await cli.parse(["--effort", 7, "-i", input, "-o", dest]);
+      const [info] = await convert.files([input], dest, options);
+      expect(info).to.have.property("format", "jpeg");
     });
     it("must convert a file and output to an existing directory", () => {
       // Negative test for directory that does not exist.

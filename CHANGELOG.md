@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.0.0
+
+- Fixed format-specific output options being applied to all formats ([#92](https://github.com/vseventer/sharp-cli/issues/92)).
+- Replaced `jpg` with [`jpeg`](https://sharp.pixelplumbing.com/api-output#jpeg) as an output format option.
+
 ## 5.3.0 (August 13, 2026)
 
 > Last release compatible with Node.js 18.
