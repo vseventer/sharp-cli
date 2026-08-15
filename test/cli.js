@@ -22,7 +22,6 @@
  */
 
 // Standard lib.
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
@@ -35,7 +34,7 @@ import queue from "../lib/queue.js";
 import sharp from "./mocks/sharp.js";
 
 // Assets.
-const pkg = createRequire(import.meta.url)("../package.json");
+import pkg from "../package.json" with { type: "json" };
 
 // Test suite.
 describe(`${pkg.name} <options> [command..]`, () => {

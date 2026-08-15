@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "glob": "10.5.x",
-    "sharp": "0.34.5",
+    "sharp": "0.35.3",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
@@ -47,6 +47,6 @@
     "tempy": "1.0.x"
   },
   "engines": {
-    "node": ">=20.9"
+    "node": ">=20.10.0"
   }
 }

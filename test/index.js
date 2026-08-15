@@ -22,7 +22,6 @@
  */
 
 // Standard lib.
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
@@ -36,7 +35,7 @@ import cli from "../lib/index.js";
 import logger from "./mocks/logger.js";
 
 // Assets.
-const pkg = createRequire(import.meta.url)("../package.json");
+import pkg from "../package.json" with { type: "json" };
 
 // Test suite.
 describe("CLI", () => {
