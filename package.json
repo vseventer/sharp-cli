@@ -31,7 +31,7 @@
   "dependencies": {
     "glob": "13.0.x",
     "sharp": "0.35.3",
-    "yargs": "^17.6.2"
+    "yargs": "17.7.x"
   },
   "devDependencies": {
     "@eslint/js": "9.39.x",
@@ -42,7 +42,7 @@
     "mocha": "11.8.x",
     "must": "0.13.x",
     "nyc": "18.0.x",
-    "prettier": "3.9.6",
+    "prettier": "3.9.x",
     "sinon": "22.1.x",
     "tempy": "3.2.x"
   },
