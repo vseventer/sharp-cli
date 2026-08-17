@@ -41,6 +41,9 @@ import pkg from "../package.json" with { type: "json" };
 describe("CLI", () => {
   // Default input.
   const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
+  const missing = fileURLToPath(
+    new URL("./fixtures/missing.jpg", import.meta.url),
+  );
 
   // Default output.
   let dest;
@@ -85,14 +88,9 @@ describe("CLI", () => {
     });
   });
   it("must display errors", () => {
-    return cli([], { logger }).then(() => {
+    return cli(["-i", missing, "-o", dest], { logger }).then(() => {
       sinon.assert.notCalled(logger.log);
-      if (process.stdin.isTTY) {
-        sinon.assert.calledWithMatch(
-          logger.error,
-          "Missing required arguments",
-        );
-      }
+      sinon.assert.calledWithMatch(logger.error, "No input files");
       sinon.assert.calledWithMatch(
         logger.error,
         "Specify --help for available options",
