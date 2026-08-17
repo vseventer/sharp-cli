@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#median
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   size: {
@@ -49,7 +46,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(["median", (sharp) => sharp.median(args.size)]);
+  return args["#queue"].push(["median", (sharp) => sharp.median(args.size)]);
 };
 
 // Exports.

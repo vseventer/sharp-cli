@@ -26,32 +26,31 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import flip from "../../../cmd/operations/flip.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("flip", () => {
-    const cli = yargsFactory().command(flip);
+    const cli = createInstance().command(flip);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     // Run.
-    beforeEach(() => cli.parse(["flip"]));
+    before(() => cli.parseAsync(["flip"]));
 
     // Tests.
     it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("flip");
+      const pipeline = getPipeline(cli.parsed.argv);
+      expect(pipeline).to.have.length(1);
+      expect(pipeline).to.include("flip");
     });
     it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
+      const pipeline = drain(cli.parsed.argv);
       sinon.assert.called(pipeline.flip);
     });
   });

@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import ensureAlpha from "../../../cmd/channel-manipulation/ensure-alpha.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("ensureAlpha", () => {
-    const cli = yargsFactory().command(ensureAlpha);
+    const cli = createInstance().command(ensureAlpha);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["ensureAlpha"]));
+      before(() => cli.parseAsync(["ensureAlpha"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("ensureAlpha");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("ensureAlpha");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.ensureAlpha);
       });
     });
@@ -63,18 +62,19 @@ export default function register() {
         const alpha = 0;
 
         // Run.
-        beforeEach(() => cli.parse(["ensureAlpha", "--alpha", alpha]));
+        before(() => cli.parseAsync(["ensureAlpha", "--alpha", alpha]));
 
         // Tests.
         it("must set the alpha flag", () => {
           expect(cli.parsed.argv).to.have.property("alpha", alpha);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("ensureAlpha");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("ensureAlpha");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWith(pipeline.ensureAlpha, alpha);
         });
       });

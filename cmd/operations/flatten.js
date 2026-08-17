@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#flatten
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   background: {
@@ -48,7 +45,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "flatten",
     (sharp) => {
       return sharp.flatten({ background: args.background });

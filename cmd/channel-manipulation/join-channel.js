@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#joinchannel
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   images: {
@@ -47,7 +44,10 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(["joinChannel", (sharp) => sharp.joinChannel(args.images)]);
+  return args["#queue"].push([
+    "joinChannel",
+    (sharp) => sharp.joinChannel(args.images),
+  ]);
 };
 
 // Exports.

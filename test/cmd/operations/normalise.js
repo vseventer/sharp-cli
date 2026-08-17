@@ -26,34 +26,33 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import normalise from "../../../cmd/operations/normalise.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   ["normalise", "normalize"].forEach((alias) => {
     describe(alias, () => {
-      const cli = yargsFactory().command(normalise);
+      const cli = createInstance().command(normalise);
 
       // Reset.
-      afterEach("queue", () => queue.splice(0));
       afterEach("sharp", sharp.prototype.reset);
 
       describe("..", () => {
         // Run.
-        beforeEach(() => cli.parse([alias]));
+        before(() => cli.parseAsync([alias]));
 
         // Tests.
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("normalise");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("normalise");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.called(pipeline.normalise);
         });
       });
@@ -64,18 +63,19 @@ export default function register() {
           const lower = 25;
 
           // Run.
-          beforeEach(() => cli.parse([alias, "--lower", lower]));
+          before(() => cli.parseAsync([alias, "--lower", lower]));
 
           // Tests.
           it("must set the lower flag", () => {
             expect(cli.parsed.argv).to.have.property("lower", lower);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("normalise");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("normalise");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.normalise, { lower });
           });
         });
@@ -85,18 +85,19 @@ export default function register() {
           const upper = 25;
 
           // Run.
-          beforeEach(() => cli.parse([alias, "--upper", upper]));
+          before(() => cli.parseAsync([alias, "--upper", upper]));
 
           // Tests.
           it("must set the upper flag", () => {
             expect(cli.parsed.argv).to.have.property("upper", upper);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("normalise");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("normalise");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.normalise, { upper });
           });
         });

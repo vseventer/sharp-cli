@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#rotate
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   angle: {
@@ -62,7 +59,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "rotate",
     (sharp) => sharp.rotate(args.angle, { background: args.background }),
   ]);

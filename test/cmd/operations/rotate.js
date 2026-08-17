@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import rotate from "../../../cmd/operations/rotate.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("rotate", () => {
-    const cli = yargsFactory().command(rotate);
+    const cli = createInstance().command(rotate);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["rotate"]));
+      before(() => cli.parseAsync(["rotate"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("rotate");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("rotate");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.rotate);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const angle = 90;
 
       // Run.
-      beforeEach(() => cli.parse(["rotate", angle]));
+      before(() => cli.parseAsync(["rotate", angle]));
 
       // Tests.
       it("must set the factor flag", () => {
         expect(cli.parsed.argv).to.have.property("angle", angle);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("rotate");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("rotate");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.rotate, angle);
       });
     });
@@ -84,18 +84,19 @@ export default function register() {
         const background = "rgba(0,0,0,.5)";
 
         // Run.
-        beforeEach(() => cli.parse(["rotate", "--background", background]));
+        before(() => cli.parseAsync(["rotate", "--background", background]));
 
         // Tests.
         it("must set the background flag", () => {
           expect(cli.parsed.argv).to.have.property("background", background);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("rotate");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("rotate");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWith(pipeline.rotate, undefined, { background });
         });
       });

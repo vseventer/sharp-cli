@@ -21,22 +21,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Configure.
-const queue = [];
+// Package modules.
+import yargs from "yargs";
 
-// Extend object.
-Object.defineProperties(queue, {
-  // Add drain handler.
-  drain: {
-    value: (initialValue) =>
-      queue.reduce((acc, [, cb]) => cb(acc), initialValue),
-  },
+// Local modules.
+import { drain as drainPrimitive } from "../lib/utils.js";
+import sharp from "./mocks/sharp.js";
 
-  // Add pipeline getter.
-  pipeline: {
-    get: () => queue.map(([value]) => value),
-  },
-});
+// Helpers.
+export function createInstance() {
+  return yargs().middleware((argv) => {
+    argv["#queue"] = [];
+  });
+}
 
-// Exports.
-export default queue;
+export function drain(argv, context) {
+  return drainPrimitive(argv["#queue"], sharp(), context);
+}
+
+export function getPipeline(argv) {
+  return argv["#queue"].map(([name]) => name);
+}

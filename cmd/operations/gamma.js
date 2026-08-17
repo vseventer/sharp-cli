@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   gamma: {
@@ -53,7 +50,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) =>
-  queue.push([
+  args["#queue"].push([
     "gamma",
     (sharp) => {
       return sharp.gamma(args.gamma, args.gammaOut);

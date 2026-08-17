@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import flatten from "../../../cmd/operations/flatten.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("flatten", () => {
-    const cli = yargsFactory().command(flatten);
+    const cli = createInstance().command(flatten);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["flatten"]));
+      before(() => cli.parseAsync(["flatten"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("flatten");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("flatten");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.flatten);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const background = "rgb(0, 0, 0)";
 
       // Run.
-      beforeEach(() => cli.parse(["flatten", background]));
+      before(() => cli.parseAsync(["flatten", background]));
 
       // Tests.
       it("must set the factor flag", () => {
         expect(cli.parsed.argv).to.have.property("background", background);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("flatten");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("flatten");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.flatten, { background });
       });
     });

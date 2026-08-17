@@ -26,38 +26,37 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 import tint from "../../../cmd/colour-manipulation/tint.js";
 
 // Test suite.
 export default function register() {
   describe("tint <rgb>", () => {
-    const cli = yargsFactory().command(tint);
+    const cli = createInstance().command(tint);
 
     // Default rgb.
     const rgb = "rgba(0,0,0)";
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     // Run.
-    beforeEach(() => cli.parse(["tint", rgb]));
+    before(() => cli.parseAsync(["tint", rgb]));
 
     // Tests.
     it("must set the colourspace flag", () => {
       expect(cli.parsed.argv).to.have.property("rgb", rgb);
     });
     it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("tint");
+      const pipeline = getPipeline(cli.parsed.argv);
+      expect(pipeline).to.have.length(1);
+      expect(pipeline).to.include("tint");
     });
     it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
+      const pipeline = drain(cli.parsed.argv);
       sinon.assert.called(pipeline.tint);
     });
   });

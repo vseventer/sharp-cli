@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#negate
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const options = {
   alpha: {
@@ -49,7 +46,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) =>
-  queue.push(["negate", (sharp) => sharp.negate(args.alpha)]);
+  args["#queue"].push(["negate", (sharp) => sharp.negate(args.alpha)]);
 
 // Exports.
 export default {

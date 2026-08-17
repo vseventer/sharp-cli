@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import sharp from "../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../test-utils.js";
 import tile from "../../cmd/output.js";
 
 // Test suite.
 export default function register() {
   describe("tile", () => {
-    const cli = yargsFactory().command(tile);
+    const cli = createInstance().command(tile);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["tile"]));
+      before(() => cli.parseAsync(["tile"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("tile");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tile");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.tile);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const size = 512;
 
       // Run.
-      beforeEach(() => cli.parse(["tile", size]));
+      before(() => cli.parseAsync(["tile", size]));
 
       // Tests.
       it("must set the size flag", () => {
         expect(cli.parsed.argv).to.have.property("size", size);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("tile");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tile");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.tile, { size });
       });
     });
@@ -84,18 +84,19 @@ export default function register() {
         const angle = 90;
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--angle", angle]));
+        before(() => cli.parseAsync(["tile", "--angle", angle]));
 
         // Tests.
         it("must set the angle flag", () => {
           expect(cli.parsed.argv).to.have.property("angle", angle);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { angle });
         });
       });
@@ -105,18 +106,19 @@ export default function register() {
         const background = "rgba(0,0,0,.5)";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--background", background]));
+        before(() => cli.parseAsync(["tile", "--background", background]));
 
         // Tests.
         it("must set the background flag", () => {
           expect(cli.parsed.argv).to.have.property("background", background);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { background });
         });
       });
@@ -126,35 +128,37 @@ export default function register() {
         const basename = "tiles";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--basename", basename]));
+        before(() => cli.parseAsync(["tile", "--basename", basename]));
 
         // Tests.
         it("must set the id flag", () => {
           expect(cli.parsed.argv).to.have.property("basename", basename);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { basename });
         });
       });
 
       ["center", "centre"].forEach((alias) => {
         describe(`--${alias}`, () => {
-          beforeEach(() => cli.parse(["tile", `--${alias}`]));
+          before(() => cli.parseAsync(["tile", `--${alias}`]));
 
           it("must set the center flag", () => {
             expect(cli.parsed.argv).to.have.property("center", true);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("tile");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("tile");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.tile, { center: true });
           });
         });
@@ -165,18 +169,19 @@ export default function register() {
         const container = "fs";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--container", container]));
+        before(() => cli.parseAsync(["tile", "--container", container]));
 
         // Tests.
         it("must set the container flag", () => {
           expect(cli.parsed.argv).to.have.property("container", container);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { container });
         });
       });
@@ -186,18 +191,19 @@ export default function register() {
         const depth = "onepixel";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--depth", depth]));
+        before(() => cli.parseAsync(["tile", "--depth", depth]));
 
         // Tests.
         it("must set the depth flag", () => {
           expect(cli.parsed.argv).to.have.property("depth", depth);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { depth });
         });
       });
@@ -207,18 +213,19 @@ export default function register() {
         const id = "http://www.example.com";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--id", id]));
+        before(() => cli.parseAsync(["tile", "--id", id]));
 
         // Tests.
         it("must set the id flag", () => {
           expect(cli.parsed.argv).to.have.property("id", id);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { id });
         });
       });
@@ -228,18 +235,19 @@ export default function register() {
         const layout = "dz";
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--layout", layout]));
+        before(() => cli.parseAsync(["tile", "--layout", layout]));
 
         // Tests.
         it("must set the layout flag", () => {
           expect(cli.parsed.argv).to.have.property("layout", layout);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { layout });
         });
       });
@@ -249,18 +257,19 @@ export default function register() {
         const overlap = 10;
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--overlap", overlap]));
+        before(() => cli.parseAsync(["tile", "--overlap", overlap]));
 
         // Tests.
         it("must set the overlap flag", () => {
           expect(cli.parsed.argv).to.have.property("overlap", overlap);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { overlap });
         });
       });
@@ -270,18 +279,19 @@ export default function register() {
         const skip = 10;
 
         // Run.
-        beforeEach(() => cli.parse(["tile", "--skipBlanks", skip]));
+        before(() => cli.parseAsync(["tile", "--skipBlanks", skip]));
 
         // Tests.
         it("must set the overlap flag", () => {
           expect(cli.parsed.argv).to.have.property("skipBlanks", skip);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("tile");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("tile");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.tile, { skipBlanks: skip });
         });
       });

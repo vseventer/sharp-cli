@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#trim
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   threshold: {
@@ -76,7 +73,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "trim",
     (sharp) => {
       return sharp.trim({

@@ -26,20 +26,18 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import extract from "../../../cmd/resizing/extract.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("extract", () => {
-    const cli = yargsFactory().command(extract);
+    const cli = createInstance().command(extract);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<top> <left> <width> <height>", () => {
@@ -50,7 +48,7 @@ export default function register() {
       const height = 40;
 
       // Run.
-      beforeEach(() => cli.parse(["extract", top, left, width, height]));
+      before(() => cli.parseAsync(["extract", top, left, width, height]));
 
       // Tests.
       it("must set the top, left, width, and height flags", () => {
@@ -61,11 +59,12 @@ export default function register() {
         expect(args).to.have.property("height", height);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("extract");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("extract");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.extract, { top, left, width, height });
       });
     });

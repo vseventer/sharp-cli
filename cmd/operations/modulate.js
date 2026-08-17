@@ -24,7 +24,6 @@
 // @see http://sharp.pixelplumbing.com/api-operation#modulate
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 // Configure.
@@ -71,7 +70,10 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) =>
-  queue.push(["modulate", (sharp) => sharp.modulate(pick(args, optionNames))]);
+  args["#queue"].push([
+    "modulate",
+    (sharp) => sharp.modulate(pick(args, optionNames)),
+  ]);
 
 // Exports.
 export default {

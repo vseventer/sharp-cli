@@ -26,31 +26,30 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import dilate from "../../../cmd/operations/dilate.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("dilate", () => {
-    const cli = yargsFactory().command(dilate);
+    const cli = createInstance().command(dilate);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
-      beforeEach(() => cli.parse(["dilate"]));
+      before(() => cli.parseAsync(["dilate"]));
 
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("dilate");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("dilate");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.dilate, undefined);
       });
     });
@@ -58,17 +57,18 @@ export default function register() {
     describe("[width]", () => {
       const width = 3;
 
-      beforeEach(() => cli.parse(["dilate", width]));
+      before(() => cli.parseAsync(["dilate", width]));
 
       it("must set the width flag", () => {
         expect(cli.parsed.argv).to.have.property("width", width);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("dilate");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("dilate");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.dilate, width);
       });
     });

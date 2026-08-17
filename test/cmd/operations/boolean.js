@@ -30,17 +30,16 @@ import { fileURLToPath } from "node:url";
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import boolean from "../../../cmd/operations/boolean.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("boolean", () => {
-    const cli = yargsFactory().command(boolean);
+    const cli = createInstance().command(boolean);
 
     // Default input (avoid `path.join` to test for input normalizing).
     const input = fileURLToPath(
@@ -48,12 +47,11 @@ export default function register() {
     );
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<operand> <operator>", () => {
       // Run.
-      beforeEach(() => cli.parse(["boolean", input, "and"]));
+      before(() => cli.parseAsync(["boolean", input, "and"]));
 
       // Tests.
       it("must set the operand and operator flags", () => {
@@ -62,11 +60,12 @@ export default function register() {
         expect(args).to.have.property("operator", "and");
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("boolean");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("boolean");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.boolean, path.normalize(input), "and");
       });
     });

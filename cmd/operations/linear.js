@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#linear
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   multiplier: {
@@ -61,7 +58,7 @@ const builder = (yargs) => {
 const handler = (args) => {
   const multiplier =
     args.multiplier.length === 1 ? args.multiplier[0] : args.multiplier;
-  return queue.push([
+  return args["#queue"].push([
     "linear",
     (sharp) => sharp.linear(multiplier, args.offset),
   ]);

@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#flip
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Command builder.
 const builder = (yargs) => {
   return yargs
@@ -37,7 +34,8 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = () => queue.push(["flip", (sharp) => sharp.flip()]);
+const handler = (args) =>
+  args["#queue"].push(["flip", (sharp) => sharp.flip()]);
 
 // Exports.
 export default {

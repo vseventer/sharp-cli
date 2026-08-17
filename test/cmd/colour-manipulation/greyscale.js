@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import greyscale from "../../../cmd/colour-manipulation/greyscale.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   ["grayscale", "greyscale"].forEach((alias) => {
     describe(alias, () => {
-      const cli = yargsFactory().command(greyscale);
+      const cli = createInstance().command(greyscale);
 
       // Reset.
-      afterEach("queue", () => queue.splice(0));
       afterEach("sharp", sharp.prototype.reset);
 
       // Run.
-      beforeEach(() => cli.parse([alias]));
+      before(() => cli.parseAsync([alias]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("greyscale");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("greyscale");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.greyscale);
       });
     });

@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import gamma from "../../../cmd/operations/gamma.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("gamma", () => {
-    const cli = yargsFactory().command(gamma);
+    const cli = createInstance().command(gamma);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["gamma"]));
+      before(() => cli.parseAsync(["gamma"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("gamma");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gamma");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.gamma);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const gamma = 1.1;
 
       // Run.
-      beforeEach(() => cli.parse(["gamma", gamma]));
+      before(() => cli.parseAsync(["gamma", gamma]));
 
       // Tests.
       it("must set the gamma flag", () => {
         expect(cli.parsed.argv).to.have.property("gamma", gamma);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("gamma");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gamma");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.gamma, gamma);
       });
     });
@@ -83,18 +83,19 @@ export default function register() {
       const gammaOut = 1.1;
 
       // Run.
-      beforeEach(() => cli.parse(["gamma", 2.2, gammaOut]));
+      before(() => cli.parseAsync(["gamma", 2.2, gammaOut]));
 
       // Tests.
       it("must set the gammaOut flag", () => {
         expect(cli.parsed.argv).to.have.property("gammaOut", gammaOut);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("gamma");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gamma");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.gamma, sinon.match.any, gammaOut);
       });
     });

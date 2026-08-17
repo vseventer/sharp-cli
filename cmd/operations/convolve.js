@@ -24,7 +24,6 @@
 // @see https://sharp.pixelplumbing.com/api-operation#convolve
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 // Configure.
@@ -86,7 +85,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "convolve",
     (sharp) => {
       return sharp.convolve({

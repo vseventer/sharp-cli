@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-colour#tint
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   rgb: {
@@ -46,7 +43,8 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = (args) => queue.push(["tint", (sharp) => sharp.tint(args.rgb)]);
+const handler = (args) =>
+  args["#queue"].push(["tint", (sharp) => sharp.tint(args.rgb)]);
 
 // Exports.
 export default {

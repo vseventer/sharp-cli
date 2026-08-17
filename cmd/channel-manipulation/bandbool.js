@@ -25,7 +25,6 @@
 
 // Local modules.
 import constants from "../../lib/constants.js";
-import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -51,7 +50,10 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(["bandbool", (sharp) => sharp.bandbool(args.operator)]);
+  return args["#queue"].push([
+    "bandbool",
+    (sharp) => sharp.bandbool(args.operator),
+  ]);
 };
 
 // Exports.

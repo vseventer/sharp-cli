@@ -26,17 +26,16 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import extend from "../../../cmd/resizing/extend.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("extend", () => {
-    const cli = yargsFactory().command(extend);
+    const cli = createInstance().command(extend);
 
     // Default offsets.
     const top = 10;
@@ -45,12 +44,11 @@ export default function register() {
     const right = 10;
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<top> <bottom> <left> <right>", () => {
       // Run.
-      beforeEach(() => cli.parse(["extend", top, bottom, left, right]));
+      before(() => cli.parseAsync(["extend", top, bottom, left, right]));
 
       // Tests.
       it("must set the top, bottom, left, and right flags", () => {
@@ -61,11 +59,12 @@ export default function register() {
         expect(args).to.have.property("right", args.right);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("extend");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("extend");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.extend, {
           top,
           bottom,
@@ -81,8 +80,8 @@ export default function register() {
         const background = "rgba(0,0,0,.5)";
 
         // Run.
-        beforeEach(() =>
-          cli.parse([
+        before(() =>
+          cli.parseAsync([
             "extend",
             top,
             bottom,
@@ -98,11 +97,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("background", background);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("extend");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("extend");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.extend, { background });
         });
       });
@@ -112,8 +112,16 @@ export default function register() {
         const mode = "copy";
 
         // Run.
-        beforeEach(() =>
-          cli.parse(["extend", top, bottom, left, right, "--extendWith", mode]),
+        before(() =>
+          cli.parseAsync([
+            "extend",
+            top,
+            bottom,
+            left,
+            right,
+            "--extendWith",
+            mode,
+          ]),
         );
 
         // Tests.
@@ -121,11 +129,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("extendWith", mode);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("extend");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("extend");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.extend, { extendWith: mode });
         });
       });

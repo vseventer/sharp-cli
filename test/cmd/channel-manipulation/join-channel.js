@@ -30,17 +30,16 @@ import { fileURLToPath } from "node:url";
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import joinChannel from "../../../cmd/channel-manipulation/join-channel.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("joinChannel <images..>", () => {
-    const cli = yargsFactory().command(joinChannel);
+    const cli = createInstance().command(joinChannel);
 
     // Default input (avoid `path.join` to test for input normalizing).
     const input = fileURLToPath(
@@ -48,12 +47,11 @@ export default function register() {
     );
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<images..>", () => {
       // Run.
-      beforeEach(() => cli.parse(["joinChannel", input, input]));
+      before(() => cli.parseAsync(["joinChannel", input, input]));
 
       // Tests.
       it("must set the operator flag", () => {
@@ -65,11 +63,12 @@ export default function register() {
         ]);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("joinChannel");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("joinChannel");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.joinChannel, [
           path.normalize(input),
           path.normalize(input),

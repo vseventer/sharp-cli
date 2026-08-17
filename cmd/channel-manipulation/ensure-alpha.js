@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#ensurealpha
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   alpha: {
@@ -55,7 +52,10 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(["ensureAlpha", (sharp) => sharp.ensureAlpha(args.alpha)]);
+  return args["#queue"].push([
+    "ensureAlpha",
+    (sharp) => sharp.ensureAlpha(args.alpha),
+  ]);
 };
 
 // Exports.

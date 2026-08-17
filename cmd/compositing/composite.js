@@ -25,7 +25,6 @@
 
 // Local modules.
 import constants from "../../lib/constants.js";
-import queue from "../../lib/queue.js";
 
 // Helpers.
 function getValueAt(arrayLike, index) {
@@ -177,7 +176,7 @@ const handler = (args) => {
   if (args.images) inputs.push(...args.images);
 
   // @see http://sharp.pixelplumbing.com/api-composite#composite
-  return queue.push([
+  return args["#queue"].push([
     "composite",
     (sharp) => {
       return sharp.composite(

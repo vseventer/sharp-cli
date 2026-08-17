@@ -30,17 +30,16 @@ import { fileURLToPath } from "node:url";
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import composite from "../../../cmd/compositing/composite.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("composite", () => {
-    const cli = yargsFactory().command(composite);
+    const cli = createInstance().command(composite);
 
     // Default input (avoid `path.join` to test for input normalizing).
     const input = fileURLToPath(
@@ -48,12 +47,11 @@ export default function register() {
     );
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("[images..]", () => {
       // Run.
-      beforeEach(() => cli.parse(["composite", input]));
+      before(() => cli.parseAsync(["composite", input]));
 
       // Tests.
       it("must set the images flag", () => {
@@ -61,11 +59,12 @@ export default function register() {
         expect(cli.parsed.argv.images[0]).to.equal(path.normalize(input));
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("composite");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("composite");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(
           pipeline.composite,
           sinon.match.hasNested("[0].input", path.normalize(input)),
@@ -75,7 +74,7 @@ export default function register() {
 
     describe("[options]", () => {
       it("should roll over when using multiple inputs", async () => {
-        await cli.parse([
+        await cli.parseAsync([
           "composite",
           "--create.width",
           20,
@@ -95,7 +94,7 @@ export default function register() {
           "out",
         ]);
 
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(
           pipeline.composite,
           sinon.match.hasNested("[0].input.create.width", 20),
@@ -158,17 +157,18 @@ export default function register() {
         // Default blend.
         const blend = "add";
 
-        beforeEach(() => cli.parse(["composite", input, "--blend", blend]));
+        before(() => cli.parseAsync(["composite", input, "--blend", blend]));
 
         it("must set the blend flag", () => {
           expect(cli.parsed.argv).to.have.property("blend", blend);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].blend", blend),
@@ -183,8 +183,8 @@ export default function register() {
         const channels = 3;
         const background = "rgba(0,0,0,0)";
 
-        beforeEach(() => {
-          return cli.parse([
+        before(() => {
+          return cli.parseAsync([
             "composite",
             "--create.width",
             width,
@@ -204,11 +204,12 @@ export default function register() {
             expect(args.create).to.have.property("width", width);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("composite");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("composite");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(
               pipeline.composite,
               sinon.match.hasNested("[0].input.create.width", width),
@@ -223,11 +224,12 @@ export default function register() {
             expect(args.create).to.have.property("height", height);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("composite");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("composite");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(
               pipeline.composite,
               sinon.match.hasNested("[0].input.create.height", height),
@@ -242,11 +244,12 @@ export default function register() {
             expect(args.create).to.have.property("channels", channels);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("composite");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("composite");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(
               pipeline.composite,
               sinon.match.hasNested("[0].input.create.channels", channels),
@@ -261,11 +264,12 @@ export default function register() {
             expect(args.create).to.have.property("background", background);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("composite");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("composite");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(
               pipeline.composite,
               sinon.match.hasNested("[0].input.create.background", background),
@@ -278,17 +282,20 @@ export default function register() {
         // Default density.
         const density = 72.1;
 
-        beforeEach(() => cli.parse(["composite", input, "--density", density]));
+        before(() =>
+          cli.parseAsync(["composite", input, "--density", density]),
+        );
 
         it("must set the density flag", () => {
           expect(cli.parsed.argv).to.have.property("density", density);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].density", density),
@@ -297,19 +304,20 @@ export default function register() {
       });
 
       describe("--gravity", () => {
-        beforeEach(() =>
-          cli.parse(["composite", input, "--gravity", "centre"]),
+        before(() =>
+          cli.parseAsync(["composite", input, "--gravity", "centre"]),
         );
 
         it("must set the gravity flag", () => {
           expect(cli.parsed.argv).to.have.property("gravity", "centre");
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].gravity", "centre"),
@@ -321,8 +329,8 @@ export default function register() {
         // Default left.
         const left = 20;
 
-        beforeEach(() =>
-          cli.parse(["composite", input, "--left", left, "--top", 10]),
+        before(() =>
+          cli.parseAsync(["composite", input, "--left", left, "--top", 10]),
         );
 
         it("must set the left flag", () => {
@@ -330,11 +338,12 @@ export default function register() {
           expect(args).to.have.property("left", left);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].left", left),
@@ -343,17 +352,18 @@ export default function register() {
       });
 
       describe("--premultiplied", () => {
-        beforeEach(() => cli.parse(["composite", input, "--premultiplied"]));
+        before(() => cli.parseAsync(["composite", input, "--premultiplied"]));
 
         it("must set the premultiplied flag", () => {
           expect(cli.parsed.argv).to.have.property("premultiplied", true);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].premultiplied", true),
@@ -362,17 +372,18 @@ export default function register() {
       });
 
       describe("--tile", () => {
-        beforeEach(() => cli.parse(["composite", input, "--tile"]));
+        before(() => cli.parseAsync(["composite", input, "--tile"]));
 
         it("must set the tile flag", () => {
           expect(cli.parsed.argv).to.have.property("tile", true);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].tile", true),
@@ -384,8 +395,8 @@ export default function register() {
         // Default top.
         const top = 20;
 
-        beforeEach(() =>
-          cli.parse(["composite", input, "--left", 10, "--top", top]),
+        before(() =>
+          cli.parseAsync(["composite", input, "--left", 10, "--top", top]),
         );
 
         it("must set the top flag", () => {
@@ -393,11 +404,12 @@ export default function register() {
           expect(args).to.have.property("top", top);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("composite");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("composite");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.composite,
             sinon.match.hasNested("[0].top", top),
