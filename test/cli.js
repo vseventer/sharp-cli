@@ -80,8 +80,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("alphaQuality", alphaQuality);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -134,8 +135,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("bigtiff", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -155,8 +157,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("bitdepth", bitdepth);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -181,9 +184,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
         );
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(2);
-        expect(getPipeline(cli.parsed.argv)).to.include("avif");
-        expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(2);
+        expect(pipeline).to.include("avif");
+        expect(pipeline).to.include("jpeg");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -204,9 +208,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("colors", colors);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(2);
-          expect(getPipeline(cli.parsed.argv)).to.include("gif");
-          expect(getPipeline(cli.parsed.argv)).to.include("png");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(2);
+          expect(pipeline).to.include("gif");
+          expect(pipeline).to.include("png");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -227,8 +232,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("compression", compression);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -249,8 +255,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("compressionLevel", level);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("png");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("png");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -273,8 +280,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("delay", delay);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -307,9 +315,10 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("dither", dither);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(2);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
-        expect(getPipeline(cli.parsed.argv)).to.include("png");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(2);
+        expect(pipeline).to.include("gif");
+        expect(pipeline).to.include("png");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -330,12 +339,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("effort", effort);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(5);
-        expect(getPipeline(cli.parsed.argv)).to.include("avif");
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
-        expect(getPipeline(cli.parsed.argv)).to.include("heif");
-        expect(getPipeline(cli.parsed.argv)).to.include("png");
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(5);
+        expect(pipeline).to.include("avif");
+        expect(pipeline).to.include("gif");
+        expect(pipeline).to.include("heif");
+        expect(pipeline).to.include("png");
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -377,8 +387,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("format", format);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("format");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("format");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -409,8 +420,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("hbitdepth", bitdepth);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("heif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("heif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -430,8 +442,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("hcompression", compression);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("heif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("heif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -494,8 +507,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("interFrameMaxError", max);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -515,8 +529,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("interPaletteMaxError", max);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -535,8 +550,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("keepDuplicateFrames", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -598,8 +614,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("loop", loop);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("gif");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("gif");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -616,10 +633,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("lossless", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(3);
-        expect(getPipeline(cli.parsed.argv)).to.include("avif");
-        expect(getPipeline(cli.parsed.argv)).to.include("heif");
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(3);
+        expect(pipeline).to.include("avif");
+        expect(pipeline).to.include("heif");
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -637,8 +655,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("miniswhite", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -655,8 +674,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("minSize", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -673,8 +693,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("mixed", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -691,8 +712,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("mozjpeg", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("jpeg");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -709,8 +731,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("nearLossless", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -727,8 +750,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("optimise", true);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("jpeg");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -750,8 +774,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("optimiseCoding", false);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("jpeg");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -771,10 +796,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("optimiseScans", true);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(3);
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
-          expect(getPipeline(cli.parsed.argv)).to.include("gif"); // Because: -p.
-          expect(getPipeline(cli.parsed.argv)).to.include("png"); // Because: -p.
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(3);
+          expect(pipeline).to.include("jpeg");
+          expect(pipeline).to.include("gif"); // Because: -p.
+          expect(pipeline).to.include("png"); // Because: -p.
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -803,8 +829,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("overshootDeringing", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("jpeg");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -849,8 +876,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("palette", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("png");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("png");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -897,8 +925,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("predictor", predictor);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -918,8 +947,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("preset", preset);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -936,8 +966,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("pyramid", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -955,10 +986,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("progressive", true);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(3);
-          expect(getPipeline(cli.parsed.argv)).to.include("gif");
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
-          expect(getPipeline(cli.parsed.argv)).to.include("png");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(3);
+          expect(pipeline).to.include("gif");
+          expect(pipeline).to.include("jpeg");
+          expect(pipeline).to.include("png");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -982,12 +1014,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("quality", quality);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(5);
-          expect(getPipeline(cli.parsed.argv)).to.include("avif");
-          expect(getPipeline(cli.parsed.argv)).to.include("heif");
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
-          expect(getPipeline(cli.parsed.argv)).to.include("tiff");
-          expect(getPipeline(cli.parsed.argv)).to.include("webp");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(5);
+          expect(pipeline).to.include("avif");
+          expect(pipeline).to.include("heif");
+          expect(pipeline).to.include("jpeg");
+          expect(pipeline).to.include("tiff");
+          expect(pipeline).to.include("webp");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1028,8 +1061,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("quantisationTable", table);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("jpeg");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1049,8 +1083,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("reuse", true);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("gif");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("gif");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1071,8 +1106,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("resolutionUnit", unit);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1089,8 +1125,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("smartDeblock", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1107,8 +1144,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("smartSubsample", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("webp");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1146,8 +1184,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         );
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1169,8 +1208,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("tileHeight", tileHeight);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1203,8 +1243,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("tileWidth", tileWidth);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1225,8 +1266,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("trellisQuantisation", true);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("jpeg");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("jpeg");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1258,8 +1300,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("timeout", timeout);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("timeout");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("timeout");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1286,8 +1329,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
           expect(cli.parsed.argv).to.have.property("withMetadata", true);
         });
         it("must update the pipeline", () => {
-          expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-          expect(getPipeline(cli.parsed.argv)).to.include("withMetadata");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("withMetadata");
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1308,8 +1352,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("xres", xRes);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1329,8 +1374,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("yres", yRes);
       });
       it("must update the pipeline", () => {
-        expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-        expect(getPipeline(cli.parsed.argv)).to.include("tiff");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("tiff");
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1345,8 +1391,9 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
     // Tests.
     it("must update the pipeline", () => {
-      expect(getPipeline(cli.parsed.argv)).to.have.length(1);
-      expect(getPipeline(cli.parsed.argv)).to.include("flip");
+      const pipeline = getPipeline(cli.parsed.argv);
+      expect(pipeline).to.have.length(1);
+      expect(pipeline).to.include("flip");
     });
     it("must execute the pipeline", () => {
       const pipeline = drain(cli.parsed.argv);
