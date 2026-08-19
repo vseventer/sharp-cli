@@ -61,25 +61,43 @@ describe("convert", () => {
     it("must convert a file", () => {
       return convert
         .files([input], dest, createContext())
-        .then(([info]) => expect(fs.existsSync(info.path)).to.be.true);
+        .then(([info]) => expect(fs.existsSync(info.output.path)).to.be.true());
     });
     it("must convert a file formatted based on extension", () => {
       return convert
         .files([input], path.join(dest, "{name}.avif"), createContext())
         .then(([info]) => {
-          expect(info).to.have.property("format", "heif");
-          expect(info).to.have.property("path");
-          expect(info.path).to.contain(".avif");
+          expect(info.output).to.have.property("format", "heif");
+          expect(info.output).to.have.property("path");
+          expect(info.output.path).to.contain(".avif");
         });
     });
     it("must not write a file during a dry run", () => {
       const dryDest = path.join(dest, "dry.jpg");
       const context = { ...createContext(), dry: true };
       return convert.files([input], dryDest, context).then(([info]) => {
-        expect(info).to.have.property("format", "jpeg");
-        expect(info).to.have.property("size");
-        expect(info.path).to.equal(dryDest);
+        expect(info.output).to.have.property("format", "jpeg");
+        expect(info.output).to.have.property("size");
+        expect(info.output.path).to.equal(dryDest);
         expect(fs.existsSync(dryDest)).to.be.false();
+      });
+    });
+    it("must return input and output metadata", () => {
+      const output = path.join(dest, "output.jpg");
+      const context = { ...createContext(), dry: true, print: true };
+      return convert.files([input], output, context).then(([info]) => {
+        expect(info.input).to.have.property("format", "jpeg");
+        expect(info.input.path).to.equal(input);
+        expect(info.output).to.have.property("format", "jpeg");
+        expect(info.output.path).to.equal(output);
+      });
+    });
+    it("must return metadata for each file in a batch", () => {
+      const context = { ...createContext(), dry: true, print: true };
+      return convert.files([input, input], dest, context).then((info) => {
+        expect(info).to.have.length(2);
+        expect(info[0].input).to.have.property("format", "jpeg");
+        expect(info[0].output).to.have.property("format", "jpeg");
       });
     });
     it("must pass the output extension format to queued handlers", () => {
@@ -120,7 +138,9 @@ describe("convert", () => {
       const rand = Math.random();
       return convert
         .files([input], path.join(dest, `{name}-${rand}{ext}`), createContext())
-        .then(([info]) => expect(info.path).to.contain(`input-${rand}.jpg`));
+        .then(([info]) =>
+          expect(info.output.path).to.contain(`input-${rand}.jpg`),
+        );
     });
     it("must allow the same file as input and output", () => {
       return convert.files([copy], path.dirname(copy), createContext());
@@ -160,8 +180,8 @@ describe("convert", () => {
           createContext(),
         )
         .then((info) => {
-          expect(info.format).to.exist();
-          expect(info.path).not.to.exist();
+          expect(info.output.format).to.exist();
+          expect(info.output.path).to.equal("stdout");
           expect(fs.existsSync(dest)).to.be.true();
         });
     });
@@ -207,8 +227,25 @@ describe("convert", () => {
           dry: true,
         })
         .then((info) => {
-          expect(info).to.have.property("format", "jpeg");
-          expect(info).to.have.property("size");
+          expect(info.output).to.have.property("format", "jpeg");
+          expect(info.output).to.have.property("size");
+        });
+    });
+    it("must return input and output metadata", () => {
+      const context = { ...createContext(), dry: true, print: true };
+      return convert
+        .stream(
+          fs.createReadStream(input),
+          new Writable({
+            write(_chunk, _encoding, callback) {
+              callback(new Error("should not write output"));
+            },
+          }),
+          context,
+        )
+        .then((info) => {
+          expect(info.input).to.have.property("format", "jpeg");
+          expect(info.output).to.have.property("format", "jpeg");
         });
     });
   });

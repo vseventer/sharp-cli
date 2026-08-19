@@ -87,6 +87,16 @@ describe("CLI", () => {
       expect(process.exitCode).not.to.equal(1);
     });
   });
+  it("must print metadata", () => {
+    return cli(["--dry", "--print", "-i", input, "-o", dest, "resize", "100"], {
+      logger,
+    }).then(() => {
+      const [metadata] = JSON.parse(logger.log.firstCall.args[0]);
+      expect(metadata.input).to.have.property("format", "jpeg");
+      expect(metadata.output).to.have.property("width", 100);
+      sinon.assert.notCalled(logger.error);
+    });
+  });
   it("must display errors", () => {
     return cli(["-i", missing, "-o", dest], { logger }).then(() => {
       sinon.assert.notCalled(logger.log);

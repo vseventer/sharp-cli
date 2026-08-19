@@ -327,6 +327,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--dry", () => {
+      // Run.
+      before(() => cli.parseAsync(["--dry", ...ioFlags]));
+
+      // Tests.
+      it("must set the dry flag", () => {
+        expect(cli.parsed.argv).to.have.property("dry", true);
+      });
+    });
+
     describe("--effort", () => {
       // Default effort.
       const effort = 1;
@@ -820,16 +830,6 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
-    describe("--dry", () => {
-      // Run.
-      before(() => cli.parseAsync(["--dry", ...ioFlags]));
-
-      // Tests.
-      it("must set the dry flag", () => {
-        expect(cli.parsed.argv).to.have.property("dry", true);
-      });
-    });
-
     describe("--overshootDeringing", () => {
       // Run.
       before(() => cli.parseAsync(["--overshootDeringing", ...ioFlags]));
@@ -964,6 +964,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.webp, { preset });
+      });
+    });
+
+    describe("--print", () => {
+      // Run.
+      before(() => cli.parseAsync(["--print", "--dry", ...ioFlags]));
+
+      // Tests.
+      it("must set the print flag", () => {
+        expect(cli.parsed.argv).to.have.property("print", true);
       });
     });
 
