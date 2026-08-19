@@ -74,6 +74,7 @@ Commands:
                                                pixel values made fully transparent
 
 Global Options
+      --dry      Process images without writing output files                               [boolean]
   -i, --input    Path to (an) image file(s)                      [array] [required] [default: stdin]
   -o, --output   Directory or URI template to write the image files to
                                                                [string] [required] [default: stdout]

@@ -72,6 +72,16 @@ describe("convert", () => {
           expect(info.path).to.contain(".avif");
         });
     });
+    it("must not write a file during a dry run", () => {
+      const dryDest = path.join(dest, "dry.jpg");
+      const context = { ...createContext(), dry: true };
+      return convert.files([input], dryDest, context).then(([info]) => {
+        expect(info).to.have.property("format", "jpeg");
+        expect(info).to.have.property("size");
+        expect(info.path).to.equal(dryDest);
+        expect(fs.existsSync(dryDest)).to.be.false();
+      });
+    });
     it("must pass the output extension format to queued handlers", () => {
       const context = createContext();
       let format;
@@ -184,6 +194,22 @@ describe("convert", () => {
           throw new Error("STOP");
         })
         .catch((err) => expect(err).to.equal(error));
+    });
+    it("must not write to the output stream during a dry run", () => {
+      const failingOutput = new Writable({
+        write(_chunk, _encoding, callback) {
+          callback(new Error("should not write output"));
+        },
+      });
+      return convert
+        .stream(fs.createReadStream(input), failingOutput, {
+          ...createContext(),
+          dry: true,
+        })
+        .then((info) => {
+          expect(info).to.have.property("format", "jpeg");
+          expect(info).to.have.property("size");
+        });
     });
   });
 });
