@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 import threshold from "../../../cmd/operations/threshold.js";
 
 // Test suite.
 export default function register() {
   describe("threshold", () => {
-    const cli = yargsFactory().command(threshold);
+    const cli = createInstance().command(threshold);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["threshold"]));
+      before(() => cli.parseAsync(["threshold"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("threshold");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("threshold");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.threshold);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const value = 128;
 
       // Run.
-      beforeEach(() => cli.parse(["threshold", value]));
+      before(() => cli.parseAsync(["threshold", value]));
 
       // Tests.
       it("must set the factor flag", () => {
         expect(cli.parsed.argv).to.have.property("value", value);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("threshold");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("threshold");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.threshold, value);
       });
     });
@@ -81,17 +81,18 @@ export default function register() {
     describe("[options]", () => {
       ["grayscale", "greyscale"].forEach((alias) => {
         describe(`--${alias}`, () => {
-          beforeEach(() => cli.parse(["threshold", `--${alias}`]));
+          before(() => cli.parseAsync(["threshold", `--${alias}`]));
 
           it("must set the greyscale flag", () => {
             expect(cli.parsed.argv).to.have.property("greyscale", true);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("threshold");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("threshold");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWith(pipeline.threshold, sinon.match.any, {
               greyscale: true,
             });

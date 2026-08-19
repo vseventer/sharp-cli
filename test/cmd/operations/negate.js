@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import negate from "../../../cmd/operations/negate.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("negate", () => {
-    const cli = yargsFactory().command(negate);
+    const cli = createInstance().command(negate);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["negate"]));
+      before(() => cli.parseAsync(["negate"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("negate");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("negate");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.negate);
       });
     });
@@ -60,18 +59,19 @@ export default function register() {
     describe("[options]", () => {
       describe("--alpha", () => {
         // Run.
-        beforeEach(() => cli.parse(["negate", "--no-alpha"]));
+        before(() => cli.parseAsync(["negate", "--no-alpha"]));
 
         // Tests.
         it("must set the alpha flag", () => {
           expect(cli.parsed.argv).to.have.property("alpha", false);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("negate");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("negate");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWith(pipeline.negate, false);
         });
       });

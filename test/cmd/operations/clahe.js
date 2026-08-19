@@ -26,20 +26,18 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import clahe from "../../../cmd/operations/clahe.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("clahe", () => {
-    const cli = yargsFactory().command(clahe);
+    const cli = createInstance().command(clahe);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     const width = 20;
@@ -47,15 +45,16 @@ export default function register() {
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["clahe", width, height]));
+      before(() => cli.parseAsync(["clahe", width, height]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("clahe");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("clahe");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.clahe, { width, height });
       });
     });
@@ -66,8 +65,8 @@ export default function register() {
         const slope = 10;
 
         // Run.
-        beforeEach(() =>
-          cli.parse(["clahe", width, height, "--maxSlope", slope]),
+        before(() =>
+          cli.parseAsync(["clahe", width, height, "--maxSlope", slope]),
         );
 
         // Tests.
@@ -75,11 +74,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("maxSlope", slope);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("clahe");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("clahe");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.clahe, { maxSlope: slope });
         });
       });

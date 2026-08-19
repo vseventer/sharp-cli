@@ -24,7 +24,6 @@
 // @see https://sharp.pixelplumbing.com/api-operation#normalise
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 const options = {
@@ -55,7 +54,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) =>
-  queue.push([
+  args["#queue"].push([
     "normalise",
     (sharp) => sharp.normalise(pick(args, optionNames)),
   ]);

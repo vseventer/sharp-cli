@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import linear from "../../../cmd/operations/linear.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("linear", () => {
-    const cli = yargsFactory().command(linear);
+    const cli = createInstance().command(linear);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["linear"]));
+      before(() => cli.parseAsync(["linear"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("linear");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("linear");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.linear);
       });
     });
@@ -62,7 +61,7 @@ export default function register() {
       const multiplier = 1.5;
 
       // Run.
-      beforeEach(() => cli.parse(["linear", multiplier]));
+      before(() => cli.parseAsync(["linear", multiplier]));
 
       // Tests.
       it("must set the multiplier flag", () => {
@@ -70,11 +69,12 @@ export default function register() {
         expect(cli.parsed.argv.multiplier[0]).to.equal(multiplier);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("linear");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("linear");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.linear, multiplier);
       });
     });
@@ -84,7 +84,7 @@ export default function register() {
       const offset = 0.5;
 
       // Run.
-      beforeEach(() => cli.parse(["linear", 1.5, "--offset", offset]));
+      before(() => cli.parseAsync(["linear", 1.5, "--offset", offset]));
 
       // Tests.
       it("must set the offset flag", () => {
@@ -92,11 +92,12 @@ export default function register() {
         expect(cli.parsed.argv.offset[0]).to.equal(offset);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("linear");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("linear");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.linear, sinon.match.any, [offset]);
       });
     });

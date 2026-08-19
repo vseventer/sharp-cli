@@ -26,36 +26,35 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 import pipelineColourspace from "../../../cmd/colour-manipulation/pipeline-colourspace.js";
 
 // Test suite.
 export default function register() {
   ["pipelineColourspace", "pipelineColorspace"].forEach((alias) => {
     describe(`${alias} <colourspace>`, () => {
-      const cli = yargsFactory().command(pipelineColourspace);
+      const cli = createInstance().command(pipelineColourspace);
 
       // Reset.
-      afterEach("queue", () => queue.splice(0));
       afterEach("sharp", sharp.prototype.reset);
 
       // Run.
-      beforeEach(() => cli.parse([alias, "srgb"]));
+      before(() => cli.parseAsync([alias, "srgb"]));
 
       // Tests.
       it("must set the colourspace flag", () => {
         expect(cli.parsed.argv).to.have.property("colourspace", "srgb");
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("pipelineColourspace");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("pipelineColourspace");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.pipelineColourspace);
       });
     });

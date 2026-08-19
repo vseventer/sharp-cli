@@ -24,7 +24,6 @@
 // @see https://sharp.pixelplumbing.com/api-resize#extract
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 // Configure.
@@ -62,7 +61,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "extract",
     (sharp) => {
       return sharp.extract(pick(args, Object.keys(positionals)));

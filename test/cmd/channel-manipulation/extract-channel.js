@@ -26,35 +26,34 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import extractChannel from "../../../cmd/channel-manipulation/extract-channel.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("extractChannel <channel>", () => {
-    const cli = yargsFactory().command(extractChannel);
+    const cli = createInstance().command(extractChannel);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     // Run.
-    beforeEach(() => cli.parse(["extractChannel", "red"]));
+    before(() => cli.parseAsync(["extractChannel", "red"]));
 
     // Tests.
     it("must set the operator flag", () => {
       expect(cli.parsed.argv).to.have.property("channel", "red");
     });
     it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("extractChannel");
+      const pipeline = getPipeline(cli.parsed.argv);
+      expect(pipeline).to.have.length(1);
+      expect(pipeline).to.include("extractChannel");
     });
     it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
+      const pipeline = drain(cli.parsed.argv);
       sinon.assert.calledWith(pipeline.extractChannel, "red");
     });
   });

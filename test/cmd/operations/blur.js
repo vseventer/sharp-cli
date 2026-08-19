@@ -26,37 +26,36 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import blur from "../../../cmd/operations/blur.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("blur", () => {
-    const cli = yargsFactory().command(blur);
+    const cli = createInstance().command(blur);
 
     // Default amplitude and precision.
     const amplitude = 0.5;
     const precision = "approximate";
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["blur"]));
+      before(() => cli.parseAsync(["blur"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("blur");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("blur");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.blur);
       });
     });
@@ -66,26 +65,27 @@ export default function register() {
       const sigma = 1.1;
 
       // Run.
-      beforeEach(() => cli.parse(["blur", sigma]));
+      before(() => cli.parseAsync(["blur", sigma]));
 
       // Tests.
       it("must set the sigma flag", () => {
         expect(cli.parsed.argv).to.have.property("sigma", sigma);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("blur");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("blur");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWith(pipeline.blur, sigma);
       });
     });
 
     describe("[minAmplitude]", () => {
       // Run.
-      beforeEach(() =>
-        cli.parse([
+      before(() =>
+        cli.parseAsync([
           "blur",
           5,
           "--minAmplitude",
@@ -100,11 +100,12 @@ export default function register() {
         expect(cli.parsed.argv).to.have.property("minAmplitude");
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("blur");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("blur");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.blur, {
           minAmplitude: amplitude,
         });
@@ -113,8 +114,8 @@ export default function register() {
 
     describe("[precision]", () => {
       // Run.
-      beforeEach(() =>
-        cli.parse([
+      before(() =>
+        cli.parseAsync([
           "blur",
           5,
           "--minAmplitude",
@@ -129,11 +130,12 @@ export default function register() {
         expect(cli.parsed.argv).to.have.property("precision");
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("blur");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("blur");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.blur, { precision });
       });
     });

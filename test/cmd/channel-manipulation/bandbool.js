@@ -26,35 +26,34 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import bandbool from "../../../cmd/channel-manipulation/bandbool.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("bandbool <operator>", () => {
-    const cli = yargsFactory().command(bandbool);
+    const cli = createInstance().command(bandbool);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     // Run.
-    beforeEach(() => cli.parse(["bandbool", "and"]));
+    before(() => cli.parseAsync(["bandbool", "and"]));
 
     // Tests.
     it("must set the operator flag", () => {
       expect(cli.parsed.argv).to.have.property("operator", "and");
     });
     it("must update the pipeline", () => {
-      expect(queue.pipeline).to.have.length(1);
-      expect(queue.pipeline).to.include("bandbool");
+      const pipeline = getPipeline(cli.parsed.argv);
+      expect(pipeline).to.have.length(1);
+      expect(pipeline).to.include("bandbool");
     });
     it("must execute the pipeline", () => {
-      const pipeline = queue.drain(sharp());
+      const pipeline = drain(cli.parsed.argv);
       sinon.assert.calledWith(pipeline.bandbool, "and");
     });
   });

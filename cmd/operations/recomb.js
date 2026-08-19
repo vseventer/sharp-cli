@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#recomb
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const placeholders = {
   matrix: {
@@ -58,7 +55,7 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   const { matrix } = args;
-  return queue.push([
+  return args["#queue"].push([
     "recomb",
     (sharp) => {
       return sharp.recomb([

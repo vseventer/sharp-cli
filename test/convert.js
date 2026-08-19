@@ -23,7 +23,7 @@
 
 // Standard lib.
 import path from "node:path";
-import { Readable } from "node:stream";
+import { Readable, Writable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
@@ -33,12 +33,12 @@ import { temporaryDirectory, temporaryFile } from "tempy";
 
 // Local modules.
 import convert from "../lib/convert.js";
-import queue from "../lib/queue.js";
 import tile from "../cmd/output.js";
 
 // Test suite.
 describe("convert", () => {
   const options = { sequentialRead: false };
+  const createContext = () => ({ options, queue: [] });
 
   // Default input.
   const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
@@ -50,12 +50,9 @@ describe("convert", () => {
       dest = temporaryDirectory();
     });
     beforeEach(() => {
-      copy = temporaryFile();
+      copy = temporaryFile({ extension: "jpg" });
     });
     beforeEach(async () => fs.copy(input, copy));
-    afterEach(() => {
-      queue.length = 0; // Empty queue.
-    });
     afterEach(() => fs.remove(copy));
     afterEach(() => fs.emptyDir(dest));
     after(() => fs.remove(dest));
@@ -63,23 +60,37 @@ describe("convert", () => {
     // Tests.
     it("must convert a file", () => {
       return convert
-        .files([input], dest, options)
+        .files([input], dest, createContext())
         .then(([info]) => expect(fs.existsSync(info.path)).to.be.true);
     });
     it("must convert a file formatted based on extension", () => {
       return convert
-        .files([input], path.join(dest, "{name}.avif"), options)
+        .files([input], path.join(dest, "{name}.avif"), createContext())
         .then(([info]) => {
           expect(info).to.have.property("format", "heif");
           expect(info).to.have.property("path");
           expect(info.path).to.contain(".avif");
         });
     });
+    it("must pass the output extension format to queued handlers", () => {
+      const context = createContext();
+      let format;
+      context.queue.push([
+        "format",
+        (sharp, context) => {
+          format = context.format;
+          return sharp;
+        },
+      ]);
+      return convert
+        .files([input], path.join(dest, "{name}.avif"), context)
+        .then(() => expect(format).to.equal("avif"));
+    });
     it("must convert a file and output to an existing directory", () => {
       // Negative test for directory that does not exist.
       const rand = "" + Math.random();
       return convert
-        .files([input, input], rand, options)
+        .files([input, input], rand, createContext())
         .then(() => {
           throw new Error("STOP");
         })
@@ -92,21 +103,22 @@ describe("convert", () => {
     });
     it("must convert multiple files", () => {
       return convert
-        .files([input, input], dest, options)
+        .files([input, input], dest, createContext())
         .then((info) => expect(info).to.have.length(2));
     });
     it("must support output templates", () => {
       const rand = Math.random();
       return convert
-        .files([input], path.join(dest, `{name}-${rand}{ext}`), options)
+        .files([input], path.join(dest, `{name}-${rand}{ext}`), createContext())
         .then(([info]) => expect(info.path).to.contain(`input-${rand}.jpg`));
     });
     it("must allow the same file as input and output", () => {
-      return convert.files([copy], path.dirname(copy), options);
+      return convert.files([copy], path.dirname(copy), createContext());
     });
     it("must support tiled output", () => {
-      tile.handler({ container: "zip" });
-      return convert.files([input], dest, options);
+      const context = createContext();
+      tile.handler({ "#queue": context.queue, container: "zip" });
+      return convert.files([input], dest, context);
     });
     it("must warn if there is no files", () => {
       return convert
@@ -125,14 +137,18 @@ describe("convert", () => {
     // Default output.
     let dest;
     beforeEach(() => {
-      dest = temporaryFile();
+      dest = temporaryFile({ extension: "jpg" });
     });
     afterEach(() => fs.remove(dest));
 
     // Tests.
     it("must convert a file", () => {
       return convert
-        .stream(fs.createReadStream(input), fs.createWriteStream(dest), options)
+        .stream(
+          fs.createReadStream(input),
+          fs.createWriteStream(dest),
+          createContext(),
+        )
         .then((info) => {
           expect(info.format).to.exist();
           expect(info.path).not.to.exist();
@@ -144,7 +160,7 @@ describe("convert", () => {
         .stream(
           Readable.from(["not an image"]),
           fs.createWriteStream(dest),
-          options,
+          createContext(),
         )
         .then(() => {
           throw new Error("STOP");
@@ -153,6 +169,21 @@ describe("convert", () => {
           expect(err).to.exist();
           expect(err.message).to.contain("unsupported image format");
         });
+    });
+
+    it("must reject output stream errors", () => {
+      const error = new Error("output failed");
+      const failingOutput = new Writable({
+        write(_chunk, _encoding, callback) {
+          callback(error);
+        },
+      });
+      return convert
+        .stream(fs.createReadStream(input), failingOutput, createContext())
+        .then(() => {
+          throw new Error("STOP");
+        })
+        .catch((err) => expect(err).to.equal(error));
     });
   });
 });

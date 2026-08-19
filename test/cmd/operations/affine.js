@@ -26,28 +26,26 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import affine from "../../../cmd/operations/affine.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("affine", () => {
-    const cli = yargsFactory().command(affine);
+    const cli = createInstance().command(affine);
 
     // Default matrix.
     const matrix = [1, 0.3, 0.1, 0.7];
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<matrix..>", () => {
       // Run.
-      beforeEach(() => cli.parse(["affine", ...matrix]));
+      before(() => cli.parseAsync(["affine", ...matrix]));
 
       // Tests.
       it("must set the matrix flag", () => {
@@ -55,11 +53,12 @@ export default function register() {
         expect(cli.parsed.argv.matrix).to.eql(matrix);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("affine");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("affine");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.affine, [
           matrix.slice(0, 2),
           matrix.slice(2, 4),
@@ -73,8 +72,8 @@ export default function register() {
         const background = "rgba(0,0,0,.5)";
 
         // Run.
-        beforeEach(() =>
-          cli.parse(["affine", ...matrix, "--background", background]),
+        before(() =>
+          cli.parseAsync(["affine", ...matrix, "--background", background]),
         );
 
         // Tests.
@@ -82,11 +81,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("background", background);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("affine");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("affine");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.affine, sinon.match.any, {
             background,
           });
@@ -99,8 +99,8 @@ export default function register() {
           const value = 10;
 
           // Run.
-          beforeEach(() =>
-            cli.parse(["affine", ...matrix, `--${alias}`, value]),
+          before(() =>
+            cli.parseAsync(["affine", ...matrix, `--${alias}`, value]),
           );
 
           // Tests.
@@ -108,11 +108,12 @@ export default function register() {
             expect(cli.parsed.argv).to.have.property(alias, value);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("affine");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("affine");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.affine, sinon.match.any, {
               [alias]: value,
             });
@@ -125,8 +126,8 @@ export default function register() {
         const interpolator = "nohalo";
 
         // Run.
-        beforeEach(() =>
-          cli.parse(["affine", ...matrix, "--interpolate", interpolator]),
+        before(() =>
+          cli.parseAsync(["affine", ...matrix, "--interpolate", interpolator]),
         );
 
         // Tests.
@@ -134,11 +135,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("interpolate", interpolator);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("affine");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("affine");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.affine, sinon.match.any, {
             interpolate: interpolator,
           });

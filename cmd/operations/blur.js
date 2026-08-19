@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#blur
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   sigma: {
@@ -68,7 +65,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "blur",
     (sharp) => {
       if (args.minAmplitude || args.precision) {

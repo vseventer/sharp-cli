@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-channel#removealpha
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Command builder.
 const builder = (yargs) => {
   return yargs
@@ -37,8 +34,8 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = () =>
-  queue.push(["removeAlpha", (sharp) => sharp.removeAlpha()]);
+const handler = (args) =>
+  args["#queue"].push(["removeAlpha", (sharp) => sharp.removeAlpha()]);
 
 // Exports.
 export default {

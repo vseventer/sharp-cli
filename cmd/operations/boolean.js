@@ -25,7 +25,6 @@
 
 // Local modules.
 import constants from "../../lib/constants.js";
-import queue from "../../lib/queue.js";
 
 // Configure.
 const positionals = {
@@ -53,7 +52,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "boolean",
     (sharp) => sharp.boolean(args.operand, args.operator),
   ]);

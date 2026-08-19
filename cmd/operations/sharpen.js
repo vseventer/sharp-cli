@@ -24,7 +24,6 @@
 // @see https://sharp.pixelplumbing.com/api-operation#sharpen
 
 // Local modules.
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 // Configure.
@@ -89,7 +88,7 @@ const handler = (args) => {
     ...pick(args, optionNames),
   };
 
-  return queue.push([
+  return args["#queue"].push([
     "sharpen",
     (sharp) => {
       if (Object.keys(options).length === 0) {

@@ -26,17 +26,16 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import recomb from "../../../cmd/operations/recomb.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("recomb", () => {
-    const cli = yargsFactory().command(recomb);
+    const cli = createInstance().command(recomb);
 
     // Default matrix.
     const matrix = [
@@ -44,12 +43,11 @@ export default function register() {
     ];
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<matrix..>", () => {
       // Run.
-      beforeEach(() => cli.parse(["recomb", ...matrix]));
+      before(() => cli.parseAsync(["recomb", ...matrix]));
 
       // Tests.
       it("must set the matrix flag", () => {
@@ -57,11 +55,12 @@ export default function register() {
         expect(cli.parsed.argv.matrix).to.eql(matrix);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("recomb");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("recomb");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.recomb, [
           matrix.slice(0, 3),
           matrix.slice(3, 6),

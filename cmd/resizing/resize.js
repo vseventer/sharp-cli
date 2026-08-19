@@ -25,7 +25,6 @@
 
 // Local modules.
 import constants from "../../lib/constants.js";
-import queue from "../../lib/queue.js";
 import { pick } from "../../lib/utils.js";
 
 // Configure.
@@ -131,7 +130,7 @@ const builder = (yargs) => {
 // Command handler.
 const handler = (args) => {
   // @see https://sharp.pixelplumbing.com/api-resize#resize
-  return queue.push([
+  return args["#queue"].push([
     "resize",
     (sharp) => {
       return sharp.resize(args.width, args.height, pick(args, optionNames));

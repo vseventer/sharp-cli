@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#clahe
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   height: {
@@ -63,7 +60,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "clahe",
     (sharp) => {
       return sharp.clahe({

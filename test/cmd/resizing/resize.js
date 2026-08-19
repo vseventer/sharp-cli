@@ -26,30 +26,28 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import resize from "../../../cmd/resizing/resize.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("resize", () => {
-    const cli = yargsFactory().command(resize);
+    const cli = createInstance().command(resize);
 
     // Default width × height.
     const width = 100;
     const height = 200;
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       it("must prompt an error", async () => {
         const error = await new Promise((resolve) =>
-          cli.parse(["resize"], (err) => resolve(err)),
+          cli.parseAsync(["resize"], (err) => resolve(err)),
         );
         expect(error).to.exist();
         expect(error).to.have.property("message");
@@ -58,42 +56,44 @@ export default function register() {
     });
 
     describe("[width]", () => {
-      beforeEach(() => cli.parse(["resize", width]));
+      before(() => cli.parseAsync(["resize", width]));
 
       it("must set the width flag", () => {
         const args = cli.parsed.argv;
         expect(args).to.have.property("width", width);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("resize");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("resize");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.resize, width, null);
       });
     });
 
     describe("[height]", () => {
-      beforeEach(() => cli.parse(["resize", "--height", height]));
+      before(() => cli.parseAsync(["resize", "--height", height]));
 
       it("must set the height flag", () => {
         const args = cli.parsed.argv;
         expect(args).to.have.property("height", height);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("resize");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("resize");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.resize, null, height);
       });
     });
 
     describe("[width] [height]", () => {
       // Run.
-      beforeEach(() => cli.parse(["resize", width, height]));
+      before(() => cli.parseAsync(["resize", width, height]));
 
       // Tests.
       it("must set the width and height flags", () => {
@@ -102,11 +102,12 @@ export default function register() {
         expect(args).to.have.property("height", height);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("resize");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("resize");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.resize, width, height);
       });
     });
@@ -118,8 +119,8 @@ export default function register() {
         const background = "rgba(0,0,0,.5)";
 
         // Run.
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--background", background]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--background", background]),
         );
 
         // Tests.
@@ -127,11 +128,12 @@ export default function register() {
           expect(cli.parsed.argv).to.have.property("background", background);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -143,19 +145,20 @@ export default function register() {
 
       // @see https://sharp.pixelplumbing.com/api-resize#resize
       describe("--fastShrinkOnLoad", () => {
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--no-fastShrinkOnLoad"]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--no-fastShrinkOnLoad"]),
         );
 
         it("must set the fastShrinkOnLoad flag", () => {
           expect(cli.parsed.argv).to.have.property("fastShrinkOnLoad", false);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -170,17 +173,18 @@ export default function register() {
         // Default fit.
         const fit = "fill";
 
-        beforeEach(() => cli.parse(["resize", width, height, "--fit", fit]));
+        before(() => cli.parseAsync(["resize", width, height, "--fit", fit]));
 
         it("must set the fit flag", () => {
           expect(cli.parsed.argv).to.have.property("fit", fit);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -195,19 +199,20 @@ export default function register() {
         // Default kernel.
         const kernel = "lanczos3";
 
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--kernel", kernel]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--kernel", kernel]),
         );
 
         it("must set the kernel flag", () => {
           expect(cli.parsed.argv).to.have.property("kernel", kernel);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -222,19 +227,20 @@ export default function register() {
         // Default position.
         const position = "centre";
 
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--position", position]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--position", position]),
         );
 
         it("must set the position flag", () => {
           expect(cli.parsed.argv).to.have.property("position", position);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -246,19 +252,20 @@ export default function register() {
 
       // @see https://sharp.pixelplumbing.com/api-resize#withoutenlargement
       describe("--withoutEnlargement", () => {
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--withoutEnlargement"]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--withoutEnlargement"]),
         );
 
         it("must set the withoutEnlargement flag", () => {
           expect(cli.parsed.argv).to.have.property("withoutEnlargement", true);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,
@@ -270,19 +277,20 @@ export default function register() {
 
       // @see https://sharp.pixelplumbing.com/api-resize#resize
       describe("--withoutReduction", () => {
-        beforeEach(() =>
-          cli.parse(["resize", width, height, "--withoutReduction"]),
+        before(() =>
+          cli.parseAsync(["resize", width, height, "--withoutReduction"]),
         );
 
         it("must set the withoutReduction flag", () => {
           expect(cli.parsed.argv).to.have.property("withoutReduction", true);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("resize");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("resize");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(
             pipeline.resize,
             sinon.match.any,

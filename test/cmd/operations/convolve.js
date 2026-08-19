@@ -26,17 +26,16 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
 import convolve from "../../../cmd/operations/convolve.js";
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 
 // Test suite.
 export default function register() {
   describe("convolve", () => {
-    const cli = yargsFactory().command(convolve);
+    const cli = createInstance().command(convolve);
 
     // Default width, height, and kernel.
     const width = 3;
@@ -44,12 +43,11 @@ export default function register() {
     const kernel = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("<width> <height> <kernel>", () => {
       // Run.
-      beforeEach(() => cli.parse(["convolve", width, height, ...kernel]));
+      before(() => cli.parseAsync(["convolve", width, height, ...kernel]));
 
       // Tests.
       it("must set the width, height, and kernel flags", () => {
@@ -60,11 +58,12 @@ export default function register() {
         expect(args.kernel).to.eql(kernel);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("convolve");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("convolve");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.convolve, {
           width,
           height,
@@ -78,19 +77,27 @@ export default function register() {
         // Default offset.
         const offset = 10;
 
-        beforeEach(() =>
-          cli.parse(["convolve", width, height, ...kernel, "--offset", offset]),
+        before(() =>
+          cli.parseAsync([
+            "convolve",
+            width,
+            height,
+            ...kernel,
+            "--offset",
+            offset,
+          ]),
         );
 
         it("must set the offset flag", () => {
           expect(cli.parsed.argv).to.have.property("offset", offset);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("convolve");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("convolve");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.convolve, { offset });
         });
       });
@@ -98,19 +105,27 @@ export default function register() {
         // Default scale.
         const scale = 10;
 
-        beforeEach(() =>
-          cli.parse(["convolve", width, height, ...kernel, "--scale", scale]),
+        before(() =>
+          cli.parseAsync([
+            "convolve",
+            width,
+            height,
+            ...kernel,
+            "--scale",
+            scale,
+          ]),
         );
 
         it("must set the scale flag", () => {
           expect(cli.parsed.argv).to.have.property("scale", scale);
         });
         it("must update the pipeline", () => {
-          expect(queue.pipeline).to.have.length(1);
-          expect(queue.pipeline).to.include("convolve");
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("convolve");
         });
         it("must execute the pipeline", () => {
-          const pipeline = queue.drain(sharp());
+          const pipeline = drain(cli.parsed.argv);
           sinon.assert.calledWithMatch(pipeline.convolve, { scale });
         });
       });

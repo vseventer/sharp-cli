@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#dilate
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   width: {
@@ -49,7 +46,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push(["dilate", (sharp) => sharp.dilate(args.width)]);
+  return args["#queue"].push(["dilate", (sharp) => sharp.dilate(args.width)]);
 };
 
 // Exports.

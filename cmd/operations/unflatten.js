@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#unflatten
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Command builder.
 const builder = (yargs) => {
   return yargs
@@ -37,7 +34,8 @@ const builder = (yargs) => {
 };
 
 // Command handler.
-const handler = () => queue.push(["unflatten", (sharp) => sharp.unflatten()]);
+const handler = (args) =>
+  args["#queue"].push(["unflatten", (sharp) => sharp.unflatten()]);
 
 // Exports.
 export default {

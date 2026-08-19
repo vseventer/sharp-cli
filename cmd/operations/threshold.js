@@ -23,9 +23,6 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#threshold
 
-// Local modules.
-import queue from "../../lib/queue.js";
-
 // Configure.
 const positionals = {
   value: {
@@ -58,7 +55,7 @@ const builder = (yargs) => {
 
 // Command handler.
 const handler = (args) => {
-  return queue.push([
+  return args["#queue"].push([
     "threshold",
     (sharp) => {
       return sharp.threshold(args.value, { greyscale: args.greyscale });

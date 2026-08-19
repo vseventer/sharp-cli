@@ -26,33 +26,32 @@
 // Package modules.
 import expect from "must";
 import sinon from "sinon";
-import yargsFactory from "yargs";
 
 // Local modules.
-import queue from "../../../lib/queue.js";
 import sharp from "../../mocks/sharp.js";
+import { createInstance, drain, getPipeline } from "../../test-utils.js";
 import sharpen from "../../../cmd/operations/sharpen.js";
 
 // Test suite.
 export default function register() {
   describe("sharpen", () => {
-    const cli = yargsFactory().command(sharpen);
+    const cli = createInstance().command(sharpen);
 
     // Reset.
-    afterEach("queue", () => queue.splice(0));
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
       // Run.
-      beforeEach(() => cli.parse(["sharpen"]));
+      before(() => cli.parseAsync(["sharpen"]));
 
       // Tests.
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("sharpen");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("sharpen");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.called(pipeline.sharpen);
       });
     });
@@ -62,18 +61,19 @@ export default function register() {
       const sigma = 1.1;
 
       // Run.
-      beforeEach(() => cli.parse(["sharpen", sigma]));
+      before(() => cli.parseAsync(["sharpen", sigma]));
 
       // Tests.
       it("must set the sigma flag", () => {
         expect(cli.parsed.argv).to.have.property("sigma", sigma);
       });
       it("must update the pipeline", () => {
-        expect(queue.pipeline).to.have.length(1);
-        expect(queue.pipeline).to.include("sharpen");
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("sharpen");
       });
       it("must execute the pipeline", () => {
-        const pipeline = queue.drain(sharp());
+        const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.sharpen, { sigma });
       });
     });
@@ -85,18 +85,19 @@ export default function register() {
           const flat = 1.1;
 
           // Run.
-          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, flat]));
+          before(() => cli.parseAsync(["sharpen", 2, `--${alias}`, flat]));
 
           // Tests.
           it("must set the flat flag", () => {
             expect(cli.parsed.argv).to.have.property("m1", flat);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("sharpen");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("sharpen");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.sharpen, { m1: flat });
           });
         });
@@ -108,18 +109,19 @@ export default function register() {
           const jagged = 1.1;
 
           // Run.
-          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, jagged]));
+          before(() => cli.parseAsync(["sharpen", 2, `--${alias}`, jagged]));
 
           // Tests.
           it("must set the jagged flag", () => {
             expect(cli.parsed.argv).to.have.property("jagged", jagged);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("sharpen");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("sharpen");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.sharpen, { m2: jagged });
           });
         });
@@ -131,18 +133,19 @@ export default function register() {
           const value = 1.1;
 
           // Run.
-          beforeEach(() => cli.parse(["sharpen", 2, `--${alias}`, value]));
+          before(() => cli.parseAsync(["sharpen", 2, `--${alias}`, value]));
 
           // Tests.
           it("must set the flat flag", () => {
             expect(cli.parsed.argv).to.have.property(alias, value);
           });
           it("must update the pipeline", () => {
-            expect(queue.pipeline).to.have.length(1);
-            expect(queue.pipeline).to.include("sharpen");
+            const pipeline = getPipeline(cli.parsed.argv);
+            expect(pipeline).to.have.length(1);
+            expect(pipeline).to.include("sharpen");
           });
           it("must execute the pipeline", () => {
-            const pipeline = queue.drain(sharp());
+            const pipeline = drain(cli.parsed.argv);
             sinon.assert.calledWithMatch(pipeline.sharpen, { [alias]: value });
           });
         });
