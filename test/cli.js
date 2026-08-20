@@ -1357,6 +1357,30 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--tune", () => {
+      // Default tune.
+      const tune = "ssim";
+
+      // Run.
+      before(() => cli.parseAsync(["--tune", tune, ...ioFlags]));
+
+      // Tests.
+      it("must set the tune flag", () => {
+        expect(cli.parsed.argv).to.have.property("tune", tune);
+      });
+      it("must update the pipeline", () => {
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(2);
+        expect(pipeline).to.include("avif");
+        expect(pipeline).to.include("heif");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.calledWithMatch(pipeline.avif, { tune });
+        sinon.assert.calledWithMatch(pipeline.heif, { tune });
+      });
+    });
+
     describe("--unlimited", () => {
       // Run.
       before(() => cli.parseAsync(["--unlimited", ...ioFlags]));

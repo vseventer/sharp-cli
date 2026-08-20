@@ -177,6 +177,8 @@ Optimization Options
                                                           [string] [default: rgba(255, 255, 255, 1)]
       --tileHeight                              Vertical tile size                          [number]
       --tileWidth                               Horizontal tile size                        [number]
+      --tune                                    Tune output for a quality metric
+                                             [choices: "auto", "iq", "psnr", "ssim"] [default: auto]
       --trellisQuantisation                     Apply trellis quantisation                 [boolean]
       --xres                                    Horizontal resolution        [number] [default: 1.0]
       --yres                                    Vertical resolution          [number] [default: 1.0]
