@@ -3,6 +3,7 @@
 ## 6.0.0-dev
 
 - Added `--dry` option to process images without writing output files.
+- Added `--print` option to print input and output metadata as JSON.
 - Removed `jpg` output format alias; use `jpeg` instead.
 - Internal refactor from CommonJS to ESM.
 - Updated `sharp` dependency to 0.35.3.
