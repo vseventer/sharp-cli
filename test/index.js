@@ -22,6 +22,7 @@
  */
 
 // Standard lib.
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
@@ -96,6 +97,34 @@ describe("CLI", () => {
       expect(metadata.output).to.have.property("width", 100);
       sinon.assert.notCalled(logger.error);
     });
+  });
+  it("must print partial batch failures as JSON", () => {
+    const invalid = path.join(dest, "invalid.jpg");
+    return fs
+      .outputFile(invalid, "not an image")
+      .then(() =>
+        cli(["--dry", "--print", "-i", input, invalid, "-o", dest], { logger }),
+      )
+      .then(() => {
+        const output = JSON.parse(logger.log.firstCall.args[0]);
+        expect(output).to.have.length(2);
+        expect(output[0]).to.have.property("input");
+        expect(output[0]).to.have.property("output");
+        expect(output[1]).to.have.property("error");
+        sinon.assert.notCalled(logger.error);
+        expect(process.exitCode).to.equal(1);
+      });
+  });
+  it("must report partial batch failures", () => {
+    const invalid = path.join(dest, "invalid.jpg");
+    return fs
+      .outputFile(invalid, "not an image")
+      .then(() => cli(["-i", input, invalid, "-o", dest], { logger }))
+      .then(() => {
+        sinon.assert.calledWithMatch(logger.log, path.join(dest, "input.jpg"));
+        sinon.assert.calledWithMatch(logger.error, "FAILED:");
+        expect(process.exitCode).to.equal(1);
+      });
   });
   it("must display errors", () => {
     return cli(["-i", missing, "-o", dest], { logger }).then(() => {
