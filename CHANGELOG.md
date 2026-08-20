@@ -2,6 +2,7 @@
 
 ## 6.0.0-dev
 
+- Added [`--limitInputChannels`](https://sharp.pixelplumbing.com/api-constructor/) input option.
 - Added `--dry` option to process images without writing output files.
 - Added `--print` option to print input and output metadata as JSON.
 - Removed `jpg` output format alias; use `jpeg` instead.

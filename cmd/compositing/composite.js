@@ -190,6 +190,7 @@ const handler = (args) => {
           ignoreIcc: getValueAt(args.ignoreIcc),
           input,
           left: getValueAt(args.left, idx),
+          limitInputChannels: args.limitInputChannels,
           limitInputPixels: args.limitInputPixels,
           pdfBackground: args.pdfBackground,
           premultiplied: getValueAt(args.premultiplied, idx),

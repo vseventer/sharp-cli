@@ -585,6 +585,33 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--limitInputChannels", () => {
+      // Default value.
+      const value = 4;
+
+      before(() =>
+        cli.parseAsync([
+          "--limitInputChannels",
+          value,
+          "composite",
+          input,
+          ...ioFlags,
+        ]),
+      );
+
+      it("must set the limitInputChannels flag", () => {
+        const args = cli.parsed.argv;
+        expect(args).to.have.property("limitInputChannels", value);
+      });
+      it("must set the limitInputChannels flag when using composite", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.calledWithMatch(
+          pipeline.composite,
+          sinon.match.hasNested("[0].limitInputChannels", value),
+        );
+      });
+    });
+
     describe("--limitInputPixels", () => {
       // Default value.
       const value = 10;
