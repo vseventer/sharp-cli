@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#sharpen
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("sharpen");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("sharpen"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,12 +67,12 @@ export default function register() {
 
       // Tests.
       it("must set the sigma flag", () => {
-        expect(cli.parsed.argv).to.have.property("sigma", sigma);
+        assert.equal(cli.parsed.argv["sigma"], sigma);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("sharpen");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("sharpen"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -89,12 +91,12 @@ export default function register() {
 
           // Tests.
           it("must set the flat flag", () => {
-            expect(cli.parsed.argv).to.have.property("m1", flat);
+            assert.equal(cli.parsed.argv["m1"], flat);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("sharpen");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("sharpen"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -113,12 +115,12 @@ export default function register() {
 
           // Tests.
           it("must set the jagged flag", () => {
-            expect(cli.parsed.argv).to.have.property("jagged", jagged);
+            assert.equal(cli.parsed.argv["jagged"], jagged);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("sharpen");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("sharpen"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -137,12 +139,12 @@ export default function register() {
 
           // Tests.
           it("must set the flat flag", () => {
-            expect(cli.parsed.argv).to.have.property(alias, value);
+            assert.equal(cli.parsed.argv[alias], value);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("sharpen");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("sharpen"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);

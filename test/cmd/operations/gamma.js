@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#gamma
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gamma");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gamma"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,12 +67,12 @@ export default function register() {
 
       // Tests.
       it("must set the gamma flag", () => {
-        expect(cli.parsed.argv).to.have.property("gamma", gamma);
+        assert.equal(cli.parsed.argv["gamma"], gamma);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gamma");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gamma"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -87,12 +89,12 @@ export default function register() {
 
       // Tests.
       it("must set the gammaOut flag", () => {
-        expect(cli.parsed.argv).to.have.property("gammaOut", gammaOut);
+        assert.equal(cli.parsed.argv["gammaOut"], gammaOut);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gamma");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gamma"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

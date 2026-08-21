@@ -23,8 +23,10 @@
 
 // @see http://sharp.pixelplumbing.com/api-operation#modulate
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("modulate");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("modulate"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,12 +67,12 @@ export default function register() {
           before(() => cli.parseAsync(["modulate", `--${option}`, value]));
 
           it(`must set the ${option} flag`, () => {
-            expect(cli.parsed.argv).to.have.property(option, value);
+            assert.equal(cli.parsed.argv[option], value);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("modulate");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("modulate"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);

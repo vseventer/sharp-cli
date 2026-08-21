@@ -22,10 +22,10 @@
  */
 
 // Standard lib.
+import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -53,12 +53,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the adaptiveFiltering flag", () => {
-        expect(cli.parsed.argv).to.have.property("adaptiveFiltering", true);
+        assert.equal(cli.parsed.argv["adaptiveFiltering"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("png");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("png"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -77,12 +77,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the alphaQuality flag", () => {
-        expect(cli.parsed.argv).to.have.property("alphaQuality", alphaQuality);
+        assert.equal(cli.parsed.argv["alphaQuality"], alphaQuality);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -97,7 +97,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the animated flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("animated", true);
+        assert.equal(args["animated"], true);
       });
       it("must set the animated flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -115,7 +115,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the autoOrient flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("autoOrient", true);
+        assert.equal(args["autoOrient"], true);
       });
       it("must set the autoOrient flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -132,12 +132,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the bigtiff flag", () => {
-        expect(cli.parsed.argv).to.have.property("bigtiff", true);
+        assert.equal(cli.parsed.argv["bigtiff"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -154,12 +154,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the bitdepth flag", () => {
-        expect(cli.parsed.argv).to.have.property("bitdepth", bitdepth);
+        assert.equal(cli.parsed.argv["bitdepth"], bitdepth);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -178,16 +178,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the chromaSubsampling flag", () => {
-        expect(cli.parsed.argv).to.have.property(
-          "chromaSubsampling",
-          chromaSubsampling,
-        );
+        assert.equal(cli.parsed.argv["chromaSubsampling"], chromaSubsampling);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(2);
-        expect(pipeline).to.include("avif");
-        expect(pipeline).to.include("jpeg");
+        assert.equal(pipeline.length, 2);
+        assert.ok(pipeline.includes("avif"));
+        assert.ok(pipeline.includes("jpeg"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -205,13 +202,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the colors flag", () => {
-          expect(cli.parsed.argv).to.have.property("colors", colors);
+          assert.equal(cli.parsed.argv["colors"], colors);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(2);
-          expect(pipeline).to.include("gif");
-          expect(pipeline).to.include("png");
+          assert.equal(pipeline.length, 2);
+          assert.ok(pipeline.includes("gif"));
+          assert.ok(pipeline.includes("png"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -229,12 +226,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the compression flag", () => {
-        expect(cli.parsed.argv).to.have.property("compression", compression);
+        assert.equal(cli.parsed.argv["compression"], compression);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -252,12 +249,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the compressionLevel flag", () => {
-          expect(cli.parsed.argv).to.have.property("compressionLevel", level);
+          assert.equal(cli.parsed.argv["compressionLevel"], level);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("png");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("png"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -277,12 +274,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the delay flag", () => {
-        expect(cli.parsed.argv).to.have.property("delay", delay);
+        assert.equal(cli.parsed.argv["delay"], delay);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -299,7 +296,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the density flag", () => {
-        expect(cli.parsed.argv).to.have.property("density", density);
+        assert.equal(cli.parsed.argv["density"], density);
       });
     });
 
@@ -312,13 +309,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the dither flag", () => {
-        expect(cli.parsed.argv).to.have.property("dither", dither);
+        assert.equal(cli.parsed.argv["dither"], dither);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(2);
-        expect(pipeline).to.include("gif");
-        expect(pipeline).to.include("png");
+        assert.equal(pipeline.length, 2);
+        assert.ok(pipeline.includes("gif"));
+        assert.ok(pipeline.includes("png"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -333,7 +330,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the dry flag", () => {
-        expect(cli.parsed.argv).to.have.property("dry", true);
+        assert.equal(cli.parsed.argv["dry"], true);
       });
     });
 
@@ -346,16 +343,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the effort flag", () => {
-        expect(cli.parsed.argv).to.have.property("effort", effort);
+        assert.equal(cli.parsed.argv["effort"], effort);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(5);
-        expect(pipeline).to.include("avif");
-        expect(pipeline).to.include("gif");
-        expect(pipeline).to.include("heif");
-        expect(pipeline).to.include("png");
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 5);
+        assert.ok(pipeline.includes("avif"));
+        assert.ok(pipeline.includes("gif"));
+        assert.ok(pipeline.includes("heif"));
+        assert.ok(pipeline.includes("png"));
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -369,12 +366,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the exact flag", () => {
-        expect(cli.parsed.argv).to.have.property("exact", true);
+        assert.equal(cli.parsed.argv["exact"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -392,7 +389,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the failOn flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("failOn", failOn);
+        assert.equal(args["failOn"], failOn);
       });
       it("must set the failOn flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -413,12 +410,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the format flag", () => {
-          expect(cli.parsed.argv).to.have.property("format", format);
+          assert.equal(cli.parsed.argv["format"], format);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("format");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("format"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -428,11 +425,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
     ["h", "help"].forEach((alias) => {
       describe(`--${alias}`, () => {
-        it("must display help", async () => {
-          const output = await cli
-            .parseAsync([`--${alias}`])
-            .catch((output) => output);
-          expect(output).to.contain("Commands");
+        it("must display help", () => {
+          return assert.rejects(cli.parseAsync([`--${alias}`]), (output) => {
+            assert.ok(output.includes("Commands"));
+            return true;
+          });
         });
       });
     });
@@ -446,12 +443,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the hbitdepth flag", () => {
-        expect(cli.parsed.argv).to.have.property("hbitdepth", bitdepth);
+        assert.equal(cli.parsed.argv["hbitdepth"], bitdepth);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("heif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("heif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -468,12 +465,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the compression flag", () => {
-        expect(cli.parsed.argv).to.have.property("hcompression", compression);
+        assert.equal(cli.parsed.argv["hcompression"], compression);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("heif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("heif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -490,18 +487,15 @@ describe(`${pkg.name} <options> [command..]`, () => {
         // Tests.
         it("must set the input flag", () => {
           const args = cli.parsed.argv;
-          expect(args).to.have.property("input");
-          expect(args.input).to.eql([input, input]);
+          assert.ok(Object.prototype.hasOwnProperty.call(args, "input"));
+          assert.deepEqual(args.input, [input, input]);
         });
 
-        it("must fail when no input is given", async () => {
-          const error = await cli
-            .parseAsync([`--${alias}`, "-o", output])
-            .then(() => {
-              throw new Error("STOP");
-            })
-            .catch((error) => error);
-          expect(error.message).to.contain("Not enough arguments");
+        it("must fail when no input is given", () => {
+          return assert.rejects(
+            cli.parseAsync([`--${alias}`, "-o", output]),
+            "Not enough arguments",
+          );
         });
       });
     });
@@ -513,7 +507,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the ignoreIcc flag", () => {
-        expect(cli.parsed.argv).to.have.property("ignoreIcc", true);
+        assert.equal(cli.parsed.argv["ignoreIcc"], true);
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -533,12 +527,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the interFrameMaxError flag", () => {
-        expect(cli.parsed.argv).to.have.property("interFrameMaxError", max);
+        assert.equal(cli.parsed.argv["interFrameMaxError"], max);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -555,12 +549,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the interPaletteMaxError flag", () => {
-        expect(cli.parsed.argv).to.have.property("interPaletteMaxError", max);
+        assert.equal(cli.parsed.argv["interPaletteMaxError"], max);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -576,12 +570,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the keepDuplicateFrames flag", () => {
-        expect(cli.parsed.argv).to.have.property("keepDuplicateFrames", true);
+        assert.equal(cli.parsed.argv["keepDuplicateFrames"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -597,12 +591,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the keepGainMap flag", () => {
-        expect(cli.parsed.argv).to.have.property("keepGainMap", true);
+        assert.equal(cli.parsed.argv["keepGainMap"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("keepGainMap");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("keepGainMap"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -619,7 +613,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the level flag", () => {
-        expect(cli.parsed.argv).to.have.property("level", level);
+        assert.equal(cli.parsed.argv["level"], level);
       });
     });
 
@@ -639,7 +633,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the limitInputChannels flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("limitInputChannels", value);
+        assert.equal(args["limitInputChannels"], value);
       });
       it("must set the limitInputChannels flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -666,7 +660,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the limitInputPixels flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("limitInputPixels", value);
+        assert.equal(args["limitInputPixels"], value);
       });
       it("must set the limitInputPixels flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -686,12 +680,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the loop flag", () => {
-        expect(cli.parsed.argv).to.have.property("loop", loop);
+        assert.equal(cli.parsed.argv["loop"], loop);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("gif");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("gif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -705,14 +699,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the lossless flag", () => {
-        expect(cli.parsed.argv).to.have.property("lossless", true);
+        assert.equal(cli.parsed.argv["lossless"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(3);
-        expect(pipeline).to.include("avif");
-        expect(pipeline).to.include("heif");
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 3);
+        assert.ok(pipeline.includes("avif"));
+        assert.ok(pipeline.includes("heif"));
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -727,12 +721,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the miniswhite flag", () => {
-        expect(cli.parsed.argv).to.have.property("miniswhite", true);
+        assert.equal(cli.parsed.argv["miniswhite"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -746,12 +740,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the minSize flag", () => {
-        expect(cli.parsed.argv).to.have.property("minSize", true);
+        assert.equal(cli.parsed.argv["minSize"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -765,12 +759,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the lossless flag", () => {
-        expect(cli.parsed.argv).to.have.property("mixed", true);
+        assert.equal(cli.parsed.argv["mixed"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -784,12 +778,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the mozjpeg flag", () => {
-        expect(cli.parsed.argv).to.have.property("mozjpeg", true);
+        assert.equal(cli.parsed.argv["mozjpeg"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("jpeg");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("jpeg"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -803,12 +797,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the nearLossless flag", () => {
-        expect(cli.parsed.argv).to.have.property("nearLossless", true);
+        assert.equal(cli.parsed.argv["nearLossless"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -822,12 +816,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the optimise flag", () => {
-          expect(cli.parsed.argv).to.have.property("optimise", true);
+          assert.equal(cli.parsed.argv["optimise"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("jpeg");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("jpeg"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -846,12 +840,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the optimiseScans flag", () => {
-          expect(cli.parsed.argv).to.have.property("optimiseCoding", false);
+          assert.equal(cli.parsed.argv["optimiseCoding"], false);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("jpeg");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("jpeg"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -868,14 +862,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the optimiseScans flag", () => {
-          expect(cli.parsed.argv).to.have.property("optimiseScans", true);
+          assert.equal(cli.parsed.argv["optimiseScans"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(3);
-          expect(pipeline).to.include("jpeg");
-          expect(pipeline).to.include("gif"); // Because: -p.
-          expect(pipeline).to.include("png"); // Because: -p.
+          assert.equal(pipeline.length, 3);
+          assert.ok(pipeline.includes("jpeg"));
+          assert.ok(pipeline.includes("gif")); // Because: -p.
+          assert.ok(pipeline.includes("png")); // Because: -p.
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -890,7 +884,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the output flag", () => {
-          expect(cli.parsed.argv).to.have.property("output", output);
+          assert.equal(cli.parsed.argv["output"], output);
         });
       });
     });
@@ -901,12 +895,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the overshootDeringing flag", () => {
-        expect(cli.parsed.argv).to.have.property("overshootDeringing", true);
+        assert.equal(cli.parsed.argv["overshootDeringing"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("jpeg");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("jpeg"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -925,7 +919,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the page flag", () => {
-        expect(cli.parsed.argv).to.have.property("page", page);
+        assert.equal(cli.parsed.argv["page"], page);
       });
     });
 
@@ -938,7 +932,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the pages flag", () => {
-        expect(cli.parsed.argv).to.have.property("pages", pages);
+        assert.equal(cli.parsed.argv["pages"], pages);
       });
     });
 
@@ -948,12 +942,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the palette flag", () => {
-        expect(cli.parsed.argv).to.have.property("palette", true);
+        assert.equal(cli.parsed.argv["palette"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("png");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("png"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -977,7 +971,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       it("must set the pdfBackground flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("pdfBackground", value);
+        assert.equal(args["pdfBackground"], value);
       });
       it("must set the pdfBackground flag when using composite", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -997,12 +991,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the predictor flag", () => {
-        expect(cli.parsed.argv).to.have.property("predictor", predictor);
+        assert.equal(cli.parsed.argv["predictor"], predictor);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1019,12 +1013,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the preset flag", () => {
-        expect(cli.parsed.argv).to.have.property("preset", preset);
+        assert.equal(cli.parsed.argv["preset"], preset);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1038,7 +1032,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the print flag", () => {
-        expect(cli.parsed.argv).to.have.property("print", true);
+        assert.equal(cli.parsed.argv["print"], true);
       });
     });
 
@@ -1048,12 +1042,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the pyramid flag", () => {
-        expect(cli.parsed.argv).to.have.property("pyramid", true);
+        assert.equal(cli.parsed.argv["pyramid"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1068,14 +1062,14 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the format flag", () => {
-          expect(cli.parsed.argv).to.have.property("progressive", true);
+          assert.equal(cli.parsed.argv["progressive"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(3);
-          expect(pipeline).to.include("gif");
-          expect(pipeline).to.include("jpeg");
-          expect(pipeline).to.include("png");
+          assert.equal(pipeline.length, 3);
+          assert.ok(pipeline.includes("gif"));
+          assert.ok(pipeline.includes("jpeg"));
+          assert.ok(pipeline.includes("png"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1096,16 +1090,16 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the format flag", () => {
-          expect(cli.parsed.argv).to.have.property("quality", quality);
+          assert.equal(cli.parsed.argv["quality"], quality);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(5);
-          expect(pipeline).to.include("avif");
-          expect(pipeline).to.include("heif");
-          expect(pipeline).to.include("jpeg");
-          expect(pipeline).to.include("tiff");
-          expect(pipeline).to.include("webp");
+          assert.equal(pipeline.length, 5);
+          assert.ok(pipeline.includes("avif"));
+          assert.ok(pipeline.includes("heif"));
+          assert.ok(pipeline.includes("jpeg"));
+          assert.ok(pipeline.includes("tiff"));
+          assert.ok(pipeline.includes("webp"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1143,12 +1137,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the quantisationTable flag", () => {
-          expect(cli.parsed.argv).to.have.property("quantisationTable", table);
+          assert.equal(cli.parsed.argv["quantisationTable"], table);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("jpeg");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("jpeg"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1165,12 +1159,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the reoptimise flag", () => {
-          expect(cli.parsed.argv).to.have.property("reuse", true);
+          assert.equal(cli.parsed.argv["reuse"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("gif");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("gif"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1188,12 +1182,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the resolutionUnit flag", () => {
-        expect(cli.parsed.argv).to.have.property("resolutionUnit", unit);
+        assert.equal(cli.parsed.argv["resolutionUnit"], unit);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1207,12 +1201,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the smartDeblock flag", () => {
-        expect(cli.parsed.argv).to.have.property("smartDeblock", true);
+        assert.equal(cli.parsed.argv["smartDeblock"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1226,12 +1220,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the smartSubsample flag", () => {
-        expect(cli.parsed.argv).to.have.property("smartSubsample", true);
+        assert.equal(cli.parsed.argv["smartSubsample"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("webp");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("webp"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1248,7 +1242,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the subifd flag", () => {
-        expect(cli.parsed.argv).to.have.property("subifd", subifd);
+        assert.equal(cli.parsed.argv["subifd"], subifd);
       });
     });
 
@@ -1263,15 +1257,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the tileBackground flag", () => {
-        expect(cli.parsed.argv).to.have.property(
-          "tileBackground",
-          tileBackground,
-        );
+        assert.equal(cli.parsed.argv["tileBackground"], tileBackground);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1290,12 +1281,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the tileHeight flag", () => {
-        expect(cli.parsed.argv).to.have.property("tileHeight", tileHeight);
+        assert.equal(cli.parsed.argv["tileHeight"], tileHeight);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1325,12 +1316,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the tileWidth flag", () => {
-        expect(cli.parsed.argv).to.have.property("tileWidth", tileWidth);
+        assert.equal(cli.parsed.argv["tileWidth"], tileWidth);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1348,12 +1339,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the trellisQuantisation flag", () => {
-        expect(cli.parsed.argv).to.have.property("trellisQuantisation", true);
+        assert.equal(cli.parsed.argv["trellisQuantisation"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("jpeg");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("jpeg"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1364,11 +1355,11 @@ describe(`${pkg.name} <options> [command..]`, () => {
     });
     ["v", "version"].forEach((alias) => {
       describe(`--${alias}`, () => {
-        it("must display the version number", async () => {
-          const output = await cli
-            .parseAsync([`--${alias}`])
-            .catch((output) => output);
-          expect(output).to.equal(pkg.version);
+        it("must display the version number", () => {
+          return assert.rejects(cli.parseAsync([`--${alias}`]), (output) => {
+            assert.equal(output, pkg.version);
+            return true;
+          });
         });
       });
     });
@@ -1382,12 +1373,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the timeout flag", () => {
-        expect(cli.parsed.argv).to.have.property("timeout", timeout);
+        assert.equal(cli.parsed.argv["timeout"], timeout);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("timeout");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("timeout"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1404,13 +1395,13 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the tune flag", () => {
-        expect(cli.parsed.argv).to.have.property("tune", tune);
+        assert.equal(cli.parsed.argv["tune"], tune);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(2);
-        expect(pipeline).to.include("avif");
-        expect(pipeline).to.include("heif");
+        assert.equal(pipeline.length, 2);
+        assert.ok(pipeline.includes("avif"));
+        assert.ok(pipeline.includes("heif"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1425,7 +1416,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the unlimited flag", () => {
-        expect(cli.parsed.argv).to.have.property("unlimited", true);
+        assert.equal(cli.parsed.argv["unlimited"], true);
       });
     });
 
@@ -1436,12 +1427,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
         // Tests.
         it("must set the withMetadata flag", () => {
-          expect(cli.parsed.argv).to.have.property("withMetadata", true);
+          assert.equal(cli.parsed.argv["withMetadata"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("withMetadata");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("withMetadata"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -1459,12 +1450,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the withDensity flag", () => {
-        expect(cli.parsed.argv).to.have.property("withDensity", density);
+        assert.equal(cli.parsed.argv["withDensity"], density);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("withDensity");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("withDensity"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1478,12 +1469,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the withGainMap flag", () => {
-        expect(cli.parsed.argv).to.have.property("withGainMap", true);
+        assert.equal(cli.parsed.argv["withGainMap"], true);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("withGainMap");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("withGainMap"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1500,12 +1491,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the xres flag", () => {
-        expect(cli.parsed.argv).to.have.property("xres", xRes);
+        assert.equal(cli.parsed.argv["xres"], xRes);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1522,12 +1513,12 @@ describe(`${pkg.name} <options> [command..]`, () => {
 
       // Tests.
       it("must set the yres flag", () => {
-        expect(cli.parsed.argv).to.have.property("yres", yRes);
+        assert.equal(cli.parsed.argv["yres"], yRes);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tiff");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tiff"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -1543,8 +1534,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
     // Tests.
     it("must update the pipeline", () => {
       const pipeline = getPipeline(cli.parsed.argv);
-      expect(pipeline).to.have.length(1);
-      expect(pipeline).to.include("flip");
+      assert.equal(pipeline.length, 1);
+      assert.ok(pipeline.includes("flip"));
     });
     it("must execute the pipeline", () => {
       const pipeline = drain(cli.parsed.argv);
@@ -1562,7 +1553,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         "--format",
         "jpeg",
       ]);
-      expect(getPipeline(cli.parsed.argv)).to.eql([
+      assert.deepEqual(getPipeline(cli.parsed.argv), [
         "format",
         "rotate",
         "resize",
@@ -1582,8 +1573,8 @@ describe(`${pkg.name} <options> [command..]`, () => {
         "--format",
         "webp",
       ]);
-      expect(argv.format).to.equal("webp");
-      expect(getPipeline(argv)).to.eql(["format", "rotate", "resize"]);
+      assert.equal(argv.format, "webp");
+      assert.deepEqual(getPipeline(argv), ["format", "rotate", "resize"]);
     });
 
     it("must apply format-specific options only to the selected format", async () => {

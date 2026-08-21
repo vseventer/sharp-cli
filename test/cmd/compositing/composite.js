@@ -24,11 +24,11 @@
 // @see http://sharp.pixelplumbing.com/api-composite#composite
 
 // Standard lib.
+import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -55,13 +55,15 @@ export default function register() {
 
       // Tests.
       it("must set the images flag", () => {
-        expect(cli.parsed.argv).to.have.property("images");
-        expect(cli.parsed.argv.images[0]).to.equal(path.normalize(input));
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(cli.parsed.argv, "images"),
+        );
+        assert.equal(cli.parsed.argv.images[0], path.normalize(input));
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("composite");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("composite"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -160,12 +162,12 @@ export default function register() {
         before(() => cli.parseAsync(["composite", input, "--blend", blend]));
 
         it("must set the blend flag", () => {
-          expect(cli.parsed.argv).to.have.property("blend", blend);
+          assert.equal(cli.parsed.argv["blend"], blend);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -200,13 +202,13 @@ export default function register() {
         describe("--create.width", () => {
           it("must set the create.width flag", () => {
             const args = cli.parsed.argv;
-            expect(args).to.have.property("create");
-            expect(args.create).to.have.property("width", width);
+            assert.ok(Object.prototype.hasOwnProperty.call(args, "create"));
+            assert.equal(args.create["width"], width);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("composite");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("composite"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -220,13 +222,13 @@ export default function register() {
         describe("--create.height", () => {
           it("must set the create.height flag", () => {
             const args = cli.parsed.argv;
-            expect(args).to.have.property("create");
-            expect(args.create).to.have.property("height", height);
+            assert.ok(Object.prototype.hasOwnProperty.call(args, "create"));
+            assert.equal(args.create["height"], height);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("composite");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("composite"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -240,13 +242,13 @@ export default function register() {
         describe("--create.channels", () => {
           it("must set the create.channels flag", () => {
             const args = cli.parsed.argv;
-            expect(args).to.have.property("create");
-            expect(args.create).to.have.property("channels", channels);
+            assert.ok(Object.prototype.hasOwnProperty.call(args, "create"));
+            assert.equal(args.create["channels"], channels);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("composite");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("composite"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -260,13 +262,13 @@ export default function register() {
         describe("--create.background", () => {
           it("must set the create.background flag", () => {
             const args = cli.parsed.argv;
-            expect(args).to.have.property("create");
-            expect(args.create).to.have.property("background", background);
+            assert.ok(Object.prototype.hasOwnProperty.call(args, "create"));
+            assert.equal(args.create["background"], background);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("composite");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("composite"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -287,12 +289,12 @@ export default function register() {
         );
 
         it("must set the density flag", () => {
-          expect(cli.parsed.argv).to.have.property("density", density);
+          assert.equal(cli.parsed.argv["density"], density);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -309,12 +311,12 @@ export default function register() {
         );
 
         it("must set the gravity flag", () => {
-          expect(cli.parsed.argv).to.have.property("gravity", "centre");
+          assert.equal(cli.parsed.argv["gravity"], "centre");
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -335,12 +337,12 @@ export default function register() {
 
         it("must set the left flag", () => {
           const args = cli.parsed.argv;
-          expect(args).to.have.property("left", left);
+          assert.equal(args["left"], left);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -355,12 +357,12 @@ export default function register() {
         before(() => cli.parseAsync(["composite", input, "--premultiplied"]));
 
         it("must set the premultiplied flag", () => {
-          expect(cli.parsed.argv).to.have.property("premultiplied", true);
+          assert.equal(cli.parsed.argv["premultiplied"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -375,12 +377,12 @@ export default function register() {
         before(() => cli.parseAsync(["composite", input, "--tile"]));
 
         it("must set the tile flag", () => {
-          expect(cli.parsed.argv).to.have.property("tile", true);
+          assert.equal(cli.parsed.argv["tile"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -401,12 +403,12 @@ export default function register() {
 
         it("must set the top flag", () => {
           const args = cli.parsed.argv;
-          expect(args).to.have.property("top", top);
+          assert.equal(args["top"], top);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("composite");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("composite"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

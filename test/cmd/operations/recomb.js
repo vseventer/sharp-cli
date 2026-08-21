@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#recomb
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -51,13 +53,15 @@ export default function register() {
 
       // Tests.
       it("must set the matrix flag", () => {
-        expect(cli.parsed.argv).to.have.property("matrix");
-        expect(cli.parsed.argv.matrix).to.eql(matrix);
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(cli.parsed.argv, "matrix"),
+        );
+        assert.deepEqual(cli.parsed.argv.matrix, matrix);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("recomb");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("recomb"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

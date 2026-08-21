@@ -24,11 +24,11 @@
 // @see https://sharp.pixelplumbing.com/api-operation#boolean
 
 // Standard lib.
+import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -56,13 +56,13 @@ export default function register() {
       // Tests.
       it("must set the operand and operator flags", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("operand", path.normalize(input));
-        expect(args).to.have.property("operator", "and");
+        assert.equal(args["operand"], path.normalize(input));
+        assert.equal(args["operator"], "and");
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("boolean");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("boolean"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

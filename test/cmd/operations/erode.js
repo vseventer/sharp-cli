@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#erode
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -45,8 +47,8 @@ export default function register() {
 
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("erode");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("erode"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -60,12 +62,12 @@ export default function register() {
       before(() => cli.parseAsync(["erode", width]));
 
       it("must set the width flag", () => {
-        expect(cli.parsed.argv).to.have.property("width", width);
+        assert.equal(cli.parsed.argv["width"], width);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("erode");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("erode"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

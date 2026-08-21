@@ -22,12 +22,12 @@
  */
 
 // Standard lib.
+import assert from "node:assert/strict";
 import path from "node:path";
 import { Readable, Writable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import fs from "fs-extra";
 import { temporaryDirectory, temporaryFile } from "tempy";
 
@@ -40,7 +40,7 @@ describe("convert", () => {
   const options = { sequentialRead: false };
   const createContext = () => ({ options, queue: [] });
   const getValue = (result) => {
-    expect(result.status).to.equal("fulfilled");
+    assert.equal(result.status, "fulfilled");
     return result.value;
   };
 
@@ -66,7 +66,7 @@ describe("convert", () => {
       return convert
         .files([input], dest, createContext())
         .then(([result]) =>
-          expect(fs.existsSync(getValue(result).output.path)).to.be.true(),
+          assert.equal(fs.existsSync(getValue(result).output.path), true),
         );
     });
     it("must convert a file formatted based on extension", () => {
@@ -74,9 +74,9 @@ describe("convert", () => {
         .files([input], path.join(dest, "{name}.avif"), createContext())
         .then(([result]) => {
           const info = getValue(result);
-          expect(info.output).to.have.property("format", "heif");
-          expect(info.output).to.have.property("path");
-          expect(info.output.path).to.contain(".avif");
+          assert.equal(info.output["format"], "heif");
+          assert.ok(Object.prototype.hasOwnProperty.call(info.output, "path"));
+          assert.ok(info.output.path.includes(".avif"));
         });
     });
     it("must not write a file during a dry run", () => {
@@ -84,10 +84,10 @@ describe("convert", () => {
       const context = { ...createContext(), dry: true };
       return convert.files([input], dryDest, context).then(([result]) => {
         const info = getValue(result);
-        expect(info.output).to.have.property("format", "jpeg");
-        expect(info.output).to.have.property("size");
-        expect(info.output.path).to.equal(dryDest);
-        expect(fs.existsSync(dryDest)).to.be.false();
+        assert.equal(info.output["format"], "jpeg");
+        assert.ok(Object.prototype.hasOwnProperty.call(info.output, "size"));
+        assert.equal(info.output.path, dryDest);
+        assert.equal(fs.existsSync(dryDest), false);
       });
     });
     it("must return input and output metadata", () => {
@@ -95,18 +95,18 @@ describe("convert", () => {
       const context = { ...createContext(), dry: true, print: true };
       return convert.files([input], output, context).then(([result]) => {
         const info = getValue(result);
-        expect(info.input).to.have.property("format", "jpeg");
-        expect(info.input.path).to.equal(input);
-        expect(info.output).to.have.property("format", "jpeg");
-        expect(info.output.path).to.equal(output);
+        assert.equal(info.input["format"], "jpeg");
+        assert.equal(info.input.path, input);
+        assert.equal(info.output["format"], "jpeg");
+        assert.equal(info.output.path, output);
       });
     });
     it("must return metadata for each file in a batch", () => {
       const context = { ...createContext(), dry: true, print: true };
       return convert.files([input, input], dest, context).then((info) => {
-        expect(info).to.have.length(2);
-        expect(getValue(info[0]).input).to.have.property("format", "jpeg");
-        expect(getValue(info[0]).output).to.have.property("format", "jpeg");
+        assert.equal(info.length, 2);
+        assert.equal(getValue(info[0]).input["format"], "jpeg");
+        assert.equal(getValue(info[0]).output["format"], "jpeg");
       });
     });
     it("must pass the output extension format to queued handlers", () => {
@@ -121,7 +121,7 @@ describe("convert", () => {
       ]);
       return convert
         .files([input], path.join(dest, "{name}.avif"), context)
-        .then(() => expect(format).to.equal("avif"));
+        .then(() => assert.equal(format, "avif"));
     });
     it("must report a file conversion error", () => {
       // Negative test for directory that does not exist.
@@ -129,23 +129,27 @@ describe("convert", () => {
       return convert
         .files([input, input], rand, createContext())
         .then(([result]) => {
-          expect(result.status).to.equal("rejected");
-          expect(result.reason).to.have.property("message");
-          expect(result.reason.message).to.contain(`${rand}/input.jpg`);
-          expect(result.reason.message).to.contain("No such file or directory");
+          assert.equal(result.status, "rejected");
+          assert.ok(
+            Object.prototype.hasOwnProperty.call(result.reason, "message"),
+          );
+          assert.ok(result.reason.message.includes(`${rand}/input.jpg`));
+          assert.ok(
+            result.reason.message.includes("No such file or directory"),
+          );
         });
     });
     it("must convert multiple files", () => {
       return convert
         .files([input, input], dest, createContext())
-        .then((info) => expect(info).to.have.length(2));
+        .then((info) => assert.equal(info.length, 2));
     });
     it("must support output templates", () => {
       const rand = Math.random();
       return convert
         .files([input], path.join(dest, `{name}-${rand}{ext}`), createContext())
         .then(([result]) =>
-          expect(getValue(result).output.path).to.contain(`input-${rand}.jpg`),
+          assert.ok(getValue(result).output.path.includes(`input-${rand}.jpg`)),
         );
     });
     it("must allow the same file as input and output", () => {
@@ -157,16 +161,7 @@ describe("convert", () => {
       return convert.files([input], dest, context);
     });
     it("must warn if there is no files", () => {
-      return convert
-        .files([])
-        .then(() => {
-          throw new Error("STOP");
-        })
-        .catch((err) => {
-          expect(err).to.exist();
-          expect(err).to.have.property("message");
-          expect(err.message).to.contain("No input files");
-        });
+      return assert.rejects(convert.files([]), { message: "No input files" });
     });
   });
   describe("stream", () => {
@@ -186,25 +181,20 @@ describe("convert", () => {
           createContext(),
         )
         .then((info) => {
-          expect(info.output.format).to.exist();
-          expect(info.output.path).to.equal("stdout");
-          expect(fs.existsSync(dest)).to.be.true();
+          assert.ok(info.output.format != null);
+          assert.equal(info.output.path, "stdout");
+          assert.equal(fs.existsSync(dest), true);
         });
     });
     it("must reject stream errors", () => {
-      return convert
-        .stream(
+      return assert.rejects(
+        convert.stream(
           Readable.from(["not an image"]),
           fs.createWriteStream(dest),
           createContext(),
-        )
-        .then(() => {
-          throw new Error("STOP");
-        })
-        .catch((err) => {
-          expect(err).to.exist();
-          expect(err.message).to.contain("unsupported image format");
-        });
+        ),
+        "unsupported image format",
+      );
     });
 
     it("must reject output stream errors", () => {
@@ -214,12 +204,17 @@ describe("convert", () => {
           callback(error);
         },
       });
-      return convert
-        .stream(fs.createReadStream(input), failingOutput, createContext())
-        .then(() => {
-          throw new Error("STOP");
-        })
-        .catch((err) => expect(err).to.equal(error));
+      return assert.rejects(
+        convert.stream(
+          fs.createReadStream(input),
+          failingOutput,
+          createContext(),
+        ),
+        (err) => {
+          assert.equal(err, error);
+          return true;
+        },
+      );
     });
     it("must not write to the output stream during a dry run", () => {
       const failingOutput = new Writable({
@@ -233,8 +228,8 @@ describe("convert", () => {
           dry: true,
         })
         .then((info) => {
-          expect(info.output).to.have.property("format", "jpeg");
-          expect(info.output).to.have.property("size");
+          assert.equal(info.output["format"], "jpeg");
+          assert.ok(Object.prototype.hasOwnProperty.call(info.output, "size"));
         });
     });
     it("must return input and output metadata", () => {
@@ -250,8 +245,8 @@ describe("convert", () => {
           context,
         )
         .then((info) => {
-          expect(info.input).to.have.property("format", "jpeg");
-          expect(info.output).to.have.property("format", "jpeg");
+          assert.equal(info.input["format"], "jpeg");
+          assert.equal(info.output["format"], "jpeg");
         });
     });
   });

@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#convolve
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -52,15 +54,15 @@ export default function register() {
       // Tests.
       it("must set the width, height, and kernel flags", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("width", width);
-        expect(args).to.have.property("height", height);
-        expect(args).to.have.property("kernel");
-        expect(args.kernel).to.eql(kernel);
+        assert.equal(args["width"], width);
+        assert.equal(args["height"], height);
+        assert.ok(Object.prototype.hasOwnProperty.call(args, "kernel"));
+        assert.deepEqual(args.kernel, kernel);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("convolve");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("convolve"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -89,12 +91,12 @@ export default function register() {
         );
 
         it("must set the offset flag", () => {
-          expect(cli.parsed.argv).to.have.property("offset", offset);
+          assert.equal(cli.parsed.argv["offset"], offset);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("convolve");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("convolve"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -117,12 +119,12 @@ export default function register() {
         );
 
         it("must set the scale flag", () => {
-          expect(cli.parsed.argv).to.have.property("scale", scale);
+          assert.equal(cli.parsed.argv["scale"], scale);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("convolve");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("convolve"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

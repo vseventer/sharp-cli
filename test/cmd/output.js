@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-output#tile
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tile");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tile"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,12 +67,12 @@ export default function register() {
 
       // Tests.
       it("must set the size flag", () => {
-        expect(cli.parsed.argv).to.have.property("size", size);
+        assert.equal(cli.parsed.argv["size"], size);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("tile");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("tile"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -88,12 +90,12 @@ export default function register() {
 
         // Tests.
         it("must set the angle flag", () => {
-          expect(cli.parsed.argv).to.have.property("angle", angle);
+          assert.equal(cli.parsed.argv["angle"], angle);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -110,12 +112,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("background", background);
+          assert.equal(cli.parsed.argv["background"], background);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -132,12 +134,12 @@ export default function register() {
 
         // Tests.
         it("must set the id flag", () => {
-          expect(cli.parsed.argv).to.have.property("basename", basename);
+          assert.equal(cli.parsed.argv["basename"], basename);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -150,12 +152,12 @@ export default function register() {
           before(() => cli.parseAsync(["tile", `--${alias}`]));
 
           it("must set the center flag", () => {
-            expect(cli.parsed.argv).to.have.property("center", true);
+            assert.equal(cli.parsed.argv["center"], true);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("tile");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("tile"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -173,12 +175,12 @@ export default function register() {
 
         // Tests.
         it("must set the container flag", () => {
-          expect(cli.parsed.argv).to.have.property("container", container);
+          assert.equal(cli.parsed.argv["container"], container);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -195,12 +197,12 @@ export default function register() {
 
         // Tests.
         it("must set the depth flag", () => {
-          expect(cli.parsed.argv).to.have.property("depth", depth);
+          assert.equal(cli.parsed.argv["depth"], depth);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -217,12 +219,12 @@ export default function register() {
 
         // Tests.
         it("must set the id flag", () => {
-          expect(cli.parsed.argv).to.have.property("id", id);
+          assert.equal(cli.parsed.argv["id"], id);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -239,12 +241,12 @@ export default function register() {
 
         // Tests.
         it("must set the layout flag", () => {
-          expect(cli.parsed.argv).to.have.property("layout", layout);
+          assert.equal(cli.parsed.argv["layout"], layout);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -261,12 +263,12 @@ export default function register() {
 
         // Tests.
         it("must set the overlap flag", () => {
-          expect(cli.parsed.argv).to.have.property("overlap", overlap);
+          assert.equal(cli.parsed.argv["overlap"], overlap);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -283,12 +285,12 @@ export default function register() {
 
         // Tests.
         it("must set the overlap flag", () => {
-          expect(cli.parsed.argv).to.have.property("skipBlanks", skip);
+          assert.equal(cli.parsed.argv["skipBlanks"], skip);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("tile");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("tile"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

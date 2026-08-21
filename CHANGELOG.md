@@ -13,6 +13,7 @@
 - Removed `jpg` output format alias; use `jpeg` instead.
 - Added graceful handling of partial failures during batch image processing ([#98](https://github.com/vseventer/sharp-cli/issues/98)).
 - Fixes bug where format options could cause errors. Consequently, removed `jpg` output format alias; use `jpeg` instead ([#92](https://github.com/vseventer/sharp-cli/issues/92)).
+- Drop `must` dependency in favor of Node.js native `assert`.
 - Internal refactor from CommonJS to ESM.
 - Updated `sharp` dependency to 0.35.3.
 - Updated dependencies.

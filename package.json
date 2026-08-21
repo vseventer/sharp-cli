@@ -40,7 +40,6 @@
     "fs-extra": "11.4.x",
     "globals": "17.11.x",
     "mocha": "11.8.x",
-    "must": "0.13.x",
     "nyc": "18.0.x",
     "prettier": "3.9.x",
     "sinon": "22.1.x",

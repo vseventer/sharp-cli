@@ -22,11 +22,11 @@
  */
 
 // Standard lib.
+import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import fs from "fs-extra";
 import sinon from "sinon";
 import { temporaryDirectory } from "tempy";
@@ -76,7 +76,7 @@ describe("CLI", () => {
       ],
       { logger },
     ).then(() => {
-      expect(fs.existsSync(dest)).to.be.true();
+      assert.equal(fs.existsSync(dest), true);
       sinon.assert.calledWithMatch(logger.log, dest);
       sinon.assert.notCalled(logger.error);
     });
@@ -85,7 +85,7 @@ describe("CLI", () => {
     return cli(["-v"], { logger }).then(() => {
       sinon.assert.calledWith(logger.log, pkg.version);
       sinon.assert.notCalled(logger.error);
-      expect(process.exitCode).not.to.equal(1);
+      assert.notEqual(process.exitCode, 1);
     });
   });
   it("must print metadata", () => {
@@ -93,8 +93,8 @@ describe("CLI", () => {
       logger,
     }).then(() => {
       const [metadata] = JSON.parse(logger.log.firstCall.args[0]);
-      expect(metadata.input).to.have.property("format", "jpeg");
-      expect(metadata.output).to.have.property("width", 100);
+      assert.equal(metadata.input["format"], "jpeg");
+      assert.equal(metadata.output["width"], 100);
       sinon.assert.notCalled(logger.error);
     });
   });
@@ -107,12 +107,12 @@ describe("CLI", () => {
       )
       .then(() => {
         const output = JSON.parse(logger.log.firstCall.args[0]);
-        expect(output).to.have.length(2);
-        expect(output[0]).to.have.property("input");
-        expect(output[0]).to.have.property("output");
-        expect(output[1]).to.have.property("error");
+        assert.equal(output.length, 2);
+        assert.ok(Object.prototype.hasOwnProperty.call(output[0], "input"));
+        assert.ok(Object.prototype.hasOwnProperty.call(output[0], "output"));
+        assert.ok(Object.prototype.hasOwnProperty.call(output[1], "error"));
         sinon.assert.notCalled(logger.error);
-        expect(process.exitCode).to.equal(1);
+        assert.equal(process.exitCode, 1);
       });
   });
   it("must report partial batch failures", () => {
@@ -123,7 +123,7 @@ describe("CLI", () => {
       .then(() => {
         sinon.assert.calledWithMatch(logger.log, path.join(dest, "input.jpg"));
         sinon.assert.calledWithMatch(logger.error, "FAILED:");
-        expect(process.exitCode).to.equal(1);
+        assert.equal(process.exitCode, 1);
       });
   });
   it("must display errors", () => {
@@ -134,7 +134,7 @@ describe("CLI", () => {
         logger.error,
         "Specify --help for available options",
       );
-      expect(process.exitCode).to.equal(1);
+      assert.equal(process.exitCode, 1);
     });
   });
 });

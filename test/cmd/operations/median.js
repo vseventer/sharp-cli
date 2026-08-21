@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#median
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("median");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("median"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,12 +67,12 @@ export default function register() {
 
       // Tests.
       it("must set the size flag", () => {
-        expect(cli.parsed.argv).to.have.property("size", size);
+        assert.equal(cli.parsed.argv["size"], size);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("median");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("median"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

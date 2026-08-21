@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#normalise
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -48,8 +50,8 @@ export default function register() {
         // Tests.
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("normalise");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("normalise"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -67,12 +69,12 @@ export default function register() {
 
           // Tests.
           it("must set the lower flag", () => {
-            expect(cli.parsed.argv).to.have.property("lower", lower);
+            assert.equal(cli.parsed.argv["lower"], lower);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("normalise");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("normalise"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -89,12 +91,12 @@ export default function register() {
 
           // Tests.
           it("must set the upper flag", () => {
-            expect(cli.parsed.argv).to.have.property("upper", upper);
+            assert.equal(cli.parsed.argv["upper"], upper);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("normalise");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("normalise"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);

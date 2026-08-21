@@ -24,11 +24,11 @@
 // @see https://sharp.pixelplumbing.com/api-channel#bandbool
 
 // Standard lib.
+import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -56,16 +56,16 @@ export default function register() {
       // Tests.
       it("must set the operator flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("images");
-        expect(args.images).to.eql([
+        assert.ok(Object.prototype.hasOwnProperty.call(args, "images"));
+        assert.deepEqual(args.images, [
           path.normalize(input),
           path.normalize(input),
         ]);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("joinChannel");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("joinChannel"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

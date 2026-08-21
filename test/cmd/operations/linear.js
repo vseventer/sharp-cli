@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#rotate
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -47,8 +49,8 @@ export default function register() {
       // Tests.
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("linear");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("linear"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -65,13 +67,15 @@ export default function register() {
 
       // Tests.
       it("must set the multiplier flag", () => {
-        expect(cli.parsed.argv).to.have.property("multiplier");
-        expect(cli.parsed.argv.multiplier[0]).to.equal(multiplier);
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(cli.parsed.argv, "multiplier"),
+        );
+        assert.equal(cli.parsed.argv.multiplier[0], multiplier);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("linear");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("linear"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -88,13 +92,15 @@ export default function register() {
 
       // Tests.
       it("must set the offset flag", () => {
-        expect(cli.parsed.argv).to.have.property("offset");
-        expect(cli.parsed.argv.offset[0]).to.equal(offset);
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(cli.parsed.argv, "offset"),
+        );
+        assert.equal(cli.parsed.argv.offset[0], offset);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("linear");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("linear"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

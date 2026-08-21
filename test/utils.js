@@ -21,8 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Package modules.
-import expect from "must";
+// Standard lib.
+import assert from "node:assert/strict";
 
 // Local modules.
 import { isDirectory, pick } from "../lib/utils.js";
@@ -31,22 +31,22 @@ import { isDirectory, pick } from "../lib/utils.js";
 describe("utils", () => {
   describe("isDirectory", () => {
     it("must identify directories", () => {
-      expect(isDirectory(new URL(".", import.meta.url))).to.be.true();
+      assert.equal(isDirectory(new URL(".", import.meta.url)), true);
     });
 
     it("must return false for missing paths", () => {
-      expect(isDirectory(new URL("./missing", import.meta.url))).to.be.false();
+      assert.equal(isDirectory(new URL("./missing", import.meta.url)), false);
     });
   });
 
   describe("pick", () => {
     it("must pick own properties, including falsy values", () => {
       const input = { falseValue: false, nullValue: null, zero: 0 };
-      expect(pick(input, ["falseValue", "nullValue", "zero"])).to.eql(input);
+      assert.deepEqual(pick(input, ["falseValue", "nullValue", "zero"]), input);
     });
 
     it("must omit missing properties", () => {
-      expect(pick({ value: 1 }, ["missing"])).to.eql({});
+      assert.deepEqual(pick({ value: 1 }, ["missing"]), {});
     });
   });
 });

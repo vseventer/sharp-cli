@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize#extend
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -53,15 +55,15 @@ export default function register() {
       // Tests.
       it("must set the top, bottom, left, and right flags", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("top", args.top);
-        expect(args).to.have.property("bottom", args.bottom);
-        expect(args).to.have.property("left", args.left);
-        expect(args).to.have.property("right", args.right);
+        assert.equal(args["top"], args.top);
+        assert.equal(args["bottom"], args.bottom);
+        assert.equal(args["left"], args.left);
+        assert.equal(args["right"], args.right);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("extend");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("extend"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -94,12 +96,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("background", background);
+          assert.equal(cli.parsed.argv["background"], background);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("extend");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("extend"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -126,12 +128,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("extendWith", mode);
+          assert.equal(cli.parsed.argv["extendWith"], mode);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("extend");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("extend"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#affine
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -49,13 +51,15 @@ export default function register() {
 
       // Tests.
       it("must set the matrix flag", () => {
-        expect(cli.parsed.argv).to.have.property("matrix");
-        expect(cli.parsed.argv.matrix).to.eql(matrix);
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(cli.parsed.argv, "matrix"),
+        );
+        assert.deepEqual(cli.parsed.argv.matrix, matrix);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("affine");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("affine"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -78,12 +82,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("background", background);
+          assert.equal(cli.parsed.argv["background"], background);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("affine");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("affine"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -105,12 +109,12 @@ export default function register() {
 
           // Tests.
           it("must set the flat flag", () => {
-            expect(cli.parsed.argv).to.have.property(alias, value);
+            assert.equal(cli.parsed.argv[alias], value);
           });
           it("must update the pipeline", () => {
             const pipeline = getPipeline(cli.parsed.argv);
-            expect(pipeline).to.have.length(1);
-            expect(pipeline).to.include("affine");
+            assert.equal(pipeline.length, 1);
+            assert.ok(pipeline.includes("affine"));
           });
           it("must execute the pipeline", () => {
             const pipeline = drain(cli.parsed.argv);
@@ -132,12 +136,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("interpolate", interpolator);
+          assert.equal(cli.parsed.argv["interpolate"], interpolator);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("affine");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("affine"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

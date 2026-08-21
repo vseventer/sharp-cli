@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-operation#extract
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -53,15 +55,15 @@ export default function register() {
       // Tests.
       it("must set the top, left, width, and height flags", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("top", top);
-        expect(args).to.have.property("left", left);
-        expect(args).to.have.property("width", width);
-        expect(args).to.have.property("height", height);
+        assert.equal(args["top"], top);
+        assert.equal(args["left"], left);
+        assert.equal(args["width"], width);
+        assert.equal(args["height"], height);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("extract");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("extract"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);

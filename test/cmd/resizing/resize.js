@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-resize/
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -45,13 +47,13 @@ export default function register() {
     afterEach("sharp", sharp.prototype.reset);
 
     describe("..", () => {
-      it("must prompt an error", async () => {
-        const error = await new Promise((resolve) =>
-          cli.parseAsync(["resize"], (err) => resolve(err)),
+      it("must prompt an error", () => {
+        const promise = new Promise((resolve, reject) =>
+          cli.parseAsync(["resize"], (error) =>
+            error == null ? resolve() : reject(error),
+          ),
         );
-        expect(error).to.exist();
-        expect(error).to.have.property("message");
-        expect(error.message).to.contain("one of width and height");
+        return assert.rejects(promise, "one of width and height");
       });
     });
 
@@ -60,12 +62,12 @@ export default function register() {
 
       it("must set the width flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("width", width);
+        assert.equal(args["width"], width);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("resize");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("resize"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -78,12 +80,12 @@ export default function register() {
 
       it("must set the height flag", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("height", height);
+        assert.equal(args["height"], height);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("resize");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("resize"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -98,13 +100,13 @@ export default function register() {
       // Tests.
       it("must set the width and height flags", () => {
         const args = cli.parsed.argv;
-        expect(args).to.have.property("width", width);
-        expect(args).to.have.property("height", height);
+        assert.equal(args["width"], width);
+        assert.equal(args["height"], height);
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
-        expect(pipeline).to.have.length(1);
-        expect(pipeline).to.include("resize");
+        assert.equal(pipeline.length, 1);
+        assert.ok(pipeline.includes("resize"));
       });
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
@@ -125,12 +127,12 @@ export default function register() {
 
         // Tests.
         it("must set the background flag", () => {
-          expect(cli.parsed.argv).to.have.property("background", background);
+          assert.equal(cli.parsed.argv["background"], background);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -150,12 +152,12 @@ export default function register() {
         );
 
         it("must set the fastShrinkOnLoad flag", () => {
-          expect(cli.parsed.argv).to.have.property("fastShrinkOnLoad", false);
+          assert.equal(cli.parsed.argv["fastShrinkOnLoad"], false);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -176,12 +178,12 @@ export default function register() {
         before(() => cli.parseAsync(["resize", width, height, "--fit", fit]));
 
         it("must set the fit flag", () => {
-          expect(cli.parsed.argv).to.have.property("fit", fit);
+          assert.equal(cli.parsed.argv["fit"], fit);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -204,12 +206,12 @@ export default function register() {
         );
 
         it("must set the kernel flag", () => {
-          expect(cli.parsed.argv).to.have.property("kernel", kernel);
+          assert.equal(cli.parsed.argv["kernel"], kernel);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -232,12 +234,12 @@ export default function register() {
         );
 
         it("must set the position flag", () => {
-          expect(cli.parsed.argv).to.have.property("position", position);
+          assert.equal(cli.parsed.argv["position"], position);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -257,12 +259,12 @@ export default function register() {
         );
 
         it("must set the withoutEnlargement flag", () => {
-          expect(cli.parsed.argv).to.have.property("withoutEnlargement", true);
+          assert.equal(cli.parsed.argv["withoutEnlargement"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);
@@ -282,12 +284,12 @@ export default function register() {
         );
 
         it("must set the withoutReduction flag", () => {
-          expect(cli.parsed.argv).to.have.property("withoutReduction", true);
+          assert.equal(cli.parsed.argv["withoutReduction"], true);
         });
         it("must update the pipeline", () => {
           const pipeline = getPipeline(cli.parsed.argv);
-          expect(pipeline).to.have.length(1);
-          expect(pipeline).to.include("resize");
+          assert.equal(pipeline.length, 1);
+          assert.ok(pipeline.includes("resize"));
         });
         it("must execute the pipeline", () => {
           const pipeline = drain(cli.parsed.argv);

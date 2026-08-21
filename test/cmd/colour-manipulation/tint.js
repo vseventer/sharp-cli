@@ -23,8 +23,10 @@
 
 // @see https://sharp.pixelplumbing.com/api-colour#tint
 
+// Standard lib.
+import assert from "node:assert/strict";
+
 // Package modules.
-import expect from "must";
 import sinon from "sinon";
 
 // Local modules.
@@ -48,12 +50,12 @@ export default function register() {
 
     // Tests.
     it("must set the colourspace flag", () => {
-      expect(cli.parsed.argv).to.have.property("rgb", rgb);
+      assert.equal(cli.parsed.argv["rgb"], rgb);
     });
     it("must update the pipeline", () => {
       const pipeline = getPipeline(cli.parsed.argv);
-      expect(pipeline).to.have.length(1);
-      expect(pipeline).to.include("tint");
+      assert.equal(pipeline.length, 1);
+      assert.ok(pipeline.includes("tint"));
     });
     it("must execute the pipeline", () => {
       const pipeline = drain(cli.parsed.argv);
