@@ -36,6 +36,7 @@ const options = {
   minAmplitude: {
     defaultDescription: 0.2,
     desc: "A smaller value will generate a larger, more accurate mask",
+    nargs: 1,
     type: "number",
   },
   precision: {

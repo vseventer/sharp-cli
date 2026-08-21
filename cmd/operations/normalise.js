@@ -30,11 +30,13 @@ const options = {
   lower: {
     default: 1,
     desc: "Percentile below which luminance values will be underexposed",
+    nargs: 1,
     type: "number",
   },
   upper: {
     default: 99,
     desc: "Percentile below which luminance values will be overexposed",
+    nargs: 1,
     type: "number",
   },
 };

@@ -39,6 +39,7 @@ const options = {
   maxSlope: {
     defaultDescription: 3,
     desc: "Maximum value for the slope of the cumulative histogram",
+    nargs: 1,
     type: "number",
   },
 };

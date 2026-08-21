@@ -41,6 +41,7 @@ const options = {
     choices: [0, 90, 180, 270],
     defaultDescription: "0",
     desc: "Tile angle of rotation",
+    nargs: 1,
   },
   background: {
     defaultDescription: "rgb(255, 255, 255, 1)",
@@ -79,11 +80,13 @@ const options = {
   overlap: {
     desc: "Tile overlap in pixels",
     defaultDescription: "0",
+    nargs: 1,
     type: "number",
   },
   skipBlanks: {
     defaultDescription: -1,
     desc: "Threshold to skip tile generation",
+    nargs: 1,
     type: "number",
   },
 };

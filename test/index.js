@@ -137,4 +137,13 @@ describe("CLI", () => {
       assert.equal(process.exitCode, 1);
     });
   });
+  it("must error when options are incomplete", () => {
+    return cli(["-i", input, "-o", dest, "--density"], { logger }).then(() => {
+      sinon.assert.notCalled(logger.log);
+      sinon.assert.calledWith(
+        logger.error,
+        "Not enough arguments following: density",
+      );
+    });
+  });
 });

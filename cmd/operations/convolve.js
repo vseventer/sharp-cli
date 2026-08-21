@@ -48,11 +48,13 @@ const options = {
   scale: {
     desc: "The scale of the kernel in pixels",
     defaultDescription: "sum",
+    nargs: 1,
     type: "number",
   },
   offset: {
     desc: "The offset of the kernel in pixels",
     defaultDescription: "0",
+    nargs: 1,
     type: "number",
   },
 };

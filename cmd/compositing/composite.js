@@ -66,18 +66,22 @@ const options = {
     choices: [3, 4],
     default: 3,
     desc: "Number of channels of the blank overlay to be created",
+    nargs: 1,
   },
   "create.height": {
     desc: "Height of the blank overlay to be created",
+    nargs: 1,
     type: "number",
   },
   "create.width": {
     desc: "Width of the blank overlay to be created",
+    nargs: 1,
     type: "number",
   },
   density: {
     desc: "Number representing the DPI for vector images",
     defaultDescription: 72,
+    nargs: 1,
     type: "number",
   },
   gravity: {
@@ -88,6 +92,7 @@ const options = {
   left: {
     desc: "The pixel offset from the left edge",
     implies: "top",
+    nargs: 1,
     type: "number",
   },
   premultiplied: {
@@ -101,6 +106,7 @@ const options = {
   top: {
     desc: "The pixel offset from the top edge",
     implies: "left",
+    nargs: 1,
     type: "number",
   },
 };

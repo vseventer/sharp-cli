@@ -30,18 +30,22 @@ import { pick } from "../../lib/utils.js";
 const options = {
   brightness: {
     desc: "Brightness multiplier",
+    nargs: 1,
     type: "number",
   },
   hue: {
     desc: "Degrees for hue rotation",
+    nargs: 1,
     type: "number",
   },
   lightness: {
     desc: "Lightness addend",
+    nargs: 1,
     type: "number",
   },
   saturation: {
     desc: "Saturation multiplier",
+    nargs: 1,
     type: "number",
   },
 };

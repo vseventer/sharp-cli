@@ -45,6 +45,7 @@ const options = {
   },
   margin: {
     desc: "Leave a margin around trimmed content",
+    nargs: 1,
     type: "number",
   },
 };

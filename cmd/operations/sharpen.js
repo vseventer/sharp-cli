@@ -40,27 +40,32 @@ const options = {
     alias: "flat",
     desc: 'The level of sharpening to apply to "flat" areas',
     defaultDescription: 1.0,
+    nargs: 1,
     type: "number",
   },
   m2: {
     alias: "jagged",
     desc: 'The level of sharpening to apply to "jagged" areas',
     defaultDescription: 2.0,
+    nargs: 1,
     type: "number",
   },
   x1: {
     desc: 'The threshold between "flat" and "jagged" areas',
     defaultDescription: 2.0,
+    nargs: 1,
     type: "number",
   },
   y2: {
     desc: "The maximum amount of brightening",
     defaultDescription: 10.0,
+    nargs: 1,
     type: "number",
   },
   y3: {
     desc: "The maximum amount of darkening",
     defaultDescription: 20.0,
+    nargs: 1,
     type: "number",
   },
 };

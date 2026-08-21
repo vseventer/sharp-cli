@@ -45,21 +45,25 @@ const options = {
   idx: {
     defaultDescription: "0",
     desc: "The input horizontal offset",
+    nargs: 1,
     type: "number",
   },
   idy: {
     defaultDescription: "0",
     desc: "The input vertical offset",
+    nargs: 1,
     type: "number",
   },
   odx: {
     defaultDescription: "0",
     desc: "The output horizontal offset",
+    nargs: 1,
     type: "number",
   },
   ody: {
     defaultDescription: "0",
     desc: "The output vertical offset",
+    nargs: 1,
     type: "number",
   },
   interpolate: {

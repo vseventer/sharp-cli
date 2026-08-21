@@ -15,6 +15,7 @@
 - Fixes bug where format options could cause errors. Consequently, removed `jpg` output format alias; use `jpeg` instead ([#92](https://github.com/vseventer/sharp-cli/issues/92)).
 - Drop `must` dependency in favor of Node.js native `assert`.
 - Internal refactor from CommonJS to ESM.
+- Tightened `yargs` option configuration to require values.
 - Updated `sharp` dependency to 0.35.3.
 - Updated dependencies.
 - Requires Node.js 20.10.
