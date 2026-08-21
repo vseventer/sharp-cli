@@ -39,6 +39,10 @@ import tile from "../cmd/output.js";
 describe("convert", () => {
   const options = { sequentialRead: false };
   const createContext = () => ({ options, queue: [] });
+  const getValue = (result) => {
+    expect(result.status).to.equal("fulfilled");
+    return result.value;
+  };
 
   // Default input.
   const input = fileURLToPath(new URL("./fixtures/input.jpg", import.meta.url));
@@ -61,12 +65,15 @@ describe("convert", () => {
     it("must convert a file", () => {
       return convert
         .files([input], dest, createContext())
-        .then(([info]) => expect(fs.existsSync(info.output.path)).to.be.true());
+        .then(([result]) =>
+          expect(fs.existsSync(getValue(result).output.path)).to.be.true(),
+        );
     });
     it("must convert a file formatted based on extension", () => {
       return convert
         .files([input], path.join(dest, "{name}.avif"), createContext())
-        .then(([info]) => {
+        .then(([result]) => {
+          const info = getValue(result);
           expect(info.output).to.have.property("format", "heif");
           expect(info.output).to.have.property("path");
           expect(info.output.path).to.contain(".avif");
@@ -75,7 +82,8 @@ describe("convert", () => {
     it("must not write a file during a dry run", () => {
       const dryDest = path.join(dest, "dry.jpg");
       const context = { ...createContext(), dry: true };
-      return convert.files([input], dryDest, context).then(([info]) => {
+      return convert.files([input], dryDest, context).then(([result]) => {
+        const info = getValue(result);
         expect(info.output).to.have.property("format", "jpeg");
         expect(info.output).to.have.property("size");
         expect(info.output.path).to.equal(dryDest);
@@ -85,7 +93,8 @@ describe("convert", () => {
     it("must return input and output metadata", () => {
       const output = path.join(dest, "output.jpg");
       const context = { ...createContext(), dry: true, print: true };
-      return convert.files([input], output, context).then(([info]) => {
+      return convert.files([input], output, context).then(([result]) => {
+        const info = getValue(result);
         expect(info.input).to.have.property("format", "jpeg");
         expect(info.input.path).to.equal(input);
         expect(info.output).to.have.property("format", "jpeg");
@@ -96,8 +105,8 @@ describe("convert", () => {
       const context = { ...createContext(), dry: true, print: true };
       return convert.files([input, input], dest, context).then((info) => {
         expect(info).to.have.length(2);
-        expect(info[0].input).to.have.property("format", "jpeg");
-        expect(info[0].output).to.have.property("format", "jpeg");
+        expect(getValue(info[0]).input).to.have.property("format", "jpeg");
+        expect(getValue(info[0]).output).to.have.property("format", "jpeg");
       });
     });
     it("must pass the output extension format to queued handlers", () => {
@@ -114,19 +123,16 @@ describe("convert", () => {
         .files([input], path.join(dest, "{name}.avif"), context)
         .then(() => expect(format).to.equal("avif"));
     });
-    it("must convert a file and output to an existing directory", () => {
+    it("must report a file conversion error", () => {
       // Negative test for directory that does not exist.
       const rand = "" + Math.random();
       return convert
         .files([input, input], rand, createContext())
-        .then(() => {
-          throw new Error("STOP");
-        })
-        .catch((err) => {
-          expect(err).to.exist();
-          expect(err).to.have.property("message");
-          expect(err.message).to.contain(`${rand}/input.jpg`);
-          expect(err.message).to.contain("No such file or directory");
+        .then(([result]) => {
+          expect(result.status).to.equal("rejected");
+          expect(result.reason).to.have.property("message");
+          expect(result.reason.message).to.contain(`${rand}/input.jpg`);
+          expect(result.reason.message).to.contain("No such file or directory");
         });
     });
     it("must convert multiple files", () => {
@@ -138,8 +144,8 @@ describe("convert", () => {
       const rand = Math.random();
       return convert
         .files([input], path.join(dest, `{name}-${rand}{ext}`), createContext())
-        .then(([info]) =>
-          expect(info.output.path).to.contain(`input-${rand}.jpg`),
+        .then(([result]) =>
+          expect(getValue(result).output.path).to.contain(`input-${rand}.jpg`),
         );
     });
     it("must allow the same file as input and output", () => {
