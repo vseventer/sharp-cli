@@ -363,6 +363,25 @@ describe(`${pkg.name} <options> [command..]`, () => {
       });
     });
 
+    describe("--exact", () => {
+      // Run.
+      before(() => cli.parseAsync(["--exact", ...ioFlags]));
+
+      // Tests.
+      it("must set the exact flag", () => {
+        expect(cli.parsed.argv).to.have.property("exact", true);
+      });
+      it("must update the pipeline", () => {
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("webp");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.calledWithMatch(pipeline.webp, { exact: true });
+      });
+    });
+
     describe("--failOn", () => {
       // Default failOn.
       const failOn = "error";
@@ -569,6 +588,25 @@ describe(`${pkg.name} <options> [command..]`, () => {
         sinon.assert.calledWithMatch(pipeline.gif, {
           keepDuplicateFrames: true,
         });
+      });
+    });
+
+    describe("--keepGainMap", () => {
+      // Run.
+      before(() => cli.parseAsync(["--keepGainMap", ...ioFlags]));
+
+      // Tests.
+      it("must set the keepGainMap flag", () => {
+        expect(cli.parsed.argv).to.have.property("keepGainMap", true);
+      });
+      it("must update the pipeline", () => {
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("keepGainMap");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.called(pipeline.keepGainMap);
       });
     });
 
@@ -1390,6 +1428,7 @@ describe(`${pkg.name} <options> [command..]`, () => {
         expect(cli.parsed.argv).to.have.property("unlimited", true);
       });
     });
+
     ["m", "metadata", "withMetadata"].forEach((alias) => {
       describe(`--${alias}`, () => {
         // Run.
@@ -1408,6 +1447,47 @@ describe(`${pkg.name} <options> [command..]`, () => {
           const pipeline = drain(cli.parsed.argv);
           sinon.assert.called(pipeline.withMetadata);
         });
+      });
+    });
+
+    describe("--withDensity", () => {
+      // Default density.
+      const density = 96;
+
+      // Run.
+      before(() => cli.parseAsync(["--withDensity", density, ...ioFlags]));
+
+      // Tests.
+      it("must set the withDensity flag", () => {
+        expect(cli.parsed.argv).to.have.property("withDensity", density);
+      });
+      it("must update the pipeline", () => {
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("withDensity");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.calledWith(pipeline.withDensity, density);
+      });
+    });
+
+    describe("--withGainMap", () => {
+      // Run.
+      before(() => cli.parseAsync(["--withGainMap", ...ioFlags]));
+
+      // Tests.
+      it("must set the withGainMap flag", () => {
+        expect(cli.parsed.argv).to.have.property("withGainMap", true);
+      });
+      it("must update the pipeline", () => {
+        const pipeline = getPipeline(cli.parsed.argv);
+        expect(pipeline).to.have.length(1);
+        expect(pipeline).to.include("withGainMap");
+      });
+      it("must execute the pipeline", () => {
+        const pipeline = drain(cli.parsed.argv);
+        sinon.assert.called(pipeline.withGainMap);
       });
     });
 

@@ -4,8 +4,12 @@
 
 - Added [`--limitInputChannels`](https://sharp.pixelplumbing.com/api-constructor/) input option.
 - Added `--dry` option to process images without writing output files.
+- Added [`--exact`](https://sharp.pixelplumbing.com/api-output#webp) output option.
+- Added [`--keepGainMap`](https://sharp.pixelplumbing.com/api-output#keepgainmap) and [`--withGainMap`](https://sharp.pixelplumbing.com/api-output#withgainmap) output options.
 - Added `--print` option to print input and output metadata as JSON.
 - Added [`--tune`](https://sharp.pixelplumbing.com/api-output#avif) output option.
+- Added [`--withDensity`](https://sharp.pixelplumbing.com/api-output#withdensity) output option.
+- Added [`--margin`](https://sharp.pixelplumbing.com/api-resize#trim) option to the `trim` command.
 - Removed `jpg` output format alias; use `jpeg` instead.
 - Internal refactor from CommonJS to ESM.
 - Updated `sharp` dependency to 0.35.3.

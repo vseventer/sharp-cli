@@ -43,6 +43,10 @@ const options = {
     desc: "Does the input more closely resemble line art rather than being photographic",
     type: "boolean",
   },
+  margin: {
+    desc: "Leave a margin around trimmed content",
+    type: "number",
+  },
 };
 
 // Command builder.
@@ -63,6 +67,10 @@ const builder = (yargs) => {
       "Trim pixels with a similar colour to red",
     )
     .example("$0 trim 42 --background yellow", 'Trim all "yellow-ish" pixels')
+    .example(
+      "$0 trim --margin 10",
+      "Trim image leaving (up to) 10 pixel margin around the trimmed content",
+    )
     .epilog(
       "For more information on available options, please visit https://sharp.pixelplumbing.com/api-resize#trim",
     )
@@ -79,6 +87,7 @@ const handler = (args) => {
       return sharp.trim({
         background: args.background,
         lineArt: args.lineArt,
+        margin: args.margin,
         threshold: args.threshold,
       });
     },

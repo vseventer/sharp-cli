@@ -119,6 +119,28 @@ export default function register() {
           sinon.assert.calledWithMatch(pipeline.trim, { lineArt: true });
         });
       });
+
+      describe("--margin", () => {
+        // Margin.
+        const margin = 10;
+
+        // Run.
+        before(() => cli.parseAsync(["trim", "--margin", margin]));
+
+        // Tests.
+        it("must set the margin flag", () => {
+          expect(cli.parsed.argv).to.have.property("margin", margin);
+        });
+        it("must update the pipeline", () => {
+          const pipeline = getPipeline(cli.parsed.argv);
+          expect(pipeline).to.have.length(1);
+          expect(pipeline).to.include("trim");
+        });
+        it("must execute the pipeline", () => {
+          const pipeline = drain(cli.parsed.argv);
+          sinon.assert.calledWithMatch(pipeline.trim, { margin });
+        });
+      });
     });
   });
 }

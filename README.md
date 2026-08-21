@@ -110,6 +110,8 @@ Output Options
                     [choices: "avif", "gif", "heif", "jpeg", "png", "tiff", "webp"] [default: input]
       --keepDuplicateFrames       Keep duplicate frames in the output instead of combining them
                                                                                            [boolean]
+      --keepGainMap               Attempt to process the image and gain map separately, recombining
+                                  them into a single output image                          [boolean]
   -m, --metadata, --withMetadata  Include all metadata (EXIF, XMP, IPTC) from the input image in the
                                    output image                                            [boolean]
       --metadata.density          Number of pixels per inch (DPI)                           [number]
@@ -117,6 +119,9 @@ Output Options
                                    as EXIF data                                        [default: {}]
       --metadata.icc              Filesystem path to output ICC profile     [string] [default: sRGB]
       --metadata.orientation      Used to update the EXIF Orientation tag                   [number]
+      --withDensity               Set output density (DPI) in EXIF metadata                 [number]
+      --withGainMap               Convert the main image to HDR (High Dynamic Range) before further
+                                  processing                                               [boolean]
   -p, --progressive               Use progressive (interlace) scan                         [boolean]
   -q, --quality                   Quality                                     [number] [default: 80]
 
@@ -137,6 +142,8 @@ Optimization Options
                                                                              [number] [default: 1.0]
       --effort                                  Level of CPU effort to reduce file size
                                                                 [number] [default: 7 (GIF, PNG) / 4]
+      --exact                                   Preserve the colour data in transparent pixels
+                                                                                           [boolean]
       --hbitdepth                               Set bitdepth to 8, 10, or 12 bit
                                                                    [choices: 8, 10, 12] [default: 8]
       --hcompression                            Compression format
@@ -177,9 +184,9 @@ Optimization Options
                                                           [string] [default: rgba(255, 255, 255, 1)]
       --tileHeight                              Vertical tile size                          [number]
       --tileWidth                               Horizontal tile size                        [number]
+      --trellisQuantisation                     Apply trellis quantisation                 [boolean]
       --tune                                    Tune output for a quality metric
                                              [choices: "auto", "iq", "psnr", "ssim"] [default: auto]
-      --trellisQuantisation                     Apply trellis quantisation                 [boolean]
       --xres                                    Horizontal resolution        [number] [default: 1.0]
       --yres                                    Vertical resolution          [number] [default: 1.0]
 
