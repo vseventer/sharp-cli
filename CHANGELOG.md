@@ -1,12 +1,12 @@
 # Changelog
 
-## 6.0.0-dev
+## 6.0.0 (August 21, 2026)
 
 - Added [`--limitInputChannels`](https://sharp.pixelplumbing.com/api-constructor/) input option.
 - Added `--dry` option to process images without writing output files.
 - Added [`--exact`](https://sharp.pixelplumbing.com/api-output#webp) output option.
 - Added [`--keepGainMap`](https://sharp.pixelplumbing.com/api-output#keepgainmap) and [`--withGainMap`](https://sharp.pixelplumbing.com/api-output#withgainmap) output options.
-- Added `--print` option to print input and output metadata as JSON ([#98](https://github.com/vseventer/sharp-cli/issues/48)).
+- Added `--print` option to print input and output metadata as JSON ([#48](https://github.com/vseventer/sharp-cli/issues/48)).
 - Added [`--tune`](https://sharp.pixelplumbing.com/api-output#avif) output option.
 - Added [`--withDensity`](https://sharp.pixelplumbing.com/api-output#withdensity) output option.
 - Added [`--margin`](https://sharp.pixelplumbing.com/api-resize#trim) option to the `trim` command.
