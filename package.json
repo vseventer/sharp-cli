@@ -16,7 +16,10 @@
   "license": "MIT",
   "type": "module",
   "author": "Mark van Seventer <mark@vseventer.com>",
-  "repository": "vseventer/sharp-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vseventer/sharp-cli.git"
+  },
   "bin": {
     "sharp": "bin/cli.js"
   },
