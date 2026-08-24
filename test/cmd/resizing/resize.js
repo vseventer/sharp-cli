@@ -62,7 +62,7 @@ export default function register() {
 
       it("must set the width flag", () => {
         const args = cli.parsed.argv;
-        assert.equal(args["width"], width);
+        assert.equal(args["width"], String(width));
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
@@ -80,7 +80,7 @@ export default function register() {
 
       it("must set the height flag", () => {
         const args = cli.parsed.argv;
-        assert.equal(args["height"], height);
+        assert.equal(args["height"], String(height));
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
@@ -100,8 +100,8 @@ export default function register() {
       // Tests.
       it("must set the width and height flags", () => {
         const args = cli.parsed.argv;
-        assert.equal(args["width"], width);
-        assert.equal(args["height"], height);
+        assert.equal(args["width"], String(width));
+        assert.equal(args["height"], String(height));
       });
       it("must update the pipeline", () => {
         const pipeline = getPipeline(cli.parsed.argv);
@@ -111,6 +111,22 @@ export default function register() {
       it("must execute the pipeline", () => {
         const pipeline = drain(cli.parsed.argv);
         sinon.assert.calledWithMatch(pipeline.resize, width, height);
+      });
+    });
+
+    describe("percentage dimensions", () => {
+      const metadata = { height: 331, width: 500 };
+
+      it("must resize width relative to input metadata", async () => {
+        await cli.parseAsync(["resize", "50%"]);
+        const pipeline = drain(cli.parsed.argv, { metadata });
+        sinon.assert.calledWithMatch(pipeline.resize, 250, null);
+      });
+
+      it("must resize width and height relative to input metadata", async () => {
+        await cli.parseAsync(["resize", "50%", "75%"]);
+        const pipeline = drain(cli.parsed.argv, { metadata });
+        sinon.assert.calledWithMatch(pipeline.resize, 250, 248);
       });
     });
 

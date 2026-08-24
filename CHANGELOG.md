@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.0-dev
+
+- Added percentage-based dimensions to the `resize` command ([#49](https://github.com/vseventer/sharp-cli/issues/49)).
+
 ## 6.0.0 (August 21, 2026)
 
 - Added [`--limitInputChannels`](https://sharp.pixelplumbing.com/api-constructor/) input option.
