@@ -128,6 +128,14 @@ export default function register() {
         const pipeline = drain(cli.parsed.argv, { metadata });
         sinon.assert.calledWithMatch(pipeline.resize, 250, 248);
       });
+
+      it("must fail when input metadata is not set", async () => {
+        await cli.parseAsync(["resize", "50%"]);
+        assert.throws(
+          () => drain(cli.parsed.argv),
+          "metadata is required to resolve percentage",
+        );
+      });
     });
 
     describe("[options]", () => {
