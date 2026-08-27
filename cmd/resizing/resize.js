@@ -27,17 +27,31 @@
 import constants from "../../lib/constants.js";
 import { pick } from "../../lib/utils.js";
 
+// Helpers.
+const resolveDimension = (dimension, metadataDimension) => {
+  if (dimension == null) return null;
+  if (typeof dimension === "string" && dimension.endsWith("%")) {
+    if (metadataDimension == null) {
+      throw new Error("Input metadata is required to resolve percentage");
+    }
+    return Math.round(
+      (metadataDimension * Number(dimension.slice(0, -1))) / 100,
+    );
+  }
+  return Number(dimension);
+};
+
 // Configure.
 const positionals = {
   width: {
     default: null,
-    desc: "Pixels wide the resultant image should be",
-    type: "number",
+    desc: "Pixels or percentage wide the resultant image should be",
+    type: "string",
   },
   height: {
     default: null,
-    desc: "Pixels high the resultant image should be",
-    type: "number",
+    desc: "Pixels or percentage high the resultant image should be",
+    type: "string",
   },
 };
 
@@ -95,6 +109,10 @@ const builder = (yargs) => {
       "The output will be 100 pixels high, auto-scaled width",
     )
     .example(
+      "$0 resize 50%",
+      "The output will be 50% of the input width, auto-scaled height",
+    )
+    .example(
       '$0 resize 200 300 --background rgba(255,255,255,0.5) --fit contain --kernel nearest --position "right top"',
       "The output will be 200 pixels wide and 300 pixels high containing a nearest-neighbour scaled version contained within the north-east corner of a semi-transparent white canvas",
     )
@@ -132,8 +150,10 @@ const handler = (args) => {
   // @see https://sharp.pixelplumbing.com/api-resize#resize
   return args["#queue"].push([
     "resize",
-    (sharp) => {
-      return sharp.resize(args.width, args.height, pick(args, optionNames));
+    (sharp, { metadata } = {}) => {
+      const width = resolveDimension(args.width, metadata?.width);
+      const height = resolveDimension(args.height, metadata?.height);
+      return sharp.resize(width, height, pick(args, optionNames));
     },
   ]);
 };
