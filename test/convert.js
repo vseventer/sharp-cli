@@ -124,19 +124,13 @@ describe("convert", () => {
         .then(() => assert.equal(format, "avif"));
     });
     it("must report a file conversion error", () => {
-      // Negative test for directory that does not exist.
-      const rand = "" + Math.random();
+      // Negative test for a parent path that is a file.
+      const output = path.join(copy, "output");
       return convert
-        .files([input, input], rand, createContext())
+        .files([input, input], output, createContext())
         .then(([result]) => {
           assert.equal(result.status, "rejected");
-          assert.ok(
-            Object.prototype.hasOwnProperty.call(result.reason, "message"),
-          );
-          assert.ok(result.reason.message.includes(`${rand}/input.jpg`));
-          assert.ok(
-            result.reason.message.includes("No such file or directory"),
-          );
+          assert.equal(result.reason.code, "ENOTDIR");
         });
     });
     it("must convert multiple files", () => {
@@ -151,6 +145,18 @@ describe("convert", () => {
         .then(([result]) =>
           assert.ok(getValue(result).output.path.includes(`input-${rand}.jpg`)),
         );
+    });
+    it("must support relative path output templates", async () => {
+      const testDir = path.dirname(path.dirname(input));
+      const results = await convert.files(
+        [path.join(testDir, "**", "*.jpg")],
+        path.join(dest, "{path}", "{base}"),
+        createContext(),
+      );
+      const [result] = results;
+      const outputPath = getValue(result).output.path;
+      assert.equal(outputPath, path.join(dest, "fixtures", "input.jpg"));
+      assert.equal(fs.existsSync(outputPath), true);
     });
     it("must allow the same file as input and output", () => {
       return convert.files([copy], path.dirname(copy), createContext());

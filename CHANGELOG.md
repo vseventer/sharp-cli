@@ -2,6 +2,7 @@
 
 ## 6.1.0-dev
 
+- Added a `{path}` output template for preserving directories matched by glob inputs ([#43](https://github.com/vseventer/sharp-cli/issues/43)).
 - Added percentage-based dimensions to the `resize` command ([#49](https://github.com/vseventer/sharp-cli/issues/49)).
 
 ## 6.0.0 (August 21, 2026)
