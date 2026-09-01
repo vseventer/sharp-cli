@@ -1,6 +1,6 @@
 {
   "name": "sharp-cli",
-  "version": "6.1.0-dev",
+  "version": "6.1.0",
   "description": "CLI for sharp.",
   "keywords": [
     "cli",
