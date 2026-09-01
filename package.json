@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "glob": "13.0.x",
-    "sharp": "0.35.3",
+    "sharp": "0.35.4",
     "yargs": "17.7.x"
   },
   "devDependencies": {

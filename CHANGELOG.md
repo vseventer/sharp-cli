@@ -3,6 +3,7 @@
 ## 6.1.0-dev
 
 - Added percentage-based dimensions to the `resize` command ([#49](https://github.com/vseventer/sharp-cli/issues/49)).
+- Updated `sharp` dependency to 0.35.4.
 
 ## 6.0.0 (August 21, 2026)
 
