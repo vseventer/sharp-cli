@@ -48,6 +48,10 @@
     "sinon": "22.1.x",
     "tempy": "3.2.x"
   },
+  "overrides": {
+    "diff": "8.0.3",
+    "serialize-javascript": "7.1.1"
+  },
   "engines": {
     "node": ">=20.10.0"
   }
