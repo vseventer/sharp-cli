@@ -216,7 +216,7 @@ For more information on available options, please visit https://sharp.pixelplumb
 
 - The CLI supports input streams.
 - [Glob](https://www.npmjs.com/package/glob) patterns are allowed, for example `--input './images/**/*.jpg'`. Make sure you quote the pattern when using the CLI.
-- Supported output macros: `{root}`, `{dir}`, `{base}`, `{name}`, and `{ext}` (from [Node.js path](https://nodejs.org/api/path.html#path_path_parse_path)), for example: `--output {dir}` will overwrite original files.
+- Supported output macros: `{root}`, `{dir}`, `{base}`, `{name}`, and `{ext}` (from [Node.js path](https://nodejs.org/api/path.html#path_path_parse_path)), for example: `--output {dir}` will overwrite original files. Additionally, `{path}` is the directory relative to the non-glob portion of the input path.
 
 ```
 ┌─────────────────────┬────────────┐
@@ -225,6 +225,14 @@ For more information on available options, please visit https://sharp.pixelplumb
 │ root │              │ name │ ext │
 "  /    home/user/dir / file  .txt "
 └──────┴──────────────┴──────┴─────┘
+```
+
+For glob input, `{path}` can be used in an `--output` template to preserve the matched directory relative to the non-glob portion of the input path:
+
+```
+Command: sharp --input './images/**/*.jpg' --output './output/{path}/{name}.webp'
+Match:   ./images/icons/example.jpg
+Output:  ./output/icons/example.webp
 ```
 
 ## Related
